@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>O.S.P+ | Cleaning Company Toulouse & Occitanie | 20 Years of Expertise</title>
+    <meta name="description" content="O.S.P+ : Expert in professional cleaning in Toulouse. Window cleaning, sofa, carpet and office cleaning. High-quality cleanliness service in Occitanie. Free Quote.">
+    <meta name="keywords" content="cleaning toulouse, window cleaner toulouse, sofa cleaning toulouse, office cleaning occitanie, cleanliness toulouse">
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init("jlAW00rIU5xSHECVd"); 
+       })();
+    </script>
+    
+    <style>
+        .btn-planifier { background: var(--gris); border: 2px solid #e1e8ef; color: var(--bleu); padding: 8px; border-radius: 5px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; text-align: center; }
+        .btn-planifier:hover { border-color: var(--vert); background: white; }
+        .btn-planifier.active { background: var(--vert); color: white; border-color: var(--vert); }
+        .planning-modal-content { max-width: 450px; width: 95%; background: white; padding: 25px; border-radius: 15px; position: relative; }
+        .grid-checkboxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; margin-bottom: 10px; }
+        @media (min-width: 400px) { .grid-checkboxes { grid-template-columns: repeat(4, 1fr); } }
+        .checkbox-item { background: var(--gris); padding: 8px; border-radius: 6px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; cursor: pointer; border: 1px solid #eee; transition: 0.2s; }
+        .checkbox-item:hover { border-color: var(--vert); }
+        .checkbox-item input { accent-color: var(--vert); transform: scale(1.2); }
+        
+        .btn-submit-form { background: var(--vert); color: white; border: none; padding: 15px 20px; border-radius: 8px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-transform: uppercase; width: 100%; margin-top: 20px; }
+        .btn-submit-form:hover { background: #7ab332; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
+        
+        .btn-add-row { background: transparent; color: var(--vert); border: 2px dashed var(--vert); padding: 10px; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-add-row:hover { background: var(--vert); color: white; border-style: solid; }
+        
+        .btn-cross-sell { background: transparent; color: var(--bleu); border: 2px dashed var(--bleu); padding: 10px 15px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-cross-sell:hover { background: var(--bleu); color: white; border-style: solid; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(26, 60, 108, 0.2); }
+
+        .btn-delete-row { background: #ff4d4d; color: white; border: none; border-radius: 4px; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; cursor: pointer; margin-left: 5px; transition: 0.2s; }
+        .btn-delete-row:hover { background: #cc0000; }
+        
+        .quote-row-item.custom-row {
+            background: #eef3f8;
+            border: 1px dashed var(--vert);
+            margin-top: 10px;
+        }
+
+        .level-accordion { background: white; border: 2px solid #e1e8ef; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+        .accordion-header { background: var(--gris); padding: 12px 15px; font-weight: 800; color: var(--bleu); font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; }
+        .accordion-header:hover { background: #e1e8ef; }
+        .accordion-header.active { border-bottom: 2px solid var(--vert); background: white; }
+        .accordion-icon { font-size: 1.2rem; color: var(--vert); transition: transform 0.3s; }
+        .accordion-header.active .accordion-icon { transform: rotate(45deg); }
+        
+        .accordion-body { display: none; padding: 15px; background: white; }
+        .accordion-body.active { display: block; animation: fadeInDown 0.3s ease; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .room-quick-adds { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .btn-quick-add { background: var(--gris); border: 1px solid var(--bleu); color: var(--bleu); padding: 6px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-quick-add:hover { background: var(--bleu); color: white; }
+        
+        .structured-room-card { background: var(--gris); border-left: 4px solid var(--vert); border-radius: 8px; padding: 12px; margin-bottom: 12px; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee; }
+        .structured-room-card h5 { color: var(--bleu); font-size: 0.9rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .prest-pill-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; margin-bottom: 10px; }
+        .prest-pill input[type="checkbox"] { display: none; }
+        
+        .prest-pill label { 
+            background: white; border: 1px solid #ccc; padding: 4px 10px; border-radius: 15px; 
+            font-size: 0.65rem; font-weight: 600; cursor: pointer; color: #555; 
+            transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; user-select: none; 
+        }
+        
+        .prest-pill input[type="checkbox"] + label::before { content: "+"; font-size: 0.8rem; font-weight: 800; line-height: 1; }
+        
+        .prest-pill input[type="checkbox"]:checked + label { background: var(--vert); color: white; border-color: var(--vert); }
+        .prest-pill input[type="checkbox"]:checked + label::before { content: "✔"; font-size: 0.75rem; }
+        
+        .prest-pill.mandatory label { border-color: var(--bleu); cursor: not-allowed; opacity: 0.9; }
+        .prest-pill.mandatory input[type="checkbox"]:checked + label { background: var(--bleu); color: white; border-color: var(--bleu); }
+        .prest-pill.mandatory input[type="checkbox"]:checked + label::before { content: "🔒 ✔"; font-size: 0.7rem; }
+
+        .qty-input-box { display: flex; align-items: center; gap: 8px; background: white; padding: 5px 10px; border-radius: 5px; border: 1px solid #ddd; width: fit-content; }
+        .qty-input-box label { font-size: 0.75rem; font-weight: 600; color: #444; }
+        .qty-input-box input { width: 45px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
+        .qty-input-box select { padding: 4px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: var(--bleu); outline: none; cursor: pointer; }
+
+        .btn-validate-custom { background: var(--vert); color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-validate-custom:hover { background: #7ab332; }
+
+        @media (min-width: 851px) {
+            .modal-col-left, .modal-col-right {
+                max-height: calc(95vh - 100px);
+                overflow-y: auto;
+            }
+            .modal-col-left { padding-right: 15px; }
+            .modal-col-right { padding-right: 10px; }
+            .modal-col-left::-webkit-scrollbar, .modal-col-right::-webkit-scrollbar { width: 6px; }
+            .modal-col-left::-webkit-scrollbar-track, .modal-col-right::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+            .modal-col-left::-webkit-scrollbar-thumb, .modal-col-right::-webkit-scrollbar-thumb { background: var(--vert); border-radius: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-sticky-wrapper">
+        
+        <div id="promo-banner" class="promo-banner" style="display: none;">
+            🎉 <strong>HOLIDAY SPECIAL OFFER: -10% off your final invoice!</strong> <em>(Valid if the final contract is signed within 15 days)</em>
+        </div>
+
+        <header>
+            <div class="logo-text">
+                <div class="main-title"><span class="text-bleu">O.S.P</span><span class="text-green">+</span></div>
+                <div class="sub-title"><span class="text-bleu">Occitanie Services Propreté</span> <span class="text-green">Plus</span></div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link">Home</a></li>
+                    <li><a href="#services" class="nav-link">Services</a></li>
+                    <li><a href="#galerie" class="nav-link">Portfolio</a></li>
+                    <li><a href="#avis" class="nav-link">Reviews</a></li>
+                    <li><a href="#qui-suis-je" class="nav-link">Expertise</a></li>
+                    <li><a href="#faq" class="nav-link">FAQ</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li><a href="tel:0745027624" class="btn-phone-nav">📞 07 45 02 76 24</a></li>
+                    <li><a href="#services" class="btn-devis-nav">Free Quote</a></li>
+                    <li><button class="btn-client-nav" onclick="openClientModal()">Loyal Customer</button></li>
+                    <li class="lang-menu">
+                        <div class="selected-lang">🇬🇧 EN ▼</div>
+                        <ul class="lang-dropdown">
+                            <li><a href="index.html">🇫🇷 Français</a></li>
+                            <li><a href="index-en.html">🇬🇧 English</a></li>
+                            <li><a href="index-vi.html">🇻🇳 Tiếng Việt</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Cleanliness, <span class="text-green">Is My Profession.</span></h1>
+            <div class="hero-video-container">
+                <div class="video-wrapper">
+                    <video id="introVid" muted autoplay loop playsinline preload="metadata">
+                        <source src="video-introduction.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="custom-controls">
+                    <button class="control-btn" onclick="togglePlay('introVid')">⏯️ Play/Pause</button>
+                    <button class="control-btn" onclick="toggleMute('introVid')">🔊 Audio</button>
+                    <button class="control-btn" onclick="restartVideo('introVid')">🔄 Reset</button>
+                    <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Full</button>
+                </div>
+            </div>
+            <div class="hero-badges">
+                <span class="badge">20 Years of Experience</span>
+                <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Pro Liability Insurance</span>
+                <span class="badge">Professional Equipment</span>
+            </div>
+            <a href="#services" class="btn-main pulse-animation">REQUEST MY FREE QUOTE</a>
+        </div>
+    </section>
+
+    <div class="trust-bar"><p>📍 Sector <strong>Toulouse (30 km included)</strong> and all of <strong>Occitanie*</strong></p></div>
+
+    <section id="services" class="services scroll-animate">
+        <h2 class="section-title"><span class="text-bleu">My Specialized Services</span> & <span class="text-green">Online Estimation</span></h2>
+        <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: -15px auto 35px auto; line-height: 1.5; padding: 0 15px;">
+            ⚠️ <em>The rates calculated on this site are given for information purposes only.</em> The final and contractual quote will be established with you only after a technical on-site visit of your premises (no obligation).
+        </p>
+
+        <div class="services-grid">
+            <div class="card clickable" onclick="openQuote('vitrerie')">
+                <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg></div>
+                <h3 class="text-bleu">Window Cleaning</h3>
+                <p>Complete cleaning of all glass surfaces.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('shampouinage')">
+                <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path><path d="M9 22V12h6v10"></path></svg></div>
+                <h3 class="text-bleu">Sofa & Carpet Cleaning</h3>
+                <p>Deep cleaning of upholstery and carpets.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('vehicule')">
+                <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
+                <h3 class="text-bleu">Vehicle Pack</h3>
+                <p>Complete deep cleaning of auto interiors.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('bureaux')">
+                <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
+                <h3 class="text-bleu">Offices & Buildings</h3>
+                <p>Custom configuration for your commercial premises.</p>
+                <div class="card-border"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="galerie" class="gallery scroll-animate">
+        <h2 class="section-title">Our <span class="text-green">Achievements</span></h2>
+        <div class="gallery-fine-container">
+            <div class="realisations-mix-grid">
+                <div class="comparison-container">
+                    <div class="comparison-slider">
+                        <div class="img before"><img src="avant1.jpg" alt="Before"></div>
+                        <div class="img after"><img src="apres1.jpg" alt="After"></div>
+                        <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
+                        <div class="slider-button"></div>
+                    </div>
+                    <p class="gallery-label">Window Cleaning</p>
+                </div>
+                <div class="video-container-fixed">
+                    <div class="video-wrapper">
+                        <video id="realVid" muted autoplay loop playsinline preload="metadata"><source src="video-realisation.mp4" type="video/mp4"></video>
+                    </div>
+                </div>
+                <div class="comparison-container">
+                    <div class="comparison-slider">
+                        <div class="img before"><img src="avant2.jpg" alt="Before"></div>
+                        <div class="img after"><img src="apres2.jpg" alt="After"></div>
+                        <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
+                        <div class="slider-button"></div>
+                    </div>
+                    <p class="gallery-label">Textiles & Carpets</p>
+                </div>
+            </div>
+            <div class="mini-photo-row">
+                <div class="card mini-card"><img src="photo1.jpg" alt="1"><div class="card-border"></div></div>
+                <div class="card mini-card"><img src="photo2.jpg" alt="2"><div class="card-border"></div></div>
+                <div class="card mini-card"><img src="photo3.jpg" alt="3"><div class="card-border"></div></div>
+                <div class="card mini-card"><img src="photo4.jpg" alt="4"><div class="card-border"></div></div>
+                <div class="card mini-card"><img src="photo5.jpg" alt="5"><div class="card-border"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="avis" class="services scroll-animate" style="background: var(--gris);">
+        <h2 class="section-title">Customer <span class="text-green">Reviews</span></h2>
+        <div class="services-grid">
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Sébastien R.</h3><p>"Impeccable work on my sofa. Very punctual."</p></div><div class="card-border"></div></div>
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Marie L.</h3><p>"My windows have never been this clean. Perfect result."</p></div><div class="card-border"></div></div>
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Pierre D.</h3><p>"Fast intervention before our office opening. Highly satisfied."</p></div><div class="card-border"></div></div>
+        </div>
+    </section>
+
+    <section id="qui-suis-je" class="who-am-i scroll-animate">
+        <div class="who-container">
+            <div class="who-flex">
+                <div class="who-image-box">
+                    <div class="photo-container-overlap">
+                        <img src="ma-photo.jpg" alt="Alexandre" class="profile-photo">
+                        <div class="experience-badge-overlap">
+                            <span>20</span>
+                            <p>years of experience</p>
+                        </div>
+                    </div>
+                    
+                    <div class="video-container-fixed" style="margin-top: 50px;">
+                        <div class="video-wrapper">
+                            <video id="presVid" muted autoplay loop playsinline preload="metadata">
+                                <source src="presentation-osp.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="custom-controls">
+                            <button class="control-btn" onclick="togglePlay('presVid')">⏯️ Play</button>
+                            <button class="control-btn" onclick="toggleMute('presVid')">🔊 Audio</button>
+                            <button class="control-btn" onclick="restartVideo('presVid')">🔄 Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="who-text-box">
+                    <h2 class="section-title">From corporate high standards <br><span class="text-green">to your customized service</span></h2>
+                    
+                    <p class="intro-text">"After 20 years handling the most complex challenges of the sector, I decided to focus back on what matters most: <strong>you.</strong>"</p>
+                    
+                    <p>My career with the industry leaders taught me a rigorous discipline. Today, I founded <strong>O.S.P+</strong> to bring this high-level expertise directly to you, favoring a direct, transparent, and long-lasting human relationship.</p>
+                    
+                    <div class="tech-box">
+                        <h4 class="tech-title">The O.S.P+ philosophy: Proximity, Listening, Cleanliness & High Security</h4>
+                        <ul class="philo-list">
+                            <li>💬 <strong>Attentive & custom listening:</strong> No middleman or impersonal booking platforms.</li>
+                            <li>🛡️🔒 <strong>Enhanced Discretion & Security:</strong> Our visits are intentionally limited to one or two team members. Fewer people on site means absolute confidentiality.</li>
+                            <li>👤 <strong>A single point of contact, a single commitment:</strong> From the initial commercial contact to the execution of the cleaning, you deal with the exact same professional.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="services scroll-animate" style="background: var(--blanc);">
+        <h2 class="section-title">Frequently Asked <span class="text-green">Questions</span></h2>
+        <div class="services-grid">
+            <div class="card faq-card">
+                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="dynamic-slide active"><h3>What are the delays?</h3><p>Generally within 48 to 72 hours.</p></div>
+                <div class="dynamic-slide"><h3>Do you clean in the evening?</h3><p>Yes, for offices, we can start as early as 5:00 AM.</p></div>
+                <div class="card-border"></div>
+            </div>
+            <div class="card faq-card">
+                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="dynamic-slide active"><h3>Products used?</h3><p>Professional grade, highly effective, and eco-friendly products.</p></div>
+                <div class="dynamic-slide"><h3>Textile drying time?</h3><p>Thanks to pro moisture extraction, items dry in 4 to 6 hours.</p></div>
+                <div class="card-border"></div>
+            </div>
+            <div class="card faq-card">
+                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="dynamic-slide active"><h3>Service Area?</h3><p>Free travel cost up to 30km around Toulouse.</p></div>
+                <div class="dynamic-slide"><h3>Payment options?</h3><p>Credit card, cash, or bank transfers are accepted.</p></div>
+                <div class="card-border"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact scroll-animate">
+        <h2 class="section-title">Contact <span class="text-green">Me</span></h2>
+        <div class="who-container">
+            <div class="contact-grid-triple">
+                <div class="contact-cat">
+                    <h3>🕒 Hours</h3>
+                    <ul class="contact-list">
+                        <li><strong>Mon - Fri:</strong> 05:00 - 10:30</li>
+                        <li><strong>Sat - Sun:</strong> On request <br><span style="font-size: 0.75rem; color: var(--vert); font-weight: 600;">(Windows, Upholstery, etc.)</span></li>
+                    </ul>
+                </div>
+                <div class="contact-cat">
+                    <h3>📞 Contact</h3>
+                    <ul class="contact-list">
+                        <li><strong>Phone:</strong> 07 45 02 76 24</li>
+                        <li><strong>Email:</strong> contact@ospplus.com</li>
+                    </ul>
+                    <div class="social-original">
+                        <a href="https://wa.me/33745027624" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
+                        <a href="#" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook"></a>
+                        <a href="#" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram"></a>
+                    </div>
+                </div>
+                <div class="contact-cat">
+                    <h3>📍 Location</h3>
+                    <ul class="contact-list"><li>Toulouse & 30km included</li></ul>
+                    <div class="villes-tags">
+                        <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span>
+                    </div>
+                </div>
+            </div>
+            <div class="map-container-full"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184758.4619427306!2d1.2635431668749873!3d43.600678619932024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb6fec7552ff%3A0x408f3468f40a120!2sToulouse!5e0!3m2!1sfr!2sfr!4v1716386561139!5m2!1sfr!2sfr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
+            <div class="mentions-center-wrapper">
+                <button onclick="openMentions()" class="btn-mentions-link">View Legal & GDPR Privacy Notice</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Occitanie Service Propreté</span> <span class="text-green">Plus</span>)</strong></p>
+        <p><span class="text-bleu">Sole Proprietorship</span> | <span class="text-green">SIRET : 123 456 789 00012</span> | <span class="text-bleu">*VAT not applicable.</span></p>
+    </footer>
+
+    <div id="mentionsModal" class="modal">
+        <div class="modal-content large" style="max-width: 800px;">
+            <span class="close-modal" onclick="closeMentions()">×</span>
+            <div class="modal-header"><h2>Legal Notice & GDPR</h2></div>
+            <div class="modal-body-simple" style="max-height: 70vh; overflow-y: auto;">
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-bottom: 10px;">1. Site Publisher</h3>
+                <p><strong>O.S.P+ (Occitanie Services Propreté Plus)</strong><br>
+                Manager: Alexandre Jonot<br>
+                Status: Auto-entrepreneur (Sole proprietorship)<br>
+                SIRET: 123 456 789 00012<br>
+                Registered Address: [YOUR EXACT ADDRESS], [POSTAL CODE] [CITY]<br>
+                Phone: 07 45 02 76 24<br>
+                Email: contact@ospplus.com<br>
+                Professional Civil Liability Insurance: [INSURER NAME]</p>
+
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Website Hosting</h3>
+                <p>This website is hosted by: <strong>[HOST NAME (e.g. OVH, Hostinger, O2Switch)]</strong><br>
+                Host Address: [HOST ADDRESS]</p>
+
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">3. Privacy Policy (GDPR)</h3>
+                <p>Information collected via the quote request form (last name, first name, address, email, phone number) is recorded and exclusively processed by Alexandre Jonot (O.S.P+). Its sole purpose is establishing commercial estimations and managing client relations. No data is sold, rented, or transferred to third parties.</p>
+                <p><strong>Data Retention period:</strong> This data is kept for a maximum duration of 3 years following our last commercial contact.</p>
+                
+                <h3 style="color: var(--vert); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. Data Security and Limitations of Liability</h3>
+                <p>O.S.P+ commits to taking all reasonable precautions (secure passwords, professional tools) to protect your personal data. However, as the Internet is not a 100% secure environment, O.S.P+ cannot guarantee absolute security against malicious cyberattacks. Consequently, O.S.P+ declines any liability in the event of data loss, leakage, or theft resulting from a security breach independent of its will (force majeure or unpredictable hacking act).</p>
+                
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">5. Your Rights</h3>
+                <p>In accordance with GDPR regulations, you hold the right to access, rectify, request portability, or delete your personal records. To exercise this right, you may contact us via email at: contact@ospplus.com.</p>
+                <p>You also have the right to file a complaint with the CNIL (www.cnil.fr).</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="clientModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: center;">
+            <span class="close-modal" onclick="closeClientModal()">×</span>
+            <h3 style="color: var(--bleu); margin-bottom: 15px;">Customer Area</h3>
+            <p style="font-size: 0.85rem; margin-bottom: 20px;">Enter your confidential customer code to claim an **immediate 5% discount** on your online estimation.</p>
+            <input type="text" id="clientCodeInput" placeholder="Your code (e.g., VIP5)" style="padding: 12px; width: 80%; border-radius: 8px; border: 2px solid #e1e8ef; margin-bottom: 15px; font-size: 1rem; text-align: center; text-transform: uppercase;">
+            <br>
+            <button class="btn-submit-form" onclick="applyClientCode()" style="width: auto; padding: 10px 25px; margin-top: 0;">Validate Code</button>
+            <p id="clientCodeMsg" style="margin-top: 15px; font-weight: bold; font-size: 0.9rem;"></p>
+        </div>
+    </div>
+
+    <div id="quoteModal" class="modal">
+        <div class="modal-content large">
+            <span class="close-modal" onclick="closeQuote()">×</span>
+            <div class="modal-header"><h2 id="modalTitle">Your <span class="text-green">Custom Quote</span></h2></div>
+            
+            <form id="interactiveForm">
+                <div class="modal-body-flex">
+                    
+                    <div class="modal-col-left">
+                        <div id="dynamicFields"></div>
+                    </div>
+                    
+                    <div class="modal-col-right">
+                        <div class="form-section-compact">
+                            
+                            <div style="background: #f4f8fb; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #e1e8ef;">
+                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* The price for specific requests will be calculated on a custom basis (not included in the global calculation).</p>
+                                <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;"><span>+</span> Add a special requirement</button>
+                                <div id="customRowsContainer"></div>
+                            </div>
+
+                            <h3 class="form-subtitle">Your Contact Details</h3>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                
+                                <div class="input-group">
+                                    <label>You are:</label>
+                                    <div style="display: flex; gap: 20px; margin-top: 5px;">
+                                        <label style="font-weight: normal; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                            <input type="radio" name="statut" value="Particulier" required style="width: auto; transform: scale(1.1); margin: 0;" onchange="toggleCompanyField()"> Individual
+                                        </label>
+                                        <label style="font-weight: normal; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                            <input type="radio" name="statut" value="Entreprise" required style="width: auto; transform: scale(1.1); margin: 0;" onchange="toggleCompanyField()"> Company, Association...
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="input-group" id="companyNameGroup" style="display: none; margin-top: 5px;">
+                                    <label>Organization / Company Name</label>
+                                    <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="e.g. OSP Plus...">
+                                </div>
+
+                                <div class="input-group"><label>Last Name</label><input type="text" name="nom" required></div>
+                                <div class="input-group"><label>First Name</label><input type="text" name="prenom" required></div>
+                                <div class="input-group"><label>Email Address</label><input type="email" name="email" required></div>
+                                <div class="input-group"><label>Full Address</label><input type="text" name="adresse" placeholder="Street number and name..." required></div>
+                                <div class="input-group"><label>City</label><input type="text" name="ville" placeholder="Postal Code and City..." required></div>
+                                <div class="input-group"><label>On-site contact person <span style="font-weight:normal; font-size:0.7rem; color:#666;">(If different)</span></label><input type="text" name="interlocuteur" placeholder="Name and surname..."></div>
+                                
+                                <div class="input-group" style="margin-top: 10px; margin-bottom: 5px; background: #eef3f8; padding: 15px; border-radius: 8px; border: 1px dashed var(--vert);">
+                                    <label style="color: var(--bleu);">Promo Code (Optional)</label>
+                                    <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                        <input type="text" id="promoCodeInputDevis" placeholder="e.g. BIENVENUE10" style="text-transform: uppercase; flex: 1;">
+                                        <button type="button" onclick="applyPromoCodeDevis()" class="btn-validate-custom" style="padding: 10px 15px; font-size: 0.85rem;">Apply</button>
+                                    </div>
+                                    <p id="promoCodeMsgDevis" style="font-size: 0.8rem; margin-top: 5px; font-weight: bold;"></p>
+                                </div>
+
+                                <div style="margin-top: 5px; margin-bottom: 5px;">
+                                    <p style="font-size: 0.65rem; color: #777; line-height: 1.4; text-align: justify;">
+                                        🔒 <strong>Data Privacy Protection:</strong> By submitting this form, you agree that your details will be processed by O.S.P+ strictly within the scope of this estimation request and subsequent business inquiries. Your data will never be shared with third parties. To exercise your rights to edit or erase details, please see our <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Legal Notice</a>.
+                                    </p>
+                                </div>
+
+                                <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; border-radius: 5px; margin-top: 15px; margin-bottom: 5px;">
+                                    <p style="font-size: 0.75rem; color: #555; line-height: 1.4; text-align: justify; margin: 0;">
+                                        ⚠️ <strong>Please Note:</strong> <em>This simulation is provided for reference only.</em> The definitive and binding contract fee will be validated only following an on-site visit of your property (free and non-binding).
+                                    </p>
+                                </div>
+
+                                <button type="button" class="btn-submit-form" id="btnSubmitForm" onclick="submitInteractiveForm()">SUBMIT MY QUOTE REQUEST</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </form>
+
+            <div id="postSubmitChoice" style="display: none; text-align: center; padding: 40px;">
+                <h3 style="color: var(--bleu); font-size: 2rem;">✓ Quote Request Sent!</h3>
+                <p style="margin-top: 15px; color: #555; font-size: 1.1rem;">Thank you for your trust. I will reach back to you shortly.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="planningModal" class="day-modal">
+        <div class="planning-modal-content">
+            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Planning</h4>
+            
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">1. Weekdays selection:</p>
+            <div class="grid-checkboxes" id="planDaysGrid"></div>
+            
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 20px;">2. Recurring Frequency <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optional)</span>:</p>
+            
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">A) Whole calendar months:</p>
+            <div class="grid-checkboxes" id="planMonthsGrid" style="margin-bottom:15px;"></div>
+            
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">B) Or specific timeline window:</p>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items:center;">
+                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">From:</label><input type="date" id="planStartDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
+                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">To:</label><input type="date" id="planEndDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">3. Notes / Additional Comments <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optional)</span>:</p>
+            <textarea id="planComment" placeholder="e.g. Premises closed on Tuesdays, focus on the open space desk setup, gate keys left at reception..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
+            
+            <button type="button" class="btn-validate-days" onclick="savePlanning()">CONFIRM SELECTION</button>
+        </div>
+    </div>
+
+    <div id="levelModal" class="sub-modal">
+        <div class="sub-modal-content">
+            <div class="sub-modal-header">
+                <h4>Add a Floor Level</h4>
+            </div>
+            <div class="sub-modal-body">
+                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:10px;">Quick choice presets:</p>
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 25px;">
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Floor 5')">Floor 5</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Floor 6')">Floor 6</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Basement 1')">Basement 1</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Basement 2')">Basement 2</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Rooftop Terrace')">Rooftop Terrace</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Outdoors')">Outdoors</button>
+                </div>
+                
+                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:5px;">Or input a custom name:</p>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="text" id="customLevelInput" placeholder="e.g. Mezzanine, Building Block B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
+                    <button onclick="addCustomLevel()" class="btn-validate-custom">Add Level</button>
+                </div>
+            </div>
+            <div style="padding: 15px; background: #f4f8fb; text-align:center; border-top:1px solid #eee;">
+                <button type="button" class="btn-validate" onclick="closeLevelModal()" style="padding:8px 20px; background:#ccc; color:#333; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
+
+    <script>
+        let planData = {}; 
+        let vitrerieVisibleCount = {}; 
+        let vitrerieIndexCount = {};   
+        let customVisibleCount = 0;    
+        let customIndexCount = 0;      
+        let currentPlanId = null;
+        let roomCounter = 0;
+        
+        let activeServices = [];
+
+        window.clientDiscount = 0; 
+        window.activeClientCode = "";
+
+        function openClientModal() { document.getElementById('clientModal').style.display = 'flex'; }
+        function closeClientModal() { document.getElementById('clientModal').style.display = 'none'; }
+        
+        function applyClientCode() {
+            const code = document.getElementById('clientCodeInput').value.trim().toUpperCase();
+            const validCodes = ['VIP5', 'OSP2026', 'FIDELITE']; 
+            const msg = document.getElementById('clientCodeMsg');
+            
+            if(validCodes.includes(code)) {
+                window.clientDiscount = 0.05; 
+                window.activeClientCode = code;
+                msg.style.color = 'var(--vert)';
+                msg.innerText = "✓ Valid code! This discount (-5%) is guaranteed and will be deducted from your final contract bill post-visit.";
+                calculatePrice(); 
+                setTimeout(closeClientModal, 3000);
+            } else {
+                window.clientDiscount = 0;
+                window.activeClientCode = "";
+                msg.style.color = 'red';
+                msg.innerText = "✗ Invalid or expired client code.";
+                calculatePrice();
+            }
+        }
+
+        window.promoDiscountDevis = 0;
+        window.activePromoCodeDevis = "";
+
+        function applyPromoCodeDevis() {
+            const code = document.getElementById('promoCodeInputDevis').value.trim().toUpperCase();
+            const msg = document.getElementById('promoCodeMsgDevis');
+            
+            const validPromoCodes = {
+                'PROMO10': 0.10,
+                'BIENVENUE10': 0.10,
+                'REMISE5': 0.05
+            };
+            
+            if (validPromoCodes[code]) {
+                window.promoDiscountDevis = validPromoCodes[code];
+                window.activePromoCodeDevis = code;
+                msg.style.color = 'var(--vert)';
+                msg.innerText = "✓ Valid code! This promo rate (-" + (validPromoCodes[code] * 100) + "%) is guaranteed and will be active on your technical definition.";
+            } else if (code === "") {
+                window.promoDiscountDevis = 0;
+                window.activePromoCodeDevis = "";
+                msg.innerText = "";
+            } else {
+                window.promoDiscountDevis = 0;
+                window.activePromoCodeDevis = "";
+                msg.style.color = 'red';
+                msg.innerText = "✗ This promotional code is invalid or has expired.";
+            }
+            calculatePrice();
+        }
+
+        window.holidayPromoActive = false;
+
+        function getEaster(year) {
+            let a = year % 19, b = Math.floor(year / 100), c = year % 100;
+            let d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+            let g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+            let i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
+            let m = Math.floor((a + 11 * h + 22 * l) / 451);
+            let month = Math.floor((h + l - 7 * m + 114) / 31);
+            let day = ((h + l - 7 * m + 114) % 31) + 1;
+            return new Date(year, month - 1, day);
+        }
+
+        function getMobileHolidays(year) {
+            const easter = getEaster(year);
+            const addDays = (date, days) => {
+                let d = new Date(date);
+                d.setDate(d.getDate() + days);
+                return String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            };
+            return [
+                addDays(easter, 1), 
+                addDays(easter, 39), 
+                addDays(easter, 50)  
+            ];
+        }
+
+        function checkHolidays() {
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
+            const currentDay = String(today.getDate()).padStart(2, '0');
+            const formattedDate = currentMonth + '-' + currentDay;
+
+            const fixedHolidays = ['01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25'];
+            const mobileHolidays = getMobileHolidays(currentYear);
+            const testDates = ['06-01', '06-02', '06-03'];
+
+            const allHolidays = fixedHolidays.concat(mobileHolidays).concat(testDates);
+
+            if (allHolidays.includes(formattedDate)) {
+                document.getElementById('promo-banner').style.display = 'block';
+                window.holidayPromoActive = true;
+            } else {
+                window.holidayPromoActive = false;
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', checkHolidays);
+
+        function toggleCompanyField() {
+            const isEntreprise = document.querySelector('input[name="statut"][value="Entreprise"]').checked;
+            const companyGroup = document.getElementById('companyNameGroup');
+            const companyInput = document.getElementById('nomEntreprise');
+            if (isEntreprise) {
+                companyGroup.style.display = 'flex';
+                companyInput.required = true;
+            } else {
+                companyGroup.style.display = 'none';
+                companyInput.required = false;
+                companyInput.value = '';
+            }
+        }
+
+        const prestationsData = {
+            'Office': { obligatoires: [], optionnelles: ['Vacuuming / Mopping', 'Dusting desks', 'Emptying bins', 'Disinfecting contact points'] },
+            'Meeting room': { obligatoires: [], optionnelles: ['Vacuuming / Mopping', 'Dusting', 'Rearranging chairs', 'Emptying bins'] },
+            'Restrooms': { obligatoires: ['Cleaning bowls / urinals', 'Mopping floors', 'Descaling & Disinfection', 'Mirrors & Sinks', 'Replenishing supplies'], optionnelles: [] },
+            'Shower': { obligatoires: ['Mopping floors', 'Descaling & Disinfecting stalls', 'Cleaning drains', 'Replenishing supplies'], optionnelles: [] },
+            'Locker room': { obligatoires: ['Mopping floors', 'Disinfecting benches/lockers', 'Emptying bins'], optionnelles: ['Cleaning mirrors', 'Dusting outer lockers'] },
+            'Reception': { obligatoires: ['Emptying bins'], optionnelles: ['Vacuuming / Mopping', 'Cleaning reception desk', 'Glass smudge removal'] },
+            'Dining area': { obligatoires: ['Emptying bins', 'Mopping floors', 'Disinfecting tables'], optionnelles: ['Replenishing supplies'] },
+            'Kitchen': { obligatoires: ['Emptying bins', 'Mopping floors', 'Disinfecting countertops', 'Cleaning sinks', 'Replenishing supplies'], optionnelles: ['Cleaning microwave', 'Cleaning fridge'] },
+            'Breakroom': { obligatoires: ['Emptying bins'], optionnelles: ['Mopping floors', 'Cleaning tables', 'Cleaning coffee machines', 'Replenishing supplies'] },
+            'Gym': { obligatoires: ['Emptying bins', 'Ventilation'], optionnelles: ['Vacuuming / Mopping', 'Disinfecting machines', 'Mirrors', 'Replenishing supplies'] },
+            'Main elevator': { obligatoires: ['Disinfecting buttons', 'Vacuuming / Mopping'], optionnelles: ['Cleaning mirror', 'Smudges on int/ext doors'] },
+            'Secondary elevator': { obligatoires: ['Disinfecting buttons', 'Vacuuming / Mopping'], optionnelles: ['Cleaning mirror', 'Smudges on int/ext doors'] },
+            'Main staircase': { obligatoires: [], optionnelles: ['Vacuuming / Mopping', 'Dusting baseboards', 'Cleaning handrails'] },
+            'Secondary staircase': { obligatoires: [], optionnelles: ['Vacuuming / Mopping', 'Dusting baseboards', 'Cleaning handrails'] },
+            'Landing': { obligatoires: [], optionnelles: ['Vacuuming / Mopping', 'Dusting', 'Baseboards'] },
+            'Hallway': { obligatoires: [], optionnelles: ['Vacuuming / Mopping', 'Dusting baseboards'] },
+            'Parking lot': { obligatoires: [], optionnelles: ['Trash pickup', 'Sweeping', 'Cobweb removal'] },
+            'Terrace': { obligatoires: [], optionnelles: ['Sweeping', 'Cleaning outdoor furniture', 'Emptying bins'] },
+            'Technical room': { obligatoires: [], optionnelles: ['Vacuuming / Mopping', 'Dusting'] },
+            'Other': { obligatoires: [], optionnelles: ['Vacuuming / Mopping', 'Dusting', 'Emptying bins'] }
+        };
+
+        function generateRowHtml(id, name) {
+            return `
+            <div class="quote-row-item" id="row_${id}">
+                <label>${name}</label>
+                <input type="number" id="qty_${id}" min="0" value="0" oninput="calculatePrice()">
+                <button type="button" id="btn_plan_${id}" class="btn-planifier" onclick="openPlanningModal('${id}', '${name}')">+ Plan Schedule</button>
+            </div>`;
+        }
+
+        function generateVitrerieRowHtml(id, name, dupIndex) {
+            let actualId = dupIndex === 0 ? id : id + '_dup_' + dupIndex;
+            let btnPlus = dupIndex === 0 
+                ? `<button type="button" onclick="addVitrerieRow('${id}', '${name}')" style="background:var(--vert); color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer; height:100%; width:100%; padding:0; font-size:1.1rem; line-height:1;">+</button>` 
+                : `<button type="button" class="btn-delete-row" onclick="removeVitrerieRow('${actualId}')" style="margin:0; width:100%; height:100%; border-radius:4px;">×</button>`;
+
+            return `
+            <div class="quote-row-item" id="row_${actualId}" style="grid-template-columns: 1fr 45px 75px 75px 25px; padding: 6px; gap: 5px; align-items: center; margin-bottom: 4px;">
+                <label style="font-size: 0.65rem; line-height: 1.1; word-wrap: break-word;">${name}</label>
+                <input type="number" id="qty_${actualId}" min="0" value="0" oninput="calculatePrice()" style="padding: 4px; width: 100%; box-sizing: border-box; text-align:center;">
+                <select id="type_${actualId}" onchange="calculatePrice()" style="padding: 4px 0px; font-size: 0.65rem; width: 100%; box-sizing: border-box;">
+                    <option value="complet">Both Sides</option>
+                    <option value="interieur">Interior Only</option>
+                    <option value="exterieur">Exterior Only</option>
+                </select>
+                <button type="button" id="btn_plan_${actualId}" class="btn-planifier" onclick="openPlanningModal('${actualId}', '${name}')" style="padding: 4px; font-size: 0.6rem; width: 100%; box-sizing: border-box;">+ Plan</button>
+                ${btnPlus}
+            </div>`;
+        }
+
+        function addVitrerieRow(baseId, name) {
+            if (!vitrerieVisibleCount[baseId]) vitrerieVisibleCount[baseId] = 0;
+            if (!vitrerieIndexCount[baseId]) vitrerieIndexCount[baseId] = 0;
+            
+            if (vitrerieVisibleCount[baseId] >= 2) return; 
+            
+            vitrerieVisibleCount[baseId]++;
+            vitrerieIndexCount[baseId]++;
+            
+            const newHtml = generateVitrerieRowHtml(baseId, name + ' (Extra)', vitrerieIndexCount[baseId]);
+            document.getElementById('wrapper_' + baseId).insertAdjacentHTML('beforeend', newHtml);
+        }
+
+        function removeVitrerieRow(actualId) {
+            let baseId = actualId.split('_dup_')[0];
+            const row = document.getElementById('row_' + actualId);
+            if (row) row.remove();
+            
+            if (vitrerieVisibleCount[baseId]) vitrerieVisibleCount[baseId]--;
+            if (planData[actualId]) delete planData[actualId];
+            
+            calculatePrice();
+        }
+
+        function openMentions() { document.getElementById('mentionsModal').style.display = 'flex'; }
+        function closeMentions() { document.getElementById('mentionsModal').style.display = 'none'; }
+        function togglePlay(id) { const vid = document.getElementById(id); if (vid.paused) vid.play(); else vid.pause(); }
+        function toggleMute(id) { const vid = document.getElementById(id); vid.muted = !vid.muted; }
+        function restartVideo(id) { const vid = document.getElementById(id); vid.currentTime = 0; vid.play(); }
+        function toggleFullScreen(id) { const vid = document.getElementById(id); if (vid.requestFullscreen) vid.requestFullscreen(); else if (vid.webkitRequestFullscreen) vid.webkitRequestFullscreen(); }
+        function moveSlider(e) { const container = e.parentElement; container.querySelector('.before').style.width = e.value + '%'; }
+
+        function toggleAccordion(headerElement) {
+            const body = headerElement.nextElementSibling;
+            const isActive = headerElement.classList.contains('active');
+            
+            document.querySelectorAll('.accordion-header').forEach(el => { el.classList.remove('active'); });
+            document.querySelectorAll('.accordion-body').forEach(el => { el.classList.remove('active'); });
+
+            if (!isActive) {
+                headerElement.classList.add('active');
+                body.classList.add('active');
+            }
+        }
+
+        function createLevelAccordion(levelName) {
+            const levelId = 'level_' + Date.now() + Math.floor(Math.random() * 1000);
+            
+            let html = `
+            <div class="level-accordion" id="block_${levelId}">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>📍 ${levelName}</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-body">
+                    <p style="font-size:0.75rem; color:#666; margin-bottom:8px;">Add specific configuration spaces to this layout:</p>
+                    <div class="room-quick-adds">
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Office')">💼 Office</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Meeting room')">🗣️ Meeting Room</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Restrooms')">🚻 Restrooms</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Shower')">🚿 Showers</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Locker room')">🧳 Lockers</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Reception')">🛎️ Reception</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Kitchen')">🍳 Kitchen</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Dining area')">🍽️ Dining Area</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Breakroom')">☕ Breakroom</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Hallway')">🚶 Hallway</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Main elevator')">🛗 Main Lift</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Secondary elevator')">🛗 Service Lift</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Main staircase')">📶 Main Stairs</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Secondary staircase')">📶 Exit Stairs</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Landing')">🚪 Landing</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Terrasse')">☀️ Terrace</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Technical room')">🔧 Tech Closet</button>
+                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Other')">➕ Other</button>
+                    </div>
+                    <div id="rooms_container_${levelId}"></div>
+                </div>
+            </div>`;
+            
+            document.getElementById('levelsContainer').insertAdjacentHTML('beforeend', html);
+        }
+
+        function openLevelModal() { document.getElementById('levelModal').style.display = 'flex'; }
+        function closeLevelModal() { document.getElementById('levelModal').style.display = 'none'; }
+        
+        function addSpecificLevel(name) {
+            createLevelAccordion(name);
+            closeLevelModal();
+        }
+        function addCustomLevel() {
+            const val = document.getElementById('customLevelInput').value.trim();
+            if(val !== '') {
+                createLevelAccordion(val);
+                document.getElementById('customLevelInput').value = '';
+                closeLevelModal();
+            }
+        }
+
+        function addStructuredRoom(levelId, type) {
+            roomCounter++;
+            const roomId = 'room_detail_' + roomCounter;
+            
+            planData[roomId] = { days: [], months: [], start:'', end:'', roomType: type, comment: '' };
+
+            let customNameHtml = type === 'Other' ? `<input type="text" placeholder="Ex: Server / Printing hub area..." style="font-size:0.8rem; padding:6px; margin-bottom:10px; width:100%; border:1px solid #ccc; border-radius:5px;">` : '';
+
+            let qtyHtml = '';
+            if (type === 'Restrooms' || type === 'Shower' || type === 'Locker room') {
+                qtyHtml = `
+                <div class="qty-input-box"><label>🚹 Men (units)</label><input type="number" id="qty_h_${roomId}" min="0" value="1" oninput="calculatePrice()"></div>
+                <div class="qty-input-box"><label>🚺 Women (units)</label><input type="number" id="qty_f_${roomId}" min="0" value="1" oninput="calculatePrice()"></div>`;
+            } else if (type === 'Dining area') {
+                qtyHtml = `
+                <div class="qty-input-box"><label>Number of areas</label><input type="number" id="qty_${roomId}" min="1" value="1" oninput="calculatePrice()"></div>
+                <div class="qty-input-box"><label>Tables count</label><input type="number" id="qty_tables_${roomId}" min="0" value="5" oninput="calculatePrice()"></div>
+                <div class="qty-input-box"><label>Chairs count</label><input type="number" id="qty_chaises_${roomId}" min="0" value="10" oninput="calculatePrice()"></div>`;
+            } else {
+                let labelQty = "Units count";
+                if (type === 'Office') labelQty = "Desks / Rooms count";
+                else if (type.includes('elevator')) labelQty = "Elevators count";
+                else if (type.includes('staircase')) labelQty = "Staircases count";
+                else if (type === 'Landing') labelQty = "Landings count";
+                else if (type === 'Terrasse') labelQty = "Terraces count";
+                else if (type === 'Parking lot') labelQty = "Parking slots count";
+                else if (type === 'Hallway') labelQty = "Hallways count";
+                else if (type === 'Meeting room') labelQty = "Rooms count";
+                else if (type === 'Kitchen') labelQty = "Kitchens count";
+                else if (type === 'Technical room') labelQty = "Closets count";
+                else if (type === 'Reception' || type === 'Breakroom' || type === 'Gym') labelQty = "Spaces count";
+
+                qtyHtml = `<div class="qty-input-box"><label>${labelQty}</label><input type="number" id="qty_${roomId}" min="1" value="1" oninput="calculatePrice()"></div>`;
+            }
+
+            let surfaceHtml = `
+            <div class="qty-input-box">
+                <label>Floor type</label>
+                <select>
+                    <option value="non_precise">Unspecified</option>
+                    <option value="moquette">Carpet</option>
+                    <option value="carrelage">Tiles</option>
+                    <option value="lino">Lino / PVC</option>
+                    <option value="parquet">Concrete / Resin</option>
+                    <option value="autre">Other Wood/Stone</option>
+                </select>
+            </div>`;
+
+            let consommablesHtml = '';
+            const zonesConsommables = ['Restrooms', 'Shower', 'Locker room', 'Kitchen', 'Dining area', 'Breakroom', 'Gym'];
+            if (zonesConsommables.includes(type)) {
+                consommablesHtml = `
+                <div class="qty-input-box" style="background:#eef3f8; border-color:var(--bleu);">
+                    <label>🧻 Refill Supplies (Paper, soap...)</label>
+                    <select style="background:transparent; border:none; font-weight:700; color:var(--bleu); padding:0; outline:none;">
+                        <option value="client">Provided by you</option>
+                        <option value="osp">Supplied by O.S.P+</option>
+                    </select>
+                </div>`;
+            }
+
+            qtyHtml = `<div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;">${qtyHtml}${surfaceHtml}${consommablesHtml}</div>`;
+
+            let prets = prestationsData[type] || prestationsData['Other'];
+            let pretsHtml = `<div class="prest-pill-container">`;
+            
+            if (prets.obligatoires && prets.obligatoires.length > 0) {
+                prets.obligatoires.forEach((p, i) => {
+                    let pid = `p_ob_${roomId}_${i}`;
+                    pretsHtml += `
+                    <div class="prest-pill mandatory" title="Mandatory cleaning core requirement for this specific hygienic zone.">
+                        <input type="checkbox" id="${pid}" checked disabled>
+                        <label for="${pid}">${p}</label>
+                    </div>`;
+                });
+            }
+
+            if (prets.optionnelles && prets.optionnelles.length > 0) {
+                prets.optionnelles.forEach((p, i) => {
+                    let pid = `p_op_${roomId}_${i}`;
+                    pretsHtml += `
+                    <div class="prest-pill">
+                        <input type="checkbox" id="${pid}" checked onchange="calculatePrice()">
+                        <label for="${pid}">${p}</label>
+                    </div>`;
+                });
+            }
+            pretsHtml += `</div>`;
+
+            let hygieneNotice = "";
+            if (prets.obligatoires && prets.obligatoires.length > 0) {
+                hygieneNotice = `<div style="font-size:0.65rem; color:#888; font-style:italic; margin-top:-5px; margin-bottom:5px;">Note: Cleaning items locked with a 🔒 padlock cannot be disabled for sanity reasons.</div>`;
+            }
+
+            let html = `
+            <div class="structured-room-card" id="row_${roomId}">
+                <h5>
+                    <span>${type !== 'Other' ? type : 'New Custom Space'}</span>
+                    <button type="button" class="btn-delete-row" onclick="removeRoom('${roomId}')">×</button>
+                </h5>
+                ${customNameHtml}
+                ${qtyHtml}
+                <div style="font-size:0.75rem; color:var(--bleu); font-weight:700; margin-top:5px; margin-bottom:8px;">Cleaning tasks checklist:</div>
+                ${hygieneNotice}
+                ${pretsHtml}
+                <div style="margin-top:10px;">
+                    <button type="button" id="btn_plan_${roomId}" class="btn-planifier" onclick="openPlanningModal('${roomId}', '${type}')">+ Schedule Setup</button>
+                </div>
+            </div>`;
+
+            document.getElementById('rooms_container_' + levelId).insertAdjacentHTML('beforeend', html);
+            calculatePrice();
+        }
+
+        function removeRoom(roomId) {
+            const row = document.getElementById('row_' + roomId);
+            if (row) row.remove();
+            if (planData[roomId]) delete planData[roomId];
+            calculatePrice();
+        }
+
+        function getRealInterventionCount(selectedDays, selectedMonths, startDate, endDate) {
+            if (selectedDays.length === 0 && selectedMonths.length === 0 && !startDate && !endDate) return 1;
+            const mapDays = {'Sun':0, 'Mon':1, 'Tue':2, 'Wed':3, 'Thu':4, 'Fri':5, 'Sat':6};
+            let totalInterventions = 0;
+
+            if (startDate && endDate) {
+                let start = new Date(startDate);
+                let end = new Date(endDate);
+                if (start <= end) {
+                    if (selectedDays.length === 0) return 1; 
+                    let current = new Date(start);
+                    while (current <= end) {
+                        let d = current.getDay();
+                        selectedDays.forEach(dName => {
+                            if (mapDays[dName] === d) totalInterventions++;
+                        });
+                        current.setDate(current.getDate() + 1);
+                    }
+                    return totalInterventions;
+                }
+            }
+
+            if (selectedMonths.length > 0) {
+                if (selectedDays.length === 0) return selectedMonths.length; 
+                const mapMonths = {'Jan':0, 'Feb':1, 'Mar':2, 'Apr':3, 'May':4, 'Jun':5, 'Jul':6, 'Aug':7, 'Sep':8, 'Oct':9, 'Nov':10, 'Dec':11};
+                const now = new Date();
+                const currentYear = now.getFullYear();
+                const currentMonth = now.getMonth();
+
+                selectedMonths.forEach(mName => {
+                    let m = mapMonths[mName];
+                    let targetYear = (m < currentMonth) ? currentYear + 1 : currentYear;
+                    selectedDays.forEach(dName => {
+                        let targetDay = mapDays[dName];
+                        let date = new Date(targetYear, m, 1);
+                        while (date.getMonth() === m) {
+                            if (date.getDay() === targetDay) totalInterventions++;
+                            date.setDate(date.getDate() + 1);
+                        }
+                    });
+                });
+                return totalInterventions;
+            }
+            if (selectedDays.length > 0) return selectedDays.length;
+            return 1;
+        }
+
+        function openPlanningModal(id, name) {
+            currentPlanId = id;
+            document.getElementById('planningModalTitle').innerText = name + " - Schedule Planning";
+            
+            if(!planData[id]) planData[id] = { days: [], months: [], start:'', end:'', comment:'' };
+            const data = planData[id];
+            
+            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            let dHtml = '';
+            days.forEach(d => {
+                let checked = data.days.includes(d) ? 'checked' : '';
+                dHtml += `<label class="checkbox-item"><input type="checkbox" value="${d}" class="plan-day-cb" ${checked}> ${d}</label>`;
+            });
+            document.getElementById('planDaysGrid').innerHTML = dHtml;
+
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            let mHtml = '';
+            months.forEach(m => {
+                let checked = data.months.includes(m) ? 'checked' : '';
+                mHtml += `<label class="checkbox-item"><input type="checkbox" value="${m}" class="plan-month-cb" ${checked}> ${m}</label>`;
+            });
+            document.getElementById('planMonthsGrid').innerHTML = mHtml;
+
+            document.getElementById('planStartDate').value = data.start || '';
+            document.getElementById('planEndDate').value = data.end || '';
+            
+            document.getElementById('planComment').value = data.comment || '';
+
+            document.getElementById('planningModal').style.display = "flex";
+        }
+
+        function savePlanning() {
+            let sDays = [];
+            document.querySelectorAll('.plan-day-cb:checked').forEach(cb => sDays.push(cb.value));
+            let sMonths = [];
+            document.querySelectorAll('.plan-month-cb:checked').forEach(cb => sMonths.push(cb.value));
+            
+            let sDate = document.getElementById('planStartDate').value;
+            let eDate = document.getElementById('planEndDate').value;
+            let sComment = document.getElementById('planComment').value;
+            
+            planData[currentPlanId].days = sDays;
+            planData[currentPlanId].months = sMonths;
+            planData[currentPlanId].start = sDate;
+            planData[currentPlanId].end = eDate;
+            planData[currentPlanId].comment = sComment;
+            
+            const btn = document.getElementById('btn_plan_' + currentPlanId);
+            if (btn) {
+                let text = "+ Plan Schedule";
+                if (sDate && eDate) text = "Date Range";
+                else if (sDays.length > 0 || sMonths.length > 0) {
+                    if (sMonths.length > 0) text = `${sDays.length}D | ${sMonths.length}M`;
+                    else text = `${sDays.length} Day(s)`;
+                } else if (sComment.trim() !== '') {
+                    text = "Customized ✓"; 
+                }
+                
+                if (text !== "+ Plan Schedule") {
+                    btn.innerText = text;
+                    btn.classList.add('active');
+                } else {
+                    btn.innerText = "+ Plan Schedule";
+                    btn.classList.remove('active');
+                }
+            }
+            
+            document.getElementById('planningModal').style.display = "none";
+            calculatePrice();
+        }
+
+        window.currentTotalValue = 0;
+
+        function calculatePrice() {
+            let total = 0;
+            const TAUX_HORAIRE = 36.00; 
+
+            const vPrices = { vit_fen: 8, vit_baie: 15, vit_velux: 12, vit_ver: 25, vit_porte: 10, vit_com: 30 };
+            document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
+                let idFull = input.id.replace('qty_', ''); 
+                let baseId = idFull.split('_dup_')[0]; 
+                let q = parseFloat(input.value) || 0;
+                let data = planData[idFull] || {days:[], months:[], start:'', end:''};
+                let exactMultiplier = getRealInterventionCount(data.days, data.months, data.start, data.end);
+                let priceRatio = 1; 
+                let typeSelect = document.getElementById('type_' + idFull);
+                if (typeSelect && (typeSelect.value === 'interieur' || typeSelect.value === 'exterieur')) priceRatio = 0.6; 
+                if (vPrices[baseId]) total += q * (vPrices[baseId] * priceRatio) * exactMultiplier;
+            });
+
+            const pricesFixed = { 'can23': 70, 'can45': 110, 'canAng': 130, 'tapis': 40, 'moq': 5, 'pack_v': 210 };
+            for (let id in pricesFixed) {
+                const qtyInput = document.getElementById('qty_' + id);
+                if (qtyInput) {
+                    let q = parseFloat(qtyInput.value) || 0;
+                    let data = planData[id] || {days:[], months:[], start:'', end:''};
+                    let exactMultiplier = getRealInterventionCount(data.days, data.months, data.start, data.end);
+                    total += q * pricesFixed[id] * exactMultiplier;
+                }
+            }
+
+            for (let roomId in planData) {
+                if (roomId.startsWith('room_detail_')) {
+                    let roomInfo = planData[roomId];
+                    let type = roomInfo.roomType;
+                    let exactMultiplier = getRealInterventionCount(roomInfo.days, roomInfo.months, roomInfo.start, roomInfo.end);
+                    
+                    let tempsMinutes = 0;
+                    let nbEspaces = 1;
+
+                    if (type === 'Restrooms' || type === 'Shower' || type === 'Locker room') {
+                        let inputH = document.getElementById(`qty_h_${roomId}`);
+                        let inputF = document.getElementById(`qty_f_${roomId}`);
+                        let nbH = inputH ? parseInt(inputH.value) || 0 : 0;
+                        let nbF = inputF ? parseInt(inputF.value) || 0 : 0;
+                        nbEspaces = nbH + nbF;
+                        tempsMinutes = 15 + 5; 
+                    } else if (type === 'Dining area') {
+                        let inputEsp = document.getElementById(`qty_${roomId}`);
+                        let inputTab = document.getElementById(`qty_tables_${roomId}`);
+                        let inputCha = document.getElementById(`qty_chaises_${roomId}`);
+                        
+                        let esp = inputEsp ? parseInt(inputEsp.value) || 0 : 1;
+                        let tab = inputTab ? parseInt(inputTab.value) || 0 : 0;
+                        let cha = inputCha ? parseInt(inputCha.value) || 0 : 0;
+                        
+                        tempsMinutes = (15 + (tab * 2) + (cha * 1) + 5) * esp;
+                        nbEspaces = 1; 
+                    } else {
+                        let inputQty = document.getElementById(`qty_${roomId}`);
+                        nbEspaces = inputQty ? parseInt(inputQty.value) || 0 : 0;
+                        
+                        if (['Office', 'Meeting room', 'Reception', 'Kitchen', 'Breakroom', 'Gym', 'Technical room'].includes(type)) {
+                            tempsMinutes = 15 + 5; 
+                        } else if (['Main elevator', 'Secondary elevator', 'Landing', 'Hallway'].includes(type)) {
+                            tempsMinutes = 10 + 5; 
+                        } else if (['Main staircase', 'Secondary staircase'].includes(type)) {
+                            tempsMinutes = 20 + 5; 
+                        } else if (['Parking lot', 'Terrasse'].includes(type)) {
+                            tempsMinutes = 25 + 5; 
+                        } else {
+                            tempsMinutes = 15 + 5;
+                        }
+                    }
+
+                    let prixParInterventionUnitaire = (tempsMinutes / 60) * TAUX_HORAIRE;
+                    total += nbEspaces * prixParInterventionUnitaire * exactMultiplier;
+                }
+            }
+            
+            let discountText = "";
+            
+            if (window.clientDiscount > 0) {
+                let discountAmount = total * window.clientDiscount;
+                total -= discountAmount;
+                discountText += `<br><span style='font-size: 0.8rem; color: var(--vert);'>✓ Loyalty Discount (-5%) applied</span>`;
+            }
+
+            if (window.promoDiscountDevis > 0) {
+                let promoAmount = total * window.promoDiscountDevis;
+                total -= promoAmount;
+                discountText += `<br><span style='font-size: 0.8rem; color: var(--vert);'>✓ Promo Code (-${window.promoDiscountDevis * 100}%) applied</span>`;
+            }
+
+            if (window.holidayPromoActive) {
+                let holidayDiscountAmount = total * 0.10;
+                total -= holidayDiscountAmount;
+                discountText += `<br><span style='font-size: 0.8rem; color: var(--vert);'>✓ Holiday Promo Bonus (-10%) applied</span>`;
+            }
+
+            window.currentTotalValue = total;
+            
+            const MINIMUM_INTERVENTION = 60.00;
+            let mentionMinimum = "";
+            
+            if (total > 0 && total < MINIMUM_INTERVENTION) {
+                mentionMinimum = "<br><span style='font-size: 0.75rem; color: #888; font-weight: 600; font-style: italic;'>💡 Tip: A minimum operational charge of 60.00 € applies. Add extra spaces or textiles tasks to hit this baseline and optimize your quote at no additional travel expense.</span>";
+            }
+            
+            const elAmount = document.getElementById('estimatedAmount');
+            if (elAmount) {
+                if (total === 0) {
+                    elAmount.innerHTML = "0.00 €*";
+                } else {
+                    elAmount.innerHTML = total.toFixed(2) + " €*" + mentionMinimum + discountText;
+                }
+            }
+        }
+
+        function openQuote(baseService) {
+            vitrerieVisibleCount = {};
+            vitrerieIndexCount = {};
+            customVisibleCount = 0;
+            customIndexCount = 0;
+            planData = {}; 
+            activeServices = [];
+            roomCounter = 0;
+            
+            window.promoDiscountDevis = 0;
+            window.activePromoCodeDevis = "";
+            const inputPromo = document.getElementById('promoCodeInputDevis');
+            const msgPromo = document.getElementById('promoCodeMsgDevis');
+            if (inputPromo) inputPromo.value = "";
+            if (msgPromo) msgPromo.innerText = "";
+            
+            const fields = document.getElementById('dynamicFields');
+            const crContainer = document.getElementById('customRowsContainer');
+            if(crContainer) crContainer.innerHTML = '';
+            
+            fields.innerHTML = `
+                <div style="background:var(--gris);padding:15px;border-radius:10px;text-align:center;margin-bottom:20px;border:1px dashed var(--vert);">
+                    <div id="estimatedAmount" style="font-size:1.8rem;font-weight:800;color:var(--vert);">0.00 €*</div>
+                    <p style="font-size: 0.75rem; color: #666; margin-top: 10px; line-height: 1.4;">⚠️ <em>Indicative online estimation.</em> Contractual price will be fixed strictly after an physical baseline inspection on-site (no commitment).</p>
+                </div>
+                <div id="allServicesContainer" style="display:flex; flex-direction:column; gap:20px;"></div>
+                <div id="crossSellContainer" style="margin-top:25px; padding-top:20px; border-top:2px dashed #e1e8ef; text-align:center;"></div>
+            `;
+
+            const customBtn = document.getElementById('btnAddCustomRow');
+            if (customBtn) customBtn.style.display = 'flex';
+            
+            document.getElementById('interactiveForm').style.display = "block";
+            document.getElementById('postSubmitChoice').style.display = "none";
+            document.getElementById('btnSubmitForm').innerText = "SUBMIT MY REQUEST";
+            document.getElementById('btnSubmitForm').disabled = false;
+            
+            document.getElementById('quoteModal').style.display = "flex";
+            
+            addServiceToQuote(baseService);
+        }
+
+        function addServiceToQuote(service) {
+            if (activeServices.includes(service)) return; 
+            activeServices.push(service);
+
+            const container = document.getElementById('allServicesContainer');
+            let html = `<div id="block_${service}" style="background: white; border: 1px solid #e1e8ef; border-radius: 10px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); animation: fadeInDown 0.4s ease;">`;
+            
+            if(service === 'vitrerie') {
+                html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">🪟 Glass & Windows</h3>`;
+                html += `
+                <div style="display: grid; grid-template-columns: 1fr 45px 75px 75px 25px; gap: 5px; padding: 0 6px; margin-bottom: 8px; align-items: center;">
+                    <span style="font-size:0.60rem; font-weight:800; color:var(--bleu);">CATEGORY</span>
+                    <span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center;">QTY</span>
+                    <span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center;">TYPE</span>
+                    <span style="font-size:0.60rem; font-weight:800; color:var(--vert); text-align:center;">SCHEDULE</span>
+                    <span></span>
+                </div>`;
+                const rows = [{id:'vit_fen', n:'Standard Windows'}, {id:'vit_baie', n:'Sliding Glass Doors'}, {id:'vit_velux', n:'Skylights / Velux'}, {id:'vit_ver', n:'Conservatory / Veranda'}, {id:'vit_porte', n:'Glass Panel Doors'}, {id:'vit_com', n:'Shop Front Windows'}];
+                rows.forEach(r => { html += `<div id="wrapper_${r.id}" style="margin-bottom:8px;">${generateVitrerieRowHtml(r.id, r.n, 0)}</div>`; });
+            } 
+            else if(service === 'shampouinage') {
+                html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">🛋️ Upholstery, Sofas & Carpets</h3>`;
+                html += `
+                <div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;">
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">DESCRIPTION</span>
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">QTY</span>
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center;">PLANNING SCHEDULE</span>
+                </div>`;
+                const rows = [{id:'can23', n:'Sofa (2-3 seats)'}, {id:'can45', n:'Sofa (4-5 seats)'}, {id:'canAng', n:'L-Shape Corner Sofa'}, {id:'tapis', n:'Area Carpets / Rugs'}, {id:'moq', n:'Fitted Carpet Floors (m²)'}];
+                rows.forEach(r => html += generateRowHtml(r.id, r.n));
+            } 
+            else if(service === 'vehicule') {
+                html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">🚗 Car Interior Detailing</h3>`;
+                html += `
+                <div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;">
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">SERVICE SCHEME</span>
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">QTY</span>
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center;">PLANNING SCHEDULE</span>
+                </div>`;
+                html += generateRowHtml('pack_v', 'Full Deep Clean Pack');
+            } 
+            else if(service === 'bureaux') {
+                html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">🏢 Corporate Offices & Premises</h3>`;
+                html += `
+                <p style="font-size:0.85rem; color:var(--bleu); margin-bottom:15px; background:#eef3f8; padding:10px; border-radius:8px; border-left:4px solid var(--bleu);">
+                    <strong>Structure your layout:</strong> Create/choose a level floor, then inject rooms and configure tasks.
+                </p>
+                <div id="levelsContainer"></div>
+                <button type="button" class="btn-add-row" onclick="openLevelModal()" style="margin-top: 15px;">
+                    <span>+</span> Add a layout level or outdoor section
+                </button>`;
+            }
+            
+            html += `</div>`;
+            container.insertAdjacentHTML('beforeend', html);
+
+            if(service === 'bureaux') {
+                createLevelAccordion('Parking Lot');
+                createLevelAccordion('Basement Level');
+                createLevelAccordion('Ground Floor (RDC)');
+                createLevelAccordion('1st Floor Level');
+                createLevelAccordion('2nd Floor Level');
+                createLevelAccordion('3rd Floor Level');
+                createLevelAccordion('4th Floor Level');
+            }
+
+            updateCrossSellButtons();
+            calculatePrice();
+            
+            const newBlock = document.getElementById('block_' + service);
+            if(newBlock) { newBlock.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        }
+
+        function updateCrossSellButtons() {
+            const csContainer = document.getElementById('crossSellContainer');
+            const availableServices = [
+                { id: 'vitrerie', name: '🪟 Windows' },
+                { id: 'shampouinage', name: '🛋️ Textiles' },
+                { id: 'vehicule', name: '🚗 Vehicle' },
+                { id: 'bureaux', name: '🏢 Offices' }
+            ];
+
+            let missingServices = availableServices.filter(s => !activeServices.includes(s.id));
+
+            if (missingServices.length === 0) {
+                csContainer.style.display = 'none'; 
+                return;
+            }
+
+            csContainer.style.display = 'block';
+            let html = `<p style="font-size:0.85rem; font-weight:800; color:var(--vert); margin-bottom:15px;">💡 Bundle your estimation and save setup time by adding:</p>`;
+            html += `<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">`;
+            
+            missingServices.forEach(s => {
+                html += `<button type="button" class="btn-cross-sell" onclick="addServiceToQuote('${s.id}')">+ Add ${s.name}</button>`;
+            });
+            
+            html += `</div>`;
+            csContainer.innerHTML = html;
+        }
+
+        function addCustomRow() {
+            if (customVisibleCount >= 2) return; 
+
+            customVisibleCount++;
+            customIndexCount++;
+            const id = 'custom_' + customIndexCount;
+            planData[id] = { days: [], months: [], start:'', end:'', comment:'' };
+            
+            const html = `
+            <div class="quote-row-item custom-row" id="row_${id}" style="display: flex; flex-direction: column; gap: 10px; border: 1px dashed var(--vert); background: #eef3f8; padding: 12px; border-radius: 8px; margin-top: 15px;">
+                <textarea id="name_${id}" placeholder="Type down your specific requirement notes... Description of tasks requested..."></textarea>
+                <div style="display: grid; grid-template-columns: 60px 1fr 30px; gap: 10px; align-items: center;">
+                    <input type="number" id="qty_${id}" min="0" value="1" oninput="calculatePrice()" style="padding: 8px; width: 100%; box-sizing: border-box;">
+                    <button type="button" id="btn_plan_${id}" class="btn-planifier" onclick="openPlanningModal('${id}', 'Specific Requirement Request')" style="padding: 8px; height: 100%;">+ Schedule</button>
+                    <button type="button" class="btn-delete-row" onclick="removeRow('${id}')" title="Delete requirement" style="margin: 0; width: 100%; height: 100%; border-radius: 5px;">×</button>
+                </div>
+            </div>`;
+            
+            document.getElementById('customRowsContainer').insertAdjacentHTML('beforeend', html);
+            
+            if (customVisibleCount >= 2) {
+                document.getElementById('btnAddCustomRow').style.display = 'none';
+            }
+        }
+
+        function removeRow(id) {
+            const row = document.getElementById('row_' + id);
+            if (row) row.remove();
+            if (planData[id]) delete planData[id];
+            
+            customVisibleCount--;
+            
+            if (customVisibleCount < 2) {
+                document.getElementById('btnAddCustomRow').style.display = 'flex';
+            }
+            
+            calculatePrice();
+        }
+
+        function submitInteractiveForm() {
+            const form = document.getElementById('interactiveForm');
+            if (form.checkValidity()) {
+                
+                let prixFinalAEnvoyer = document.getElementById('estimatedAmount').innerText.split('\n')[0];
+                let majorationAppliquee = false;
+                
+                if (window.currentTotalValue > 0 && window.currentTotalValue < 60) {
+                    let messageAlerte = "⚠️ Your detailed setup quote estimates at " + window.currentTotalValue.toFixed(2) + " €.\n\n" +
+                                        "However, operations are bound to a baseline operational threshold of 60.00 € (covering deployment costs and chemical assets).\n\n" +
+                                        "💡 ADVICE : You can hit cancel and add more windows or textile tasks to hit 60 € and fully optimize your flat fee!\n\n" +
+                                        "Do you want to proceed and issue this request at the baseline minimum flat rate of 60.00 €?";
+                    
+                    let clientAccepte = confirm(messageAlerte);
+                    
+                    if (!clientAccepte) {
+                        return;
+                    }
+                    majorationAppliquee = true;
+                    prixFinalAEnvoyer = "60.00 € (Minimum flat rate threshold enforced)";
+                }
+
+                let statut = "";
+                const radios = document.getElementsByName('statut');
+                for (let i = 0; i < radios.length; i++) {
+                    if (radios[i].checked) {
+                        statut = radios[i].value;
+                        break;
+                    }
+                }
+
+                function getPlanningRecap(data) {
+                    if (!data || (data.days.length === 0 && data.months.length === 0 && !data.start && !data.end && (!data.comment || data.comment.trim() === ''))) {
+                        return "Planning schedule details to be reviewed together during site visit";
+                    }
+                    
+                    let parts = [];
+                    if (data.days && data.days.length > 0) {
+                        parts.push(`Days: [${data.days.join(', ')}]`);
+                    }
+                    if (data.months && data.months.length > 0) {
+                        parts.push(`Months: [${data.months.join(', ')}]`);
+                    }
+                    
+                    if (data.start && data.end) {
+                        parts.push(`Timeline window: ${data.start} to ${data.end}`);
+                    } else if (data.start || data.end) {
+                        parts.push(`Date target: ${data.start || data.end}`); 
+                    }
+                    
+                    let recapStr = "";
+                    if (parts.length > 0) {
+                        recapStr = parts.join(' | ');
+                    } else {
+                        recapStr = "Dates to be adjusted together";
+                    }
+
+                    if (data.comment && data.comment.trim() !== '') {
+                        recapStr += `\n      📌 Client specifications notice: "${data.comment.trim()}"`;
+                    }
+                    
+                    return recapStr;
+                }
+
+                let recap = "--- INTERNATIONAL CUSTOMER ESTIMATION PROFILE SUMMARY ---\n\n";
+
+                if (statut === "Entreprise") {
+                    let nomEnt = document.getElementById('nomEntreprise').value;
+                    recap += `🏢 COMPANY CORP ENTITY NAME: ${nomEnt}\n\n`;
+                }
+
+                let aDesVitres = false;
+                document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
+                    let q = parseInt(input.value) || 0;
+                    if (q > 0) {
+                        if (!aDesVitres) { recap += "🪟 WINDOW / GLASS CLEANING MATRIX:\n"; aDesVitres = true; }
+                        let idFull = input.id.replace('qty_', '');
+                        let typeSelect = document.getElementById('type_' + idFull);
+                        let typeVitrage = typeSelect ? typeSelect.value : 'complet';
+                        let label = input.parentElement.querySelector('label').innerText;
+                        
+                        recap += `  - ${label} : ${q} (Scheme: ${typeVitrage})\n`;
+                        recap += `    Schedule setup config: ${getPlanningRecap(planData[idFull])}\n`;
+                    }
+                });
+                if (aDesVitres) recap += "\n";
+
+                let aDesTextiles = false;
+                const fixesIds = { 'can23': 'Sofa 2-3 seats', 'can45': 'Sofa 4-5 seats', 'canAng': 'Corner L-Shape Upholstery', 'tapis': 'Area Rugs / Carpets', 'moq': 'Fitted Carpets (m²)', 'pack_v': 'Full Auto Detailing Pack' };
+                for (let id in fixesIds) {
+                    let input = document.getElementById('qty_' + id);
+                    let q = parseInt(input ? input.value : 0) || 0;
+                    if (q > 0) {
+                        if (!aDesTextiles) { recap += "🛋️ TEXTILE CLEANING EXTRACTION / AUTO DETAILING:\n"; aDesTextiles = true; }
+                        recap += `  - ${fixesIds[id]} : ${q}\n`;
+                        recap += `    Schedule setup config: ${getPlanningRecap(planData[id])}\n`;
+                    }
+                }
+                if (aDesTextiles) recap += "\n";
+
+                let aDesLocaux = false;
+                for (let roomId in planData) {
+                    if (roomId.startsWith('room_detail_')) {
+                        if (!aDesLocaux) { recap += "🏢 STRUCTURED CORPORATE OFFICE MATRIX:\n"; aDesLocaux = true; }
+                        let roomInfo = planData[roomId];
+                        let card = document.getElementById('row_' + roomId);
+                        let solSelect = card ? card.querySelector('select') : null;
+                        let typeSol = solSelect ? solSelect.value : 'Unspecified';
+                        
+                        recap += `  - Space Area Segment: ${roomInfo.roomType} (Floor Material Spec: ${typeSol})\n`;
+                        
+                        if (roomInfo.roomType === 'Restrooms' || roomInfo.roomType === 'Shower' || roomInfo.roomType === 'Locker room') {
+                            let h = document.getElementById(`qty_h_${roomId}`)?.value || 0;
+                            let f = document.getElementById(`qty_f_${roomId}`)?.value || 0;
+                            recap += `    Segment counts load: Men x${h} / Women x${f}\n`;
+                        } else if (roomInfo.roomType === 'Dining area') {
+                            let esp = document.getElementById(`qty_${roomId}`)?.value || 1;
+                            let tab = document.getElementById(`qty_tables_${roomId}`)?.value || 0;
+                            let cha = document.getElementById(`qty_chaises_${roomId}`)?.value || 0;
+                            recap += `    Segment counts load: Spaces x${esp} (${tab} tables, ${cha} chairs layout)\n`;
+                        } else {
+                            let qty = document.getElementById(`qty_${roomId}`)?.value || 1;
+                            recap += `    Units quantity load factor: x${qty}\n`;
+                        }
+
+                        let prestCochees = [];
+                        card.querySelectorAll('.prest-pill input[type="checkbox"]:checked').forEach(p => {
+                            let labelPrest = p.parentElement.querySelector('label').innerText;
+                            prestCochees.push(labelPrest);
+                        });
+                        recap += `    Tasks checklist requested setup: [${prestCochees.join(', ')}]\n`;
+                        recap += `    Target item allocation timeline: ${getPlanningRecap(roomInfo)}\n`;
+                    }
+                }
+                if (aDesLocaux) recap += "\n";
+
+                let aDesDemandesParticulieres = false;
+                for (let id in planData) {
+                    if (id.startsWith('custom_')) {
+                        let textTextarea = document.getElementById('name_' + id)?.value || '';
+                        let qtyCustom = document.getElementById('qty_' + id)?.value || 1;
+                        if (textTextarea.trim() !== '') {
+                            if (!aDesDemandesParticulieres) { recap += "✨ SPECIFIC BESPOKE CUSTOM CLAUSES NOTED:\n"; aDesDemandesParticulieres = true; }
+                            recap += `  - Text descriptions details: "${textTextarea}" (Allocation iteration weight factor: x${qtyCustom})\n`;
+                            recap += `    Associated routing timeline: ${getPlanningRecap(planData[id])}\n`;
+                        }
+                    }
+                }
+
+                recap += `\n--- FINANCIAL ESTIMATION TRACKING LOGS ---\n`;
+                recap += `Actual computation baseline value: ${window.currentTotalValue.toFixed(2)} €\n`;
+                
+                if (window.clientDiscount > 0) {
+                    recap += `🎁 Registered Account Loyalty Remise (5%) applied via token: ${window.activeClientCode}\n`;
+                }
+                if (window.promoDiscountDevis > 0) {
+                    recap += `🎁 Validation Check Promocode (${window.promoDiscountDevis * 100}%) applied via voucher: ${window.activePromoCodeDevis}\n`;
+                }
+                if (window.holidayPromoActive) {
+                    recap += `🎁 Automated Holiday Event discount (10%) applied (Agreement framework bound to 15 days delay execution)\n`;
+                }
+
+                recap += `Estimated projection fee output proposal: ${prixFinalAEnvoyer}\n`;
+                if (majorationAppliquee) {
+                    recap += `⚠️ Notice: User intentionally agreed and bypassed the baseline operational flat rate threshold requirement (60.00 €) due to small checkout load volume.\n`;
+                }
+
+                const btn = document.getElementById('btnSubmitForm');
+                btn.innerText = "Transmitting details..."; btn.disabled = true;
+                
+                emailjs.send('service_2vgqpz8', 'template_oncrl1l', {
+                    statut: statut,
+                    nom: form.nom.value, 
+                    prenom: form.prenom.value, 
+                    email: form.email.value, 
+                    email_client: form.email.value,
+                    adresse: form.adresse.value,
+                    ville: form.ville.value, 
+                    interlocuteur: form.interlocuteur.value,
+                    prix: prixFinalAEnvoyer,
+                    recapitulatif: recap
+                }).then(() => {
+                    form.style.display = "none";
+                    document.getElementById('postSubmitChoice').style.display = "block";
+                });
+            } else { form.reportValidity(); }
+        }
+
+        function closeQuote() { document.getElementById('quoteModal').style.display = "none"; }
+        
+        window.onclick = function(e) { 
+            if(e.target.id === 'quoteModal') closeQuote(); 
+            if(e.target.id === 'clientModal') closeClientModal(); 
+            if(e.target.id === 'mentionsModal') closeMentions(); 
+            if(e.target.id === 'levelModal') closeLevelModal();
+            if(e.target.id === 'planningModal') document.getElementById('planningModal').style.display = "none";
+        }
+        
+        function initDynamicSliders() {
+            document.querySelectorAll('.faq-card, .review-card').forEach(container => {
+                const slides = container.querySelectorAll('.dynamic-slide');
+                if (slides.length <= 1) return;
+                let i = 0; setInterval(() => { slides[i].classList.remove('active'); i = (i + 1) % slides.length; slides[i].classList.add('active'); }, 10000);
+            });
+        }
+        window.addEventListener('DOMContentLoaded', initDynamicSliders);
+
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-animate').forEach(section => {
+            animationObserver.observe(section);
+        });
+    </script>
+</body>
+</html>

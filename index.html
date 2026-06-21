@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>O.S.P+ | Entreprise de Nettoyage Toulouse & Occitanie | 20 ans d'Expertise</title>
+    <meta name="description" content="O.S.P+ : Expert en nettoyage professionnel à Toulouse. Vitrerie, shampouinage canapés, tapis et bureaux. Service de propreté haute qualité en Occitanie. Devis Gratuit.">
+    <meta name="keywords" content="nettoyage toulouse, laveur de vitres toulouse, shampouinage canapé toulouse, nettoyage bureaux occitanie, propreté toulouse">
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="codes.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init("jlAW00rIU5xSHECVd"); 
+       })();
+    </script>
+</head>
+<body>
+
+    <div class="header-sticky-wrapper">
+        
+        <div id="promo-banner" class="promo-banner" style="display: none;">
+            🎉 <strong>OFFRE SPÉCIALE JOUR FÉRIÉ : -10% sur votre facture finale !</strong> <em>(Valable si le contrat final est signé sous 15 jours)</em>
+        </div>
+
+        <header>
+            <div class="logo-text">
+                <div class="main-title"><span class="text-bleu">O.S.P</span><span class="text-green">+</span></div>
+                <div class="sub-title"><span class="text-bleu">Occitanie Services Propreté</span> <span class="text-green">Plus</span></div>
+            </div>
+
+            <div class="hamburger" id="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav>
+                <ul id="nav-links">
+                    <li><a href="#" class="nav-link">Accueil</a></li>
+                    <li><a href="#services" class="nav-link">Services</a></li>
+                    <li><a href="#galerie" class="nav-link">Réalisations</a></li>
+                    <li><a href="#avis" class="nav-link">Avis</a></li>
+                    <li><a href="#qui-suis-je" class="nav-link">Expertise</a></li>
+                    <li><a href="#faq" class="nav-link">FAQ</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li><a href="tel:0745027624" class="btn-phone-nav">📞 07 45 02 76 24</a></li>
+                    <li><a href="#services" class="btn-devis-nav">Devis Gratuit</a></li>
+                    <li><button class="btn-client-nav" onclick="openClientModal()">Client Fidèle</button></li>
+                    <li><button class="btn-carte-nav" onclick="openCarteModal()">📇 Carte de Visite</button></li>
+                    
+                    <li class="lang-menu">
+                        <div class="selected-lang">🇫🇷 FR ▼</div>
+                        <ul class="lang-dropdown">
+                            <li><a href="index.html">🇫🇷 Français</a></li>
+                            <li><a href="index-en.html">🇬🇧 English</a></li>
+                            <li><a href="index-vi.html">🇻🇳 Tiếng Việt</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>La Propreté, <span class="text-green">C'est Mon Métier.</span></h1>
+            <div class="hero-video-container">
+                <div class="video-wrapper">
+                    <video id="introVid" muted autoplay loop playsinline preload="metadata">
+                        <source src="video-introduction.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="custom-controls">
+                    <button class="control-btn" onclick="togglePlay('introVid')">⏯️ Play/Pause</button>
+                    <button class="control-btn" onclick="toggleMute('introVid')">🔊 Son</button>
+                    <button class="control-btn" onclick="restartVideo('introVid')">🔄 Reset</button>
+                    <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Full</button>
+                </div>
+            </div>
+            <div class="hero-badges">
+                <span class="badge">20 Ans d'Expérience</span>
+                <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Assurance RC Pro</span>
+                <span class="badge">Matériel Professionnel</span>
+            </div>
+            <a href="#services" class="btn-main pulse-animation">DEMANDER MON DEVIS GRATUIT</a>
+        </div>
+    </section>
+
+    <div class="trust-bar"><p>📍 Secteur <strong>Toulouse (30 km inclus)</strong> et toute l'<strong>Occitanie*</strong></p></div>
+
+    <section id="services" class="services scroll-animate">
+        <h2 class="section-title"><span class="text-bleu">Mes Services Spécialisés</span> & <span class="text-green">Estimation en ligne</span></h2>
+        <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: -15px auto 35px auto; line-height: 1.5; padding: 0 15px;">
+            ⚠️ <em>Les tarifs calculés sur ce site sont donnés à titre purement indicatif.</em> Le devis définitif et contractuel sera établi avec vous uniquement après une visite technique sur place de vos locaux (sans engagement).
+        </p>
+
+        <div class="services-grid">
+            <div class="card clickable" onclick="openQuote('vitrerie')">
+                <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg></div>
+                <h3 class="text-bleu">Vitrerie</h3>
+                <p>Nettoyage complet toutes surfaces.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('shampouinage')">
+                <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path><path d="M9 22V12h6v10"></path></svg></div>
+                <h3 class="text-bleu">Shampouinage</h3>
+                <p>Remise à neuf textiles et moquettes.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('vehicule')">
+                <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
+                <h3 class="text-bleu">Pack Véhicule</h3>
+                <p>Nettoyage complet textiles auto.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('bureaux')">
+                <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
+                <h3 class="text-bleu">Bureaux & Bâtiments</h3>
+                <p>Configuration sur mesure de vos locaux.</p>
+                <div class="card-border"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="galerie" class="gallery scroll-animate">
+        <h2 class="section-title">Nos <span class="text-green">Réalisations</span></h2>
+        <div class="gallery-fine-container">
+            <div class="realisations-mix-grid">
+                <div class="comparison-container">
+                    <div class="comparison-slider">
+                        <div class="img before"><img src="avant1.jpg" alt="Avant"></div>
+                        <div class="img after"><img src="apres1.jpg" alt="Après"></div>
+                        <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
+                        <div class="slider-button"></div>
+                    </div>
+                    <p class="gallery-label">Vitrerie</p>
+                </div>
+                <div class="video-container-fixed">
+                    <div class="video-wrapper">
+                        <video id="realVid" muted autoplay loop playsinline preload="metadata"><source src="video-realisation.mp4" type="video/mp4"></video>
+                    </div>
+                </div>
+                <div class="comparison-container">
+                    <div class="comparison-slider">
+                        <div class="img before"><img src="avant2.jpg" alt="Avant"></div>
+                        <div class="img after"><img src="apres2.jpg" alt="Après"></div>
+                        <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
+                        <div class="slider-button"></div>
+                    </div>
+                    <p class="gallery-label">Textiles</p>
+                </div>
+            </div>
+            <div class="mini-photo-row">
+                <div class="card mini-card"><img src="photo1.jpg" alt="1"><div class="card-border"></div></div>
+                <div class="card mini-card"><img src="photo2.jpg" alt="2"><div class="card-border"></div></div>
+                <div class="card mini-card"><img src="photo3.jpg" alt="3"><div class="card-border"></div></div>
+                <div class="card mini-card"><img src="photo4.jpg" alt="4"><div class="card-border"></div></div>
+                <div class="card mini-card"><img src="photo5.jpg" alt="5"><div class="card-border"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="avis" class="services scroll-animate" style="background: var(--gris);">
+        <h2 class="section-title">Avis <span class="text-green">Clients</span></h2>
+        <div class="services-grid">
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Sébastien R.</h3><p>"Travail impeccable sur mon canapé. Ponctuel."</p></div><div class="card-border"></div></div>
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Marie L.</h3><p>"Mes vitres n'ont jamais été aussi propres. Le résultat est parfait."</p></div><div class="card-border"></div></div>
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Pierre D.</h3><p>"Intervention rapide avant l'ouverture de mes bureaux. Très satisfait."</p></div><div class="card-border"></div></div>
+        </div>
+    </section>
+
+    <section id="qui-suis-je" class="who-am-i scroll-animate">
+        <div class="who-container">
+            <div class="who-flex">
+                <div class="who-image-box">
+                    <div class="photo-container-overlap">
+                        <img src="ma-photo.jpg" alt="Alexandre" class="profile-photo">
+                        <div class="experience-badge-overlap">
+                            <span>20</span>
+                            <p>ans d'expérience</p>
+                        </div>
+                    </div>
+                    
+                    <div class="video-container-fixed" style="margin-top: 50px;">
+                        <div class="video-wrapper">
+                            <video id="presVid" muted autoplay loop playsinline preload="metadata">
+                                <source src="presentation-osp.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="custom-controls">
+                            <button class="control-btn" onclick="togglePlay('presVid')">⏯️ Play</button>
+                            <button class="control-btn" onclick="toggleMute('presVid')">🔊 Son</button>
+                            <button class="control-btn" onclick="restartVideo('presVid')">🔄 Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="who-text-box">
+                    <h2 class="section-title">De l'exigence des grands groupes <br><span class="text-green">à votre service personnalisé</span></h2>
+                    
+                    <p class="intro-text">"Après 20 ans à relever les défis les plus complexes du secteur, j'ai décidé de revenir à l'essentiel : <strong>vous.</strong>"</p>
+                    
+                    <p>Mon parcours au sein des leaders de la propreté m'a inculqué une discipline de fer. Aujourd'hui, j'ai fondé <strong>O.S.P+</strong> pour mettre ce savoir-faire de haut niveau au service d'une relation humaine directe, transparente et durable.</p>
+                    
+                    <div class="tech-box">
+                        <h4 class="tech-title">La philosophie O.S.P+ : Proximité, Écoute, Propreté & Haute Sécurité</h4>
+                        <ul class="philo-list">
+                            <li>💬 <strong>Une écoute attentive & sur-mesure :</strong> Sans intermédiaire ni plateforme impersonnelle.</li>
+                            <li>🛡️🔒 <strong>Confidentialité & Sécurité renforcées :</strong> Notre intervention est volontairement limitée à un ou deux collaborateurs. Moins de personnes en circulation, c'est l'assurance d'une discrétion absolue.</li>
+                            <li>👤 <strong>Un seul interlocuteur, un seul engagement :</strong> Du premier contact commercial jusqu'à l'exécution de la prestation, vous traitez avec le même professionnel.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="services scroll-animate" style="background: var(--blanc);">
+        <h2 class="section-title">Questions <span class="text-green">Fréquentes</span></h2>
+        <div class="services-grid">
+            <div class="card faq-card">
+                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="dynamic-slide active"><h3>Quels sont les délais ?</h3><p>Généralement sous 48h à 72h.</p></div>
+                <div class="dynamic-slide"><h3>Intervenez-vous le soir ?</h3><p>Oui, pour les bureaux, dès 5h du matin.</p></div>
+                <div class="card-border"></div>
+            </div>
+            <div class="card faq-card">
+                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="dynamic-slide active"><h3>Produits utilisés ?</h3><p>Produits professionnels, efficaces et respectueux.</p></div>
+                <div class="dynamic-slide"><h3>Séchage textiles ?</h3><p>Grâce à l'aspiration pro, séchage en 4 à 6 heures.</p></div>
+                <div class="card-border"></div>
+            </div>
+            <div class="card faq-card">
+                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="dynamic-slide active"><h3>Zone d'intervention ?</h3><p>Déplacement offert sur 30km autour de Toulouse.</p></div>
+                <div class="dynamic-slide"><h3>Mode de paiement ?</h3><p>CB, espèces ou virements acceptés.</p></div>
+                <div class="card-border"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact scroll-animate">
+        <h2 class="section-title">Me <span class="text-green">Contacter</span></h2>
+        <div class="who-container">
+            <div class="contact-grid-triple">
+                <div class="contact-cat">
+                    <h3>🕒 Horaires</h3>
+                    <ul class="contact-list">
+                        <li><strong>Lun - Ven :</strong> 05:00 - 10:30</li>
+                        <li><strong>Sam - Dim :</strong> Sur demande <br><span style="font-size: 0.75rem; color: var(--vert); font-weight: 600;">(Vitres, Shampouinage, etc.)</span></li>
+                    </ul>
+                </div>
+                <div class="contact-cat">
+                    <h3>📞 Contact</h3>
+                    <ul class="contact-list">
+                        <li><strong>Tél :</strong> 07 45 02 76 24</li>
+                        <li><strong>Mail :</strong> contact@ospplus.com</li>
+                    </ul>
+                    <div class="social-original">
+                        <a href="https://wa.me/33745027624" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
+                        <a href="#" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook"></a>
+                        <a href="#" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram"></a>
+                    </div>
+                </div>
+                <div class="contact-cat">
+                    <h3>📍 Intervention</h3>
+                    <ul class="contact-list"><li>Toulouse & 30km inclus</li></ul>
+                    <div class="villes-tags">
+                        <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span>
+                    </div>
+                </div>
+            </div>
+            <div class="map-container-full"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184758.4619427306!2d1.2635431668749873!3d43.600678619932024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb6fec7552ff%3A0x408f3468f40a120!2sToulouse!5e0!3m2!1sfr!2sfr!4v1716386561139!5m2!1sfr!2sfr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
+            <div class="mentions-center-wrapper">
+                <button onclick="openMentions()" class="btn-mentions-link">Voir les mentions légales</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Occitanie Service Propreté</span> <span class="text-green">Plus</span>)</strong></p>
+        <p><span class="text-bleu">Entrepreneur individuel</span> | <span class="text-green">SIRET : 105 799 787 00012</span> | <span class="text-bleu">*TVA non applicable.</span></p>
+    </footer>
+
+    <div id="mentionsModal" class="modal">
+        <div class="modal-content large" style="max-width: 800px;">
+            <span class="close-modal" onclick="closeMentions()">×</span>
+            <div class="modal-header"><h2>Mentions Légales & RGPD</h2></div>
+            <div class="modal-body-simple" style="max-height: 70vh; overflow-y: auto;">
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-bottom: 10px;">1. Éditeur du Site</h3>
+                <p><strong>O.S.P+ (Occitanie Service Propreté Plus)</strong><br>
+                Responsable : Alexandre Jonot<br>
+                Statut : Entrepreneur individuel (Artisan)<br>
+                SIRET : 105 799 787 00012<br>
+                Code APE : 8121Z (Nettoyage courant des bâtiments)<br>
+                Adresse de domiciliation : 6 PLACE du Président Thomas Woodrow Wilson, 31000 Toulouse, FRANCE<br>
+                Téléphone : 07 45 02 76 24<br>
+                Email : contact@ospplus.com<br>
+                Assurance Responsabilité Civile Professionnelle : [NOM DE VOTRE ASSUREUR]</p>
+
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Hébergement du Site</h3>
+                <p>Le site est hébergé par : <strong>[NOM DE VOTRE HÉBERGEUR (ex: OVH, Hostinger, O2Switch)]</strong><br>
+                Adresse de l'hébergeur : [ADRESSE DE L'HÉBERGEUR]</p>
+
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">3. Politique de Confidentialité (RGPD)</h3>
+                <p>Les informations recueillies via le formulaire de devis (nom, prénom, adresse, email, telephone) sont enregistrées et traitées exclusivement par Alexandre Jonot (O.S.P+). Elles ont pour unique finalité l'établissement de devis commerciaux et le suivi de la relation client. Aucune donnée n'est vendue, louée ou cédée à des tiers.</p>
+                <p><strong>Durée de conservation :</strong> Ces données sont conservées pendant une durée maximale de 3 ans après notre dernier contact commercial.</p>
+                
+                <h3 style="color: var(--vert); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. Sécurité des données et limites de responsabilité</h3>
+                <p>O.S.P+ s'engage à prendre toutes les précautions raisonnables (mots de passe sécurisés, outils professionnels) pour préserver la sécurité de vos données personnelles. Toutefois, Internet n'étant pas un environnement sécurisé à 100 %, O.S.P+ ne peut garantir une sécurité absolue contre les cyberattaques. En conséquence, O.S.P+ décline toute responsabilité en cas de perte, de fuite ou de vol de données lié à une faille de sécurité indépendante de sa volonté (force majeure ou acte de piratage imprévisible).</p>
+                
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">5. Vos Droits</h3>
+                <p>Conformément à la loi "Informatique et Libertés" et au RGPD européen, vous disposez d'un droit d'accès, de rectification, de portabilité et d'effacement de vos données personnelles. Pour exercer ce droit, vous pouvez nous contacter par email à : contact@ospplus.com.</p>
+                <p>Vous avez également le droit d'introduire une réclamation auprès de la CNIL (www.cnil.fr).</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="clientModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: center;">
+            <span class="close-modal" onclick="closeClientModal()">×</span>
+            <h3 style="color: var(--bleu); margin-bottom: 15px;">Espace Client</h3>
+            <p style="font-size: 0.85rem; margin-bottom: 20px;">Entrez votre code confidentiel pour bénéficier de <strong>10% de remise Fidélité</strong> sur votre nouveau devis.</p>
+            <input type="text" id="clientCodeInput" placeholder="Votre code personnel..." style="padding: 12px; width: 80%; border-radius: 8px; border: 2px solid #e1e8ef; margin-bottom: 15px; font-size: 1rem; text-align: center; text-transform: uppercase;">
+            <br>
+            <button class="btn-submit-form" onclick="applyClientCode()" style="width: auto; padding: 10px 25px; margin-top: 0;">Valider mon code</button>
+            <p id="clientCodeMsg" style="margin-top: 15px; font-weight: bold; font-size: 0.9rem;"></p>
+        </div>
+    </div>
+
+    <div id="quoteModal" class="modal">
+        <div class="modal-content large">
+            <span class="close-modal" onclick="closeQuote()">×</span>
+            <div class="modal-header">
+                <h2 id="modalTitle">Votre Devis <span class="text-green">Sur-Mesure</span></h2>
+            </div>
+            
+            <div id="topPriceBanner" class="top-price-banner">
+                <div class="price-left" id="estimatedAmount">
+                    <div class="price-left-main">0.00 €*</div>
+                </div>
+                <div class="price-right">
+                    ⚠️ <em>Estimation à titre indicatif.</em> Le tarif final sera validé après une visite technique sur place (sans engagement).
+                </div>
+            </div>
+
+            <form id="interactiveForm">
+                <div class="modal-body-flex">
+                    
+                    <div class="modal-col-left">
+                        <div id="dynamicFields"></div>
+                    </div>
+                    
+                    <div class="modal-col-right">
+                        <div class="form-section-compact">
+                            
+                            <div style="background: #f4f8fb; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #e1e8ef;">
+                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* Le prix des demandes particulières sera calculé sur mesure (non inclus dans l'estimation globale).</p>
+                                <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;"><span>+</span> Ajouter une demande particulière</button>
+                                <div id="customRowsContainer"></div>
+                            </div>
+
+                            <h3 class="form-subtitle">Vos Coordonnées</h3>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                
+                                <div class="input-group">
+                                    <label>Vous êtes :</label>
+                                    <div style="display: flex; gap: 20px; margin-top: 5px;">
+                                        <label style="font-weight: normal; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                            <input type="radio" name="statut" value="Particulier" required style="width: auto; transform: scale(1.1); margin: 0;" onchange="toggleCompanyField()"> Particulier
+                                        </label>
+                                        <label style="font-weight: normal; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                            <input type="radio" name="statut" value="Entreprise" required style="width: auto; transform: scale(1.1); margin: 0;" onchange="toggleCompanyField()"> Entreprise, Association...
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="input-group" id="companyNameGroup" style="display: none; margin-top: 5px;">
+                                    <label>Nom de la structure (Entreprise, Association...)</label>
+                                    <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="Ex: OSP Plus...">
+                                </div>
+
+                                <div class="input-group"><label>Nom</label><input type="text" name="nom" required></div>
+                                <div class="input-group"><label>Prénom</label><input type="text" name="prenom" required></div>
+                                <div class="input-group"><label>Email</label><input type="email" name="email" required></div>
+                                <div class="input-group"><label>Adresse complète</label><input type="text" name="adresse" placeholder="N° et rue..." required></div>
+                                <div class="input-group"><label>Ville</label><input type="text" name="ville" placeholder="Code postal et Ville..." required></div>
+                                <div class="input-group"><label>Interlocuteur sur place <span style="font-weight:normal; font-size:0.7rem; color:#666;">(Si différent)</span></label><input type="text" name="interlocuteur" placeholder="Nom et prénom..."></div>
+                                
+                                <div class="input-group" style="margin-top: 10px; margin-bottom: 5px; background: #eef3f8; padding: 15px; border-radius: 8px; border: 1px dashed var(--vert);">
+                                    <label style="color: var(--bleu);">Code Promo (Optionnel)</label>
+                                    <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                        <input type="text" id="promoCodeInputDevis" placeholder="Ex: REDUC10" style="text-transform: uppercase; flex: 1;">
+                                        <button type="button" onclick="applyPromoCodeDevis()" class="btn-validate-custom" style="padding: 10px 15px; font-size: 0.85rem;">Appliquer</button>
+                                    </div>
+                                    <p id="promoCodeMsgDevis" style="font-size: 0.8rem; margin-top: 5px; font-weight: bold; line-height: 1.4;"></p>
+                                </div>
+
+                                <div style="margin-top: 5px; margin-bottom: 5px;">
+                                    <p style="font-size: 0.65rem; color: #777; line-height: 1.4; text-align: justify;">
+                                        🔒 <strong>Protection de vos données :</strong> En soumettant ce formulaire, j'accepte que les informations saisies soient exploitées by O.S.P+ dans le cadre strict de ma demande de devis et de la relation commerciale qui peut en découler. Vos données ne seront jamais vendues à des tiers. Pour exercer vos droits d'accès, de modification ou de suppression, veuillez consulter nos <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Mentions Légales</a>.
+                                    </p>
+                                </div>
+
+                                <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; border-radius: 5px; margin-top: 15px; margin-bottom: 5px;">
+                                    <p style="font-size: 0.75rem; color: #555; line-height: 1.4; text-align: justify; margin: 0;">
+                                        ⚠️ <strong>À noter :</strong> <em>Cette estimation est donnée à titre purement indicatif.</em> Le tarif définitif et contractuel sera validé avec vous uniquement après une visite technique sur place de vos locaux (sans engagement).
+                                    </p>
+                                </div>
+
+                                <button type="button" class="btn-submit-form" id="btnSubmitForm" onclick="submitInteractiveForm()">ENVOYER MON DEVIS</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </form>
+
+            <div id="postSubmitChoice" style="display: none; text-align: center; padding: 40px;">
+                <h3 style="color: var(--bleu); font-size: 2rem;">✓ Devis Envoyé !</h3>
+                <p style="margin-top: 15px; color: #555; font-size: 1.1rem;">Merci pour votre demande. Je vous recontacterai très prochainement.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="planningModal" class="day-modal">
+        <div class="planning-modal-content">
+            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Planification</h4>
+            
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">1. Jours de la semaine :</p>
+            <div class="grid-checkboxes" id="planDaysGrid"></div>
+            
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 20px;">2. Répétition <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optionnel)</span> :</p>
+            
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">A) Mois complets :</p>
+            <div class="grid-checkboxes" id="planMonthsGrid" style="margin-bottom:15px;"></div>
+            
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">B) Ou Période spécifique :</p>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items:center;">
+                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Du :</label><input type="date" id="planStartDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
+                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Au :</label><input type="date" id="planEndDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">3. Précisions / Commentaires <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optionnel)</span> :</p>
+            <textarea id="planComment" placeholder="Ex: Fermé le mardi, focus sur l'open space, clés à l'accueil..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
+            
+            <button type="button" class="btn-validate-days" onclick="savePlanning()">VALIDER LA SÉLECTION</button>
+        </div>
+    </div>
+
+    <div id="levelModal" class="sub-modal">
+        <div class="sub-modal-content">
+            <div class="sub-modal-header">
+                <h4>Ajouter un niveau</h4>
+            </div>
+            <div class="sub-modal-body">
+                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:10px;">Sélection rapide :</p>
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 25px;">
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Étage 5')">Étage 5</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Étage 6')">Étage 6</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Sous-sol 1')">Sous-sol 1</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Sous-sol 2')">Sous-sol 2</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Toit terrasse')">Toit terrasse</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Extérieurs')">Extérieurs</button>
+                </div>
+                
+                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:5px;">Ou saisissez un nom :</p>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="text" id="customLevelInput" placeholder="Ex: Mezzanine, Bâtiment B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
+                    <button onclick="addCustomLevel()" class="btn-validate-custom">Ajouter</button>
+                </div>
+            </div>
+            <div style="padding: 15px; background: #f4f8fb; text-align:center; border-top:1px solid #eee;">
+                <button type="button" class="btn-validate" onclick="closeLevelModal()" style="padding:8px 20px; background:#ccc; color:#333; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="carteModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: center; max-width: 450px;">
+            <span class="close-modal" onclick="closeCarteModal()">×</span>
+            <h3 style="color: var(--bleu); margin-bottom: 5px;">Ma Carte de Visite</h3>
+            <p style="font-size: 0.85rem; color: #555; margin-bottom: 20px;">Cliquez sur la carte pour la retourner</p>
+            
+            <div class="flip-card" onclick="toggleFlipCard()">
+                <div class="flip-card-inner" id="businessCardInner">
+                    <div class="flip-card-front">
+                        <img src="Carte visite A.jpg?v=12" alt="Carte de visite OSP+ Recto">
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="Carte visite B.jpg?v=12" alt="Carte de visite OSP+ Verso">
+                    </div>
+                </div>
+            </div>
+
+            <div class="carte-actions" style="margin-top: 25px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-carte-action btn-tourner" onclick="toggleFlipCard()">🔄 Tourner</button>
+                <button class="btn-carte-action btn-telecharger" onclick="downloadCarte()">⬇️ Télécharger</button>
+                <button class="btn-carte-action btn-imprimer" onclick="printCarte()">🖨️ Imprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
+
+    <script src="script.js"></script>
+</body>
+</html>
