@@ -1,3 +1,18 @@
+// ==========================================
+// 🚀 GESTION DE LA VERSION DU SCRIPT
+// ==========================================
+const APP_VERSION = "v1.2"; // 👈 Numéro de version actuel
+
+function afficherVersion() {
+    let versionBadge = document.createElement('div');
+    versionBadge.innerHTML = APP_VERSION;
+    versionBadge.style.cssText = "position: fixed; top: 5px; left: 5px; background: rgba(0, 0, 0, 0.6); color: white; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; z-index: 10000; pointer-events: none; font-weight: bold; font-family: sans-serif;";
+    document.body.appendChild(versionBadge);
+    console.log("🚀 OSP+ Script Chargé - " + APP_VERSION);
+}
+window.addEventListener('DOMContentLoaded', afficherVersion);
+// ==========================================
+
 let planData = {}; 
 let vitrerieVisibleCount = {}; 
 let vitrerieIndexCount = {};   
