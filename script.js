@@ -1043,9 +1043,33 @@ function submitInteractiveForm() {
             })
             .catch((error) => {
                 console.error("Erreur détaillée EmailJS :", error);
-                alert("Oups ! Une erreur s'est produite lors de la connexion au serveur d'envoi. Veuillez réessayer ou me contacter directement au 07 45 02 76 24.");
-                btn.innerText = "ENVOYER MON DEVIS";
-                btn.disabled = false;
+                
+                // 1. On masque le formulaire
+                form.style.display = "none";
+                
+                // 2. On crée dynamiquement le message de "Victime de notre succès"
+                let surchargeMessage = document.createElement('div');
+                surchargeMessage.innerHTML = `
+                    <div style="background: #fdf8e4; border-left: 5px solid var(--vert); padding: 25px; border-radius: 8px; text-align: center; margin-top: 20px; animation: fadeInDown 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                        <h3 style="color: var(--bleu); margin-bottom: 15px; font-size: 1.4rem;">🔥 Victime de notre succès !</h3>
+                        <p style="color: #444; font-size: 1rem; margin-bottom: 15px; line-height: 1.5;">
+                            En raison d'un <strong>très grand nombre de demandes de devis</strong> aujourd'hui, notre système automatique est temporairement saturé.
+                        </p>
+                        <p style="color: #444; font-size: 1rem; margin-bottom: 20px;">
+                            Pas d'inquiétude, votre estimation (<strong>${prixFinalAEnvoyer}</strong>) a bien été calculée ! Pour ne pas perdre votre demande et la traiter en priorité, contactez-moi directement :
+                        </p>
+                        <a href="mailto:alexandre.jonot@ospplus.com?subject=Validation devis prioritaire OSP+ - ${prixFinalAEnvoyer}" 
+                           style="display: inline-block; background: var(--vert); color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; transition: transform 0.2s;">
+                           ✉️ alexandre.jonot@ospplus.com
+                        </a>
+                        <p style="color: var(--bleu); font-weight: 800; font-size: 1.1rem; margin-top: 5px;">
+                            📞 Ou par téléphone au 07 45 02 76 24
+                        </p>
+                    </div>
+                `;
+                
+                // 3. On affiche ce message juste à la place du formulaire
+                form.parentNode.insertBefore(surchargeMessage, form);
             });
             
         } else { 
