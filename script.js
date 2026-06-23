@@ -862,182 +862,201 @@ function removeRow(id) {
 }
 
 function submitInteractiveForm() {
-    const form = document.getElementById('interactiveForm');
-    if (form.checkValidity()) {
-        
-        let elAmountText = document.getElementById('estimatedAmount').innerText.split('\n');
-        let prixFinalAEnvoyer = elAmountText[elAmountText.length - 1]; 
-        let majorationAppliquee = false;
-        
-        if (window.currentTotalValue > 0 && window.currentTotalValue < 60) {
-            let messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.\n\n" +
-                                "Cependant, nos interventions sont soumises à un minimum de facturation de 60,00 € (pour couvrir le déplacement et le matériel).\n\n" +
-                                "💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 60 € et rentabiliser votre devis !\n\n" +
-                                "Voulez-vous quand même envoyer la demande au prix forfaitaire de 60,00 € ?";
+    try {
+        const form = document.getElementById('interactiveForm');
+        if (form.checkValidity()) {
             
-            let clientAccepte = confirm(messageAlerte);
+            let elAmountText = document.getElementById('estimatedAmount').innerText.split('\n');
+            let prixFinalAEnvoyer = elAmountText[elAmountText.length - 1]; 
+            let majorationAppliquee = false;
             
-            if (!clientAccepte) return;
-            majorationAppliquee = true;
-            prixFinalAEnvoyer = "60.00 € (Forfait minimum appliqué)";
-        }
-
-        let statut = "";
-        const radios = document.getElementsByName('statut');
-        for (let i = 0; i < radios.length; i++) {
-            if (radios[i].checked) {
-                statut = radios[i].value;
-                break;
-            }
-        }
-
-        function getPlanningRecap(data) {
-            if (!data || (data.days.length === 0 && data.months.length === 0 && !data.start && !data.end && (!data.comment || data.comment.trim() === ''))) {
-                return "Détails de planification à voir ensemble";
-            }
-            
-            const fullDays = { 'Lun':'Lundi', 'Mar':'Mardi', 'Mer':'Mercredi', 'Jeu':'Jeudi', 'Ven':'Vendredi', 'Sam':'Samedi', 'Dim':'Dimanche' };
-            const fullMonths = { 'Jan':'Janvier', 'Fév':'Février', 'Mar':'Mars', 'Avr':'Avril', 'Mai':'Mai', 'Juin':'Juin', 'Juil':'Juillet', 'Août':'Août', 'Sep':'Septembre', 'Oct':'Octobre', 'Nov':'Novembre', 'Déc':'Décembre' };
-            
-            let parts = [];
-            if (data.days && data.days.length > 0) parts.push(`Jours [${data.days.map(d => fullDays[d]).join(', ')}]`);
-            if (data.months && data.months.length > 0) parts.push(`Mois [${data.months.map(m => fullMonths[m]).join(', ')}]`);
-            if (data.start && data.end) parts.push(`Période du ${data.start} au ${data.end}`);
-            else if (data.start || data.end) parts.push(`Date : ${data.start || data.end}`); 
-            
-            let recapStr = parts.length > 0 ? parts.join(' | ') : "Dates à voir ensemble";
-            if (data.comment && data.comment.trim() !== '') recapStr += `\n      📌 Remarque client : "${data.comment.trim()}"`;
-            
-            return recapStr;
-        }
-
-        let recap = "--- RÉCAPITULATIF DU DEVIS ---\n\n";
-
-        if (statut === "Entreprise") recap += `🏢 STRUCTURE : ${document.getElementById('nomEntreprise').value}\n\n`;
-
-        let aDesVitres = false;
-        document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
-            let q = parseInt(input.value) || 0;
-            if (q > 0) {
-                if (!aDesVitres) { recap += "🪟 VITRERIE :\n"; aDesVitres = true; }
-                let idFull = input.id.replace('qty_', '');
-                let typeSelect = document.getElementById('type_' + idFull);
-                let typeVitrage = typeSelect ? typeSelect.value : 'complet';
-                let label = input.parentElement.querySelector('label').innerText;
+            if (window.currentTotalValue > 0 && window.currentTotalValue < 60) {
+                let messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.\n\n" +
+                                    "Cependant, nos interventions sont soumises à un minimum de facturation de 60,00 € (pour couvrir le déplacement et le matériel).\n\n" +
+                                    "💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 60 € et rentabiliser votre devis !\n\n" +
+                                    "Voulez-vous quand même envoyer la demande au prix forfaitaire de 60,00 € ?";
                 
-                recap += `  - ${label} : ${q} (Nettoyage : ${typeVitrage})\n`;
-                recap += `    Planning : ${getPlanningRecap(planData[idFull])}\n`;
-            }
-        });
-        if (aDesVitres) recap += "\n";
-
-        let aDesTextiles = false;
-        const fixesIds = { 'can23': 'Canapé 2-3 places', 'can45': 'Canapé 4-5 places', 'canAng': 'Canapé d\'angle', 'tapis': 'Tapis', 'moq': 'Moquette (m²)', 'pack_v': 'Pack Véhicule Complet' };
-        for (let id in fixesIds) {
-            let input = document.getElementById('qty_' + id);
-            let q = parseInt(input ? input.value : 0) || 0;
-            if (q > 0) {
-                if (!aDesTextiles) { recap += "🛋️ TEXTILES / VÉHICULES :\n"; aDesTextiles = true; }
-                recap += `  - ${fixesIds[id]} : ${q}\n`;
-                recap += `    Planning : ${getPlanningRecap(planData[id])}\n`;
-            }
-        }
-        if (aDesTextiles) recap += "\n";
-
-        let aDesLocaux = false;
-        for (let roomId in planData) {
-            if (roomId.startsWith('room_detail_')) {
-                if (!aDesLocaux) { recap += "🏢 BUREAUX & LOCAUX EXTRAITS :\n"; aDesLocaux = true; }
-                let roomInfo = planData[roomId];
-                let card = document.getElementById('row_' + roomId);
-                let solSelect = card ? card.querySelector('select') : null;
-                let typeSol = solSelect ? solSelect.value : 'Non précisé';
+                let clientAccepte = confirm(messageAlerte);
                 
-                recap += `  - Espace : ${roomInfo.roomType} (Type de sol : ${typeSol})\n`;
-                
-                if (roomInfo.roomType === 'Sanitaires' || roomInfo.roomType === 'Douche' || roomInfo.roomType === 'Vestiaire') {
-                    let h = document.getElementById(`qty_h_${roomId}`)?.value || 0;
-                    let f = document.getElementById(`qty_f_${roomId}`)?.value || 0;
-                    recap += `    Quantité : Homme(s) x${h} / Femme(s) x${f}\n`;
-                } else if (roomInfo.roomType === 'Restauration') {
-                    let esp = document.getElementById(`qty_${roomId}`)?.value || 1;
-                    let tab = document.getElementById(`qty_tables_${roomId}`)?.value || 0;
-                    let cha = document.getElementById(`qty_chaises_${roomId}`)?.value || 0;
-                    recap += `    Quantité : Espace(s) x${esp} (${tab} tables, ${cha} chaises)\n`;
-                } else {
-                    let qty = document.getElementById(`qty_${roomId}`)?.value || 1;
-                    recap += `    Quantité : x${qty}\n`;
-                }
-
-                let prestCochees = [];
-                card.querySelectorAll('.prest-pill input[type="checkbox"]:checked').forEach(p => {
-                    let labelPrest = p.parentElement.querySelector('label').innerText;
-                    prestCochees.push(labelPrest);
-                });
-                recap += `    Prestations demandées : [${prestCochees.join(', ')}]\n`;
-                recap += `    Planning de l'espace : ${getPlanningRecap(roomInfo)}\n`;
+                if (!clientAccepte) return;
+                majorationAppliquee = true;
+                prixFinalAEnvoyer = "60.00 € (Forfait minimum appliqué)";
             }
-        }
-        if (aDesLocaux) recap += "\n";
 
-        let aDesDemandesParticulieres = false;
-        for (let id in planData) {
-            if (id.startsWith('custom_')) {
-                let textTextarea = document.getElementById('name_' + id)?.value || '';
-                let qtyCustom = document.getElementById('qty_' + id)?.value || 1;
-                if (textTextarea.trim() !== '') {
-                    if (!aDesDemandesParticulieres) { recap += "✨ DEMANDES PARTICULIÈRES :\n"; aDesDemandesParticulieres = true; }
-                    recap += `  - Description : "${textTextarea}" (Quantité/Répétition : x${qtyCustom})\n`;
-                    recap += `    Planning associé : ${getPlanningRecap(planData[id])}\n`;
+            let statut = "";
+            const radios = document.getElementsByName('statut');
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    statut = radios[i].value;
+                    break;
                 }
             }
+
+            function getPlanningRecap(data) {
+                if (!data || (data.days.length === 0 && data.months.length === 0 && !data.start && !data.end && (!data.comment || data.comment.trim() === ''))) {
+                    return "Détails de planification à voir ensemble";
+                }
+                
+                const fullDays = { 'Lun':'Lundi', 'Mar':'Mardi', 'Mer':'Mercredi', 'Jeu':'Jeudi', 'Ven':'Vendredi', 'Sam':'Samedi', 'Dim':'Dimanche' };
+                const fullMonths = { 'Jan':'Janvier', 'Fév':'Février', 'Mar':'Mars', 'Avr':'Avril', 'Mai':'Mai', 'Juin':'Juin', 'Juil':'Juillet', 'Août':'Août', 'Sep':'Septembre', 'Oct':'Octobre', 'Nov':'Novembre', 'Déc':'Décembre' };
+                
+                let parts = [];
+                if (data.days && data.days.length > 0) parts.push(`Jours [${data.days.map(d => fullDays[d]).join(', ')}]`);
+                if (data.months && data.months.length > 0) parts.push(`Mois [${data.months.map(m => fullMonths[m]).join(', ')}]`);
+                if (data.start && data.end) parts.push(`Période du ${data.start} au ${data.end}`);
+                else if (data.start || data.end) parts.push(`Date : ${data.start || data.end}`); 
+                
+                let recapStr = parts.length > 0 ? parts.join(' | ') : "Dates à voir ensemble";
+                if (data.comment && data.comment.trim() !== '') recapStr += `\n      📌 Remarque client : "${data.comment.trim()}"`;
+                
+                return recapStr;
+            }
+
+            let recap = "--- RÉCAPITULATIF DU DEVIS ---\n\n";
+
+            if (statut === "Entreprise") recap += `🏢 STRUCTURE : ${document.getElementById('nomEntreprise').value}\n\n`;
+
+            let aDesVitres = false;
+            document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
+                let q = parseInt(input.value) || 0;
+                if (q > 0) {
+                    if (!aDesVitres) { recap += "🪟 VITRERIE :\n"; aDesVitres = true; }
+                    let idFull = input.id.replace('qty_', '');
+                    let typeSelect = document.getElementById('type_' + idFull);
+                    let typeVitrage = typeSelect ? typeSelect.value : 'complet';
+                    let label = input.parentElement.querySelector('label').innerText;
+                    
+                    recap += `  - ${label} : ${q} (Nettoyage : ${typeVitrage})\n`;
+                    recap += `    Planning : ${getPlanningRecap(planData[idFull])}\n`;
+                }
+            });
+            if (aDesVitres) recap += "\n";
+
+            let aDesTextiles = false;
+            const fixesIds = { 'can23': 'Canapé 2-3 places', 'can45': 'Canapé 4-5 places', 'canAng': 'Canapé d\'angle', 'tapis': 'Tapis', 'moq': 'Moquette (m²)', 'pack_v': 'Pack Véhicule Complet' };
+            for (let id in fixesIds) {
+                let input = document.getElementById('qty_' + id);
+                let q = parseInt(input ? input.value : 0) || 0;
+                if (q > 0) {
+                    if (!aDesTextiles) { recap += "🛋️ TEXTILES / VÉHICULES :\n"; aDesTextiles = true; }
+                    recap += `  - ${fixesIds[id]} : ${q}\n`;
+                    recap += `    Planning : ${getPlanningRecap(planData[id])}\n`;
+                }
+            }
+            if (aDesTextiles) recap += "\n";
+
+            let aDesLocaux = false;
+            for (let roomId in planData) {
+                if (roomId.startsWith('room_detail_')) {
+                    if (!aDesLocaux) { recap += "🏢 BUREAUX & LOCAUX EXTRAITS :\n"; aDesLocaux = true; }
+                    let roomInfo = planData[roomId];
+                    let card = document.getElementById('row_' + roomId);
+                    let solSelect = card ? card.querySelector('select') : null;
+                    let typeSol = solSelect ? solSelect.value : 'Non précisé';
+                    
+                    recap += `  - Espace : ${roomInfo.roomType} (Type de sol : ${typeSol})\n`;
+                    
+                    if (roomInfo.roomType === 'Sanitaires' || roomInfo.roomType === 'Douche' || roomInfo.roomType === 'Vestiaire') {
+                        let h = document.getElementById(`qty_h_${roomId}`)?.value || 0;
+                        let f = document.getElementById(`qty_f_${roomId}`)?.value || 0;
+                        recap += `    Quantité : Homme(s) x${h} / Femme(s) x${f}\n`;
+                    } else if (roomInfo.roomType === 'Restauration') {
+                        let esp = document.getElementById(`qty_${roomId}`)?.value || 1;
+                        let tab = document.getElementById(`qty_tables_${roomId}`)?.value || 0;
+                        let cha = document.getElementById(`qty_chaises_${roomId}`)?.value || 0;
+                        recap += `    Quantité : Espace(s) x${esp} (${tab} tables, ${cha} chaises)\n`;
+                    } else {
+                        let qty = document.getElementById(`qty_${roomId}`)?.value || 1;
+                        recap += `    Quantité : x${qty}\n`;
+                    }
+
+                    let prestCochees = [];
+                    card.querySelectorAll('.prest-pill input[type="checkbox"]:checked').forEach(p => {
+                        let labelPrest = p.parentElement.querySelector('label').innerText;
+                        prestCochees.push(labelPrest);
+                    });
+                    recap += `    Prestations demandées : [${prestCochees.join(', ')}]\n`;
+                    recap += `    Planning de l'espace : ${getPlanningRecap(roomInfo)}\n`;
+                }
+            }
+            if (aDesLocaux) recap += "\n";
+
+            let aDesDemandesParticulieres = false;
+            for (let id in planData) {
+                if (id.startsWith('custom_')) {
+                    let textTextarea = document.getElementById('name_' + id)?.value || '';
+                    let qtyCustom = document.getElementById('qty_' + id)?.value || 1;
+                    if (textTextarea.trim() !== '') {
+                        if (!aDesDemandesParticulieres) { recap += "✨ DEMANDES PARTICULIÈRES :\n"; aDesDemandesParticulieres = true; }
+                        recap += `  - Description : "${textTextarea}" (Quantité/Répétition : x${qtyCustom})\n`;
+                        recap += `    Planning associé : ${getPlanningRecap(planData[id])}\n`;
+                    }
+                }
+            }
+
+            recap += `\n--- INFORMATIONS FINANCIÈRES ---\n`;
+            recap += `Base de calcul initiale : ${window.originalTotalValue.toFixed(2)} €\n`;
+            
+            let conflict10 = false;
+            let finalPromoDevis = window.promoDiscountDevis;
+            let finalClientDiscount = window.clientDiscount;
+
+            if (window.holidayPromoActive && window.promoDiscountDevis === 0.10) {
+                finalPromoDevis = 0;
+                conflict10 = true;
+            } else if (window.holidayPromoActive && window.clientDiscount === 0.10) {
+                finalClientDiscount = 0;
+                conflict10 = true;
+            }
+
+            if (finalClientDiscount > 0) recap += `🎁 Remise Client VIP Fidélité (10%) active via Code : ${window.activeClientCode}\n`;
+            if (finalPromoDevis > 0) recap += `🎁 Code Promo de validation (${finalPromoDevis * 100}%) appliqué avec le code : ${window.activePromoCodeDevis}\n`;
+            if (window.holidayPromoActive) recap += `🎁 Promo Jour Férié (10%) appliquée (Contrat final à signer sous 15 jours)\n`;
+            if (conflict10) recap += `⚠️ Un cumul de deux offres à 10% a été détecté et bloqué conformément à la politique tarifaire.\n`;
+            
+            let totalPercent = finalClientDiscount + finalPromoDevis + (window.holidayPromoActive ? 0.10 : 0);
+            if (totalPercent > 0) recap += `✅ TOTAL DES REMISES CUMULÉES EXTRAITES : ${Math.round(totalPercent * 100)}%\n`;
+
+            recap += `Prix final proposé au client : ${prixFinalAEnvoyer}\n`;
+            if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 60,00 € car son panier initial était trop faible.\n`;
+
+            const btn = document.getElementById('btnSubmitForm');
+            btn.innerText = "Envoi en cours..."; 
+            btn.disabled = true;
+            
+            // --- ID SERVICE MIS A JOUR AVEC LE COMPTE OSP+ ---
+            emailjs.send('service_wfrbr4e', 'template_oncrl1l', {
+                statut: statut,
+                nom: form.nom.value, 
+                prenom: form.prenom.value, 
+                email: form.email.value, 
+                email_client: form.email.value,
+                adresse: form.adresse.value,
+                ville: form.ville.value, 
+                interlocuteur: form.interlocuteur.value,
+                prix: prixFinalAEnvoyer,
+                recapitulatif: recap
+            })
+            .then(() => {
+                form.style.display = "none";
+                document.getElementById('postSubmitChoice').style.display = "block";
+            })
+            .catch((error) => {
+                console.error("Erreur détaillée EmailJS :", error);
+                alert("Oups ! Une erreur s'est produite lors de la connexion au serveur d'envoi. Veuillez réessayer ou me contacter directement au 07 45 02 76 24.");
+                btn.innerText = "ENVOYER MON DEVIS";
+                btn.disabled = false;
+            });
+            
+        } else { 
+            form.reportValidity(); 
         }
-
-        recap += `\n--- INFORMATIONS FINANCIÈRES ---\n`;
-        recap += `Base de calcul initiale : ${window.originalTotalValue.toFixed(2)} €\n`;
-        
-        let conflict10 = false;
-        let finalPromoDevis = window.promoDiscountDevis;
-        let finalClientDiscount = window.clientDiscount;
-
-        if (window.holidayPromoActive && window.promoDiscountDevis === 0.10) {
-            finalPromoDevis = 0;
-            conflict10 = true;
-        } else if (window.holidayPromoActive && window.clientDiscount === 0.10) {
-            finalClientDiscount = 0;
-            conflict10 = true;
-        }
-
-        if (finalClientDiscount > 0) recap += `🎁 Remise Client VIP Fidélité (10%) active via Code : ${window.activeClientCode}\n`;
-        if (finalPromoDevis > 0) recap += `🎁 Code Promo de validation (${finalPromoDevis * 100}%) appliqué avec le code : ${window.activePromoCodeDevis}\n`;
-        if (window.holidayPromoActive) recap += `🎁 Promo Jour Férié (10%) appliquée (Contrat final à signer sous 15 jours)\n`;
-        if (conflict10) recap += `⚠️ Un cumul de deux offres à 10% a été détecté et bloqué conformément à la politique tarifaire.\n`;
-        
-        let totalPercent = finalClientDiscount + finalPromoDevis + (window.holidayPromoActive ? 0.10 : 0);
-        if (totalPercent > 0) recap += `✅ TOTAL DES REMISES CUMULÉES EXTRAITES : ${Math.round(totalPercent * 100)}%\n`;
-
-        recap += `Prix final proposé au client : ${prixFinalAEnvoyer}\n`;
-        if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 60,00 € car son panier initial était trop faible.\n`;
-
-        const btn = document.getElementById('btnSubmitForm');
-        btn.innerText = "Envoi en cours..."; btn.disabled = true;
-        
-        emailjs.send('service_2vgqpz8', 'template_oncrl1l', {
-            statut: statut,
-            nom: form.nom.value, 
-            prenom: form.prenom.value, 
-            email: form.email.value, 
-            email_client: form.email.value,
-            adresse: form.adresse.value,
-            ville: form.ville.value, 
-            interlocuteur: form.interlocuteur.value,
-            prix: prixFinalAEnvoyer,
-            recapitulatif: recap
-        }).then(() => {
-            form.style.display = "none";
-            document.getElementById('postSubmitChoice').style.display = "block";
-        });
-    } else { form.reportValidity(); }
+    } catch (erreurGlobale) {
+        console.error("Erreur inattendue dans le script :", erreurGlobale);
+        alert("Une erreur inattendue empêche l'envoi. Rechargez la page ou contactez-moi au 07 45 02 76 24.");
+        document.getElementById('btnSubmitForm').innerText = "ENVOYER MON DEVIS";
+        document.getElementById('btnSubmitForm').disabled = false;
+    }
 }
 
 function closeQuote() { document.getElementById('quoteModal').style.display = "none"; }
@@ -1049,7 +1068,7 @@ window.onclick = function(e) {
     if(e.target.id === 'mentionsModal') closeMentions(); 
     if(e.target.id === 'levelModal') closeLevelModal();
     if(e.target.id === 'planningModal') document.getElementById('planningModal').style.display = "none";
-    if(e.target.id === 'carteModal') closeCarteModal(); // Règle d'intégration corrigée ici
+    if(e.target.id === 'carteModal') closeCarteModal();
 }
 
 function initDynamicSliders() {
@@ -1099,7 +1118,6 @@ function openCarteModal() {
 
 function closeCarteModal() {
     document.getElementById('carteModal').style.display = 'none';
-    // Remet la carte sur le recto à la fermeture
     const flipCard = document.querySelector('.flip-card');
     if (flipCard) flipCard.classList.remove('flipped');
 }
@@ -1110,7 +1128,6 @@ function toggleFlipCard() {
 }
 
 function downloadCarte() {
-    // Télécharge le recto
     let linkA = document.createElement('a');
     linkA.href = 'Carte visite A.jpg?v=12';
     linkA.download = 'OSP_Plus_Carte_Recto.jpg';
@@ -1118,7 +1135,6 @@ function downloadCarte() {
     linkA.click();
     document.body.removeChild(linkA);
 
-    // Télécharge le verso après un court délai pour éviter le blocage du navigateur
     setTimeout(() => {
         let linkB = document.createElement('a');
         linkB.href = 'Carte visite B.jpg?v=12';
@@ -1130,7 +1146,6 @@ function downloadCarte() {
 }
 
 function printCarte() {
-    // Crée une fenêtre d'impression temporaire propre
     let printWindow = window.open('', '_blank');
     printWindow.document.write(`
         <html>
@@ -1153,7 +1168,6 @@ function printCarte() {
     printWindow.document.close();
     printWindow.focus();
     
-    // Attend le chargement des images avant d'imprimer
     setTimeout(() => {
         printWindow.print();
         printWindow.close();
