@@ -876,6 +876,9 @@ function removeRow(id) {
     calculatePrice();
 }
 
+// =========================================================================
+// 🚀 NOUVELLE FONCTION D'ENVOI HYBRIDE (GOOGLE SHEETS + EMAILJS)
+// =========================================================================
 function submitInteractiveForm() {
     try {
         const form = document.getElementById('interactiveForm');
@@ -907,6 +910,35 @@ function submitInteractiveForm() {
                 }
             }
 
+            // --- 1. PRÉPARATION DU PAQUET POUR GOOGLE SHEETS (Et App Terrain) ---
+            const formDataPayload = {
+                SessionID: "WEB_" + Date.now(),
+                Statut: "En attente (Site Web)",
+                NomClient: (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value + " " + form.prenom.value,
+                Email: form.email.value,
+                Telephone: "Non renseigné sur le site",
+                Adresse: form.adresse.value + ", " + form.ville.value,
+                TypePrestation: activeServices.join(', '),
+                Prix: prixFinalAEnvoyer,
+                DataJSON: {
+                    activeServices: activeServices,
+                    planData: planData,
+                    interlocuteur: form.interlocuteur.value
+                }
+            };
+
+            // --- 2. ENVOI SILENCIEUX VERS GOOGLE SHEETS ---
+            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbyLrV60s2b8veFwqk4Rw0WMXqrEQ_WkRrs2WDfidGt1eaRoh70htg8Lu477Sc4jafAA/exec";
+            
+            fetch(GOOGLE_API_URL, {
+                method: 'POST',
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(formDataPayload)
+            })
+            .then(res => console.log("✅ Devis envoyé vers Google Sheets avec succès"))
+            .catch(e => console.error("Erreur d'envoi vers Sheets:", e));
+
+            // --- 3. PRÉPARATION DU RÉCAPITULATIF TEXTE POUR L'EMAIL ---
             function getPlanningRecap(data) {
                 if (!data || (data.days.length === 0 && data.months.length === 0 && !data.start && !data.end && (!data.comment || data.comment.trim() === ''))) {
                     return "Détails de planification à voir ensemble";
@@ -1039,7 +1071,7 @@ function submitInteractiveForm() {
             btn.innerText = "Envoi en cours..."; 
             btn.disabled = true;
             
-            // --- ID SERVICE MIS A JOUR AVEC LE COMPTE OSP+ ---
+            // --- 4. ENVOI CLASSIQUE PAR EMAILJS ---
             emailjs.send('service_wfrbr4e', 'template_oncrl1l', {
                 statut: statut,
                 nom: form.nom.value, 
@@ -1059,10 +1091,8 @@ function submitInteractiveForm() {
             .catch((error) => {
                 console.error("Erreur détaillée EmailJS :", error);
                 
-                // 1. On masque le formulaire
                 form.style.display = "none";
                 
-                // 2. On crée dynamiquement le message de "Victime de notre succès"
                 let surchargeMessage = document.createElement('div');
                 surchargeMessage.innerHTML = `
                     <div style="background: #fdf8e4; border-left: 5px solid var(--vert); padding: 25px; border-radius: 8px; text-align: center; margin-top: 20px; animation: fadeInDown 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
@@ -1083,7 +1113,6 @@ function submitInteractiveForm() {
                     </div>
                 `;
                 
-                // 3. On affiche ce message juste à la place du formulaire
                 form.parentNode.insertBefore(surchargeMessage, form);
             });
             
