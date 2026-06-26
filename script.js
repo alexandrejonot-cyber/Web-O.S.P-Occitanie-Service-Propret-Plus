@@ -1,7 +1,7 @@
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v1.2"; // 👈 Numéro de version actuel
+const APP_VERSION = "v1.7"; // 👈 Numéro de version mis à jour (Calcul dynamique des consommables)
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
@@ -146,18 +146,26 @@ function checkHolidays() {
 
 window.addEventListener('DOMContentLoaded', checkHolidays);
 
+// 🟢 Gestion du champ "Nombre d'employés"
 function toggleCompanyField() {
-    const isEntreprise = document.querySelector('input[name="statut"][value="Entreprise"]').checked;
+    const isEntreprise = document.querySelector('input[name="statut"][value="Entreprise"]')?.checked;
     const companyGroup = document.getElementById('companyNameGroup');
     const companyInput = document.getElementById('nomEntreprise');
+    const employeeGroup = document.getElementById('employeeCountGroup');
+    const employeeInput = document.getElementById('nbEmployes');
+
     if (isEntreprise) {
-        companyGroup.style.display = 'flex';
-        companyInput.required = true;
+        if (companyGroup) companyGroup.style.display = 'flex';
+        if (companyInput) companyInput.required = true;
+        if (employeeGroup) employeeGroup.style.display = 'flex';
+        if (employeeInput) employeeInput.required = true;
     } else {
-        companyGroup.style.display = 'none';
-        companyInput.required = false;
-        companyInput.value = '';
+        if (companyGroup) companyGroup.style.display = 'none';
+        if (companyInput) { companyInput.required = false; companyInput.value = ''; }
+        if (employeeGroup) employeeGroup.style.display = 'none';
+        if (employeeInput) { employeeInput.required = false; employeeInput.value = '1'; }
     }
+    calculatePrice(); // On recalcule le prix car le nombre d'employés a pu changer
 }
 
 const prestationsData = {
@@ -257,13 +265,50 @@ function toggleAccordion(headerElement) {
     }
 }
 
+function updateLevelSummaries() {
+    document.querySelectorAll('.level-accordion').forEach(accordion => {
+        let levelName = accordion.getAttribute('data-levelname');
+        let roomsContainer = accordion.querySelector('[id^="rooms_container_"]');
+        let titleSpan = accordion.querySelector('.level-title-display');
+        
+        if (roomsContainer && titleSpan) {
+            let roomCards = roomsContainer.querySelectorAll('.structured-room-card');
+            if (roomCards.length > 0) {
+                let roomNames = [];
+                roomCards.forEach(card => {
+                    let nameSpan = card.querySelector('h5 span');
+                    if (nameSpan) {
+                        let typeText = nameSpan.innerText;
+                        if (typeText === 'Nouvel espace') {
+                            let customInput = card.querySelector('input[type="text"]');
+                            if (customInput && customInput.value.trim() !== '') {
+                                typeText = customInput.value.trim();
+                            } else {
+                                typeText = 'Autre';
+                            }
+                        }
+                        roomNames.push(typeText);
+                    }
+                });
+                
+                let summaryText = roomNames.join(', ');
+                if (summaryText.length > 40) summaryText = summaryText.substring(0, 37) + '...';
+                
+                titleSpan.innerHTML = `📍 ${levelName} <span style="font-size:0.75rem; color:#888; margin-left:8px; font-weight:normal; font-style:italic;">(${roomCards.length} espace(s) : ${summaryText})</span>`;
+            } else {
+                titleSpan.innerHTML = `📍 ${levelName}`;
+            }
+        }
+    });
+}
+
 function createLevelAccordion(levelName) {
     const levelId = 'level_' + Date.now() + Math.floor(Math.random() * 1000);
     
     let html = `
-    <div class="level-accordion" id="block_${levelId}">
+    <div class="level-accordion" id="block_${levelId}" data-levelname="${levelName}">
         <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>📍 ${levelName}</span>
+            <span class="level-title-display">📍 ${levelName}</span>
             <span class="accordion-icon">+</span>
         </div>
         <div class="accordion-body">
@@ -317,7 +362,7 @@ function addStructuredRoom(levelId, type) {
     
     planData[roomId] = { days: [], months: [], start:'', end:'', roomType: type, comment: '' };
 
-    let customNameHtml = type === 'Autre' ? `<input type="text" placeholder="Ex: Espace Reprographie..." style="font-size:0.8rem; padding:6px; margin-bottom:10px; width:100%; border:1px solid #ccc; border-radius:5px;">` : '';
+    let customNameHtml = type === 'Autre' ? `<input type="text" placeholder="Ex: Espace Reprographie..." style="font-size:0.8rem; padding:6px; margin-bottom:10px; width:100%; border:1px solid #ccc; border-radius:5px;" oninput="updateLevelSummaries()">` : '';
 
     let qtyHtml = '';
     if (type === 'Sanitaires' || type === 'Douche' || type === 'Vestiaire') {
@@ -365,7 +410,7 @@ function addStructuredRoom(levelId, type) {
         consommablesHtml = `
         <div class="qty-input-box" style="background:#eef3f8; border-color:var(--bleu);">
             <label>🧻 Fourniture (Papier, savon...)</label>
-            <select style="background:transparent; border:none; font-weight:700; color:var(--bleu); padding:0; outline:none;">
+            <select id="cons_select_${roomId}" onchange="calculatePrice()" style="background:transparent; border:none; font-weight:700; color:var(--bleu); padding:0; outline:none;">
                 <option value="client">À votre charge</option>
                 <option value="osp">Fournis par O.S.P+</option>
             </select>
@@ -402,7 +447,7 @@ function addStructuredRoom(levelId, type) {
 
     let hygieneNotice = "";
     if (prets.obligatoires && prets.obligatoires.length > 0) {
-        hygieneNotice = `<div style="font-size:0.65rem; color:#888; font-style:italic; margin-top:-5px; margin-bottom:5px;">Note : Les tâches avec un cadenas 🔒 sont incluses obligatoirement lors de la planification.</div>`;
+        hygieneNotice = `<div style="font-size:0.65rem; color:#888; font-style:italic; margin-top:-5px; margin-bottom:5px; display:flex; align-items:center;">Note : Les tâches avec un cadenas 🔒 sont incluses obligatoirement. <span class="help-bubble">?<span class="tooltip-text">Inclus d'office pour garantir les normes d'hygiène de base.</span></span></div>`;
     }
 
     let html = `
@@ -413,7 +458,7 @@ function addStructuredRoom(levelId, type) {
         </h5>
         ${customNameHtml}
         ${qtyHtml}
-        <div style="font-size:0.75rem; color:var(--bleu); font-weight:700; margin-top:5px; margin-bottom:8px;">Prestations de nettoyage :</div>
+        <div style="font-size:0.75rem; color:var(--bleu); font-weight:700; margin-top:5px; margin-bottom:8px; display:flex; align-items:center;">Prestations de nettoyage <span class="help-bubble">?<span class="tooltip-text">Cochez les actions spécifiques à réaliser dans cette pièce.</span></span> :</div>
         ${hygieneNotice}
         ${pretsHtml}
         <div style="margin-top:10px;">
@@ -423,6 +468,7 @@ function addStructuredRoom(levelId, type) {
 
     document.getElementById('rooms_container_' + levelId).insertAdjacentHTML('beforeend', html);
     calculatePrice();
+    updateLevelSummaries();
 }
 
 function removeRoom(roomId) {
@@ -430,6 +476,7 @@ function removeRoom(roomId) {
     if (row) row.remove();
     if (planData[roomId]) delete planData[roomId];
     calculatePrice();
+    updateLevelSummaries();
 }
 
 function getRealInterventionCount(selectedDays, selectedMonths, startDate, endDate) {
@@ -555,9 +602,12 @@ window.originalTotalValue = 0;
 
 function calculatePrice() {
     let total = 0;
-    const TAUX_HORAIRE = 36.00; 
+    let hasOspConsommables = false; 
+    
+    const TAUX_HORAIRE = 45.00; 
 
-    const vPrices = { vit_fen: 8, vit_baie: 15, vit_velux: 12, vit_ver: 25, vit_porte: 10, vit_com: 30 };
+    const vPrices = { vit_fen: 10, vit_baie: 19, vit_velux: 15, vit_ver: 29, vit_porte: 12, vit_com: 39 };
+    
     document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
         let idFull = input.id.replace('qty_', ''); 
         let baseId = idFull.split('_dup_')[0]; 
@@ -570,7 +620,8 @@ function calculatePrice() {
         if (vPrices[baseId]) total += q * (vPrices[baseId] * priceRatio) * exactMultiplier;
     });
 
-    const pricesFixed = { 'can23': 70, 'can45': 110, 'canAng': 130, 'tapis': 40, 'moq': 5, 'pack_v': 210 };
+    const pricesFixed = { 'can23': 89, 'can45': 139, 'canAng': 159, 'tapis': 49, 'moq': 7, 'pack_v': 259 };
+    
     for (let id in pricesFixed) {
         const qtyInput = document.getElementById('qty_' + id);
         if (qtyInput) {
@@ -587,6 +638,11 @@ function calculatePrice() {
             let type = roomInfo.roomType;
             let exactMultiplier = getRealInterventionCount(roomInfo.days, roomInfo.months, roomInfo.start, roomInfo.end);
             
+            let consSelect = document.getElementById(`cons_select_${roomId}`);
+            if (consSelect && consSelect.value === 'osp') {
+                hasOspConsommables = true;
+            }
+
             let tempsMinutes = 0;
             let nbEspaces = 1;
 
@@ -630,6 +686,20 @@ function calculatePrice() {
         }
     }
     
+    // 🟢 Calcul dynamique du forfait consommables selon le nombre d'employés !
+    if (hasOspConsommables) {
+        let nbEmployes = 1;
+        // On récupère la valeur saisie dans le nouveau champ
+        let isEntreprise = document.querySelector('input[name="statut"][value="Entreprise"]')?.checked;
+        if (isEntreprise) {
+            let inputEmployes = document.getElementById('nbEmployes');
+            if (inputEmployes && inputEmployes.value > 0) {
+                nbEmployes = parseInt(inputEmployes.value);
+            }
+        }
+        total += (nbEmployes * 7.00);
+    }
+
     let originalTotal = total;
     window.originalTotalValue = originalTotal;
     let discountText = "";
@@ -721,6 +791,15 @@ function openQuote(baseService) {
     if(crContainer) crContainer.innerHTML = '';
     
     fields.innerHTML = `
+        <div class="guide-remplissage">
+            <strong>ℹ️ Comment remplir votre devis ?</strong>
+            <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                <li style="margin-bottom: 5px;"><b>1. Vos niveaux :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
+                <li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau (Accueil, Sanitaires, Bureaux...).</li>
+                <li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce (surface au sol, nombre de corbeilles, toilettes...).</li>
+                <li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence, et validez avec vos coordonnées en bas de page.</li>
+            </ul>
+        </div>
         <div id="allServicesContainer" style="display:flex; flex-direction:column; gap:20px;"></div>
         <div id="crossSellContainer" style="margin-top:25px; padding-top:20px; border-top:2px dashed #e1e8ef; text-align:center;"></div>
     `;
@@ -751,8 +830,8 @@ function addServiceToQuote(service) {
         <div style="display: grid; grid-template-columns: 1fr 45px 75px 75px 25px; gap: 5px; padding: 0 6px; margin-bottom: 8px; align-items: center;">
             <span style="font-size:0.60rem; font-weight:800; color:var(--bleu);">PREST.</span>
             <span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center;">QTÉ</span>
-            <span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center;">TYPE</span>
-            <span style="font-size:0.60rem; font-weight:800; color:var(--vert); text-align:center;">PLAN</span>
+            <span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center; display:flex; align-items:center; justify-content:center;">TYPE <span class="help-bubble">?<span class="tooltip-text">Complet (Int/Ext) ou ciblé. Influe sur le prix.</span></span></span>
+            <span style="font-size:0.60rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">PLAN <span class="help-bubble">?<span class="tooltip-text">Définissez la fréquence d'intervention.</span></span></span>
             <span></span>
         </div>`;
         const rows = [{id:'vit_fen', n:'Fenêtres'}, {id:'vit_baie', n:'Baies'}, {id:'vit_velux', n:'Velux'}, {id:'vit_ver', n:'Véranda'}, {id:'vit_porte', n:'Porte-Fenêtre'}, {id:'vit_com', n:'Vitrine'}];
@@ -764,7 +843,7 @@ function addServiceToQuote(service) {
         <div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;">
             <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">PRESTATION</span>
             <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">QTÉ</span>
-            <span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center;">PLANIFICATION</span>
+            <span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">PLANIFICATION <span class="help-bubble">?<span class="tooltip-text">Date précise ou récurrente.</span></span></span>
         </div>`;
         const rows = [{id:'can23', n:'Canapé 2-3pl'}, {id:'can45', n:'Canapé 4-5pl'}, {id:'canAng', n:'Angle'}, {id:'tapis', n:'Tapis'}, {id:'moq', n:'Moquette (m²)'}];
         rows.forEach(r => html += generateRowHtml(r.id, r.n));
@@ -775,7 +854,7 @@ function addServiceToQuote(service) {
         <div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;">
             <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">PRESTATION</span>
             <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">QTÉ</span>
-            <span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center;">PLANIFICATION</span>
+            <span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">PLANIFICATION <span class="help-bubble">?<span class="tooltip-text">Date à laquelle vous souhaitez le nettoyage.</span></span></span>
         </div>`;
         html += generateRowHtml('pack_v', 'Pack Complet');
     } 
@@ -783,7 +862,7 @@ function addServiceToQuote(service) {
         html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">🏢 Bureaux & Locaux</h3>`;
         html += `
         <p style="font-size:0.85rem; color:var(--bleu); margin-bottom:15px; background:#eef3f8; padding:10px; border-radius:8px; border-left:4px solid var(--bleu);">
-            <strong>Structurez vos espaces :</strong> Choisissez un niveau, puis ajoutez les pièces.
+            <strong>Structurez vos espaces :</strong> Choisissez un niveau, puis ajoutez les pièces. <span class="help-bubble">?<span class="tooltip-text">Cette étape nous permet de comprendre l'agencement exact de vos locaux.</span></span>
         </p>
         <div id="levelsContainer"></div>
         <button type="button" class="btn-add-row" onclick="openLevelModal()" style="margin-top: 15px;">
@@ -961,7 +1040,12 @@ function submitInteractiveForm() {
 
             let recap = "--- RÉCAPITULATIF DU DEVIS ---\n\n";
 
-            if (statut === "Entreprise") recap += `🏢 STRUCTURE : ${document.getElementById('nomEntreprise').value}\n\n`;
+            // 🟢 L'information de l'effectif figure bien ici pour le mail
+            if (statut === "Entreprise") {
+                recap += `🏢 STRUCTURE : ${document.getElementById('nomEntreprise').value}\n`;
+                let eff = document.getElementById('nbEmployes')?.value || "Non précisé";
+                recap += `👥 EFFECTIF : ${eff} collaborateur(s) sur site\n\n`;
+            }
 
             let aDesVitres = false;
             document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
@@ -1015,6 +1099,12 @@ function submitInteractiveForm() {
                     } else {
                         let qty = document.getElementById(`qty_${roomId}`)?.value || 1;
                         recap += `    Quantité : x${qty}\n`;
+                    }
+
+                    let consSelect = document.getElementById(`cons_select_${roomId}`);
+                    if (consSelect) {
+                        let consText = consSelect.value === 'osp' ? 'Fournis par O.S.P+' : 'À la charge du client';
+                        recap += `    Consommables : ${consText}\n`;
                     }
 
                     let prestCochees = [];
@@ -1241,3 +1331,31 @@ function printCarte() {
         printWindow.close();
     }, 500);
 }
+
+// ==========================================
+// 🚀 GESTION DYNAMIQUE DES ÉTIQUETTES DE SERVICES
+// ==========================================
+function gererEtiquettesNouveautes() {
+    const badges = document.querySelectorAll('.dynamic-badge');
+    if (badges.length === 0) return;
+
+    // Date actuelle
+    const dateActuelle = new Date();
+    
+    // Date cible : 15 Août de l'année en cours (Attention: en JS, les mois commencent à 0, donc 7 = Août)
+    const anneeEnCours = dateActuelle.getFullYear();
+    const dateLancement = new Date(anneeEnCours, 7, 15); // 15 Août
+
+    badges.forEach(badge => {
+        if (dateActuelle >= dateLancement) {
+            // À partir du 15 août
+            badge.innerText = "Nouveau service";
+        } else {
+            // Avant le 15 août
+            badge.innerText = "Dispo le 15 Août"; // Texte raccourci pour mieux tenir dans le badge
+        }
+    });
+}
+
+// Lancement de la vérification au chargement de la page
+window.addEventListener('DOMContentLoaded', gererEtiquettesNouveautes);

@@ -108,12 +108,14 @@
                 <div class="card-border"></div>
             </div>
             <div class="card clickable" onclick="openQuote('shampouinage')">
+                <span class="service-badge dynamic-badge">Disponible le 15 août</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path><path d="M9 22V12h6v10"></path></svg></div>
                 <h3 class="text-bleu">Shampouinage</h3>
                 <p>Remise à neuf textiles et moquettes.</p>
                 <div class="card-border"></div>
             </div>
             <div class="card clickable" onclick="openQuote('vehicule')">
+                <span class="service-badge dynamic-badge">Disponible le 15 août</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
                 <h3 class="text-bleu">Pack Véhicule</h3>
                 <p>Nettoyage complet textiles auto.</p>
@@ -362,7 +364,10 @@
                             
                             <div style="background: #f4f8fb; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #e1e8ef;">
                                 <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* Le prix des demandes particulières sera calculé sur mesure (non inclus dans l'estimation globale).</p>
-                                <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;"><span>+</span> Ajouter une demande particulière</button>
+                                <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;">
+                                    <span>+</span> Ajouter une demande particulière
+                                    <span class="help-bubble">?<span class="tooltip-text">Un besoin spécifique non listé ? (Ex: Nettoyage frigo, sortie poubelles, etc.)</span></span>
+                                </button>
                                 <div id="customRowsContainer"></div>
                             </div>
 
@@ -386,6 +391,10 @@
                                     <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="Ex: OSP Plus...">
                                 </div>
 
+                                <div class="input-group" id="employeeCountGroup" style="display: none; margin-top: 10px;">
+                                    <label>Nombre d'employés / collaborateurs :</label>
+                                    <input type="number" id="nbEmployes" name="nbEmployes" min="1" value="1" oninput="calculatePrice()">
+                                </div>
                                 <div class="input-group"><label>Nom</label><input type="text" name="nom" required></div>
                                 <div class="input-group"><label>Prénom</label><input type="text" name="prenom" required></div>
                                 <div class="input-group"><label>Email</label><input type="email" name="email" required></div>

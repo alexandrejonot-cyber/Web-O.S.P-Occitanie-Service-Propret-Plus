@@ -404,7 +404,6 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
 }
 
 @media (max-width: 850px) { 
-    /* --- CORRECTIF ULTIME POUR LE SCROLL MOBILE DU DEVIS --- */
     .modal-content.large { 
         display: flex !important;
         flex-direction: column !important;
@@ -439,7 +438,6 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
         border-bottom: 1px solid #eee !important; 
         padding: 20px 15px !important;
     }
-    /* --- FIN DU CORRECTIF --- */
 
     .who-flex { flex-direction: column; text-align: center; }
     .who-text-box h2, .who-text-box p { text-align: center; }
@@ -474,7 +472,6 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
     .btn-validate-custom { width: 100%; margin-top: 5px; }
 }
 
-/* --- BOUTON MENU CARTE DE VISITE --- */
 .btn-carte-nav { 
     background: transparent; 
     color: var(--bleu); 
@@ -497,12 +494,11 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
     box-shadow: 0 4px 10px rgba(140, 198, 63, 0.3);
 }
 
-/* --- ANIMATION 3D CARTE DE VISITE --- */
 .flip-card {
     background-color: transparent;
     width: 100%;
-    aspect-ratio: 1.58 / 1; /* Ratio standard d'une carte de visite */
-    perspective: 1000px; /* Donne l'effet de profondeur 3D */
+    aspect-ratio: 1.58 / 1; 
+    perspective: 1000px; 
     margin: 0 auto;
     cursor: pointer;
 }
@@ -512,11 +508,10 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
     width: 100%;
     height: 100%;
     text-align: center;
-    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Effet de rebond fluide */
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     transform-style: preserve-3d;
 }
 
-/* Classe ajoutée via JS pour déclencher la rotation */
 .flip-card.flipped .flip-card-inner {
     transform: rotateY(180deg);
 }
@@ -525,8 +520,8 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
     position: absolute;
     width: 100%;
     height: 100%;
-    -webkit-backface-visibility: hidden; /* Masque le dos de l'image (Safari) */
-    backface-visibility: hidden; /* Masque le dos de l'image */
+    -webkit-backface-visibility: hidden; 
+    backface-visibility: hidden; 
     border-radius: 8px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     overflow: hidden;
@@ -542,7 +537,6 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
     transform: rotateY(180deg);
 }
 
-/* --- BOUTONS D'ACTION CARTE --- */
 .btn-carte-action {
     padding: 10px 15px;
     border-radius: 5px;
@@ -563,3 +557,128 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
 
 .btn-imprimer { background: var(--bleu); color: white; }
 .btn-imprimer:hover { background: #122b4d; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(26,60,108,0.3); }
+
+/* ========================================= */
+/* 🚀 STRATÉGIE HYBRIDE : AIDE & TOOLTIPS    */
+/* ========================================= */
+
+.guide-remplissage {
+    background: #eef3f8;
+    border-left: 4px solid var(--vert);
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: var(--bleu);
+    line-height: 1.5;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    animation: fadeInDown 0.4s ease;
+}
+.guide-remplissage strong {
+    color: var(--vert);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.guide-remplissage ol {
+    margin-top: 10px;
+    padding-left: 25px;
+    color: #444;
+}
+.guide-remplissage li {
+    margin-bottom: 5px;
+}
+
+.help-bubble {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background-color: var(--vert);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 800;
+    cursor: help;
+    margin-left: 5px;
+    position: relative;
+    vertical-align: middle;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: 0.2s;
+}
+.help-bubble:hover {
+    background-color: var(--bleu);
+    transform: scale(1.1);
+}
+
+.help-bubble .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--bleu);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 10px;
+    position: absolute;
+    z-index: 3000;
+    bottom: 140%; 
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+    pointer-events: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    text-transform: none; 
+}
+
+.help-bubble .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--bleu) transparent transparent transparent;
+}
+
+.help-bubble:hover .tooltip-text,
+.help-bubble:active .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .help-bubble .tooltip-text {
+        width: 160px;
+        white-space: normal;
+    }
+}
+
+/* ========================================= */
+/* 🚀 ÉTIQUETTES DE NOUVEAUX SERVICES        */
+/* ========================================= */
+
+.service-badge {
+    position: absolute;
+    top: 12px;
+    right: -25px;
+    background-color: var(--vert);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 6px 30px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(140, 198, 63, 0.4);
+    z-index: 10;
+    transform: rotate(45deg);
+    pointer-events: none;
+    letter-spacing: 0.5px;
+    text-align: center;
+    width: 160px;
+}
