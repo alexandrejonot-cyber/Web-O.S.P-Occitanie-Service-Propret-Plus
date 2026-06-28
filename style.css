@@ -51,7 +51,7 @@ nav ul li { margin-left: 14px; }
     text-decoration: none; 
     color: var(--bleu); 
     font-weight: 700; 
-    font-size: 0.85rem; 
+    font-size: 1.1rem; /* Modifié ici : Police agrandie */
     position: relative; 
     padding: 5px 0;
     transition: var(--transition-standard);
@@ -79,7 +79,7 @@ nav ul li { margin-left: 14px; }
     border-radius: 5px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 1.1rem; /* Modifié ici : Police agrandie */
     transition: var(--transition-standard);
     box-shadow: 0 4px 10px rgba(140, 198, 63, 0.2);
     display: inline-flex;
@@ -112,6 +112,7 @@ nav ul li { margin-left: 14px; }
     border-radius: 5px; 
     text-decoration: none;
     font-weight: 700;
+    font-size: 1.1rem; /* Modifié ici : Police agrandie */
     transition: var(--transition-standard);
     box-shadow: 0 4px 10px rgba(140, 198, 63, 0.3);
     animation: pulse-soft 2s infinite;
@@ -379,16 +380,16 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
 .price-min-alert { font-size: 0.75rem; color: #ffcc00; margin-top: 4px; font-weight: 600; }
 .price-right { font-size: 0.75rem; color: #d0def0; text-align: right; line-height: 1.4; max-width: 45%; }
 
-.btn-client-nav { background: var(--bleu); color: var(--blanc); border: 2px solid var(--bleu); padding: 10px 16px; border-radius: 5px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: var(--transition-standard); display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(26, 60, 108, 0.2); }
+.btn-client-nav { background: var(--bleu); color: var(--blanc); border: 2px solid var(--bleu); padding: 10px 16px; border-radius: 5px; font-weight: 700; font-size: 1.1rem; /* Modifié ici : Police agrandie */ cursor: pointer; transition: var(--transition-standard); display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(26, 60, 108, 0.2); }
 .btn-client-nav:hover { background: transparent; color: var(--bleu); box-shadow: none; }
 
 .lang-menu { position: relative; cursor: pointer; margin-left: 15px; }
-.selected-lang { color: var(--bleu); font-weight: 700; font-size: 0.85rem; padding: 8px 12px; border-radius: 5px; border: 2px solid transparent; background: var(--gris); transition: var(--transition-standard); display: flex; align-items: center; gap: 5px; }
+.selected-lang { color: var(--bleu); font-weight: 700; font-size: 1.1rem; /* Modifié ici : Police agrandie */ padding: 8px 12px; border-radius: 5px; border: 2px solid transparent; background: var(--gris); transition: var(--transition-standard); display: flex; align-items: center; gap: 5px; }
 .selected-lang:hover { background: white; border-color: #e1e8ef; }
 .lang-dropdown { position: absolute; top: 130%; right: 0; background: white; box-shadow: 0 10px 25px rgba(26, 60, 108, 0.15); border-radius: 8px; list-style: none; padding: 8px 0; min-width: 140px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: var(--transition-standard); display: flex; flex-direction: column; z-index: 2000; }
 .lang-menu:hover .lang-dropdown { opacity: 1; visibility: visible; transform: translateY(0); top: 110%; }
 .lang-dropdown li { margin-left: 0 !important; width: 100%; }
-.lang-dropdown li a { color: var(--bleu); text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 10px 20px; display: block; transition: 0.3s; }
+.lang-dropdown li a { color: var(--bleu); text-decoration: none; font-size: 1.05rem; /* Modifié ici : Police agrandie */ font-weight: 600; padding: 10px 20px; display: block; transition: 0.3s; }
 .lang-dropdown li a:hover { background: var(--gris); color: var(--vert); padding-left: 25px; }
 
 .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2001; }
@@ -529,7 +530,7 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
     padding: 10px 16px; 
     border-radius: 5px; 
     font-weight: 700; 
-    font-size: 0.85rem; 
+    font-size: 1.1rem; /* Modifié ici : Police agrandie */
     cursor: pointer; 
     transition: var(--transition-standard); 
     display: inline-flex; 

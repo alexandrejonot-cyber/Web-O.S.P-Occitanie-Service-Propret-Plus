@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>O.S.P+ | Cleaning Company Toulouse & Occitanie | 20 Years of Expertise</title>
-    <meta name="description" content="O.S.P+: Professional cleaning expert in Toulouse. Window cleaning, sofa & carpet shampooing, and offices. High-quality cleaning service in Occitanie. Free Quote.">
+    <meta name="description" content="O.S.P+: Professional cleaning expert in Toulouse. Window cleaning, sofa & carpet shampooing, office cleaning. High-quality cleaning service in Occitanie. Free Quote.">
     <meta name="keywords" content="cleaning toulouse, window cleaner toulouse, sofa shampooing toulouse, office cleaning occitanie, cleanliness toulouse">
     
     <link rel="stylesheet" href="style.css">
@@ -19,8 +19,14 @@
        })();
     </script>
     
-    <!-- AJOUT CSS POUR LE BOUTON PLEIN ÉCRAN AVANT/APRÈS -->
     <style>
+        /* Enlarge navigation text */
+        #nav-links a,
+        #nav-links button,
+        #nav-links .selected-lang {
+            font-size: 1.1rem !important; 
+        }
+
         .comparison-container {
             position: relative;
         }
@@ -43,7 +49,7 @@
             background: var(--vert, #27ae60);
             border-color: var(--vert, #27ae60);
         }
-        /* Style spécifique quand on passe en plein écran */
+        /* Fullscreen specific style */
         .comparison-container:fullscreen {
             width: 100vw;
             height: 100vh;
@@ -73,13 +79,12 @@
     <div class="header-sticky-wrapper">
         
         <div id="promo-banner" class="promo-banner" style="display: none;">
-            🎉 <strong>PUBLIC HOLIDAY SPECIAL OFFER: 10% off your final invoice!</strong> <em>(Valid if the final contract is signed within 15 days)</em>
+            🎉 <strong>SPECIAL HOLIDAY OFFER: -10% on your final invoice!</strong> <em>(Valid if the final contract is signed within 15 days)</em>
         </div>
 
         <header>
-            <div class="logo-text">
-                <div class="main-title"><span class="text-bleu">O.S.P</span><span class="text-green">+</span></div>
-                <div class="sub-title"><span class="text-bleu">Occitanie Services Propreté</span> <span class="text-green">Plus</span></div>
+            <div class="logo-container">
+                <img src="logo.png" alt="O.S.P+ Occitanie Services Propreté Plus" class="site-logo" style="cursor: pointer;" onclick="openImageModal(this.src)">
             </div>
 
             <div class="hamburger" id="mobile-menu-btn">
@@ -92,14 +97,14 @@
                 <ul id="nav-links">
                     <li><a href="#" class="nav-link">Home</a></li>
                     <li><a href="#services" class="nav-link">Services</a></li>
-                    <li><a href="#galerie" class="nav-link">Portfolio</a></li>
+                    <li><a href="#galerie" class="nav-link">Projects</a></li>
                     <li><a href="#avis" class="nav-link">Reviews</a></li>
                     <li><a href="#qui-suis-je" class="nav-link">Expertise</a></li>
                     <li><a href="#faq" class="nav-link">FAQ</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                     <li><a href="tel:0745027624" class="btn-phone-nav">📞 07 45 02 76 24</a></li>
                     <li><a href="#services" class="btn-devis-nav">Free Quote</a></li>
-                    <li><button class="btn-client-nav" onclick="openClientModal()">Loyal Customer</button></li>
+                    <li><button class="btn-client-nav" onclick="openClientModal()">VIP Client</button></li>
                     <li><button class="btn-carte-nav" onclick="openCarteModal()">📇 Business Card</button></li>
                     
                     <li class="lang-menu">
@@ -118,7 +123,7 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Cleanliness is <span class="text-green">My Business.</span></h1>
+            <h1>Cleanliness is <span class="text-green">My Profession.</span></h1>
             <div class="hero-video-container">
                 <div class="video-wrapper">
                     <video id="introVid" muted autoplay loop playsinline preload="metadata">
@@ -134,19 +139,19 @@
             </div>
             <div class="hero-badges">
                 <span class="badge">20 Years of Experience</span>
-                <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Professional Liability</span>
+                <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Professional Liability Insurance</span>
                 <span class="badge">Professional Equipment</span>
             </div>
             <a href="#services" class="btn-main pulse-animation">REQUEST MY FREE QUOTE</a>
         </div>
     </section>
 
-    <div class="trust-bar"><p>📍 Coverage: <strong>Toulouse (30 km included)</strong> and all of <strong>Occitanie*</strong></p></div>
+    <div class="trust-bar"><p>📍 Serving <strong>Toulouse (30 km included)</strong> and all of <strong>Occitanie*</strong></p></div>
 
     <section id="services" class="services scroll-animate">
-        <h2 class="section-title"><span class="text-bleu">My Specialized Services</span> & <span class="text-green">Online Estimation</span></h2>
+        <h2 class="section-title"><span class="text-bleu">My Specialized Services</span> & <span class="text-green">Online Estimate</span></h2>
         <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: -15px auto 35px auto; line-height: 1.5; padding: 0 15px;">
-            ⚠️ <em>The rates calculated on this site are purely indicative.</em> The final and contractual quote will only be established with you after an on-site technical visit of your premises (with no obligation).
+            ⚠️ <em>The rates calculated on this site are strictly indicative.</em> The final and binding quote will be established with you only after an on-site technical visit of your premises (no obligation).
         </p>
 
         <div class="services-grid">
@@ -157,35 +162,35 @@
                 <div class="card-border"></div>
             </div>
             <div class="card clickable" onclick="openQuote('shampouinage')">
-                <span class="service-badge dynamic-badge">Available August 15</span>
+                <span class="service-badge dynamic-badge">Available August 15th</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path><path d="M9 22V12h6v10"></path></svg></div>
-                <h3 class="text-bleu">Shampooing</h3>
-                <p>Restoration of textiles and carpets.</p>
+                <h3 class="text-bleu">Upholstery Shampooing</h3>
+                <p>Refurbishing textiles and carpets.</p>
                 <div class="card-border"></div>
             </div>
             <div class="card clickable" onclick="openQuote('vehicule')">
-                <span class="service-badge dynamic-badge">Available August 15</span>
+                <span class="service-badge dynamic-badge">Available August 15th</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
-                <h3 class="text-bleu">Vehicle Package</h3>
+                <h3 class="text-bleu">Vehicle Pack</h3>
                 <p>Complete auto textile cleaning.</p>
                 <div class="card-border"></div>
             </div>
             <div class="card clickable" onclick="openQuote('bureaux')">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
                 <h3 class="text-bleu">Offices & Buildings</h3>
-                <p>Custom configuration for your premises.</p>
+                <p>Custom configuration of your premises.</p>
                 <div class="card-border"></div>
             </div>
         </div>
     </section>
 
     <section id="galerie" class="gallery scroll-animate">
-        <h2 class="section-title">Our <span class="text-green">Portfolio</span></h2>
+        <h2 class="section-title">Our <span class="text-green">Projects</span></h2>
         <div class="gallery-fine-container">
             <div class="realisations-mix-grid">
                 
                 <div class="comparison-container">
-                    <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Full screen</button>
+                    <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Full Screen</button>
                     <div class="comparison-slider">
                         <div class="img before"><img src="avant1.jpg" alt="Before"></div>
                         <div class="img after"><img src="apres1.jpg" alt="After"></div>
@@ -202,7 +207,7 @@
                 </div>
                 
                 <div class="comparison-container">
-                    <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Full screen</button>
+                    <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Full Screen</button>
                     <div class="comparison-slider">
                         <div class="img before"><img src="avant-terrasse.jpg" alt="Terrace Before cleaning"></div>
                         <div class="img after"><img src="apres-terrasse.jpg" alt="Terrace After cleaning"></div>
@@ -225,11 +230,11 @@
     </section>
 
     <section id="avis" class="services scroll-animate" style="background: var(--gris);">
-        <h2 class="section-title">Customer <span class="text-green">Reviews</span></h2>
+        <h2 class="section-title">Client <span class="text-green">Reviews</span></h2>
         <div class="services-grid">
             <div class="card review-card"><div class="dynamic-slide active"><h3>Sébastien R.</h3><p>"Impeccable work on my sofa. Punctual."</p></div><div class="card-border"></div></div>
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Marie L.</h3><p>"My windows have never been so clean. The result is perfect."</p></div><div class="card-border"></div></div>
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Pierre D.</h3><p>"Quick intervention before my offices opened. Very satisfied."</p></div><div class="card-border"></div></div>
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Marie L.</h3><p>"My windows have never been so clean. Perfect result."</p></div><div class="card-border"></div></div>
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Pierre D.</h3><p>"Fast intervention before my offices opened. Very satisfied."</p></div><div class="card-border"></div></div>
         </div>
     </section>
 
@@ -260,17 +265,17 @@
                 </div>
 
                 <div class="who-text-box">
-                    <h2 class="section-title">From the high standards of major groups <br><span class="text-green">to your personalized service</span></h2>
+                    <h2 class="section-title">From the high standards of large groups <br><span class="text-green">to your personalized service</span></h2>
                     
-                    <p class="intro-text">"After 20 years of tackling the sector's most complex challenges, I decided to return to the essentials: <strong>you.</strong>"</p>
+                    <p class="intro-text">"After 20 years of tackling the most complex challenges in the industry, I decided to return to the basics: **you.**"</p>
                     
-                    <p>My career with the leading cleaning companies has instilled an iron discipline in me. Today, I founded <strong>O.S.P+</strong> to put this high-level expertise at the service of a direct, transparent, and lasting human relationship.</p>
+                    <p>My background with leading cleaning companies instilled an ironclad discipline in me. Today, I founded <strong>O.S.P+</strong> to bring this high-level expertise to a direct, transparent, and lasting human relationship.</p>
                     
                     <div class="tech-box">
-                        <h4 class="tech-title">The O.S.P+ philosophy: Proximity, Listening, Cleanliness & High Security</h4>
+                        <h4 class="tech-title">The O.S.P+ Philosophy: Proximity, Listening, Cleanliness & High Security</h4>
                         <ul class="philo-list">
-                            <li>💬 <strong>Attentive & customized listening:</strong> No intermediaries or impersonal platforms.</li>
-                            <li>🛡️🔒 <strong>Enhanced Confidentiality & Security:</strong> Our intervention is deliberately limited to one or two staff members. Fewer people around means absolute discretion.</li>
+                            <li>💬 <strong>Attentive & tailor-made listening:</strong> No middlemen or impersonal platforms.</li>
+                            <li>🛡️🔒 <strong>Enhanced Confidentiality & Security:</strong> Our intervention is deliberately limited to one or two staff members. Fewer people around means guaranteed absolute discretion.</li>
                             <li>👤 <strong>A single point of contact, a single commitment:</strong> From the first commercial contact to the execution of the service, you deal with the same professional.</li>
                         </ul>
                     </div>
@@ -284,14 +289,14 @@
         <div class="services-grid">
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>What are the turnaround times?</h3><p>Generally within 48h to 72h.</p></div>
-                <div class="dynamic-slide"><h3>Do you work evenings/early mornings?</h3><p>Yes, for offices, starting at 5:00 AM.</p></div>
+                <div class="dynamic-slide active"><h3>What are the lead times?</h3><p>Generally within 48h to 72h.</p></div>
+                <div class="dynamic-slide"><h3>Do you work evenings?</h3><p>Yes, for offices, starting at 5 AM.</p></div>
                 <div class="card-border"></div>
             </div>
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
                 <div class="dynamic-slide active"><h3>Products used?</h3><p>Professional, effective, and eco-friendly products.</p></div>
-                <div class="dynamic-slide"><h3>Textile drying time?</h3><p>Thanks to professional suction, drying in 4 to 6 hours.</p></div>
+                <div class="dynamic-slide"><h3>Textile drying time?</h3><p>Thanks to pro vacuuming, drying in 4 to 6 hours.</p></div>
                 <div class="card-border"></div>
             </div>
             <div class="card faq-card">
@@ -310,7 +315,7 @@
                 <div class="contact-cat">
                     <h3>🕒 Hours</h3>
                     <ul class="contact-list">
-                        <li><strong>Mon - Fri:</strong> 05:00 - 10:30</li>
+                        <li><strong>Mon - Fri:</strong> 05:00 AM - 10:30 AM</li>
                         <li><strong>Sat - Sun:</strong> On request <br><span style="font-size: 0.75rem; color: var(--vert); font-weight: 600;">(Windows, Shampooing, etc.)</span></li>
                     </ul>
                 </div>
@@ -327,7 +332,7 @@
                     </div>
                 </div>
                 <div class="contact-cat">
-                    <h3>📍 Coverage</h3>
+                    <h3>📍 Service Area</h3>
                     <ul class="contact-list"><li>Toulouse & 30km included</li></ul>
                     <div class="villes-tags">
                         <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span>
@@ -343,10 +348,8 @@
 
     <footer>
         <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Occitanie Service Propreté</span> <span class="text-green">Plus</span>)</strong></p>
-        <p><span class="text-bleu">Sole Proprietor</span> | <span class="text-green">SIRET: 105 799 787 00012</span> | <span class="text-bleu">*VAT not applicable.</span></p>
+        <p><span class="text-bleu">Sole proprietorship</span> | <span class="text-green">SIRET: 105 799 787 00012</span> | <span class="text-bleu">*VAT not applicable.</span></p>
     </footer>
-
-    <!-- TOUTES LES FENÊTRES MODALES RESTENT INCHANGÉES... -->
     
     <div id="mentionsModal" class="modal">
         <div class="modal-content large" style="max-width: 800px;">
@@ -356,27 +359,27 @@
                 <h3 style="color: var(--bleu); font-size: 1.1rem; margin-bottom: 10px;">1. Site Publisher</h3>
                 <p><strong>O.S.P+ (Occitanie Service Propreté Plus)</strong><br>
                 Manager: Alexandre Jonot<br>
-                Status: Sole Proprietor (Artisan)<br>
+                Status: Sole proprietorship (Artisan)<br>
                 SIRET: 105 799 787 00012<br>
                 APE Code: 8121Z (General cleaning of buildings)<br>
-                Registered Address: 6 PLACE du Président Thomas Woodrow Wilson, 31000 Toulouse, FRANCE<br>
-                Phone: 07 45 02 76 24<br>
+                Registered address: 6 PLACE du Président Thomas Woodrow Wilson, 31000 Toulouse, FRANCE<br>
+                Phone: +33 (0)7 45 02 76 24<br>
                 Email: contact@ospplus.com<br>
                 Professional Liability Insurance: [NAME OF YOUR INSURER]</p>
 
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Site Hosting</h3>
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Website Hosting</h3>
                 <p>The site is hosted by: <strong>[NAME OF YOUR HOST (e.g., OVH, Hostinger, O2Switch)]</strong><br>
                 Host Address: [HOST ADDRESS]</p>
 
                 <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">3. Privacy Policy (GDPR)</h3>
-                <p>Information collected via the quote form (last name, first name, address, email, phone) is recorded and processed exclusively by Alexandre Jonot (O.S.P+). Its sole purpose is to establish commercial quotes and follow up on customer relations. No data is sold, rented, or transferred to third parties.</p>
+                <p>The information collected via the quote form (last name, first name, address, email, phone) is recorded and processed exclusively by Alexandre Jonot (O.S.P+). Its sole purpose is the establishment of commercial quotes and client relationship management. No data is sold, rented, or transferred to third parties.</p>
                 <p><strong>Retention period:</strong> This data is kept for a maximum of 3 years after our last commercial contact.</p>
                 
-                <h3 style="color: var(--vert); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. Data Security and Liability Limits</h3>
-                <p>O.S.P+ is committed to taking all reasonable precautions (secure passwords, professional tools) to preserve the security of your personal data. However, as the Internet is not a 100% secure environment, O.S.P+ cannot guarantee absolute security against cyberattacks. Consequently, O.S.P+ declines any liability in the event of loss, leak, or theft of data related to a security breach beyond its control (force majeure or unforeseeable hacking act).</p>
+                <h3 style="color: var(--vert); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. Data Security and Limitations of Liability</h3>
+                <p>O.S.P+ is committed to taking all reasonable precautions (secure passwords, professional tools) to preserve the security of your personal data. However, as the Internet is not a 100% secure environment, O.S.P+ cannot guarantee absolute security against cyberattacks. Consequently, O.S.P+ declines any responsibility in the event of data loss, leak, or theft related to a security breach beyond its control (force majeure or unforeseeable hacking act).</p>
                 
                 <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">5. Your Rights</h3>
-                <p>In accordance with the "Informatique et Libertés" law and the European GDPR, you have the right to access, rectify, port, and erase your personal data. To exercise this right, you can contact us by email at: contact@ospplus.com.</p>
+                <p>In accordance with the "Informatique et Libertés" law and the European GDPR, you have the right to access, rectify, port, and delete your personal data. To exercise this right, you can contact us by email at: contact@ospplus.com.</p>
                 <p>You also have the right to file a complaint with the CNIL (www.cnil.fr).</p>
             </div>
         </div>
@@ -385,7 +388,7 @@
     <div id="clientModal" class="modal">
         <div class="modal-content small" style="padding: 30px; text-align: center;">
             <span class="close-modal" onclick="closeClientModal()">×</span>
-            <h3 style="color: var(--bleu); margin-bottom: 15px;">Customer Portal</h3>
+            <h3 style="color: var(--bleu); margin-bottom: 15px;">Client Area</h3>
             <p style="font-size: 0.85rem; margin-bottom: 20px;">Enter your confidential code to benefit from a <strong>10% Loyalty discount</strong> on your new quote.</p>
             <input type="text" id="clientCodeInput" placeholder="Your personal code..." style="padding: 12px; width: 80%; border-radius: 8px; border: 2px solid #e1e8ef; margin-bottom: 15px; font-size: 1rem; text-align: center; text-transform: uppercase;">
             <br>
@@ -421,10 +424,10 @@
                         <div class="form-section-compact">
                             
                             <div style="background: #f4f8fb; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #e1e8ef;">
-                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* The price of specific requests will be calculated custom-made (not included in the overall estimate).</p>
+                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* The price for special requests will be calculated custom-made (not included in the overall estimate).</p>
                                 <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;">
                                     <span>+</span> Add a specific request
-                                    <span class="help-bubble">?<span class="tooltip-text">A specific need not listed? (E.g.: Fridge cleaning, taking out trash, etc.)</span></span>
+                                    <span class="help-bubble">?<span class="tooltip-text">A specific need not listed? (e.g., Fridge cleaning, taking out trash, etc.)</span></span>
                                 </button>
                                 <div id="customRowsContainer"></div>
                             </div>
@@ -445,8 +448,8 @@
                                 </div>
 
                                 <div class="input-group" id="companyNameGroup" style="display: none; margin-top: 5px;">
-                                    <label>Organization Name (Company, Association...)</label>
-                                    <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="E.g.: OSP Plus...">
+                                    <label>Company/Organization Name</label>
+                                    <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="Ex: OSP Plus...">
                                 </div>
 
                                 <div class="input-group" id="employeeCountGroup" style="display: none; margin-top: 10px;">
@@ -463,7 +466,7 @@
                                 <div class="input-group" style="margin-top: 10px; margin-bottom: 5px; background: #eef3f8; padding: 15px; border-radius: 8px; border: 1px dashed var(--vert);">
                                     <label style="color: var(--bleu);">Promo Code (Optional)</label>
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                        <input type="text" id="promoCodeInputDevis" placeholder="E.g.: REDUC10" style="text-transform: uppercase; flex: 1;">
+                                        <input type="text" id="promoCodeInputDevis" placeholder="Ex: REDUC10" style="text-transform: uppercase; flex: 1;">
                                         <button type="button" onclick="applyPromoCodeDevis()" class="btn-validate-custom" style="padding: 10px 15px; font-size: 0.85rem;">Apply</button>
                                     </div>
                                     <p id="promoCodeMsgDevis" style="font-size: 0.8rem; margin-top: 5px; font-weight: bold; line-height: 1.4;"></p>
@@ -471,17 +474,17 @@
 
                                 <div style="margin-top: 5px; margin-bottom: 5px;">
                                     <p style="font-size: 0.65rem; color: #777; line-height: 1.4; text-align: justify;">
-                                        🔒 <strong>Data protection:</strong> By submitting this form, I agree that the information entered will be used by O.S.P+ strictly within the context of my quote request and the ensuing commercial relationship. Your data will never be sold to third parties. To exercise your rights of access, modification, or deletion, please consult our <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Legal Notice</a>.
+                                        🔒 <strong>Data protection:</strong> By submitting this form, I agree that the information entered will be used by O.S.P+ strictly in the context of my quote request and the business relationship that may result from it. Your data will never be sold to third parties. To exercise your rights of access, modification or deletion, please consult our <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Legal Notice</a>.
                                     </p>
                                 </div>
 
                                 <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; border-radius: 5px; margin-top: 15px; margin-bottom: 5px;">
                                     <p style="font-size: 0.75rem; color: #555; line-height: 1.4; text-align: justify; margin: 0;">
-                                        ⚠️ <strong>Please note:</strong> <em>This estimate is purely indicative.</em> The final and contractual rate will be validated with you only after an on-site technical visit of your premises (no obligation).
+                                        ⚠️ <strong>Please note:</strong> <em>This estimate is strictly indicative.</em> The final and binding rate will be validated with you only after an on-site technical visit of your premises (no obligation).
                                     </p>
                                 </div>
 
-                                <button type="button" class="btn-submit-form" id="btnSubmitForm" onclick="submitInteractiveForm()">SEND MY QUOTE</button>
+                                <button type="button" class="btn-submit-form" id="btnSubmitForm" onclick="submitInteractiveForm()">SEND MY QUOTE REQUEST</button>
                             </div>
                         </div>
                     </div>
@@ -498,7 +501,7 @@
 
     <div id="planningModal" class="day-modal">
         <div class="planning-modal-content">
-            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Scheduling</h4>
+            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Planning</h4>
             
             <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">1. Days of the week:</p>
             <div class="grid-checkboxes" id="planDaysGrid"></div>
@@ -515,7 +518,7 @@
             </div>
             
             <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">3. Details / Comments <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optional)</span>:</p>
-            <textarea id="planComment" placeholder="E.g.: Closed on Tuesdays, focus on the open space, keys at reception..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
+            <textarea id="planComment" placeholder="Ex: Closed on Tuesdays, focus on the open space, keys at reception..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
             
             <button type="button" class="btn-validate-days" onclick="savePlanning()">VALIDATE SELECTION</button>
         </div>
@@ -539,7 +542,7 @@
                 
                 <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:5px;">Or enter a name:</p>
                 <div style="display:flex; gap:10px; align-items:center;">
-                    <input type="text" id="customLevelInput" placeholder="E.g.: Mezzanine, Building B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
+                    <input type="text" id="customLevelInput" placeholder="Ex: Mezzanine, Building B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
                     <button onclick="addCustomLevel()" class="btn-validate-custom">Add</button>
                 </div>
             </div>
@@ -575,7 +578,7 @@
     </div>
 
     <div id="imageModal" class="modal">
-        <span class="close-modal" onclick="closeImageModal()" style="color: white; font-size: 50px; right: 30px; top: 15px;">&times;</span>
+        <span class="close-modal" onclick="closeImageModal()" style="color: white; font-size: 50px; right: 30px; top: 15px;">×</span>
         <img class="modal-content-img" id="fullSizeImage">
     </div>
 
