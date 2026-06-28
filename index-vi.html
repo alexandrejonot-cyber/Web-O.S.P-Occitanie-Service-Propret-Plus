@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>O.S.P+ | Công ty Vệ sinh tại Toulouse & Occitanie | 20 Năm Kinh Nghiệm</title>
-    <meta name="description" content="O.S.P+: Chuyên gia vệ sinh chuyên nghiệp tại Toulouse. Lau kính, giặt ghế sofa, thảm và văn phòng. Dịch vụ làm sạch chất lượng cao tại Occitanie. Báo giá miễn phí.">
-    <meta name="keywords" content="vệ sinh toulouse, lau kính toulouse, giặt sofa toulouse, vệ sinh văn phòng occitanie, làm sạch toulouse">
+    <title>O.S.P+ | Công ty Vệ sinh Toulouse & Occitanie | 20 năm Kinh nghiệm</title>
+    <meta name="description" content="O.S.P+ : Chuyên gia vệ sinh chuyên nghiệp tại Toulouse. Lau kính, giặt sô pha, thảm và văn phòng. Dịch vụ vệ sinh chất lượng cao tại Occitanie. Báo giá miễn phí.">
+    <meta name="keywords" content="vệ sinh toulouse, thợ lau kính toulouse, giặt sô pha toulouse, vệ sinh văn phòng occitanie, làm sạch toulouse">
     
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
     
+    <script src="codes.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
        (function(){
@@ -18,89 +19,52 @@
        })();
     </script>
     
+    <!-- CSS CHO NÚT TOÀN MÀN HÌNH TRƯỚC/SAU -->
     <style>
-        .btn-planifier { background: var(--gris); border: 2px solid #e1e8ef; color: var(--bleu); padding: 8px; border-radius: 5px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; text-align: center; }
-        .btn-planifier:hover { border-color: var(--vert); background: white; }
-        .btn-planifier.active { background: var(--vert); color: white; border-color: var(--vert); }
-        .planning-modal-content { max-width: 450px; width: 95%; background: white; padding: 25px; border-radius: 15px; position: relative; }
-        .grid-checkboxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; margin-bottom: 10px; }
-        @media (min-width: 400px) { .grid-checkboxes { grid-template-columns: repeat(4, 1fr); } }
-        .checkbox-item { background: var(--gris); padding: 8px; border-radius: 6px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; cursor: pointer; border: 1px solid #eee; transition: 0.2s; }
-        .checkbox-item:hover { border-color: var(--vert); }
-        .checkbox-item input { accent-color: var(--vert); transform: scale(1.2); }
-        
-        .btn-submit-form { background: var(--vert); color: white; border: none; padding: 15px 20px; border-radius: 8px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-transform: uppercase; width: 100%; margin-top: 20px; }
-        .btn-submit-form:hover { background: #7ab332; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
-        
-        .btn-add-row { background: transparent; color: var(--vert); border: 2px dashed var(--vert); padding: 10px; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-add-row:hover { background: var(--vert); color: white; border-style: solid; }
-        
-        .btn-cross-sell { background: transparent; color: var(--bleu); border: 2px dashed var(--bleu); padding: 10px 15px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 5px; }
-        .btn-cross-sell:hover { background: var(--bleu); color: white; border-style: solid; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(26, 60, 108, 0.2); }
-
-        .btn-delete-row { background: #ff4d4d; color: white; border: none; border-radius: 4px; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; cursor: pointer; margin-left: 5px; transition: 0.2s; }
-        .btn-delete-row:hover { background: #cc0000; }
-        
-        .quote-row-item.custom-row {
-            background: #eef3f8;
-            border: 1px dashed var(--vert);
-            margin-top: 10px;
+        .comparison-container {
+            position: relative;
         }
-
-        .level-accordion { background: white; border: 2px solid #e1e8ef; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
-        .accordion-header { background: var(--gris); padding: 12px 15px; font-weight: 800; color: var(--bleu); font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; }
-        .accordion-header:hover { background: #e1e8ef; }
-        .accordion-header.active { border-bottom: 2px solid var(--vert); background: white; }
-        .accordion-icon { font-size: 1.2rem; color: var(--vert); transition: transform 0.3s; }
-        .accordion-header.active .accordion-icon { transform: rotate(45deg); }
-        
-        .accordion-body { display: none; padding: 15px; background: white; }
-        .accordion-body.active { display: block; animation: fadeInDown 0.3s ease; }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-
-        .room-quick-adds { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .btn-quick-add { background: var(--gris); border: 1px solid var(--bleu); color: var(--bleu); padding: 6px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .btn-quick-add:hover { background: var(--bleu); color: white; }
-        
-        .structured-room-card { background: var(--gris); border-left: 4px solid var(--vert); border-radius: 8px; padding: 12px; margin-bottom: 12px; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee; }
-        .structured-room-card h5 { color: var(--bleu); font-size: 0.9rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        
-        .prest-pill-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; margin-bottom: 10px; }
-        .prest-pill input[type="checkbox"] { display: none; }
-        
-        .prest-pill label { 
-            background: white; border: 1px solid #ccc; padding: 4px 10px; border-radius: 15px; 
-            font-size: 0.65rem; font-weight: 600; cursor: pointer; color: #555; 
-            transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; user-select: none; 
+        .btn-fullscreen-comp {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
-        
-        .prest-pill input[type="checkbox"] + label::before { content: "+"; font-size: 0.8rem; font-weight: 800; line-height: 1; }
-        
-        .prest-pill input[type="checkbox"]:checked + label { background: var(--vert); color: white; border-color: var(--vert); }
-        .prest-pill input[type="checkbox"]:checked + label::before { content: "✔"; font-size: 0.75rem; }
-        
-        .prest-pill.mandatory label { border-color: var(--bleu); cursor: not-allowed; opacity: 0.9; }
-        .prest-pill.mandatory input[type="checkbox"]:checked + label { background: var(--bleu); color: white; border-color: var(--bleu); }
-        .prest-pill.mandatory input[type="checkbox"]:checked + label::before { content: "🔒 ✔"; font-size: 0.7rem; }
-
-        .qty-input-box { display: flex; align-items: center; gap: 8px; background: white; padding: 5px 10px; border-radius: 5px; border: 1px solid #ddd; width: fit-content; }
-        .qty-input-box label { font-size: 0.75rem; font-weight: 600; color: #444; }
-        .qty-input-box input { width: 45px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
-        .qty-input-box select { padding: 4px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: var(--bleu); outline: none; cursor: pointer; }
-
-        .btn-validate-custom { background: var(--vert); color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-validate-custom:hover { background: #7ab332; }
-
-        @media (min-width: 851px) {
-            .modal-col-left, .modal-col-right {
-                max-height: calc(95vh - 100px);
-                overflow-y: auto;
-            }
-            .modal-col-left { padding-right: 15px; }
-            .modal-col-right { padding-right: 10px; }
-            .modal-col-left::-webkit-scrollbar, .modal-col-right::-webkit-scrollbar { width: 6px; }
-            .modal-col-left::-webkit-scrollbar-track, .modal-col-right::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-            .modal-col-left::-webkit-scrollbar-thumb, .modal-col-right::-webkit-scrollbar-thumb { background: var(--vert); border-radius: 4px; }
+        .btn-fullscreen-comp:hover {
+            background: var(--vert, #27ae60);
+            border-color: var(--vert, #27ae60);
+        }
+        /* Style cụ thể khi chuyển sang chế độ toàn màn hình */
+        .comparison-container:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .comparison-container:fullscreen .comparison-slider {
+            width: 100%;
+            height: 85vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .comparison-container:fullscreen .gallery-label {
+            color: #fff;
+            margin-top: 15px;
+            font-size: 1.2rem;
         }
     </style>
 </head>
@@ -109,7 +73,7 @@
     <div class="header-sticky-wrapper">
         
         <div id="promo-banner" class="promo-banner" style="display: none;">
-            🎉 <strong>ƯU ĐÃI ĐẶC BIỆT DỊP LỄ: Giảm 10% cho hóa đơn cuối cùng!</strong> <em>(Áp dụng nếu hợp đồng chính thức được ký trong vòng 15 ngày)</em>
+            🎉 <strong>ƯU ĐÃI ĐẶC BIỆT NGÀY LỄ: Giảm 10% cho hóa đơn cuối cùng của bạn!</strong> <em>(Áp dụng nếu hợp đồng cuối cùng được ký trong vòng 15 ngày)</em>
         </div>
 
         <header>
@@ -117,8 +81,15 @@
                 <div class="main-title"><span class="text-bleu">O.S.P</span><span class="text-green">+</span></div>
                 <div class="sub-title"><span class="text-bleu">Occitanie Services Propreté</span> <span class="text-green">Plus</span></div>
             </div>
+
+            <div class="hamburger" id="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
             <nav>
-                <ul>
+                <ul id="nav-links">
                     <li><a href="#" class="nav-link">Trang chủ</a></li>
                     <li><a href="#services" class="nav-link">Dịch vụ</a></li>
                     <li><a href="#galerie" class="nav-link">Dự án</a></li>
@@ -127,8 +98,10 @@
                     <li><a href="#faq" class="nav-link">FAQ</a></li>
                     <li><a href="#contact" class="nav-link">Liên hệ</a></li>
                     <li><a href="tel:0745027624" class="btn-phone-nav">📞 07 45 02 76 24</a></li>
-                    <li><a href="#services" class="btn-devis-nav">Báo giá miễn phí</a></li>
-                    <li><button class="btn-client-nav" onclick="openClientModal()">Khách hàng thân thiết</button></li>
+                    <li><a href="#services" class="btn-devis-nav">Báo giá Miễn phí</a></li>
+                    <li><button class="btn-client-nav" onclick="openClientModal()">Khách hàng Thân thiết</button></li>
+                    <li><button class="btn-carte-nav" onclick="openCarteModal()">📇 Danh thiếp</button></li>
+                    
                     <li class="lang-menu">
                         <div class="selected-lang">🇻🇳 VI ▼</div>
                         <ul class="lang-dropdown">
@@ -145,7 +118,7 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Sạch Sẽ, <span class="text-green">Là Nghề Của Tôi.</span></h1>
+            <h1>Sự Sạch sẽ, <span class="text-green">Đó là Nghề của Tôi.</span></h1>
             <div class="hero-video-container">
                 <div class="video-wrapper">
                     <video id="introVid" muted autoplay loop playsinline preload="metadata">
@@ -153,62 +126,66 @@
                     </video>
                 </div>
                 <div class="custom-controls">
-                    <button class="control-btn" onclick="togglePlay('introVid')">⏯️ Play/Pause</button>
+                    <button class="control-btn" onclick="togglePlay('introVid')">⏯️ Phát/Dừng</button>
                     <button class="control-btn" onclick="toggleMute('introVid')">🔊 Âm thanh</button>
-                    <button class="control-btn" onclick="restartVideo('introVid')">🔄 Làm lại</button>
+                    <button class="control-btn" onclick="restartVideo('introVid')">🔄 Đặt lại</button>
                     <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Toàn màn hình</button>
                 </div>
             </div>
             <div class="hero-badges">
-                <span class="badge">20 Năm Kinh Nghiệm</span>
-                <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Bảo hiểm Trách nhiệm Dân sự</span>
-                <span class="badge">Thiết bị Chuyên dụng</span>
+                <span class="badge">20 Năm Kinh nghiệm</span>
+                <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Bảo hiểm Trách nhiệm nghề nghiệp</span>
+                <span class="badge">Thiết bị Chuyên nghiệp</span>
             </div>
-            <a href="#services" class="btn-main pulse-animation">YÊU CẦU BÁO GIÁ MIỄN PHÍ</a>
+            <a href="#services" class="btn-main pulse-animation">YÊU CẦU BÁO GIÁ MIỄN PHÍ CỦA TÔI</a>
         </div>
     </section>
 
-    <div class="trust-bar"><p>📍 Khu vực <strong>Toulouse (Miễn phí 30km)</strong> và toàn bộ vùng <strong>Occitanie*</strong></p></div>
+    <div class="trust-bar"><p>📍 Khu vực <strong>Toulouse (Bao gồm 30 km)</strong> và toàn bộ vùng <strong>Occitanie*</strong></p></div>
 
     <section id="services" class="services scroll-animate">
-        <h2 class="section-title"><span class="text-bleu">Các Dịch vụ Chuyên biệt</span> & <span class="text-green">Báo giá Trực tuyến</span></h2>
+        <h2 class="section-title"><span class="text-bleu">Dịch vụ Chuyên biệt</span> & <span class="text-green">Báo giá trực tuyến</span></h2>
         <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: -15px auto 35px auto; line-height: 1.5; padding: 0 15px;">
-            ⚠️ <em>Mức giá tính toán trên trang web này chỉ mang tính tham khảo.</em> Báo giá chính thức và hợp đồng sẽ chỉ được thiết lập sau khi chúng tôi khảo sát trực tiếp tại cơ sở của bạn (không ràng buộc).
+            ⚠️ <em>Các mức giá tính toán trên trang web này chỉ mang tính chất tham khảo.</em> Báo giá chính thức và hợp đồng sẽ chỉ được thiết lập với bạn sau khi khảo sát kỹ thuật tận nơi tại cơ sở của bạn (không bắt buộc).
         </p>
 
         <div class="services-grid">
             <div class="card clickable" onclick="openQuote('vitrerie')">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg></div>
                 <h3 class="text-bleu">Lau kính</h3>
-                <p>Làm sạch toàn bộ các bề mặt kính.</p>
+                <p>Làm sạch toàn bộ mọi bề mặt.</p>
                 <div class="card-border"></div>
             </div>
             <div class="card clickable" onclick="openQuote('shampouinage')">
+                <span class="service-badge dynamic-badge">Có sẵn từ 15 tháng 8</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path><path d="M9 22V12h6v10"></path></svg></div>
-                <h3 class="text-bleu">Giặt thảm & ghế sofa</h3>
-                <p>Làm sạch sâu phục hồi đồ vải và thảm.</p>
+                <h3 class="text-bleu">Giặt thảm / Ghế</h3>
+                <p>Phục hồi làm mới vải và thảm.</p>
                 <div class="card-border"></div>
             </div>
             <div class="card clickable" onclick="openQuote('vehicule')">
+                <span class="service-badge dynamic-badge">Có sẵn từ 15 tháng 8</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
-                <h3 class="text-bleu">Gói xe hơi</h3>
-                <p>Vệ sinh chi tiết nội thất ô tô.</p>
+                <h3 class="text-bleu">Gói Xe hơi</h3>
+                <p>Làm sạch toàn bộ nội thất vải ô tô.</p>
                 <div class="card-border"></div>
             </div>
             <div class="card clickable" onclick="openQuote('bureaux')">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
                 <h3 class="text-bleu">Văn phòng & Tòa nhà</h3>
-                <p>Cấu hình tùy chỉnh theo không gian của bạn.</p>
+                <p>Tùy chỉnh thiết lập theo không gian của bạn.</p>
                 <div class="card-border"></div>
             </div>
         </div>
     </section>
 
     <section id="galerie" class="gallery scroll-animate">
-        <h2 class="section-title">Dự án <span class="text-green">Thực tế</span></h2>
+        <h2 class="section-title"><span class="text-green">Dự án thực tế</span> của chúng tôi</h2>
         <div class="gallery-fine-container">
             <div class="realisations-mix-grid">
+                
                 <div class="comparison-container">
+                    <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Toàn màn hình</button>
                     <div class="comparison-slider">
                         <div class="img before"><img src="avant1.jpg" alt="Trước"></div>
                         <div class="img after"><img src="apres1.jpg" alt="Sau"></div>
@@ -217,27 +194,32 @@
                     </div>
                     <p class="gallery-label">Lau kính</p>
                 </div>
+                
                 <div class="video-container-fixed">
                     <div class="video-wrapper">
                         <video id="realVid" muted autoplay loop playsinline preload="metadata"><source src="video-realisation.mp4" type="video/mp4"></video>
                     </div>
                 </div>
+                
                 <div class="comparison-container">
+                    <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Toàn màn hình</button>
                     <div class="comparison-slider">
-                        <div class="img before"><img src="avant2.jpg" alt="Trước"></div>
-                        <div class="img after"><img src="apres2.jpg" alt="Sau"></div>
+                        <div class="img before"><img src="avant-terrasse.jpg" alt="Sân thượng Trước khi vệ sinh"></div>
+                        <div class="img after"><img src="apres-terrasse.jpg" alt="Sân thượng Sau khi vệ sinh"></div>
                         <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
                         <div class="slider-button"></div>
                     </div>
-                    <p class="gallery-label">Vải & Thảm</p>
+                    <p class="gallery-label">Vệ sinh Sân thượng (Áp suất cao)</p>
                 </div>
+                
             </div>
+            
             <div class="mini-photo-row">
-                <div class="card mini-card"><img src="photo1.jpg" alt="1"><div class="card-border"></div></div>
-                <div class="card mini-card"><img src="photo2.jpg" alt="2"><div class="card-border"></div></div>
-                <div class="card mini-card"><img src="photo3.jpg" alt="3"><div class="card-border"></div></div>
-                <div class="card mini-card"><img src="photo4.jpg" alt="4"><div class="card-border"></div></div>
-                <div class="card mini-card"><img src="photo5.jpg" alt="5"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo1.jpg" alt="1" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo2.jpg" alt="2" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo3.jpg" alt="3" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo4.jpg" alt="4" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo5.jpg" alt="5" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
             </div>
         </div>
     </section>
@@ -245,9 +227,9 @@
     <section id="avis" class="services scroll-animate" style="background: var(--gris);">
         <h2 class="section-title">Đánh giá của <span class="text-green">Khách hàng</span></h2>
         <div class="services-grid">
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Sébastien R.</h3><p>"Công việc hoàn hảo trên ghế sofa của tôi. Rất đúng giờ."</p></div><div class="card-border"></div></div>
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Marie L.</h3><p>"Kính của tôi chưa bao giờ sạch đến thế. Kết quả tuyệt vời."</p></div><div class="card-border"></div></div>
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Pierre D.</h3><p>"Can thiệp nhanh chóng trước giờ mở cửa văn phòng. Rất hài lòng."</p></div><div class="card-border"></div></div>
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Sébastien R.</h3><p>"Công việc làm sạch sô pha của tôi thật hoàn hảo. Rất đúng giờ."</p></div><div class="card-border"></div></div>
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Marie L.</h3><p>"Cửa kính của tôi chưa bao giờ sạch đến thế. Kết quả cực kỳ hoàn hảo."</p></div><div class="card-border"></div></div>
+            <div class="card review-card"><div class="dynamic-slide active"><h3>Pierre D.</h3><p>"Xử lý nhanh chóng trước giờ mở cửa văn phòng. Tôi rất hài lòng."</p></div><div class="card-border"></div></div>
         </div>
     </section>
 
@@ -270,26 +252,26 @@
                             </video>
                         </div>
                         <div class="custom-controls">
-                            <button class="control-btn" onclick="togglePlay('presVid')">⏯️ Play</button>
+                            <button class="control-btn" onclick="togglePlay('presVid')">⏯️ Phát</button>
                             <button class="control-btn" onclick="toggleMute('presVid')">🔊 Âm thanh</button>
-                            <button class="control-btn" onclick="restartVideo('presVid')">🔄 Làm lại</button>
+                            <button class="control-btn" onclick="restartVideo('presVid')">🔄 Đặt lại</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="who-text-box">
-                    <h2 class="section-title">Tiêu chuẩn khắt khe từ tập đoàn lớn <br><span class="text-green">mang đến dịch vụ cá nhân hóa cho bạn</span></h2>
+                    <h2 class="section-title">Từ tiêu chuẩn khắt khe của các tập đoàn lớn <br><span class="text-green">đến dịch vụ cá nhân hóa cho bạn</span></h2>
                     
-                    <p class="intro-text">"Sau 20 năm giải quyết các thách thức phức tạp nhất trong ngành, tôi quyết định trở lại với điều cốt lõi: <strong>chính bạn.</strong>"</p>
+                    <p class="intro-text">"Sau 20 năm chinh phục những thách thức phức tạp nhất trong ngành, tôi quyết định quay về với điều cốt lõi: <strong>chính bạn.</strong>"</p>
                     
-                    <p>Sự nghiệp tại các công ty vệ sinh hàng đầu đã rèn luyện cho tôi kỷ luật thép. Hôm nay, tôi thành lập <strong>O.S.P+</strong> để mang chuyên môn cấp cao này trực tiếp đến bạn, ưu tiên mối quan hệ con người trực tiếp, minh bạch và lâu dài.</p>
+                    <p>Hành trình làm việc tại các công ty dẫn đầu trong lĩnh vực vệ sinh đã rèn luyện cho tôi tính kỷ luật thép. Hôm nay, tôi thành lập <strong>O.S.P+</strong> để đưa kỹ năng chuyên môn cấp cao này vào phục vụ một mối quan hệ con người trực tiếp, minh bạch và bền vững.</p>
                     
                     <div class="tech-box">
-                        <h4 class="tech-title">Triết lý O.S.P+: Gần gũi, Lắng nghe, Sạch sẽ & Bảo mật cao</h4>
+                        <h4 class="tech-title">Triết lý O.S.P+: Gần gũi, Lắng nghe, Sạch sẽ & An ninh cao</h4>
                         <ul class="philo-list">
-                            <li>💬 <strong>Lắng nghe tận tâm & tùy chỉnh:</strong> Không qua trung gian hay nền tảng vô danh.</li>
-                            <li>🛡️🔒 <strong>Bảo mật & Kín đáo tăng cường:</strong> Sự hiện diện của chúng tôi được giới hạn ở một hoặc hai nhân viên. Ít người qua lại đồng nghĩa với sự kín đáo tuyệt đối.</li>
-                            <li>👤 <strong>Một đầu mối liên hệ, một cam kết duy nhất:</strong> Từ lần tiếp xúc đầu tiên cho đến khi thực hiện dịch vụ, bạn chỉ làm việc với một chuyên gia duy nhất.</li>
+                            <li>💬 <strong>Lắng nghe tận tâm & Tùy chỉnh:</strong> Không qua trung gian hay các nền tảng tổng đài xa lạ.</li>
+                            <li>🛡️🔒 <strong>Bảo mật & An ninh tăng cường:</strong> Sự can thiệp của chúng tôi được giới hạn có chủ ý ở một hoặc hai nhân viên. Ít người qua lại đồng nghĩa với sự đảm bảo về tính kín đáo tuyệt đối.</li>
+                            <li>👤 <strong>Một đầu mối liên hệ, một cam kết:</strong> Từ lần tiếp xúc thương mại đầu tiên cho đến khi hoàn thành dịch vụ, bạn chỉ làm việc với cùng một chuyên gia.</li>
                         </ul>
                     </div>
                 </div>
@@ -302,20 +284,20 @@
         <div class="services-grid">
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>Thời gian đáp ứng?</h3><p>Thường trong vòng 48h đến 72h.</p></div>
-                <div class="dynamic-slide"><h3>Có làm việc buổi tối không?</h3><p>Có, đối với văn phòng, chúng tôi có thể bắt đầu từ 5h sáng.</p></div>
+                <div class="dynamic-slide active"><h3>Thời gian thực hiện?</h3><p>Thường trong vòng 48h đến 72h.</p></div>
+                <div class="dynamic-slide"><h3>Bạn có làm buổi tối không?</h3><p>Có, đối với văn phòng, bắt đầu từ 5h sáng.</p></div>
                 <div class="card-border"></div>
             </div>
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>Sản phẩm sử dụng?</h3><p>Sản phẩm chuyên dụng, hiệu quả cao và thân thiện với môi trường.</p></div>
-                <div class="dynamic-slide"><h3>Thời gian khô thảm/sofa?</h3><p>Nhờ máy hút chuyên dụng, thời gian khô chỉ từ 4 đến 6 giờ.</p></div>
+                <div class="dynamic-slide active"><h3>Sản phẩm sử dụng?</h3><p>Sản phẩm chuyên nghiệp, hiệu quả và an toàn.</p></div>
+                <div class="dynamic-slide"><h3>Thời gian khô của vải?</h3><p>Nhờ máy hút chuyên dụng, khô trong 4 đến 6 giờ.</p></div>
                 <div class="card-border"></div>
             </div>
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>Khu vực phục vụ?</h3><p>Miễn phí di chuyển trong vòng 30km quanh Toulouse.</p></div>
-                <div class="dynamic-slide"><h3>Phương thức thanh toán?</h3><p>Chấp nhận thẻ tín dụng, tiền mặt hoặc chuyển khoản ngân hàng.</p></div>
+                <div class="dynamic-slide active"><h3>Khu vực hoạt động?</h3><p>Miễn phí di chuyển trong bán kính 30km quanh Toulouse.</p></div>
+                <div class="dynamic-slide"><h3>Phương thức thanh toán?</h3><p>Chấp nhận thẻ, tiền mặt hoặc chuyển khoản.</p></div>
                 <div class="card-border"></div>
             </div>
         </div>
@@ -329,13 +311,13 @@
                     <h3>🕒 Giờ làm việc</h3>
                     <ul class="contact-list">
                         <li><strong>Thứ 2 - Thứ 6:</strong> 05:00 - 10:30</li>
-                        <li><strong>Thứ 7 - CN:</strong> Theo yêu cầu <br><span style="font-size: 0.75rem; color: var(--vert); font-weight: 600;">(Lau kính, Giặt sofa, v.v.)</span></li>
+                        <li><strong>Thứ 7 - CN:</strong> Theo yêu cầu <br><span style="font-size: 0.75rem; color: var(--vert); font-weight: 600;">(Lau kính, Giặt thảm, v.v.)</span></li>
                     </ul>
                 </div>
                 <div class="contact-cat">
-                    <h3>📞 Liên hệ</h3>
+                    <h3>📞 Thông tin</h3>
                     <ul class="contact-list">
-                        <li><strong>Điện thoại:</strong> 07 45 02 76 24</li>
+                        <li><strong>SĐT:</strong> 07 45 02 76 24</li>
                         <li><strong>Email:</strong> contact@ospplus.com</li>
                     </ul>
                     <div class="social-original">
@@ -345,8 +327,8 @@
                     </div>
                 </div>
                 <div class="contact-cat">
-                    <h3>📍 Khu vực</h3>
-                    <ul class="contact-list"><li>Toulouse & 30km (Miễn phí)</li></ul>
+                    <h3>📍 Khu vực phục vụ</h3>
+                    <ul class="contact-list"><li>Toulouse & 30km xung quanh</li></ul>
                     <div class="villes-tags">
                         <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span>
                     </div>
@@ -354,45 +336,48 @@
             </div>
             <div class="map-container-full"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184758.4619427306!2d1.2635431668749873!3d43.600678619932024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb6fec7552ff%3A0x408f3468f40a120!2sToulouse!5e0!3m2!1sfr!2sfr!4v1716386561139!5m2!1sfr!2sfr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
             <div class="mentions-center-wrapper">
-                <button onclick="openMentions()" class="btn-mentions-link">Xem Thông báo Pháp lý & Quyền riêng tư (GDPR)</button>
+                <button onclick="openMentions()" class="btn-mentions-link">Xem thông báo pháp lý</button>
             </div>
         </div>
     </section>
 
     <footer>
         <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Occitanie Service Propreté</span> <span class="text-green">Plus</span>)</strong></p>
-        <p><span class="text-bleu">Hộ kinh doanh cá thể</span> | <span class="text-green">SIRET : 123 456 789 00012</span> | <span class="text-bleu">*Không áp dụng VAT.</span></p>
+        <p><span class="text-bleu">Doanh nhân độc lập</span> | <span class="text-green">SIRET : 105 799 787 00012</span> | <span class="text-bleu">*Không áp dụng thuế VAT.</span></p>
     </footer>
 
+    <!-- CÁC CỬA SỔ MODAL GIỮ NGUYÊN CẤU TRÚC... -->
+    
     <div id="mentionsModal" class="modal">
         <div class="modal-content large" style="max-width: 800px;">
             <span class="close-modal" onclick="closeMentions()">×</span>
-            <div class="modal-header"><h2>Thông báo Pháp lý & GDPR</h2></div>
+            <div class="modal-header"><h2>Thông báo Pháp lý & RGPD (Quy định bảo vệ dữ liệu)</h2></div>
             <div class="modal-body-simple" style="max-height: 70vh; overflow-y: auto;">
                 <h3 style="color: var(--bleu); font-size: 1.1rem; margin-bottom: 10px;">1. Nhà xuất bản Trang web</h3>
-                <p><strong>O.S.P+ (Occitanie Services Propreté Plus)</strong><br>
-                Quản lý: Alexandre Jonot<br>
-                Tư cách pháp nhân: Auto-entrepreneur (Hộ kinh doanh)<br>
-                SIRET: 123 456 789 00012<br>
-                Địa chỉ đăng ký: [ĐỊA CHỈ CỦA BẠN], [MÃ BƯU ĐIỆN] [THÀNH PHỐ]<br>
+                <p><strong>O.S.P+ (Occitanie Service Propreté Plus)</strong><br>
+                Người chịu trách nhiệm: Alexandre Jonot<br>
+                Trạng thái: Doanh nhân độc lập (Thợ thủ công)<br>
+                SIRET: 105 799 787 00012<br>
+                Mã APE: 8121Z (Vệ sinh thông thường các tòa nhà)<br>
+                Địa chỉ đăng ký: 6 PLACE du Président Thomas Woodrow Wilson, 31000 Toulouse, PHÁP<br>
                 Điện thoại: 07 45 02 76 24<br>
                 Email: contact@ospplus.com<br>
-                Bảo hiểm Trách nhiệm Dân sự Nghề nghiệp: [TÊN CÔNG TY BẢO HIỂM]</p>
+                Bảo hiểm Trách nhiệm Dân sự Nghề nghiệp: [TÊN CÔNG TY BẢO HIỂM CỦA BẠN]</p>
 
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Dịch vụ Lưu trữ Trang web</h3>
-                <p>Trang web này được lưu trữ bởi: <strong>[TÊN HOST (ví dụ: OVH, Hostinger, O2Switch)]</strong><br>
-                Địa chỉ Host: [ĐỊA CHỈ HOST]</p>
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Lưu trữ Trang web</h3>
+                <p>Trang web được lưu trữ bởi: <strong>[TÊN NHÀ CUNG CẤP LƯU TRỮ (ví dụ: OVH, Hostinger, O2Switch)]</strong><br>
+                Địa chỉ của nhà cung cấp lưu trữ: [ĐỊA CHỈ NHÀ CUNG CẤP LƯU TRỮ]</p>
 
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">3. Chính sách Quyền riêng tư (GDPR)</h3>
-                <p>Thông tin thu thập qua biểu mẫu yêu cầu báo giá (họ, tên, địa chỉ, email, số điện thoại) được ghi nhận và xử lý độc quyền bởi Alexandre Jonot (O.S.P+). Mục đích duy nhất là thiết lập các ước tính thương mại và quản lý quan hệ khách hàng. Không có dữ liệu nào được bán, cho thuê hoặc chuyển nhượng cho bên thứ ba.</p>
-                <p><strong>Thời gian lưu giữ dữ liệu:</strong> Dữ liệu này được lưu giữ trong khoảng thời gian tối đa là 3 năm kể từ lần liên hệ thương mại cuối cùng của chúng tôi.</p>
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">3. Chính sách Bảo mật (RGPD)</h3>
+                <p>Thông tin thu thập qua biểu mẫu báo giá (họ, tên, địa chỉ, email, số điện thoại) được lưu trữ và xử lý độc quyền bởi Alexandre Jonot (O.S.P+). Mục đích duy nhất là lập báo giá thương mại và theo dõi quan hệ khách hàng. Không có dữ liệu nào được bán, cho thuê hoặc chuyển nhượng cho bên thứ ba.</p>
+                <p><strong>Thời gian lưu trữ:</strong> Các dữ liệu này được lưu trữ trong khoảng thời gian tối đa 3 năm sau lần liên hệ thương mại cuối cùng của chúng ta.</p>
                 
-                <h3 style="color: var(--vert); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. Bảo mật Dữ liệu và Giới hạn Trách nhiệm</h3>
-                <p>O.S.P+ cam kết thực hiện tất cả các biện pháp phòng ngừa hợp lý (mật khẩu an toàn, công cụ chuyên nghiệp) để bảo vệ dữ liệu cá nhân của bạn. Tuy nhiên, do Internet không phải là một môi trường an toàn 100%, O.S.P+ không thể đảm bảo an ninh tuyệt đối trước các cuộc tấn công mạng. Do đó, O.S.P+ từ chối mọi trách nhiệm trong trường hợp mất mát, rò rỉ hoặc đánh cắp dữ liệu do lỗi bảo mật độc lập với ý muốn của chúng tôi (trường hợp bất khả kháng hoặc hành vi hack không lường trước được).</p>
+                <h3 style="color: var(--vert); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. Bảo mật dữ liệu và giới hạn trách nhiệm</h3>
+                <p>O.S.P+ cam kết thực hiện mọi biện pháp phòng ngừa hợp lý (mật khẩu an toàn, công cụ chuyên nghiệp) để bảo vệ tính bảo mật cho dữ liệu cá nhân của bạn. Tuy nhiên, vì Internet không phải là môi trường an toàn 100%, O.S.P+ không thể đảm bảo an toàn tuyệt đối chống lại các cuộc tấn công mạng. Do đó, O.S.P+ từ chối mọi trách nhiệm trong trường hợp mất, rò rỉ hoặc đánh cắp dữ liệu liên quan đến lỗi bảo mật ngoài tầm kiểm soát của chúng tôi (trường hợp bất khả kháng hoặc hành động hack không thể đoán trước).</p>
                 
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">5. Quyền của bạn</h3>
-                <p>Theo quy định của GDPR, bạn có quyền truy cập, chỉnh sửa, yêu cầu di động dữ liệu hoặc xóa hồ sơ cá nhân của mình. Để thực hiện quyền này, bạn có thể liên hệ với chúng tôi qua email: contact@ospplus.com.</p>
-                <p>Bạn cũng có quyền khiếu nại lên CNIL (www.cnil.fr).</p>
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">5. Quyền lợi của bạn</h3>
+                <p>Theo luật "Công nghệ thông tin và Quyền tự do" và RGPD của Châu Âu, bạn có quyền truy cập, chỉnh sửa, di chuyển và xóa dữ liệu cá nhân của mình. Để thực hiện quyền này, bạn có thể liên hệ với chúng tôi qua email: contact@ospplus.com.</p>
+                <p>Bạn cũng có quyền gửi khiếu nại tới CNIL (www.cnil.fr).</p>
             </div>
         </div>
     </div>
@@ -401,10 +386,10 @@
         <div class="modal-content small" style="padding: 30px; text-align: center;">
             <span class="close-modal" onclick="closeClientModal()">×</span>
             <h3 style="color: var(--bleu); margin-bottom: 15px;">Khu vực Khách hàng</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 20px;">Nhập mã khách hàng bảo mật của bạn để nhận **giảm giá 5% ngay lập tức** cho báo giá trực tuyến.</p>
-            <input type="text" id="clientCodeInput" placeholder="Mã của bạn (ví dụ: VIP5)" style="padding: 12px; width: 80%; border-radius: 8px; border: 2px solid #e1e8ef; margin-bottom: 15px; font-size: 1rem; text-align: center; text-transform: uppercase;">
+            <p style="font-size: 0.85rem; margin-bottom: 20px;">Nhập mã bí mật của bạn để nhận <strong>10% Giảm giá Thân thiết</strong> cho báo giá mới của bạn.</p>
+            <input type="text" id="clientCodeInput" placeholder="Mã cá nhân của bạn..." style="padding: 12px; width: 80%; border-radius: 8px; border: 2px solid #e1e8ef; margin-bottom: 15px; font-size: 1rem; text-align: center; text-transform: uppercase;">
             <br>
-            <button class="btn-submit-form" onclick="applyClientCode()" style="width: auto; padding: 10px 25px; margin-top: 0;">Xác nhận mã</button>
+            <button class="btn-submit-form" onclick="applyClientCode()" style="width: auto; padding: 10px 25px; margin-top: 0;">Xác nhận mã của tôi</button>
             <p id="clientCodeMsg" style="margin-top: 15px; font-weight: bold; font-size: 0.9rem;"></p>
         </div>
     </div>
@@ -412,8 +397,19 @@
     <div id="quoteModal" class="modal">
         <div class="modal-content large">
             <span class="close-modal" onclick="closeQuote()">×</span>
-            <div class="modal-header"><h2 id="modalTitle">Báo giá <span class="text-green">Tùy chỉnh</span></h2></div>
+            <div class="modal-header">
+                <h2 id="modalTitle">Báo giá <span class="text-green">Tùy chỉnh</span> của bạn</h2>
+            </div>
             
+            <div id="topPriceBanner" class="top-price-banner">
+                <div class="price-left" id="estimatedAmount">
+                    <div class="price-left-main">0.00 €*</div>
+                </div>
+                <div class="price-right">
+                    ⚠️ <em>Ước tính chỉ mang tính tham khảo.</em> Giá cuối cùng sẽ được xác nhận sau khi khảo sát kỹ thuật tận nơi (không bắt buộc).
+                </div>
+            </div>
+
             <form id="interactiveForm">
                 <div class="modal-body-flex">
                     
@@ -425,12 +421,15 @@
                         <div class="form-section-compact">
                             
                             <div style="background: #f4f8fb; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #e1e8ef;">
-                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* Giá cho các yêu cầu cụ thể sẽ được tính toán tùy chỉnh (không bao gồm trong ước tính chung).</p>
-                                <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;"><span>+</span> Thêm yêu cầu đặc biệt</button>
+                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* Giá cho các yêu cầu đặc biệt sẽ được tính riêng (không bao gồm trong ước tính tổng thể).</p>
+                                <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;">
+                                    <span>+</span> Thêm một yêu cầu đặc biệt
+                                    <span class="help-bubble">?<span class="tooltip-text">Một nhu cầu cụ thể không được liệt kê? (Ví dụ: Vệ sinh tủ lạnh, đổ rác, v.v.)</span></span>
+                                </button>
                                 <div id="customRowsContainer"></div>
                             </div>
 
-                            <h3 class="form-subtitle">Thông tin Liên hệ</h3>
+                            <h3 class="form-subtitle">Thông tin Liên hệ của bạn</h3>
                             <div style="display: flex; flex-direction: column; gap: 15px;">
                                 
                                 <div class="input-group">
@@ -446,35 +445,39 @@
                                 </div>
 
                                 <div class="input-group" id="companyNameGroup" style="display: none; margin-top: 5px;">
-                                    <label>Tên Công ty / Tổ chức</label>
+                                    <label>Tên tổ chức (Công ty, Tổ chức...)</label>
                                     <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="Ví dụ: OSP Plus...">
                                 </div>
 
+                                <div class="input-group" id="employeeCountGroup" style="display: none; margin-top: 10px;">
+                                    <label>Số lượng nhân viên / cộng tác viên:</label>
+                                    <input type="number" id="nbEmployes" name="nbEmployes" min="1" value="1" oninput="calculatePrice()">
+                                </div>
                                 <div class="input-group"><label>Họ</label><input type="text" name="nom" required></div>
                                 <div class="input-group"><label>Tên</label><input type="text" name="prenom" required></div>
-                                <div class="input-group"><label>Địa chỉ Email</label><input type="email" name="email" required></div>
-                                <div class="input-group"><label>Địa chỉ đầy đủ</label><input type="text" name="adresse" placeholder="Số nhà và tên đường..." required></div>
+                                <div class="input-group"><label>Email</label><input type="email" name="email" required></div>
+                                <div class="input-group"><label>Địa chỉ đầy đủ</label><input type="text" name="adresse" placeholder="Số nhà và đường..." required></div>
                                 <div class="input-group"><label>Thành phố</label><input type="text" name="ville" placeholder="Mã bưu điện và Thành phố..." required></div>
                                 <div class="input-group"><label>Người liên hệ tại chỗ <span style="font-weight:normal; font-size:0.7rem; color:#666;">(Nếu khác)</span></label><input type="text" name="interlocuteur" placeholder="Họ và tên..."></div>
                                 
                                 <div class="input-group" style="margin-top: 10px; margin-bottom: 5px; background: #eef3f8; padding: 15px; border-radius: 8px; border: 1px dashed var(--vert);">
                                     <label style="color: var(--bleu);">Mã Khuyến mãi (Tùy chọn)</label>
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                        <input type="text" id="promoCodeInputDevis" placeholder="Ví dụ: BIENVENUE10" style="text-transform: uppercase; flex: 1;">
+                                        <input type="text" id="promoCodeInputDevis" placeholder="Ví dụ: REDUC10" style="text-transform: uppercase; flex: 1;">
                                         <button type="button" onclick="applyPromoCodeDevis()" class="btn-validate-custom" style="padding: 10px 15px; font-size: 0.85rem;">Áp dụng</button>
                                     </div>
-                                    <p id="promoCodeMsgDevis" style="font-size: 0.8rem; margin-top: 5px; font-weight: bold;"></p>
+                                    <p id="promoCodeMsgDevis" style="font-size: 0.8rem; margin-top: 5px; font-weight: bold; line-height: 1.4;"></p>
                                 </div>
 
                                 <div style="margin-top: 5px; margin-bottom: 5px;">
                                     <p style="font-size: 0.65rem; color: #777; line-height: 1.4; text-align: justify;">
-                                        🔒 <strong>Bảo vệ Dữ liệu Riêng tư:</strong> Bằng cách gửi biểu mẫu này, bạn đồng ý rằng thông tin của bạn sẽ được O.S.P+ xử lý nghiêm ngặt trong phạm vi yêu cầu báo giá này và các trao đổi kinh doanh tiếp theo. Dữ liệu của bạn sẽ không bao giờ được chia sẻ với bên thứ ba. Để thực hiện quyền chỉnh sửa hoặc xóa chi tiết, vui lòng xem <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Thông báo Pháp lý</a> của chúng tôi.
+                                        🔒 <strong>Bảo vệ dữ liệu của bạn:</strong> Bằng cách gửi biểu mẫu này, tôi đồng ý rằng thông tin đã nhập sẽ được O.S.P+ sử dụng nghiêm ngặt cho mục đích yêu cầu báo giá và mối quan hệ thương mại có thể phát sinh. Dữ liệu của bạn sẽ không bao giờ được bán cho bên thứ ba. Để thực hiện quyền truy cập, sửa đổi hoặc xóa, vui lòng tham khảo <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Thông báo Pháp lý</a> của chúng tôi.
                                     </p>
                                 </div>
 
                                 <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; border-radius: 5px; margin-top: 15px; margin-bottom: 5px;">
                                     <p style="font-size: 0.75rem; color: #555; line-height: 1.4; text-align: justify; margin: 0;">
-                                        ⚠️ <strong>Lưu ý:</strong> <em>Ước tính này chỉ được cung cấp để tham khảo.</em> Hợp đồng cuối cùng và chi phí chính thức sẽ chỉ được xác nhận sau khi chúng tôi khảo sát trực tiếp cơ sở của bạn (miễn phí và không ràng buộc).
+                                        ⚠️ <strong>Lưu ý:</strong> <em>Ước tính này chỉ mang tính tham khảo.</em> Giá chính thức và hợp đồng sẽ chỉ được xác nhận với bạn sau khi khảo sát kỹ thuật tận nơi tại cơ sở của bạn (không bắt buộc).
                                     </p>
                                 </div>
 
@@ -487,32 +490,32 @@
             </form>
 
             <div id="postSubmitChoice" style="display: none; text-align: center; padding: 40px;">
-                <h3 style="color: var(--bleu); font-size: 2rem;">✓ Đã gửi Yêu cầu Báo giá!</h3>
-                <p style="margin-top: 15px; color: #555; font-size: 1.1rem;">Cảm ơn bạn đã tin tưởng. Tôi sẽ liên hệ lại với bạn trong thời gian sớm nhất.</p>
+                <h3 style="color: var(--bleu); font-size: 2rem;">✓ Đã gửi Báo giá!</h3>
+                <p style="margin-top: 15px; color: #555; font-size: 1.1rem;">Cảm ơn yêu cầu của bạn. Tôi sẽ liên hệ lại với bạn trong thời gian sớm nhất.</p>
             </div>
         </div>
     </div>
 
     <div id="planningModal" class="day-modal">
         <div class="planning-modal-content">
-            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Lên lịch trình</h4>
+            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Lập kế hoạch</h4>
             
-            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">1. Chọn các ngày trong tuần:</p>
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">1. Ngày trong tuần:</p>
             <div class="grid-checkboxes" id="planDaysGrid"></div>
             
-            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 20px;">2. Tần suất lặp lại <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Tùy chọn)</span>:</p>
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 20px;">2. Lặp lại <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Tùy chọn)</span> :</p>
             
-            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">A) Toàn bộ các tháng:</p>
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">A) Trọn tháng:</p>
             <div class="grid-checkboxes" id="planMonthsGrid" style="margin-bottom:15px;"></div>
             
-            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">B) Hoặc khung thời gian cụ thể:</p>
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">B) Hoặc Giai đoạn cụ thể:</p>
             <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items:center;">
-                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Từ:</label><input type="date" id="planStartDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
-                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Đến:</label><input type="date" id="planEndDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
+                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Từ :</label><input type="date" id="planStartDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
+                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Đến :</label><input type="date" id="planEndDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
             </div>
             
-            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">3. Ghi chú / Nhận xét bổ sung <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Tùy chọn)</span>:</p>
-            <textarea id="planComment" placeholder="Ví dụ: Cơ sở đóng cửa vào thứ Ba, tập trung làm sạch khu vực không gian mở, chìa khóa để lại ở quầy lễ tân..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">3. Chi tiết / Ghi chú <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Tùy chọn)</span> :</p>
+            <textarea id="planComment" placeholder="Ví dụ: Đóng cửa vào Thứ Ba, tập trung vào không gian mở, chìa khóa ở quầy lễ tân..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
             
             <button type="button" class="btn-validate-days" onclick="savePlanning()">XÁC NHẬN LỰA CHỌN</button>
         </div>
@@ -521,1074 +524,63 @@
     <div id="levelModal" class="sub-modal">
         <div class="sub-modal-content">
             <div class="sub-modal-header">
-                <h4>Thêm Khu vực / Tầng</h4>
+                <h4>Thêm tầng/khu vực</h4>
             </div>
             <div class="sub-modal-body">
-                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:10px;">Lựa chọn nhanh:</p>
+                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:10px;">Chọn nhanh :</p>
                 <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 25px;">
                     <button class="btn-quick-add" onclick="addSpecificLevel('Tầng 5')">Tầng 5</button>
                     <button class="btn-quick-add" onclick="addSpecificLevel('Tầng 6')">Tầng 6</button>
                     <button class="btn-quick-add" onclick="addSpecificLevel('Tầng hầm 1')">Tầng hầm 1</button>
                     <button class="btn-quick-add" onclick="addSpecificLevel('Tầng hầm 2')">Tầng hầm 2</button>
                     <button class="btn-quick-add" onclick="addSpecificLevel('Sân thượng')">Sân thượng</button>
-                    <button class="btn-quick-add" onclick="addSpecificLevel('Ngoài trời')">Ngoài trời</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Ngoại cảnh')">Ngoại cảnh</button>
                 </div>
                 
-                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:5px;">Hoặc nhập tên tùy chỉnh:</p>
+                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:5px;">Hoặc nhập tên :</p>
                 <div style="display:flex; gap:10px; align-items:center;">
-                    <input type="text" id="customLevelInput" placeholder="Ví dụ: Gác lửng, Tòa nhà B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
-                    <button onclick="addCustomLevel()" class="btn-validate-custom">Thêm Khu vực</button>
+                    <input type="text" id="customLevelInput" placeholder="Ví dụ: Tầng lửng, Tòa nhà B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
+                    <button onclick="addCustomLevel()" class="btn-validate-custom">Thêm</button>
                 </div>
             </div>
             <div style="padding: 15px; background: #f4f8fb; text-align:center; border-top:1px solid #eee;">
-                <button type="button" class="btn-validate" onclick="closeLevelModal()" style="padding:8px 20px; background:#ccc; color:#333; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Hủy bỏ</button>
+                <button type="button" class="btn-validate" onclick="closeLevelModal()" style="padding:8px 20px; background:#ccc; color:#333; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Hủy</button>
             </div>
         </div>
     </div>
 
+    <div id="carteModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: center; max-width: 450px;">
+            <span class="close-modal" onclick="closeCarteModal()">×</span>
+            <h3 style="color: var(--bleu); margin-bottom: 5px;">Danh thiếp của tôi</h3>
+            <p style="font-size: 0.85rem; color: #555; margin-bottom: 20px;">Nhấp vào thẻ để lật</p>
+            
+            <div class="flip-card" onclick="toggleFlipCard()">
+                <div class="flip-card-inner" id="businessCardInner">
+                    <div class="flip-card-front">
+                        <img src="Carte visite A.jpg?v=12" alt="Danh thiếp OSP+ Mặt trước">
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="Carte visite B.jpg?v=12" alt="Danh thiếp OSP+ Mặt sau">
+                    </div>
+                </div>
+            </div>
+
+            <div class="carte-actions" style="margin-top: 25px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-carte-action btn-tourner" onclick="toggleFlipCard()">🔄 Lật</button>
+                <button class="btn-carte-action btn-telecharger" onclick="downloadCarte()">⬇️ Tải xuống</button>
+                <button class="btn-carte-action btn-imprimer" onclick="printCarte()">🖨️ In</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeImageModal()" style="color: white; font-size: 50px; right: 30px; top: 15px;">&times;</span>
+        <img class="modal-content-img" id="fullSizeImage">
+    </div>
+
     <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
 
-    <script>
-        let planData = {}; 
-        let vitrerieVisibleCount = {}; 
-        let vitrerieIndexCount = {};   
-        let customVisibleCount = 0;    
-        let customIndexCount = 0;      
-        let currentPlanId = null;
-        let roomCounter = 0;
-        
-        let activeServices = [];
-
-        window.clientDiscount = 0; 
-        window.activeClientCode = "";
-
-        function openClientModal() { document.getElementById('clientModal').style.display = 'flex'; }
-        function closeClientModal() { document.getElementById('clientModal').style.display = 'none'; }
-        
-        function applyClientCode() {
-            const code = document.getElementById('clientCodeInput').value.trim().toUpperCase();
-            const validCodes = ['VIP5', 'OSP2026', 'FIDELITE']; 
-            const msg = document.getElementById('clientCodeMsg');
-            
-            if(validCodes.includes(code)) {
-                window.clientDiscount = 0.05; 
-                window.activeClientCode = code;
-                msg.style.color = 'var(--vert)';
-                msg.innerText = "✓ Mã hợp lệ! Mức giảm giá (-5%) này được đảm bảo và sẽ được trừ vào hóa đơn hợp đồng cuối cùng của bạn sau khi khảo sát.";
-                calculatePrice(); 
-                setTimeout(closeClientModal, 3000);
-            } else {
-                window.clientDiscount = 0;
-                window.activeClientCode = "";
-                msg.style.color = 'red';
-                msg.innerText = "✗ Mã khách hàng không hợp lệ hoặc đã hết hạn.";
-                calculatePrice();
-            }
-        }
-
-        window.promoDiscountDevis = 0;
-        window.activePromoCodeDevis = "";
-
-        function applyPromoCodeDevis() {
-            const code = document.getElementById('promoCodeInputDevis').value.trim().toUpperCase();
-            const msg = document.getElementById('promoCodeMsgDevis');
-            
-            const validPromoCodes = {
-                'PROMO10': 0.10,
-                'BIENVENUE10': 0.10,
-                'REMISE5': 0.05
-            };
-            
-            if (validPromoCodes[code]) {
-                window.promoDiscountDevis = validPromoCodes[code];
-                window.activePromoCodeDevis = code;
-                msg.style.color = 'var(--vert)';
-                msg.innerText = "✓ Mã hợp lệ! Mức khuyến mãi (-" + (validPromoCodes[code] * 100) + "%) này được đảm bảo và sẽ có hiệu lực trên báo giá chính thức của bạn.";
-            } else if (code === "") {
-                window.promoDiscountDevis = 0;
-                window.activePromoCodeDevis = "";
-                msg.innerText = "";
-            } else {
-                window.promoDiscountDevis = 0;
-                window.activePromoCodeDevis = "";
-                msg.style.color = 'red';
-                msg.innerText = "✗ Mã khuyến mãi này không hợp lệ hoặc đã hết hạn.";
-            }
-            calculatePrice();
-        }
-
-        window.holidayPromoActive = false;
-
-        function getEaster(year) {
-            let a = year % 19, b = Math.floor(year / 100), c = year % 100;
-            let d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
-            let g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
-            let i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
-            let m = Math.floor((a + 11 * h + 22 * l) / 451);
-            let month = Math.floor((h + l - 7 * m + 114) / 31);
-            let day = ((h + l - 7 * m + 114) % 31) + 1;
-            return new Date(year, month - 1, day);
-        }
-
-        function getMobileHolidays(year) {
-            const easter = getEaster(year);
-            const addDays = (date, days) => {
-                let d = new Date(date);
-                d.setDate(d.getDate() + days);
-                return String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-            };
-            return [
-                addDays(easter, 1), 
-                addDays(easter, 39), 
-                addDays(easter, 50)  
-            ];
-        }
-
-        function checkHolidays() {
-            const today = new Date();
-            const currentYear = today.getFullYear();
-            const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
-            const currentDay = String(today.getDate()).padStart(2, '0');
-            const formattedDate = currentMonth + '-' + currentDay;
-
-            const fixedHolidays = ['01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25'];
-            const mobileHolidays = getMobileHolidays(currentYear);
-            const testDates = ['06-01', '06-02', '06-03'];
-
-            const allHolidays = fixedHolidays.concat(mobileHolidays).concat(testDates);
-
-            if (allHolidays.includes(formattedDate)) {
-                document.getElementById('promo-banner').style.display = 'block';
-                window.holidayPromoActive = true;
-            } else {
-                window.holidayPromoActive = false;
-            }
-        }
-        
-        window.addEventListener('DOMContentLoaded', checkHolidays);
-
-        function toggleCompanyField() {
-            const isEntreprise = document.querySelector('input[name="statut"][value="Entreprise"]').checked;
-            const companyGroup = document.getElementById('companyNameGroup');
-            const companyInput = document.getElementById('nomEntreprise');
-            if (isEntreprise) {
-                companyGroup.style.display = 'flex';
-                companyInput.required = true;
-            } else {
-                companyGroup.style.display = 'none';
-                companyInput.required = false;
-                companyInput.value = '';
-            }
-        }
-
-        const prestationsData = {
-            'Văn phòng': { obligatoires: [], optionnelles: ['Hút bụi / Lau sàn', 'Lau bụi bàn làm việc', 'Đổ rác', 'Khử trùng các điểm tiếp xúc'] },
-            'Phòng họp': { obligatoires: [], optionnelles: ['Hút bụi / Lau sàn', 'Lau bụi', 'Sắp xếp lại ghế', 'Đổ rác'] },
-            'Nhà vệ sinh': { obligatoires: ['Làm sạch bồn cầu / bồn tiểu', 'Lau sàn', 'Tẩy cặn & Khử trùng', 'Gương & Bồn rửa', 'Bổ sung vật tư'], optionnelles: [] },
-            'Phòng tắm': { obligatoires: ['Lau sàn', 'Tẩy cặn & Khử trùng buồng tắm', 'Làm sạch cống', 'Bổ sung vật tư'], optionnelles: [] },
-            'Phòng thay đồ': { obligatoires: ['Lau sàn', 'Khử trùng ghế/tủ', 'Đổ rác'], optionnelles: ['Lau gương', 'Lau bụi bên ngoài tủ'] },
-            'Quầy lễ tân': { obligatoires: ['Đổ rác'], optionnelles: ['Hút bụi / Lau sàn', 'Lau quầy lễ tân', 'Lau vết bẩn trên kính'] },
-            'Khu vực ăn uống': { obligatoires: ['Đổ rác', 'Lau sàn', 'Khử trùng bàn'], optionnelles: ['Bổ sung vật tư'] },
-            'Nhà bếp': { obligatoires: ['Đổ rác', 'Lau sàn', 'Khử trùng mặt bếp', 'Làm sạch bồn rửa', 'Bổ sung vật tư'], optionnelles: ['Làm sạch lò vi sóng', 'Làm sạch tủ lạnh'] },
-            'Phòng nghỉ ngơi': { obligatoires: ['Đổ rác'], optionnelles: ['Lau sàn', 'Lau bàn', 'Làm sạch máy pha cà phê', 'Bổ sung vật tư'] },
-            'Phòng gym': { obligatoires: ['Đổ rác', 'Thông gió'], optionnelles: ['Hút bụi / Lau sàn', 'Khử trùng máy móc', 'Gương', 'Bổ sung vật tư'] },
-            'Thang máy chính': { obligatoires: ['Khử trùng nút bấm', 'Hút bụi / Lau sàn'], optionnelles: ['Lau gương', 'Lau vết bẩn cửa trong/ngoài'] },
-            'Thang máy phụ': { obligatoires: ['Khử trùng nút bấm', 'Hút bụi / Lau sàn'], optionnelles: ['Lau gương', 'Lau vết bẩn cửa trong/ngoài'] },
-            'Cầu thang chính': { obligatoires: [], optionnelles: ['Hút bụi / Lau sàn', 'Lau bụi len chân tường', 'Lau tay vịn'] },
-            'Cầu thang phụ': { obligatoires: [], optionnelles: ['Hút bụi / Lau sàn', 'Lau bụi len chân tường', 'Lau tay vịn'] },
-            'Sảnh chờ': { obligatoires: [], optionnelles: ['Hút bụi / Lau sàn', 'Lau bụi', 'Len chân tường'] },
-            'Hành lang': { obligatoires: [], optionnelles: ['Hút bụi / Lau sàn', 'Lau bụi len chân tường'] },
-            'Bãi đậu xe': { obligatoires: [], optionnelles: ['Nhặt rác', 'Quét dọn', 'Quét mạng nhện'] },
-            'Sân thượng': { obligatoires: [], optionnelles: ['Quét dọn', 'Làm sạch nội thất ngoài trời', 'Đổ rác'] },
-            'Phòng kỹ thuật': { obligatoires: [], optionnelles: ['Hút bụi / Lau sàn', 'Lau bụi'] },
-            'Khác': { obligatoires: [], optionnelles: ['Hút bụi / Lau sàn', 'Lau bụi', 'Đổ rác'] }
-        };
-
-        function generateRowHtml(id, name) {
-            return `
-            <div class="quote-row-item" id="row_${id}">
-                <label>${name}</label>
-                <input type="number" id="qty_${id}" min="0" value="0" oninput="calculatePrice()">
-                <button type="button" id="btn_plan_${id}" class="btn-planifier" onclick="openPlanningModal('${id}', '${name}')">+ Lên lịch</button>
-            </div>`;
-        }
-
-        function generateVitrerieRowHtml(id, name, dupIndex) {
-            let actualId = dupIndex === 0 ? id : id + '_dup_' + dupIndex;
-            let btnPlus = dupIndex === 0 
-                ? `<button type="button" onclick="addVitrerieRow('${id}', '${name}')" style="background:var(--vert); color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer; height:100%; width:100%; padding:0; font-size:1.1rem; line-height:1;">+</button>` 
-                : `<button type="button" class="btn-delete-row" onclick="removeVitrerieRow('${actualId}')" style="margin:0; width:100%; height:100%; border-radius:4px;">×</button>`;
-
-            return `
-            <div class="quote-row-item" id="row_${actualId}" style="grid-template-columns: 1fr 45px 75px 75px 25px; padding: 6px; gap: 5px; align-items: center; margin-bottom: 4px;">
-                <label style="font-size: 0.65rem; line-height: 1.1; word-wrap: break-word;">${name}</label>
-                <input type="number" id="qty_${actualId}" min="0" value="0" oninput="calculatePrice()" style="padding: 4px; width: 100%; box-sizing: border-box; text-align:center;">
-                <select id="type_${actualId}" onchange="calculatePrice()" style="padding: 4px 0px; font-size: 0.65rem; width: 100%; box-sizing: border-box;">
-                    <option value="complet">Hai mặt</option>
-                    <option value="interieur">Chỉ bên trong</option>
-                    <option value="exterieur">Chỉ bên ngoài</option>
-                </select>
-                <button type="button" id="btn_plan_${actualId}" class="btn-planifier" onclick="openPlanningModal('${actualId}', '${name}')" style="padding: 4px; font-size: 0.6rem; width: 100%; box-sizing: border-box;">+ Lịch</button>
-                ${btnPlus}
-            </div>`;
-        }
-
-        function addVitrerieRow(baseId, name) {
-            if (!vitrerieVisibleCount[baseId]) vitrerieVisibleCount[baseId] = 0;
-            if (!vitrerieIndexCount[baseId]) vitrerieIndexCount[baseId] = 0;
-            
-            if (vitrerieVisibleCount[baseId] >= 2) return; 
-            
-            vitrerieVisibleCount[baseId]++;
-            vitrerieIndexCount[baseId]++;
-            
-            const newHtml = generateVitrerieRowHtml(baseId, name + ' (Bổ sung)', vitrerieIndexCount[baseId]);
-            document.getElementById('wrapper_' + baseId).insertAdjacentHTML('beforeend', newHtml);
-        }
-
-        function removeVitrerieRow(actualId) {
-            let baseId = actualId.split('_dup_')[0];
-            const row = document.getElementById('row_' + actualId);
-            if (row) row.remove();
-            
-            if (vitrerieVisibleCount[baseId]) vitrerieVisibleCount[baseId]--;
-            if (planData[actualId]) delete planData[actualId];
-            
-            calculatePrice();
-        }
-
-        function openMentions() { document.getElementById('mentionsModal').style.display = 'flex'; }
-        function closeMentions() { document.getElementById('mentionsModal').style.display = 'none'; }
-        function togglePlay(id) { const vid = document.getElementById(id); if (vid.paused) vid.play(); else vid.pause(); }
-        function toggleMute(id) { const vid = document.getElementById(id); vid.muted = !vid.muted; }
-        function restartVideo(id) { const vid = document.getElementById(id); vid.currentTime = 0; vid.play(); }
-        function toggleFullScreen(id) { const vid = document.getElementById(id); if (vid.requestFullscreen) vid.requestFullscreen(); else if (vid.webkitRequestFullscreen) vid.webkitRequestFullscreen(); }
-        function moveSlider(e) { const container = e.parentElement; container.querySelector('.before').style.width = e.value + '%'; }
-
-        function toggleAccordion(headerElement) {
-            const body = headerElement.nextElementSibling;
-            const isActive = headerElement.classList.contains('active');
-            
-            document.querySelectorAll('.accordion-header').forEach(el => { el.classList.remove('active'); });
-            document.querySelectorAll('.accordion-body').forEach(el => { el.classList.remove('active'); });
-
-            if (!isActive) {
-                headerElement.classList.add('active');
-                body.classList.add('active');
-            }
-        }
-
-        function createLevelAccordion(levelName) {
-            const levelId = 'level_' + Date.now() + Math.floor(Math.random() * 1000);
-            
-            let html = `
-            <div class="level-accordion" id="block_${levelId}">
-                <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>📍 ${levelName}</span>
-                    <span class="accordion-icon">+</span>
-                </div>
-                <div class="accordion-body">
-                    <p style="font-size:0.75rem; color:#666; margin-bottom:8px;">Thêm các không gian cấu hình cụ thể vào khu vực này:</p>
-                    <div class="room-quick-adds">
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Văn phòng')">💼 Văn phòng</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Phòng họp')">🗣️ Phòng họp</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Nhà vệ sinh')">🚻 Nhà vệ sinh</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Phòng tắm')">🚿 Phòng tắm</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Phòng thay đồ')">🧳 Phòng thay đồ</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Quầy lễ tân')">🛎️ Lễ tân</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Nhà bếp')">🍳 Nhà bếp</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Khu vực ăn uống')">🍽️ Khu ăn uống</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Phòng nghỉ ngơi')">☕ Phòng nghỉ ngơi</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Hành lang')">🚶 Hành lang</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Thang máy chính')">🛗 Thang máy chính</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Thang máy phụ')">🛗 Thang máy phụ</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Cầu thang chính')">📶 Cầu thang chính</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Cầu thang phụ')">📶 Cầu thang phụ</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Sảnh chờ')">🚪 Sảnh chờ</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Sân thượng')">☀️ Sân thượng</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Phòng kỹ thuật')">🔧 Phòng kỹ thuật</button>
-                        <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Khác')">➕ Khác</button>
-                    </div>
-                    <div id="rooms_container_${levelId}"></div>
-                </div>
-            </div>`;
-            
-            document.getElementById('levelsContainer').insertAdjacentHTML('beforeend', html);
-        }
-
-        function openLevelModal() { document.getElementById('levelModal').style.display = 'flex'; }
-        function closeLevelModal() { document.getElementById('levelModal').style.display = 'none'; }
-        
-        function addSpecificLevel(name) {
-            createLevelAccordion(name);
-            closeLevelModal();
-        }
-        function addCustomLevel() {
-            const val = document.getElementById('customLevelInput').value.trim();
-            if(val !== '') {
-                createLevelAccordion(val);
-                document.getElementById('customLevelInput').value = '';
-                closeLevelModal();
-            }
-        }
-
-        function addStructuredRoom(levelId, type) {
-            roomCounter++;
-            const roomId = 'room_detail_' + roomCounter;
-            
-            planData[roomId] = { days: [], months: [], start:'', end:'', roomType: type, comment: '' };
-
-            let customNameHtml = type === 'Khác' ? `<input type="text" placeholder="Ví dụ: Khu vực máy in..." style="font-size:0.8rem; padding:6px; margin-bottom:10px; width:100%; border:1px solid #ccc; border-radius:5px;">` : '';
-
-            let qtyHtml = '';
-            if (type === 'Nhà vệ sinh' || type === 'Phòng tắm' || type === 'Phòng thay đồ') {
-                qtyHtml = `
-                <div class="qty-input-box"><label>🚹 Nam (số lượng)</label><input type="number" id="qty_h_${roomId}" min="0" value="1" oninput="calculatePrice()"></div>
-                <div class="qty-input-box"><label>🚺 Nữ (số lượng)</label><input type="number" id="qty_f_${roomId}" min="0" value="1" oninput="calculatePrice()"></div>`;
-            } else if (type === 'Khu vực ăn uống') {
-                qtyHtml = `
-                <div class="qty-input-box"><label>Số lượng khu vực</label><input type="number" id="qty_${roomId}" min="1" value="1" oninput="calculatePrice()"></div>
-                <div class="qty-input-box"><label>Số lượng bàn</label><input type="number" id="qty_tables_${roomId}" min="0" value="5" oninput="calculatePrice()"></div>
-                <div class="qty-input-box"><label>Số lượng ghế</label><input type="number" id="qty_chaises_${roomId}" min="0" value="10" oninput="calculatePrice()"></div>`;
-            } else {
-                let labelQty = "Số lượng phòng/khu vực";
-                if (type === 'Văn phòng') labelQty = "Số lượng bàn/phòng";
-                else if (type.includes('Thang máy')) labelQty = "Số lượng thang máy";
-                else if (type.includes('Cầu thang')) labelQty = "Số lượng cầu thang";
-                else if (type === 'Sảnh chờ') labelQty = "Số lượng sảnh";
-                else if (type === 'Sân thượng') labelQty = "Số lượng sân thượng";
-                else if (type === 'Bãi đậu xe') labelQty = "Số lượng chỗ đậu xe";
-                else if (type === 'Hành lang') labelQty = "Số lượng hành lang";
-                else if (type === 'Phòng họp') labelQty = "Số lượng phòng họp";
-                else if (type === 'Nhà bếp') labelQty = "Số lượng nhà bếp";
-                else if (type === 'Phòng kỹ thuật') labelQty = "Số lượng phòng kỹ thuật";
-                else if (type === 'Quầy lễ tân' || type === 'Phòng nghỉ ngơi' || type === 'Phòng gym') labelQty = "Số lượng không gian";
-
-                qtyHtml = `<div class="qty-input-box"><label>${labelQty}</label><input type="number" id="qty_${roomId}" min="1" value="1" oninput="calculatePrice()"></div>`;
-            }
-
-            let surfaceHtml = `
-            <div class="qty-input-box">
-                <label>Loại sàn</label>
-                <select>
-                    <option value="non_precise">Không xác định</option>
-                    <option value="moquette">Thảm</option>
-                    <option value="carrelage">Gạch men</option>
-                    <option value="lino">Lino / PVC</option>
-                    <option value="parquet">Bê tông / Nhựa epoxy</option>
-                    <option value="autre">Gỗ/Đá khác</option>
-                </select>
-            </div>`;
-
-            let consommablesHtml = '';
-            const zonesConsommables = ['Nhà vệ sinh', 'Phòng tắm', 'Phòng thay đồ', 'Nhà bếp', 'Khu vực ăn uống', 'Phòng nghỉ ngơi', 'Phòng gym'];
-            if (zonesConsommables.includes(type)) {
-                consommablesHtml = `
-                <div class="qty-input-box" style="background:#eef3f8; border-color:var(--bleu);">
-                    <label>🧻 Vật tư (Giấy, xà phòng...)</label>
-                    <select style="background:transparent; border:none; font-weight:700; color:var(--bleu); padding:0; outline:none;">
-                        <option value="client">Khách hàng cung cấp</option>
-                        <option value="osp">O.S.P+ cung cấp</option>
-                    </select>
-                </div>`;
-            }
-
-            qtyHtml = `<div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;">${qtyHtml}${surfaceHtml}${consommablesHtml}</div>`;
-
-            let prets = prestationsData[type] || prestationsData['Khác'];
-            let pretsHtml = `<div class="prest-pill-container">`;
-            
-            if (prets.obligatoires && prets.obligatoires.length > 0) {
-                prets.obligatoires.forEach((p, i) => {
-                    let pid = `p_ob_${roomId}_${i}`;
-                    pretsHtml += `
-                    <div class="prest-pill mandatory" title="Yêu cầu làm sạch cốt lõi bắt buộc đối với khu vực vệ sinh này.">
-                        <input type="checkbox" id="${pid}" checked disabled>
-                        <label for="${pid}">${p}</label>
-                    </div>`;
-                });
-            }
-
-            if (prets.optionnelles && prets.optionnelles.length > 0) {
-                prets.optionnelles.forEach((p, i) => {
-                    let pid = `p_op_${roomId}_${i}`;
-                    pretsHtml += `
-                    <div class="prest-pill">
-                        <input type="checkbox" id="${pid}" checked onchange="calculatePrice()">
-                        <label for="${pid}">${p}</label>
-                    </div>`;
-                });
-            }
-            pretsHtml += `</div>`;
-
-            let hygieneNotice = "";
-            if (prets.obligatoires && prets.obligatoires.length > 0) {
-                hygieneNotice = `<div style="font-size:0.65rem; color:#888; font-style:italic; margin-top:-5px; margin-bottom:5px;">Lưu ý: Các hạng mục làm sạch có khóa 🔒 không thể bị vô hiệu hóa vì lý do vệ sinh an toàn.</div>`;
-            }
-
-            let html = `
-            <div class="structured-room-card" id="row_${roomId}">
-                <h5>
-                    <span>${type !== 'Khác' ? type : 'Không gian Tùy chỉnh Mới'}</span>
-                    <button type="button" class="btn-delete-row" onclick="removeRoom('${roomId}')">×</button>
-                </h5>
-                ${customNameHtml}
-                ${qtyHtml}
-                <div style="font-size:0.75rem; color:var(--bleu); font-weight:700; margin-top:5px; margin-bottom:8px;">Danh sách công việc làm sạch:</div>
-                ${hygieneNotice}
-                ${pretsHtml}
-                <div style="margin-top:10px;">
-                    <button type="button" id="btn_plan_${roomId}" class="btn-planifier" onclick="openPlanningModal('${roomId}', '${type}')">+ Thiết lập Lịch</button>
-                </div>
-            </div>`;
-
-            document.getElementById('rooms_container_' + levelId).insertAdjacentHTML('beforeend', html);
-            calculatePrice();
-        }
-
-        function removeRoom(roomId) {
-            const row = document.getElementById('row_' + roomId);
-            if (row) row.remove();
-            if (planData[roomId]) delete planData[roomId];
-            calculatePrice();
-        }
-
-        function getRealInterventionCount(selectedDays, selectedMonths, startDate, endDate) {
-            if (selectedDays.length === 0 && selectedMonths.length === 0 && !startDate && !endDate) return 1;
-            const mapDays = {'CN':0, 'T2':1, 'T3':2, 'T4':3, 'T5':4, 'T6':5, 'T7':6};
-            let totalInterventions = 0;
-
-            if (startDate && endDate) {
-                let start = new Date(startDate);
-                let end = new Date(endDate);
-                if (start <= end) {
-                    if (selectedDays.length === 0) return 1; 
-                    let current = new Date(start);
-                    while (current <= end) {
-                        let d = current.getDay();
-                        selectedDays.forEach(dName => {
-                            if (mapDays[dName] === d) totalInterventions++;
-                        });
-                        current.setDate(current.getDate() + 1);
-                    }
-                    return totalInterventions;
-                }
-            }
-
-            if (selectedMonths.length > 0) {
-                if (selectedDays.length === 0) return selectedMonths.length; 
-                const mapMonths = {'Tháng 1':0, 'Tháng 2':1, 'Tháng 3':2, 'Tháng 4':3, 'Tháng 5':4, 'Tháng 6':5, 'Tháng 7':6, 'Tháng 8':7, 'Tháng 9':8, 'Tháng 10':9, 'Tháng 11':10, 'Tháng 12':11};
-                const now = new Date();
-                const currentYear = now.getFullYear();
-                const currentMonth = now.getMonth();
-
-                selectedMonths.forEach(mName => {
-                    let m = mapMonths[mName];
-                    let targetYear = (m < currentMonth) ? currentYear + 1 : currentYear;
-                    selectedDays.forEach(dName => {
-                        let targetDay = mapDays[dName];
-                        let date = new Date(targetYear, m, 1);
-                        while (date.getMonth() === m) {
-                            if (date.getDay() === targetDay) totalInterventions++;
-                            date.setDate(date.getDate() + 1);
-                        }
-                    });
-                });
-                return totalInterventions;
-            }
-            if (selectedDays.length > 0) return selectedDays.length;
-            return 1;
-        }
-
-        function openPlanningModal(id, name) {
-            currentPlanId = id;
-            document.getElementById('planningModalTitle').innerText = name + " - Lên lịch trình";
-            
-            if(!planData[id]) planData[id] = { days: [], months: [], start:'', end:'', comment:'' };
-            const data = planData[id];
-            
-            const days = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
-            let dHtml = '';
-            days.forEach(d => {
-                let checked = data.days.includes(d) ? 'checked' : '';
-                dHtml += `<label class="checkbox-item"><input type="checkbox" value="${d}" class="plan-day-cb" ${checked}> ${d}</label>`;
-            });
-            document.getElementById('planDaysGrid').innerHTML = dHtml;
-
-            const months = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
-            let mHtml = '';
-            months.forEach(m => {
-                let checked = data.months.includes(m) ? 'checked' : '';
-                mHtml += `<label class="checkbox-item"><input type="checkbox" value="${m}" class="plan-month-cb" ${checked}> ${m}</label>`;
-            });
-            document.getElementById('planMonthsGrid').innerHTML = mHtml;
-
-            document.getElementById('planStartDate').value = data.start || '';
-            document.getElementById('planEndDate').value = data.end || '';
-            
-            document.getElementById('planComment').value = data.comment || '';
-
-            document.getElementById('planningModal').style.display = "flex";
-        }
-
-        function savePlanning() {
-            let sDays = [];
-            document.querySelectorAll('.plan-day-cb:checked').forEach(cb => sDays.push(cb.value));
-            let sMonths = [];
-            document.querySelectorAll('.plan-month-cb:checked').forEach(cb => sMonths.push(cb.value));
-            
-            let sDate = document.getElementById('planStartDate').value;
-            let eDate = document.getElementById('planEndDate').value;
-            let sComment = document.getElementById('planComment').value;
-            
-            planData[currentPlanId].days = sDays;
-            planData[currentPlanId].months = sMonths;
-            planData[currentPlanId].start = sDate;
-            planData[currentPlanId].end = eDate;
-            planData[currentPlanId].comment = sComment;
-            
-            const btn = document.getElementById('btn_plan_' + currentPlanId);
-            if (btn) {
-                let text = "+ Lên lịch";
-                if (sDate && eDate) text = "Khoảng thời gian";
-                else if (sDays.length > 0 || sMonths.length > 0) {
-                    if (sMonths.length > 0) text = `${sDays.length} Ngày | ${sMonths.length} Tháng`;
-                    else text = `${sDays.length} Ngày`;
-                } else if (sComment.trim() !== '') {
-                    text = "Đã tùy chỉnh ✓"; 
-                }
-                
-                if (text !== "+ Lên lịch") {
-                    btn.innerText = text;
-                    btn.classList.add('active');
-                } else {
-                    btn.innerText = "+ Lên lịch";
-                    btn.classList.remove('active');
-                }
-            }
-            
-            document.getElementById('planningModal').style.display = "none";
-            calculatePrice();
-        }
-
-        window.currentTotalValue = 0;
-
-        function calculatePrice() {
-            let total = 0;
-            const TAUX_HORAIRE = 36.00; 
-
-            const vPrices = { vit_fen: 8, vit_baie: 15, vit_velux: 12, vit_ver: 25, vit_porte: 10, vit_com: 30 };
-            document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
-                let idFull = input.id.replace('qty_', ''); 
-                let baseId = idFull.split('_dup_')[0]; 
-                let q = parseFloat(input.value) || 0;
-                let data = planData[idFull] || {days:[], months:[], start:'', end:''};
-                let exactMultiplier = getRealInterventionCount(data.days, data.months, data.start, data.end);
-                let priceRatio = 1; 
-                let typeSelect = document.getElementById('type_' + idFull);
-                if (typeSelect && (typeSelect.value === 'interieur' || typeSelect.value === 'exterieur')) priceRatio = 0.6; 
-                if (vPrices[baseId]) total += q * (vPrices[baseId] * priceRatio) * exactMultiplier;
-            });
-
-            const pricesFixed = { 'can23': 70, 'can45': 110, 'canAng': 130, 'tapis': 40, 'moq': 5, 'pack_v': 210 };
-            for (let id in pricesFixed) {
-                const qtyInput = document.getElementById('qty_' + id);
-                if (qtyInput) {
-                    let q = parseFloat(qtyInput.value) || 0;
-                    let data = planData[id] || {days:[], months:[], start:'', end:''};
-                    let exactMultiplier = getRealInterventionCount(data.days, data.months, data.start, data.end);
-                    total += q * pricesFixed[id] * exactMultiplier;
-                }
-            }
-
-            for (let roomId in planData) {
-                if (roomId.startsWith('room_detail_')) {
-                    let roomInfo = planData[roomId];
-                    let type = roomInfo.roomType;
-                    let exactMultiplier = getRealInterventionCount(roomInfo.days, roomInfo.months, roomInfo.start, roomInfo.end);
-                    
-                    let tempsMinutes = 0;
-                    let nbEspaces = 1;
-
-                    if (type === 'Nhà vệ sinh' || type === 'Phòng tắm' || type === 'Phòng thay đồ') {
-                        let inputH = document.getElementById(`qty_h_${roomId}`);
-                        let inputF = document.getElementById(`qty_f_${roomId}`);
-                        let nbH = inputH ? parseInt(inputH.value) || 0 : 0;
-                        let nbF = inputF ? parseInt(inputF.value) || 0 : 0;
-                        nbEspaces = nbH + nbF;
-                        tempsMinutes = 15 + 5; 
-                    } else if (type === 'Khu vực ăn uống') {
-                        let inputEsp = document.getElementById(`qty_${roomId}`);
-                        let inputTab = document.getElementById(`qty_tables_${roomId}`);
-                        let inputCha = document.getElementById(`qty_chaises_${roomId}`);
-                        
-                        let esp = inputEsp ? parseInt(inputEsp.value) || 0 : 1;
-                        let tab = inputTab ? parseInt(inputTab.value) || 0 : 0;
-                        let cha = inputCha ? parseInt(inputCha.value) || 0 : 0;
-                        
-                        tempsMinutes = (15 + (tab * 2) + (cha * 1) + 5) * esp;
-                        nbEspaces = 1; 
-                    } else {
-                        let inputQty = document.getElementById(`qty_${roomId}`);
-                        nbEspaces = inputQty ? parseInt(inputQty.value) || 0 : 0;
-                        
-                        if (['Văn phòng', 'Phòng họp', 'Quầy lễ tân', 'Nhà bếp', 'Phòng nghỉ ngơi', 'Phòng gym', 'Phòng kỹ thuật'].includes(type)) {
-                            tempsMinutes = 15 + 5; 
-                        } else if (['Thang máy chính', 'Thang máy phụ', 'Sảnh chờ', 'Hành lang'].includes(type)) {
-                            tempsMinutes = 10 + 5; 
-                        } else if (['Cầu thang chính', 'Cầu thang phụ'].includes(type)) {
-                            tempsMinutes = 20 + 5; 
-                        } else if (['Bãi đậu xe', 'Sân thượng'].includes(type)) {
-                            tempsMinutes = 25 + 5; 
-                        } else {
-                            tempsMinutes = 15 + 5;
-                        }
-                    }
-
-                    let prixParInterventionUnitaire = (tempsMinutes / 60) * TAUX_HORAIRE;
-                    total += nbEspaces * prixParInterventionUnitaire * exactMultiplier;
-                }
-            }
-            
-            let discountText = "";
-            
-            if (window.clientDiscount > 0) {
-                let discountAmount = total * window.clientDiscount;
-                total -= discountAmount;
-                discountText += `<br><span style='font-size: 0.8rem; color: var(--vert);'>✓ Đã áp dụng giảm giá Khách hàng thân thiết (-5%)</span>`;
-            }
-
-            if (window.promoDiscountDevis > 0) {
-                let promoAmount = total * window.promoDiscountDevis;
-                total -= promoAmount;
-                discountText += `<br><span style='font-size: 0.8rem; color: var(--vert);'>✓ Đã áp dụng Mã khuyến mãi (-${window.promoDiscountDevis * 100}%)</span>`;
-            }
-
-            if (window.holidayPromoActive) {
-                let holidayDiscountAmount = total * 0.10;
-                total -= holidayDiscountAmount;
-                discountText += `<br><span style='font-size: 0.8rem; color: var(--vert);'>✓ Đã áp dụng Khuyến mãi Dịp lễ (-10%)</span>`;
-            }
-
-            window.currentTotalValue = total;
-            
-            const MINIMUM_INTERVENTION = 60.00;
-            let mentionMinimum = "";
-            
-            if (total > 0 && total < MINIMUM_INTERVENTION) {
-                mentionMinimum = "<br><span style='font-size: 0.75rem; color: #888; font-weight: 600; font-style: italic;'>💡 Mẹo: Mức phí tối thiểu cho mỗi lần thực hiện là 60,00 €. Hãy thêm các khu vực hoặc dịch vụ vệ sinh khác để đạt mức cơ bản này và tối ưu hóa báo giá của bạn mà không tốn thêm phí đi lại.</span>";
-            }
-            
-            const elAmount = document.getElementById('estimatedAmount');
-            if (elAmount) {
-                if (total === 0) {
-                    elAmount.innerHTML = "0.00 €*";
-                } else {
-                    elAmount.innerHTML = total.toFixed(2) + " €*" + mentionMinimum + discountText;
-                }
-            }
-        }
-
-        function openQuote(baseService) {
-            vitrerieVisibleCount = {};
-            vitrerieIndexCount = {};
-            customVisibleCount = 0;
-            customIndexCount = 0;
-            planData = {}; 
-            activeServices = [];
-            roomCounter = 0;
-            
-            window.promoDiscountDevis = 0;
-            window.activePromoCodeDevis = "";
-            const inputPromo = document.getElementById('promoCodeInputDevis');
-            const msgPromo = document.getElementById('promoCodeMsgDevis');
-            if (inputPromo) inputPromo.value = "";
-            if (msgPromo) msgPromo.innerText = "";
-            
-            const fields = document.getElementById('dynamicFields');
-            const crContainer = document.getElementById('customRowsContainer');
-            if(crContainer) crContainer.innerHTML = '';
-            
-            fields.innerHTML = `
-                <div style="background:var(--gris);padding:15px;border-radius:10px;text-align:center;margin-bottom:20px;border:1px dashed var(--vert);">
-                    <div id="estimatedAmount" style="font-size:1.8rem;font-weight:800;color:var(--vert);">0.00 €*</div>
-                    <p style="font-size: 0.75rem; color: #666; margin-top: 10px; line-height: 1.4;">⚠️ <em>Ước tính trực tuyến mang tính tham khảo.</em> Giá hợp đồng sẽ được cố định chính xác sau khi khảo sát cơ sở thực tế (không cam kết).</p>
-                </div>
-                <div id="allServicesContainer" style="display:flex; flex-direction:column; gap:20px;"></div>
-                <div id="crossSellContainer" style="margin-top:25px; padding-top:20px; border-top:2px dashed #e1e8ef; text-align:center;"></div>
-            `;
-
-            const customBtn = document.getElementById('btnAddCustomRow');
-            if (customBtn) customBtn.style.display = 'flex';
-            
-            document.getElementById('interactiveForm').style.display = "block";
-            document.getElementById('postSubmitChoice').style.display = "none";
-            document.getElementById('btnSubmitForm').innerText = "GỬI YÊU CẦU CỦA TÔI";
-            document.getElementById('btnSubmitForm').disabled = false;
-            
-            document.getElementById('quoteModal').style.display = "flex";
-            
-            addServiceToQuote(baseService);
-        }
-
-        function addServiceToQuote(service) {
-            if (activeServices.includes(service)) return; 
-            activeServices.push(service);
-
-            const container = document.getElementById('allServicesContainer');
-            let html = `<div id="block_${service}" style="background: white; border: 1px solid #e1e8ef; border-radius: 10px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); animation: fadeInDown 0.4s ease;">`;
-            
-            if(service === 'vitrerie') {
-                html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">🪟 Kính & Cửa sổ</h3>`;
-                html += `
-                <div style="display: grid; grid-template-columns: 1fr 45px 75px 75px 25px; gap: 5px; padding: 0 6px; margin-bottom: 8px; align-items: center;">
-                    <span style="font-size:0.60rem; font-weight:800; color:var(--bleu);">DANH MỤC</span>
-                    <span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center;">SL</span>
-                    <span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center;">LOẠI</span>
-                    <span style="font-size:0.60rem; font-weight:800; color:var(--vert); text-align:center;">LỊCH</span>
-                    <span></span>
-                </div>`;
-                const rows = [{id:'vit_fen', n:'Cửa sổ tiêu chuẩn'}, {id:'vit_baie', n:'Cửa lùa'}, {id:'vit_velux', n:'Cửa sổ trần'}, {id:'vit_ver', n:'Sân trong / Mái hiên'}, {id:'vit_porte', n:'Cửa chính có kính'}, {id:'vit_com', n:'Kính mặt tiền cửa hàng'}];
-                rows.forEach(r => { html += `<div id="wrapper_${r.id}" style="margin-bottom:8px;">${generateVitrerieRowHtml(r.id, r.n, 0)}</div>`; });
-            } 
-            else if(service === 'shampouinage') {
-                html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">🛋️ Đồ vải, Sofa & Thảm</h3>`;
-                html += `
-                <div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;">
-                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">MÔ TẢ</span>
-                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">SL</span>
-                    <span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center;">LỊCH TRÌNH</span>
-                </div>`;
-                const rows = [{id:'can23', n:'Sofa (2-3 chỗ)'}, {id:'can45', n:'Sofa (4-5 chỗ)'}, {id:'canAng', n:'Sofa góc (Chữ L)'}, {id:'tapis', n:'Thảm trải sàn'}, {id:'moq', n:'Thảm lót sàn (m²)'}];
-                rows.forEach(r => html += generateRowHtml(r.id, r.n));
-            } 
-            else if(service === 'vehicule') {
-                html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">🚗 Dọn Nội thất Ô tô</h3>`;
-                html += `
-                <div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;">
-                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">GÓI DỊCH VỤ</span>
-                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">SL</span>
-                    <span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center;">LỊCH TRÌNH</span>
-                </div>`;
-                html += generateRowHtml('pack_v', 'Gói dọn sâu toàn diện');
-            } 
-            else if(service === 'bureaux') {
-                html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">🏢 Văn phòng & Tòa nhà Công ty</h3>`;
-                html += `
-                <p style="font-size:0.85rem; color:var(--bleu); margin-bottom:15px; background:#eef3f8; padding:10px; border-radius:8px; border-left:4px solid var(--bleu);">
-                    <strong>Xây dựng bố cục của bạn:</strong> Tạo/chọn một tầng, sau đó thêm phòng và cấu hình nhiệm vụ.
-                </p>
-                <div id="levelsContainer"></div>
-                <button type="button" class="btn-add-row" onclick="openLevelModal()" style="margin-top: 15px;">
-                    <span>+</span> Thêm tầng hoặc khu vực ngoài trời
-                </button>`;
-            }
-            
-            html += `</div>`;
-            container.insertAdjacentHTML('beforeend', html);
-
-            if(service === 'bureaux') {
-                createLevelAccordion('Bãi đậu xe');
-                createLevelAccordion('Tầng hầm');
-                createLevelAccordion('Tầng trệt (RDC)');
-                createLevelAccordion('Tầng 1');
-                createLevelAccordion('Tầng 2');
-                createLevelAccordion('Tầng 3');
-                createLevelAccordion('Tầng 4');
-            }
-
-            updateCrossSellButtons();
-            calculatePrice();
-            
-            const newBlock = document.getElementById('block_' + service);
-            if(newBlock) { newBlock.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-        }
-
-        function updateCrossSellButtons() {
-            const csContainer = document.getElementById('crossSellContainer');
-            const availableServices = [
-                { id: 'vitrerie', name: '🪟 Lau kính' },
-                { id: 'shampouinage', name: '🛋️ Vải & Thảm' },
-                { id: 'vehicule', name: '🚗 Xe hơi' },
-                { id: 'bureaux', name: '🏢 Văn phòng' }
-            ];
-
-            let missingServices = availableServices.filter(s => !activeServices.includes(s.id));
-
-            if (missingServices.length === 0) {
-                csContainer.style.display = 'none'; 
-                return;
-            }
-
-            csContainer.style.display = 'block';
-            let html = `<p style="font-size:0.85rem; font-weight:800; color:var(--vert); margin-bottom:15px;">💡 Gộp các dịch vụ vào ước tính của bạn để tiết kiệm thời gian bằng cách thêm:</p>`;
-            html += `<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">`;
-            
-            missingServices.forEach(s => {
-                html += `<button type="button" class="btn-cross-sell" onclick="addServiceToQuote('${s.id}')">+ Thêm ${s.name}</button>`;
-            });
-            
-            html += `</div>`;
-            csContainer.innerHTML = html;
-        }
-
-        function addCustomRow() {
-            if (customVisibleCount >= 2) return; 
-
-            customVisibleCount++;
-            customIndexCount++;
-            const id = 'custom_' + customIndexCount;
-            planData[id] = { days: [], months: [], start:'', end:'', comment:'' };
-            
-            const html = `
-            <div class="quote-row-item custom-row" id="row_${id}" style="display: flex; flex-direction: column; gap: 10px; border: 1px dashed var(--vert); background: #eef3f8; padding: 12px; border-radius: 8px; margin-top: 15px;">
-                <textarea id="name_${id}" placeholder="Nhập ghi chú yêu cầu cụ thể của bạn... Mô tả công việc cần làm..."></textarea>
-                <div style="display: grid; grid-template-columns: 60px 1fr 30px; gap: 10px; align-items: center;">
-                    <input type="number" id="qty_${id}" min="0" value="1" oninput="calculatePrice()" style="padding: 8px; width: 100%; box-sizing: border-box;">
-                    <button type="button" id="btn_plan_${id}" class="btn-planifier" onclick="openPlanningModal('${id}', 'Yêu cầu Đặc biệt')" style="padding: 8px; height: 100%;">+ Lên lịch</button>
-                    <button type="button" class="btn-delete-row" onclick="removeRow('${id}')" title="Xóa yêu cầu" style="margin: 0; width: 100%; height: 100%; border-radius: 5px;">×</button>
-                </div>
-            </div>`;
-            
-            document.getElementById('customRowsContainer').insertAdjacentHTML('beforeend', html);
-            
-            if (customVisibleCount >= 2) {
-                document.getElementById('btnAddCustomRow').style.display = 'none';
-            }
-        }
-
-        function removeRow(id) {
-            const row = document.getElementById('row_' + id);
-            if (row) row.remove();
-            if (planData[id]) delete planData[id];
-            
-            customVisibleCount--;
-            
-            if (customVisibleCount < 2) {
-                document.getElementById('btnAddCustomRow').style.display = 'flex';
-            }
-            
-            calculatePrice();
-        }
-
-        function submitInteractiveForm() {
-            const form = document.getElementById('interactiveForm');
-            if (form.checkValidity()) {
-                
-                let prixFinalAEnvoyer = document.getElementById('estimatedAmount').innerText.split('\n')[0];
-                let majorationAppliquee = false;
-                
-                if (window.currentTotalValue > 0 && window.currentTotalValue < 60) {
-                    let messageAlerte = "⚠️ Ước tính cấu hình chi tiết của bạn là " + window.currentTotalValue.toFixed(2) + " €.\n\n" +
-                                        "Tuy nhiên, các hoạt động được tính với mức phí cơ bản tối thiểu là 60,00 € (bao gồm chi phí triển khai và hóa chất).\n\n" +
-                                        "💡 LỜI KHUYÊN: Bạn có thể hủy và thêm các công việc lau kính hoặc giặt thảm để đạt mức 60 € và tối ưu hóa hoàn toàn chi phí cố định của mình!\n\n" +
-                                        "Bạn có muốn tiếp tục và gửi yêu cầu này ở mức giá cố định tối thiểu là 60,00 € không?";
-                    
-                    let clientAccepte = confirm(messageAlerte);
-                    
-                    if (!clientAccepte) {
-                        return;
-                    }
-                    majorationAppliquee = true;
-                    prixFinalAEnvoyer = "60.00 € (Áp dụng mức phí cố định tối thiểu)";
-                }
-
-                let statut = "";
-                const radios = document.getElementsByName('statut');
-                for (let i = 0; i < radios.length; i++) {
-                    if (radios[i].checked) {
-                        statut = radios[i].value;
-                        break;
-                    }
-                }
-
-                function getPlanningRecap(data) {
-                    if (!data || (data.days.length === 0 && data.months.length === 0 && !data.start && !data.end && (!data.comment || data.comment.trim() === ''))) {
-                        return "Chi tiết lịch trình sẽ được xem xét cùng nhau trong quá trình khảo sát thực tế";
-                    }
-                    
-                    let parts = [];
-                    if (data.days && data.days.length > 0) {
-                        parts.push(`Các ngày: [${data.days.join(', ')}]`);
-                    }
-                    if (data.months && data.months.length > 0) {
-                        parts.push(`Tháng: [${data.months.join(', ')}]`);
-                    }
-                    
-                    if (data.start && data.end) {
-                        parts.push(`Khung thời gian: ${data.start} đến ${data.end}`);
-                    } else if (data.start || data.end) {
-                        parts.push(`Ngày dự kiến: ${data.start || data.end}`); 
-                    }
-                    
-                    let recapStr = "";
-                    if (parts.length > 0) {
-                        recapStr = parts.join(' | ');
-                    } else {
-                        recapStr = "Thời gian cần được điều chỉnh cùng nhau";
-                    }
-
-                    if (data.comment && data.comment.trim() !== '') {
-                        recapStr += `\n      📌 Ghi chú thông số của khách hàng: "${data.comment.trim()}"`;
-                    }
-                    
-                    return recapStr;
-                }
-
-                let recap = "--- TÓM TẮT HỒ SƠ BÁO GIÁ KHÁCH HÀNG (VI) ---\n\n";
-
-                if (statut === "Entreprise") {
-                    let nomEnt = document.getElementById('nomEntreprise').value;
-                    recap += `🏢 TÊN CÔNG TY / TỔ CHỨC: ${nomEnt}\n\n`;
-                }
-
-                let aDesVitres = false;
-                document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
-                    let q = parseInt(input.value) || 0;
-                    if (q > 0) {
-                        if (!aDesVitres) { recap += "🪟 DANH MỤC LAU KÍNH / CỬA SỔ:\n"; aDesVitres = true; }
-                        let idFull = input.id.replace('qty_', '');
-                        let typeSelect = document.getElementById('type_' + idFull);
-                        let typeVitrage = typeSelect ? typeSelect.value : 'complet';
-                        let label = input.parentElement.querySelector('label').innerText;
-                        
-                        recap += `  - ${label} : ${q} (Loại hình: ${typeVitrage})\n`;
-                        recap += `    Cấu hình lịch trình: ${getPlanningRecap(planData[idFull])}\n`;
-                    }
-                });
-                if (aDesVitres) recap += "\n";
-
-                let aDesTextiles = false;
-                const fixesIds = { 'can23': 'Sofa 2-3 chỗ', 'can45': 'Sofa 4-5 chỗ', 'canAng': 'Sofa góc (Chữ L)', 'tapis': 'Thảm trải sàn', 'moq': 'Thảm lót sàn (m²)', 'pack_v': 'Gói Dọn Nội thất Ô tô' };
-                for (let id in fixesIds) {
-                    let input = document.getElementById('qty_' + id);
-                    let q = parseInt(input ? input.value : 0) || 0;
-                    if (q > 0) {
-                        if (!aDesTextiles) { recap += "🛋️ GIẶT THẢM / SOFA / DỌN XE HƠI:\n"; aDesTextiles = true; }
-                        recap += `  - ${fixesIds[id]} : ${q}\n`;
-                        recap += `    Cấu hình lịch trình: ${getPlanningRecap(planData[id])}\n`;
-                    }
-                }
-                if (aDesTextiles) recap += "\n";
-
-                let aDesLocaux = false;
-                for (let roomId in planData) {
-                    if (roomId.startsWith('room_detail_')) {
-                        if (!aDesLocaux) { recap += "🏢 DANH MỤC VĂN PHÒNG & TÒA NHÀ:\n"; aDesLocaux = true; }
-                        let roomInfo = planData[roomId];
-                        let card = document.getElementById('row_' + roomId);
-                        let solSelect = card ? card.querySelector('select') : null;
-                        let typeSol = solSelect ? solSelect.value : 'Không xác định';
-                        
-                        recap += `  - Loại không gian: ${roomInfo.roomType} (Chất liệu sàn: ${typeSol})\n`;
-                        
-                        if (roomInfo.roomType === 'Nhà vệ sinh' || roomInfo.roomType === 'Phòng tắm' || roomInfo.roomType === 'Phòng thay đồ') {
-                            let h = document.getElementById(`qty_h_${roomId}`)?.value || 0;
-                            let f = document.getElementById(`qty_f_${roomId}`)?.value || 0;
-                            recap += `    Số lượng tải trọng: Nam x${h} / Nữ x${f}\n`;
-                        } else if (roomInfo.roomType === 'Khu vực ăn uống') {
-                            let esp = document.getElementById(`qty_${roomId}`)?.value || 1;
-                            let tab = document.getElementById(`qty_tables_${roomId}`)?.value || 0;
-                            let cha = document.getElementById(`qty_chaises_${roomId}`)?.value || 0;
-                            recap += `    Số lượng tải trọng: Không gian x${esp} (Bố cục ${tab} bàn, ${cha} ghế)\n`;
-                        } else {
-                            let qty = document.getElementById(`qty_${roomId}`)?.value || 1;
-                            recap += `    Hệ số số lượng đơn vị: x${qty}\n`;
-                        }
-
-                        let prestCochees = [];
-                        card.querySelectorAll('.prest-pill input[type="checkbox"]:checked').forEach(p => {
-                            let labelPrest = p.parentElement.querySelector('label').innerText;
-                            prestCochees.push(labelPrest);
-                        });
-                        recap += `    Danh sách công việc đã yêu cầu: [${prestCochees.join(', ')}]\n`;
-                        recap += `    Lịch trình mục tiêu phân bổ: ${getPlanningRecap(roomInfo)}\n`;
-                    }
-                }
-                if (aDesLocaux) recap += "\n";
-
-                let aDesDemandesParticulieres = false;
-                for (let id in planData) {
-                    if (id.startsWith('custom_')) {
-                        let textTextarea = document.getElementById('name_' + id)?.value || '';
-                        let qtyCustom = document.getElementById('qty_' + id)?.value || 1;
-                        if (textTextarea.trim() !== '') {
-                            if (!aDesDemandesParticulieres) { recap += "✨ CÁC YÊU CẦU ĐẶC BIỆT TÙY CHỈNH:\n"; aDesDemandesParticulieres = true; }
-                            recap += `  - Chi tiết mô tả văn bản: "${textTextarea}" (Hệ số lặp lại: x${qtyCustom})\n`;
-                            recap += `    Lịch trình liên quan: ${getPlanningRecap(planData[id])}\n`;
-                        }
-                    }
-                }
-
-                recap += `\n--- NHẬT KÝ THEO DÕI ƯỚC TÍNH TÀI CHÍNH ---\n`;
-                recap += `Giá trị tính toán cơ bản thực tế: ${window.currentTotalValue.toFixed(2)} €\n`;
-                
-                if (window.clientDiscount > 0) {
-                    recap += `🎁 Đã áp dụng giảm giá Khách hàng thân thiết (5%) bằng mã: ${window.activeClientCode}\n`;
-                }
-                if (window.promoDiscountDevis > 0) {
-                    recap += `🎁 Đã áp dụng Mã Khuyến mãi Kiểm tra xác thực (${window.promoDiscountDevis * 100}%) bằng mã: ${window.activePromoCodeDevis}\n`;
-                }
-                if (window.holidayPromoActive) {
-                    recap += `🎁 Đã áp dụng Ưu đãi Sự kiện Dịp lễ tự động (10%) (Hợp đồng bị ràng buộc trong thời gian thực hiện 15 ngày)\n`;
-                }
-
-                recap += `Đề xuất ước tính chi phí đầu ra: ${prixFinalAEnvoyer}\n`;
-                if (majorationAppliquee) {
-                    recap += `⚠️ Lưu ý: Khách hàng đã cố tình đồng ý và bỏ qua ngưỡng yêu cầu mức phí cố định cơ bản (60,00 €) do khối lượng thanh toán nhỏ.\n`;
-                }
-
-                const btn = document.getElementById('btnSubmitForm');
-                btn.innerText = "Đang gửi chi tiết..."; btn.disabled = true;
-                
-                emailjs.send('service_2vgqpz8', 'template_oncrl1l', {
-                    statut: statut,
-                    nom: form.nom.value, 
-                    prenom: form.prenom.value, 
-                    email: form.email.value, 
-                    email_client: form.email.value,
-                    adresse: form.adresse.value,
-                    ville: form.ville.value, 
-                    interlocuteur: form.interlocuteur.value,
-                    prix: prixFinalAEnvoyer,
-                    recapitulatif: recap
-                }).then(() => {
-                    form.style.display = "none";
-                    document.getElementById('postSubmitChoice').style.display = "block";
-                });
-            } else { form.reportValidity(); }
-        }
-
-        function closeQuote() { document.getElementById('quoteModal').style.display = "none"; }
-        
-        window.onclick = function(e) { 
-            if(e.target.id === 'quoteModal') closeQuote(); 
-            if(e.target.id === 'clientModal') closeClientModal(); 
-            if(e.target.id === 'mentionsModal') closeMentions(); 
-            if(e.target.id === 'levelModal') closeLevelModal();
-            if(e.target.id === 'planningModal') document.getElementById('planningModal').style.display = "none";
-        }
-        
-        function initDynamicSliders() {
-            document.querySelectorAll('.faq-card, .review-card').forEach(container => {
-                const slides = container.querySelectorAll('.dynamic-slide');
-                if (slides.length <= 1) return;
-                let i = 0; setInterval(() => { slides[i].classList.remove('active'); i = (i + 1) % slides.length; slides[i].classList.add('active'); }, 10000);
-            });
-        }
-        window.addEventListener('DOMContentLoaded', initDynamicSliders);
-
-        const animationObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.scroll-animate').forEach(section => {
-            animationObserver.observe(section);
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
