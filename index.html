@@ -18,6 +18,55 @@
           emailjs.init("jlAW00rIU5xSHECVd"); 
        })();
     </script>
+    
+    <!-- AJOUT CSS POUR LE BOUTON PLEIN ÉCRAN AVANT/APRÈS -->
+    <style>
+        .comparison-container {
+            position: relative;
+        }
+        .btn-fullscreen-comp {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-fullscreen-comp:hover {
+            background: var(--vert, #27ae60);
+            border-color: var(--vert, #27ae60);
+        }
+        /* Style spécifique quand on passe en plein écran */
+        .comparison-container:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .comparison-container:fullscreen .comparison-slider {
+            width: 100%;
+            height: 85vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .comparison-container:fullscreen .gallery-label {
+            color: #fff;
+            margin-top: 15px;
+            font-size: 1.2rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -136,6 +185,7 @@
             <div class="realisations-mix-grid">
                 
                 <div class="comparison-container">
+                    <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Plein écran</button>
                     <div class="comparison-slider">
                         <div class="img before"><img src="avant1.jpg" alt="Avant"></div>
                         <div class="img after"><img src="apres1.jpg" alt="Après"></div>
@@ -152,6 +202,7 @@
                 </div>
                 
                 <div class="comparison-container">
+                    <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Plein écran</button>
                     <div class="comparison-slider">
                         <div class="img before"><img src="avant-terrasse.jpg" alt="Terrasse Avant nettoyage"></div>
                         <div class="img after"><img src="apres-terrasse.jpg" alt="Terrasse Après nettoyage"></div>
@@ -295,6 +346,8 @@
         <p><span class="text-bleu">Entrepreneur individuel</span> | <span class="text-green">SIRET : 105 799 787 00012</span> | <span class="text-bleu">*TVA non applicable.</span></p>
     </footer>
 
+    <!-- TOUTES LES FENÊTRES MODALES RESTENT INCHANGÉES... -->
+    
     <div id="mentionsModal" class="modal">
         <div class="modal-content large" style="max-width: 800px;">
             <span class="close-modal" onclick="closeMentions()">×</span>

@@ -1340,30 +1340,57 @@ function gererEtiquettesNouveautes() {
     const badges = document.querySelectorAll('.dynamic-badge');
     if (badges.length === 0) return;
 
-    // Date actuelle
     const dateActuelle = new Date();
-    
-    // Date cible : 15 Août de l'année en cours (Attention: en JS, les mois commencent à 0, donc 7 = Août)
     const anneeEnCours = dateActuelle.getFullYear();
-    const dateLancement = new Date(anneeEnCours, 7, 15); // 15 Août
+    const dateLancement = new Date(anneeEnCours, 7, 15); 
 
     badges.forEach(badge => {
         if (dateActuelle >= dateLancement) {
-            // À partir du 15 août
             badge.innerText = "Nouveau service";
         } else {
-            // Avant le 15 août
-            badge.innerText = "Dispo le 15 Août"; // Texte raccourci pour mieux tenir dans le badge
+            badge.innerText = "Dispo le 15 Août"; 
         }
     });
 }
-
-// Lancement de la vérification au chargement de la page
 window.addEventListener('DOMContentLoaded', gererEtiquettesNouveautes);
 
-// --- FONCTIONS POUR LA MODALE DES IMAGES EN GRAND ---
+// ==========================================
+// 🚀 NOUVELLES FONCTIONS : PLEIN ÉCRAN ET MODALE IMAGE (CORRIGÉE)
+// ==========================================
 
-// Ouvrir l'image
+// Gérer le bouton Plein Écran pour la vue de comparaison (Avant/Après)
+function toggleFullScreenComp(btn) {
+    const container = btn.closest('.comparison-container');
+    
+    if (!document.fullscreenElement) {
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) { /* Safari */
+            container.webkitRequestFullscreen();
+        } else if (container.msRequestFullscreen) { /* IE11 */
+            container.msRequestFullscreen();
+        }
+        btn.innerHTML = "✖ Quitter le plein écran";
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+        btn.innerHTML = "🔍 Plein écran";
+    }
+}
+
+// Réinitialiser le texte du bouton si on quitte avec la touche Echap
+document.addEventListener('fullscreenchange', (event) => {
+    if (!document.fullscreenElement) {
+        document.querySelectorAll('.btn-fullscreen-comp').forEach(b => b.innerHTML = "🔍 Plein écran");
+    }
+});
+
+// Ouvrir l'image en pleine taille (Modale corrigée et complétée)
 function openImageModal(imageSource) {
     var modal = document.getElementById("imageModal");
     var fullImg = document.getElementById("fullSizeImage");
@@ -1371,18 +1398,11 @@ function openImageModal(imageSource) {
     // On donne la source de la photo cliquée à la grande photo
     fullImg.src = imageSource; 
     
-    // On affiche la modale
-    modal.style.display = "flex";
-    
-    // Empêcher la page de défiler derrière
-    document.body.style.overflow = "hidden"; 
+    // On affiche la modale (C'est ici que votre code était coupé)
+    modal.style.display = "flex"; 
 }
 
-// Fermer l'image
+// Fermer l'image en pleine taille
 function closeImageModal() {
-    var modal = document.getElementById("imageModal");
-    modal.style.display = "none";
-    
-    // Réactiver le défilement de la page
-    document.body.style.overflow = "auto"; 
+    document.getElementById("imageModal").style.display = "none";
 }
