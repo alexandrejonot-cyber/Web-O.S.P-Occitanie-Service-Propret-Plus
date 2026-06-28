@@ -1227,6 +1227,7 @@ window.onclick = function(e) {
     if(e.target.id === 'levelModal') closeLevelModal();
     if(e.target.id === 'planningModal') document.getElementById('planningModal').style.display = "none";
     if(e.target.id === 'carteModal') closeCarteModal();
+    if(e.target.id === 'imageModal') closeImageModal(); // Permet de fermer l'image en cliquant à côté
 }
 
 function initDynamicSliders() {
@@ -1359,3 +1360,29 @@ function gererEtiquettesNouveautes() {
 
 // Lancement de la vérification au chargement de la page
 window.addEventListener('DOMContentLoaded', gererEtiquettesNouveautes);
+
+// --- FONCTIONS POUR LA MODALE DES IMAGES EN GRAND ---
+
+// Ouvrir l'image
+function openImageModal(imageSource) {
+    var modal = document.getElementById("imageModal");
+    var fullImg = document.getElementById("fullSizeImage");
+    
+    // On donne la source de la photo cliquée à la grande photo
+    fullImg.src = imageSource; 
+    
+    // On affiche la modale
+    modal.style.display = "flex";
+    
+    // Empêcher la page de défiler derrière
+    document.body.style.overflow = "hidden"; 
+}
+
+// Fermer l'image
+function closeImageModal() {
+    var modal = document.getElementById("imageModal");
+    modal.style.display = "none";
+    
+    // Réactiver le défilement de la page
+    document.body.style.overflow = "auto"; 
+}

@@ -134,6 +134,7 @@
         <h2 class="section-title">Nos <span class="text-green">Réalisations</span></h2>
         <div class="gallery-fine-container">
             <div class="realisations-mix-grid">
+                
                 <div class="comparison-container">
                     <div class="comparison-slider">
                         <div class="img before"><img src="avant1.jpg" alt="Avant"></div>
@@ -143,27 +144,31 @@
                     </div>
                     <p class="gallery-label">Vitrerie</p>
                 </div>
+                
                 <div class="video-container-fixed">
                     <div class="video-wrapper">
                         <video id="realVid" muted autoplay loop playsinline preload="metadata"><source src="video-realisation.mp4" type="video/mp4"></video>
                     </div>
                 </div>
+                
                 <div class="comparison-container">
                     <div class="comparison-slider">
-                        <div class="img before"><img src="avant2.jpg" alt="Avant"></div>
-                        <div class="img after"><img src="apres2.jpg" alt="Après"></div>
+                        <div class="img before"><img src="avant-terrasse.jpg" alt="Terrasse Avant nettoyage"></div>
+                        <div class="img after"><img src="apres-terrasse.jpg" alt="Terrasse Après nettoyage"></div>
                         <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
                         <div class="slider-button"></div>
                     </div>
-                    <p class="gallery-label">Textiles</p>
+                    <p class="gallery-label">Nettoyage Terrasse (Haute Pression)</p>
                 </div>
+                
             </div>
+            
             <div class="mini-photo-row">
-                <div class="card mini-card"><img src="photo1.jpg" alt="1"><div class="card-border"></div></div>
-                <div class="card mini-card"><img src="photo2.jpg" alt="2"><div class="card-border"></div></div>
-                <div class="card mini-card"><img src="photo3.jpg" alt="3"><div class="card-border"></div></div>
-                <div class="card mini-card"><img src="photo4.jpg" alt="4"><div class="card-border"></div></div>
-                <div class="card mini-card"><img src="photo5.jpg" alt="5"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo1.jpg" alt="1" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo2.jpg" alt="2" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo3.jpg" alt="3" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo4.jpg" alt="4" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo5.jpg" alt="5" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
             </div>
         </div>
     </section>
@@ -413,7 +418,7 @@
 
                                 <div style="margin-top: 5px; margin-bottom: 5px;">
                                     <p style="font-size: 0.65rem; color: #777; line-height: 1.4; text-align: justify;">
-                                        🔒 <strong>Protection de vos données :</strong> En soumettant ce formulaire, j'accepte que les informations saisies soient exploitées by O.S.P+ dans le cadre strict de ma demande de devis et de la relation commerciale qui peut en découler. Vos données ne seront jamais vendues à des tiers. Pour exercer vos droits d'accès, de modification ou de suppression, veuillez consulter nos <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Mentions Légales</a>.
+                                        🔒 <strong>Protection de vos données :</strong> En soumettant ce formulaire, j'accepte que les informations saisies soient exploitées par O.S.P+ dans le cadre strict de ma demande de devis et de la relation commerciale qui peut en découler. Vos données ne seront jamais vendues à des tiers. Pour exercer vos droits d'accès, de modification ou de suppression, veuillez consulter nos <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Mentions Légales</a>.
                                     </p>
                                 </div>
 
@@ -514,6 +519,11 @@
                 <button class="btn-carte-action btn-imprimer" onclick="printCarte()">🖨️ Imprimer</button>
             </div>
         </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeImageModal()" style="color: white; font-size: 50px; right: 30px; top: 15px;">&times;</span>
+        <img class="modal-content-img" id="fullSizeImage">
     </div>
 
     <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>

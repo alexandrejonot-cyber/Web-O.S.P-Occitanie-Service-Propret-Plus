@@ -682,3 +682,25 @@ footer { background: var(--blanc) !important; padding: 30px 8% !important; text-
     text-align: center;
     width: 160px;
 }
+
+/* --- MODALE POUR IMAGES EN GRAND --- */
+#imageModal {
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content-img {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 85vh;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    animation: zoomImage 0.3s ease;
+    object-fit: contain;
+}
+
+@keyframes zoomImage {
+    from {transform: scale(0.8); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+}
