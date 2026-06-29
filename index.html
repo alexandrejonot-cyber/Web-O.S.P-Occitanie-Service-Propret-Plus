@@ -65,6 +65,13 @@
             margin-top: 15px;
             font-size: 1.2rem;
         }
+        
+        /* Cacher le bouton plein écran sur mobile (écrans de moins de 768px) */
+        @media (max-width: 768px) {
+            .btn-fullscreen-comp {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -139,7 +146,7 @@
         </div>
     </section>
 
-    <div class="trust-bar"><p>📍 Secteur <strong>Toulouse (30 km inclus)</strong> et toute l'<strong>Occitanie*</strong></p></div>
+    <div class="trust-bar"><p>📍 Secteur <strong>Toulouse (15 km inclus)</strong> et toute l'<strong>Occitanie*</strong></p></div>
 
     <section id="services" class="services scroll-animate">
         <h2 class="section-title"><span class="text-bleu">Mes Services Spécialisés</span> & <span class="text-green">Estimation en ligne</span></h2>
@@ -294,7 +301,7 @@
             </div>
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>Zone d'intervention ?</h3><p>Déplacement offert sur 30km autour de Toulouse.</p></div>
+                <div class="dynamic-slide active"><h3>Zone d'intervention ?</h3><p>Déplacement offert sur 15km autour de Toulouse.</p></div>
                 <div class="dynamic-slide"><h3>Mode de paiement ?</h3><p>CB, espèces ou virements acceptés.</p></div>
                 <div class="card-border"></div>
             </div>
@@ -306,15 +313,18 @@
         <div class="who-container">
             <div class="contact-grid-triple">
                 <div class="contact-cat">
-                    <h3>🕒 Horaires</h3>
+                    <h3>🕒 Intervention</h3>
                     <ul class="contact-list">
-                        <li><strong>Lun - Ven :</strong> 05:00 - 10:30</li>
-                        <li><strong>Sam - Dim :</strong> Sur demande <br><span style="font-size: 0.75rem; color: var(--vert); font-weight: 600;">(Vitres, Shampouinage, etc.)</span></li>
+                        <li><strong>Lun - Ven :</strong> 05:00 - 10:30 & 20:00 - 22:00</li>
+                        <li><strong>Samedi :</strong> 05:00 - 22:00</li>
+                        <li><strong>Dimanche :</strong> Sous certaines conditions</li>
                     </ul>
                 </div>
                 <div class="contact-cat">
-                    <h3>📞 Contact</h3>
+                    <h3>📞 Standard (Tél, SMS, Mail)</h3>
                     <ul class="contact-list">
+                        <li><strong>Lun - Ven :</strong> 08:00 - 10:30</li>
+                        <li><strong>Sam - Dim :</strong> 08:00 - 22:00</li>
                         <li><strong>Tél :</strong> 07 45 02 76 24</li>
                         <li><strong>Mail :</strong> contact@ospplus.com</li>
                     </ul>
@@ -325,10 +335,10 @@
                     </div>
                 </div>
                 <div class="contact-cat">
-                    <h3>📍 Intervention</h3>
-                    <ul class="contact-list"><li>Toulouse & 30km inclus</li></ul>
+                    <h3>📍 Zone d'intervention</h3>
+                    <ul class="contact-list"><li>Toulouse & 15km inclus</li></ul>
                     <div class="villes-tags">
-                        <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span>
+                        <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span><span class="tag-ville">Saint-Orens</span><span class="tag-ville">Labège</span><span class="tag-ville">Blagnac</span><span class="tag-ville">Tournefeuille</span><span class="tag-ville">L'Union</span><span class="tag-ville">Ramonville</span><span class="tag-ville">Castanet</span><span class="tag-ville">Cugnaux</span><span class="tag-ville">Aucamville</span>
                     </div>
                 </div>
             </div>
@@ -546,7 +556,7 @@
     </div>
 
     <div id="carteModal" class="modal">
-        <div class="modal-content small" style="padding: 30px; text-align: center; max-width: 450px;">
+        <div class="modal-content small" style="padding: 30px; text-align: center; max-width: 750px;">
             <span class="close-modal" onclick="closeCarteModal()">×</span>
             <h3 style="color: var(--bleu); margin-bottom: 5px;">Ma Carte de Visite</h3>
             <p style="font-size: 0.85rem; color: #555; margin-bottom: 20px;">Cliquez sur la carte pour la retourner</p>

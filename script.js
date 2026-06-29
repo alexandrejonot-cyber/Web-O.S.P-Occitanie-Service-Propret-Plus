@@ -990,39 +990,142 @@ function openQuote(baseService) {
     if (document.getElementById('customRowsContainer')) document.getElementById('customRowsContainer').innerHTML = '';
     
     let guideHtml = '';
-    if (langKey === 'vi') {
-        guideHtml = `
-        <div class="guide-remplissage">
-            <strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong>
-            <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                <li style="margin-bottom: 5px;"><b>1. Các tầng/khu vực:</b> Thêm các tầng cho cơ sở của bạn (Tầng trệt, tầng 1...).</li>
-                <li style="margin-bottom: 5px;"><b>2. Các phòng/không gian:</b> Chi tiết các phòng cấu thành mỗi tầng.</li>
-                <li style="margin-bottom: 5px;"><b>3. Bảo dưỡng:</b> Chỉ định nội dung công việc cho từng phòng.</li>
-                <li style="margin-bottom: 5px;"><b>4. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để xác định tần suất.</li>
-            </ul>
-        </div>`;
-    } else if (langKey === 'en') {
-        guideHtml = `
-        <div class="guide-remplissage">
-            <strong>ℹ️ How to fill out your quote?</strong>
-            <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                <li style="margin-bottom: 5px;"><b>1. Your levels:</b> Add the floors of your premises (Ground floor, 1st floor...).</li>
-                <li style="margin-bottom: 5px;"><b>2. Your rooms:</b> Detail what makes up each level.</li>
-                <li style="margin-bottom: 5px;"><b>3. Maintenance:</b> Specify the tasks for each room.</li>
-                <li style="margin-bottom: 5px;"><b>4. Planning:</b> Click "+ Schedule" to define the frequency.</li>
-            </ul>
-        </div>`;
-    } else {
-        guideHtml = `
-        <div class="guide-remplissage">
-            <strong>ℹ️ Comment remplir votre devis ?</strong>
-            <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                <li style="margin-bottom: 5px;"><b>1. Vos niveaux :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
-                <li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau.</li>
-                <li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce.</li>
-                <li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence.</li>
-            </ul>
-        </div>`;
+    
+    // Génération du guide dynamique selon le service sélectionné et la langue
+    if (baseService === 'bureaux') {
+        if (langKey === 'vi') {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Các tầng:</b> Thêm các tầng cho cơ sở của bạn (Tầng trệt, tầng 1...).</li>
+                    <li style="margin-bottom: 5px;"><b>2. Các phòng:</b> Chi tiết các phòng cấu thành mỗi tầng.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Bảo dưỡng:</b> Chỉ định nội dung công việc cho từng phòng.</li>
+                    <li style="margin-bottom: 5px;"><b>4. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để xác định tần suất.</li>
+                </ul>
+            </div>`;
+        } else if (langKey === 'en') {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ How to fill out your quote?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Your levels:</b> Add the floors of your premises (Ground floor, 1st floor...).</li>
+                    <li style="margin-bottom: 5px;"><b>2. Your rooms:</b> Detail what makes up each level.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Maintenance:</b> Specify the tasks for each room.</li>
+                    <li style="margin-bottom: 5px;"><b>4. Planning:</b> Click "+ Schedule" to define the frequency.</li>
+                </ul>
+            </div>`;
+        } else {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ Comment remplir votre devis ?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Vos niveaux :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
+                    <li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau.</li>
+                    <li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce.</li>
+                    <li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence.</li>
+                </ul>
+            </div>`;
+        }
+    } else if (baseService === 'vitrerie') {
+        if (langKey === 'vi') {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Cửa kính:</b> Chọn loại cửa sổ của bạn.</li>
+                    <li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng cửa.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Bảo dưỡng:</b> Chọn làm sạch Trong, Ngoài hoặc Toàn bộ.</li>
+                    <li style="margin-bottom: 5px;"><b>4. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để xác định ngày.</li>
+                </ul>
+            </div>`;
+        } else if (langKey === 'en') {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ How to fill out your quote?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Your windows:</b> Choose your window type.</li>
+                    <li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Maintenance:</b> Choose Interior, Exterior, or Complete.</li>
+                    <li style="margin-bottom: 5px;"><b>4. Planning:</b> Click "+ Schedule" to define the frequency.</li>
+                </ul>
+            </div>`;
+        } else {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ Comment remplir votre devis ?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Vos vitrages :</b> Choisissez le type de fenêtre.</li>
+                    <li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Entretien :</b> Intérieur, Extérieur ou Complet.</li>
+                    <li style="margin-bottom: 5px;"><b>4. Planification :</b> Cliquez sur "+ Planifier".</li>
+                </ul>
+            </div>`;
+        }
+    } else if (baseService === 'shampouinage') {
+        if (langKey === 'vi') {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Đồ vải:</b> Chọn loại (Sô pha, thảm...).</li>
+                    <li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng cần làm sạch.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để chỉ định ngày mong muốn.</li>
+                </ul>
+            </div>`;
+        } else if (langKey === 'en') {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ How to fill out your quote?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Your textiles:</b> Select the type (Sofa, Rug...).</li>
+                    <li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number to clean.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Planning:</b> Click "+ Schedule" to specify the desired date.</li>
+                </ul>
+            </div>`;
+        } else {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ Comment remplir votre devis ?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Vos textiles :</b> Sélectionnez le type (Canapé, Tapis...).</li>
+                    <li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre à nettoyer.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier" pour préciser la date.</li>
+                </ul>
+            </div>`;
+        }
+    } else if (baseService === 'vehicule') {
+        if (langKey === 'vi') {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Xe của bạn:</b> Gói trọn gói đã được chọn.</li>
+                    <li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng xe.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để chọn ngày can thiệp.</li>
+                </ul>
+            </div>`;
+        } else if (langKey === 'en') {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ How to fill out your quote?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Your vehicle:</b> The full pack is selected.</li>
+                    <li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number of vehicles.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Planning:</b> Click "+ Schedule" to choose an intervention date.</li>
+                </ul>
+            </div>`;
+        } else {
+            guideHtml = `
+            <div class="guide-remplissage">
+                <strong>ℹ️ Comment remplir votre devis ?</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
+                    <li style="margin-bottom: 5px;"><b>1. Votre véhicule :</b> Le pack complet est sélectionné.</li>
+                    <li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre de véhicules.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier" pour choisir la date d'intervention.</li>
+                </ul>
+            </div>`;
+        }
     }
 
     fields.innerHTML = guideHtml + `
