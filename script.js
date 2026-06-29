@@ -1279,7 +1279,7 @@ function addCustomRow() {
         </div>
     </div>`;
     document.getElementById('customRowsContainer').insertAdjacentHTML('beforeend', html);
-    if (customVisibleCount >= 2) document.getElementById('btnAddCustomRow').style.display = 'none';
+    if (customVisibleCount >= 2) document.getElementById('btnAddCustomRow').style.display = 'flex';
 }
 
 function removeRow(id) {
@@ -1590,3 +1590,20 @@ function openImageModal(imageSource) {
     document.getElementById("imageModal").style.display = "flex"; 
 }
 function closeImageModal() { document.getElementById("imageModal").style.display = "none"; }
+
+// ==========================================
+// ⌨️ ACCESSIBILITÉ : NAVIGATION AU CLAVIER (ENTRÉE / ESPACE)
+// ==========================================
+document.addEventListener('keydown', function(event) {
+    // Vérifie si la touche pressée est "Entrée" ou "Espace"
+    if (event.key === 'Enter' || event.key === ' ') {
+        // Récupère l'élément actuellement surligné (en focus jaune)
+        let elementActif = document.activeElement;
+        
+        // Si cet élément est défini comme un bouton accessible
+        if (elementActif && elementActif.getAttribute('role') === 'button') {
+            event.preventDefault(); // Empêche la page de scroller si on appuie sur Espace
+            elementActif.click();   // Simule un clic de souris virtuel
+        }
+    }
+});
