@@ -9,6 +9,19 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
 
+/* ACCESSIBILITÉ : Classe pour masquer le texte visuellement tout en le laissant lisible par les lecteurs d'écran */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* ACCESSIBILITÉ : Contour très visible pour la navigation au clavier */
 *:focus-visible {
     outline: 3px solid #ffcc00 !important;

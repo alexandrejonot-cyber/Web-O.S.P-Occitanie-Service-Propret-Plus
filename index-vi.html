@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>O.S.P+ | Công ty Vệ sinh Toulouse & Occitanie | 20 năm Kinh nghiệm</title>
-    <meta name="description" content="O.S.P+ : Chuyên gia vệ sinh chuyên nghiệp tại Toulouse. Lau kính, giặt thảm & ghế sô pha, vệ sinh văn phòng. Dịch vụ chất lượng cao tại Occitanie. Báo giá miễn phí.">
-    <meta name="keywords" content="vệ sinh toulouse, lau kính toulouse, giặt ghế sô pha toulouse, vệ sinh văn phòng occitanie">
+    <meta name="description" content="O.S.P+: Chuyên gia vệ sinh chuyên nghiệp tại Toulouse. Lau kính, giặt thảm, ghế sofa và văn phòng. Dịch vụ vệ sinh chất lượng cao tại Occitanie. Báo giá miễn phí.">
+    <meta name="keywords" content="vệ sinh toulouse, thợ lau kính toulouse, giặt ghế sofa toulouse, vệ sinh văn phòng occitanie, sạch sẽ toulouse">
     
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -21,39 +21,31 @@
     
     <style>
         .comparison-container { position: relative; }
-        .btn-fullscreen-comp {
-            position: absolute; top: 10px; right: 10px; z-index: 20;
-            background: rgba(0, 0, 0, 0.7); color: #fff; border: 2px solid #fff;
-            padding: 8px 12px; border-radius: 5px; cursor: pointer;
-            font-size: 0.85rem; font-weight: bold; transition: all 0.3s ease;
-        }
+        .btn-fullscreen-comp { position: absolute; top: 10px; right: 10px; z-index: 20; background: rgba(0, 0, 0, 0.7); color: #fff; border: 2px solid #fff; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.3s ease; }
         .btn-fullscreen-comp:hover { background: var(--vert, #27ae60); border-color: var(--vert, #27ae60); }
-        .comparison-container:fullscreen {
-            width: 100vw; height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; background: #111;
-            padding: 20px; box-sizing: border-box;
-        }
+        .comparison-container:fullscreen { width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #111; padding: 20px; box-sizing: border-box; }
         .comparison-container:fullscreen .comparison-slider { width: 100%; height: 85vh; max-width: 1200px; margin: 0 auto; }
         .comparison-container:fullscreen .gallery-label { color: #fff; margin-top: 15px; font-size: 1.2rem; }
-        
-        /* Cacher le bouton plein écran sur mobile (écrans de moins de 768px) */
         @media (max-width: 768px) { .btn-fullscreen-comp { display: none !important; } }
     </style>
 </head>
 <body>
 
+    <a href="#services" class="skip-link">Chuyển trực tiếp đến dịch vụ và báo giá</a>
+
+    <div class="sr-only">Chào mừng đến với trang web O.S.P Plus. Trang web này đã được tối ưu hóa để hoàn toàn có thể truy cập bằng bàn phím và trình đọc màn hình.</div>
+
     <div class="header-sticky-wrapper">
-        
         <div id="promo-banner" class="promo-banner" style="display: none;">
-            🎉 <strong>ƯU ĐÃI ĐẶC BIỆT NGÀY LỄ: Giảm 10% trên tổng hóa đơn!</strong> <em>(Áp dụng nếu hợp đồng chính thức được ký trong vòng 15 ngày)</em>
+            🎉 <strong>ƯU ĐÃI ĐẶC BIỆT NGÀY LỄ: Giảm 10% trên hóa đơn cuối cùng của bạn!</strong> <em>(Áp dụng nếu hợp đồng chính thức được ký trong vòng 15 ngày)</em>
         </div>
 
         <header>
             <div class="logo-container">
-                <img src="logo.png" alt="O.S.P+ Occitanie Services Propreté Plus" class="site-logo" style="cursor: pointer;" onclick="openImageModal(this.src)">
+                <img src="logo.png" alt="Logo O.S.P+ Dịch vụ Vệ sinh Occitanie Plus" class="site-logo" style="cursor: pointer;" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to logo">
             </div>
 
-            <div class="hamburger" id="mobile-menu-btn">
+            <div class="hamburger" id="mobile-menu-btn" role="button" tabindex="0" aria-label="Mở menu chính">
                 <span></span><span></span><span></span>
             </div>
 
@@ -66,13 +58,13 @@
                     <li><a href="#qui-suis-je" class="nav-link">Chuyên môn</a></li>
                     <li><a href="#faq" class="nav-link">FAQ</a></li>
                     <li><a href="#contact" class="nav-link">Liên hệ</a></li>
-                    <li><a href="tel:0745027624" class="btn-phone-nav">📞 07 45 02 76 24</a></li>
+                    <li><a href="tel:0745027624" class="btn-phone-nav">📞 +33 7 45 02 76 24</a></li>
                     <li><a href="#services" class="btn-devis-nav">Báo giá Miễn phí</a></li>
-                    <li><button class="btn-client-nav" onclick="openClientModal()">KH Thân thiết</button></li>
+                    <li><button class="btn-client-nav" onclick="openClientModal()">Khách hàng Thân thiết</button></li>
                     <li><button class="btn-carte-nav" onclick="openCarteModal()">📇 Danh thiếp</button></li>
                     
                     <li class="lang-menu">
-                        <div class="selected-lang">🇻🇳 VN ▼</div>
+                        <div class="selected-lang" role="button" tabindex="0" aria-label="Menu chọn ngôn ngữ">🇻🇳 VI ▼</div>
                         <ul class="lang-dropdown">
                             <li><a href="index.html">🇫🇷 Français</a></li>
                             <li><a href="index-en.html">🇬🇧 English</a></li>
@@ -82,77 +74,73 @@
                 </ul>
             </nav>
         </header>
-        
     </div>
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Sự Sạch Sẽ, <span class="text-green">Là Ưu Tiên Của Chúng Tôi.</span></h1>
+            <h1>Ưu tiên của chúng tôi, <span class="text-green">Sự sạch sẽ.</span></h1>
             <div class="hero-video-container">
                 <div class="video-wrapper">
-                    <video id="introVid" muted autoplay loop playsinline preload="metadata">
-                        <source src="video-introduction.mp4" type="video/mp4">
-                    </video>
+                    <video id="introVid" muted autoplay loop playsinline preload="metadata"><source src="video-introduction.mp4" type="video/mp4"></video>
                 </div>
                 <div class="custom-controls">
                     <button class="control-btn" onclick="togglePlay('introVid')">⏯️ Phát/Tạm dừng</button>
                     <button class="control-btn" onclick="toggleMute('introVid')">🔊 Âm thanh</button>
-                    <button class="control-btn" onclick="restartVideo('introVid')">🔄 Làm lại</button>
+                    <button class="control-btn" onclick="restartVideo('introVid')">🔄 Đặt lại</button>
                     <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Toàn màn hình</button>
                 </div>
             </div>
             <div class="hero-badges">
                 <span class="badge">20 năm Kinh nghiệm</span>
                 <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Bảo hiểm Trách nhiệm Nghề nghiệp</span>
-                <span class="badge">Thiết bị Chuyên dụng</span>
+                <span class="badge">Thiết bị Chuyên nghiệp</span>
             </div>
-            <a href="#services" class="btn-main pulse-animation">YÊU CẦU BÁO GIÁ MIỄN PHÍ</a>
+            <a href="#services" class="btn-main pulse-animation">YÊU CẦU BÁO GIÁ MIỄN PHÍ CỦA TÔI</a>
         </div>
     </section>
 
-    <div class="trust-bar"><p>📍 Khu vực <strong>Toulouse (bao gồm 15 km)</strong> và toàn bộ vùng <strong>Occitanie*</strong></p></div>
+    <div class="trust-bar"><p>📍 Khu vực: <strong>Toulouse (bao gồm 15 km)</strong> và toàn bộ <strong>Occitanie*</strong></p></div>
 
     <section id="services" class="services scroll-animate">
         <h2 class="section-title"><span class="text-bleu">Dịch vụ Chuyên biệt</span> & <span class="text-green">Ước tính trực tuyến</span></h2>
         <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: -15px auto 35px auto; line-height: 1.5; padding: 0 15px;">
-            ⚠️ <em>Các mức giá tính toán trên trang web này chỉ mang tính tham khảo.</em> Báo giá chính thức và hợp đồng sẽ chỉ được thiết lập sau khi khảo sát kỹ thuật thực tế tại cơ sở của bạn (không ràng buộc).
+            ⚠️ <em>Mức giá tính toán trên trang web này chỉ mang tính tham khảo.</em> Báo giá chính thức sẽ được lập với bạn chỉ sau khi có chuyến khảo sát kỹ thuật tận nơi (không ràng buộc).
         </p>
 
         <div class="services-grid">
-            <div class="card clickable" onclick="openQuote('vitrerie')">
+            <div class="card clickable" onclick="openQuote('vitrerie')" role="button" tabindex="0" aria-label="Mở báo giá lau kính">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg></div>
                 <h3 class="text-bleu">Lau kính</h3>
-                <p>Làm sạch toàn bộ mọi bề mặt.</p>
+                <p>Vệ sinh toàn diện mọi bề mặt.</p>
                 <div class="card-border"></div>
             </div>
-            <div class="card clickable" onclick="openQuote('shampouinage')">
-                <span class="service-badge dynamic-badge">Khả dụng từ 15/08</span>
+            <div class="card clickable" onclick="openQuote('shampouinage')" role="button" tabindex="0" aria-label="Mở báo giá giặt thảm và ghế">
+                <span class="service-badge dynamic-badge">Có sẵn ngày 15 tháng 8</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path><path d="M9 22V12h6v10"></path></svg></div>
                 <h3 class="text-bleu">Giặt thảm & ghế</h3>
-                <p>Làm mới hoàn toàn vải và thảm sàn.</p>
+                <p>Làm mới đồ vải và thảm.</p>
                 <div class="card-border"></div>
             </div>
-            <div class="card clickable" onclick="openQuote('vehicule')">
-                <span class="service-badge dynamic-badge">Khả dụng từ 15/08</span>
+            <div class="card clickable" onclick="openQuote('vehicule')" role="button" tabindex="0" aria-label="Mở báo giá gói xe hơi">
+                <span class="service-badge dynamic-badge">Có sẵn ngày 15 tháng 8</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
                 <h3 class="text-bleu">Gói Xe hơi</h3>
-                <p>Vệ sinh toàn diện nội thất ô tô.</p>
+                <p>Vệ sinh toàn diện nội thất xe hơi.</p>
                 <div class="card-border"></div>
             </div>
-            <div class="card clickable" onclick="openQuote('bureaux')">
+            <div class="card clickable" onclick="openQuote('bureaux')" role="button" tabindex="0" aria-label="Mở báo giá văn phòng và tòa nhà">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
-                <h3 class="text-bleu">Văn phòng & Cơ sở</h3>
-                <p>Thiết lập tùy chỉnh theo không gian của bạn.</p>
+                <h3 class="text-bleu">Văn phòng & Tòa nhà</h3>
+                <p>Thiết lập tùy chỉnh cho cơ sở của bạn.</p>
                 <div class="card-border"></div>
             </div>
         </div>
     </section>
 
     <section id="galerie" class="gallery scroll-animate">
-        <h2 class="section-title">Các Dự án <span class="text-green">Thực tế</span></h2>
+        <h2 class="section-title"><span class="text-green">Dự án</span> của chúng tôi</h2>
         <div class="gallery-fine-container">
             <div class="realisations-mix-grid">
-                
                 <div class="comparison-container">
                     <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Toàn màn hình</button>
                     <div class="comparison-slider">
@@ -163,366 +151,65 @@
                     </div>
                     <p class="gallery-label">Lau kính</p>
                 </div>
-                
-                <div class="video-container-fixed">
-                    <div class="video-wrapper">
-                        <video id="realVid" muted autoplay loop playsinline preload="metadata"><source src="video-realisation.mp4" type="video/mp4"></video>
-                    </div>
-                </div>
-                
+                <div class="video-container-fixed"><div class="video-wrapper"><video id="realVid" muted autoplay loop playsinline preload="metadata"><source src="video-realisation.mp4" type="video/mp4"></video></div></div>
                 <div class="comparison-container">
                     <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Toàn màn hình</button>
                     <div class="comparison-slider">
-                        <div class="img before"><img src="avant-terrasse.jpg" alt="Sân thượng Trước"></div>
-                        <div class="img after"><img src="apres-terrasse.jpg" alt="Sân thượng Sau"></div>
+                        <div class="img before"><img src="avant-terrasse.jpg" alt="Sân hiên Trước khi vệ sinh"></div>
+                        <div class="img after"><img src="apres-terrasse.jpg" alt="Sân hiên Sau khi vệ sinh"></div>
                         <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
                         <div class="slider-button"></div>
                     </div>
-                    <p class="gallery-label">Vệ sinh sân thượng (Áp suất cao)</p>
+                    <p class="gallery-label">Vệ sinh Sân hiên (Áp suất cao)</p>
                 </div>
-                
             </div>
             
             <div class="mini-photo-row">
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo1.jpg" alt="1" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo2.jpg" alt="2" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo3.jpg" alt="3" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo4.jpg" alt="4" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo5.jpg" alt="5" onclick="openImageModal(this.src)"><div class="card-border"></div></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="avis" class="services scroll-animate" style="background: var(--gris);">
-        <h2 class="section-title">Đánh giá của <span class="text-green">Khách hàng</span></h2>
-        <div class="services-grid">
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Sébastien R.</h3><p>"Công việc hoàn hảo trên chiếc sô pha của tôi. Rất đúng giờ."</p></div><div class="card-border"></div></div>
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Marie L.</h3><p>"Cửa kính của tôi chưa bao giờ sạch đến thế. Kết quả thật hoàn hảo."</p></div><div class="card-border"></div></div>
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Pierre D.</h3><p>"Can thiệp nhanh chóng trước giờ mở cửa văn phòng. Rất hài lòng."</p></div><div class="card-border"></div></div>
-        </div>
-    </section>
-
-    <section id="qui-suis-je" class="who-am-i scroll-animate">
-        <div class="who-container">
-            <div class="who-flex">
-                <div class="who-image-box">
-                    <div class="photo-container-overlap">
-                        <img src="ma-photo.jpg" alt="Alexandre" class="profile-photo">
-                        <div class="experience-badge-overlap">
-                            <span>20</span>
-                            <p>năm kinh nghiệm</p>
-                        </div>
-                    </div>
-                    
-                    <div class="video-container-fixed" style="margin-top: 50px;">
-                        <div class="video-wrapper">
-                            <video id="presVid" muted autoplay loop playsinline preload="metadata">
-                                <source src="presentation-osp.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                        <div class="custom-controls">
-                            <button class="control-btn" onclick="togglePlay('presVid')">⏯️ Phát</button>
-                            <button class="control-btn" onclick="toggleMute('presVid')">🔊 Âm thanh</button>
-                            <button class="control-btn" onclick="restartVideo('presVid')">🔄 Làm lại</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="who-text-box">
-                    <h2 class="section-title">Từ tiêu chuẩn của các tập đoàn lớn <br><span class="text-green">đến dịch vụ cá nhân hóa của bạn</span></h2>
-                    
-                    <p class="intro-text">"Sau 20 năm giải quyết các thách thức phức tạp nhất trong ngành, tôi quyết định trở lại với điều cốt lõi: <strong>chính là bạn.</strong>"</p>
-                    
-                    <p>Hành trình làm việc tại các công ty vệ sinh hàng đầu đã rèn luyện cho tôi kỷ luật sắt. Hôm nay, tôi thành lập <strong>O.S.P+</strong> để mang chuyên môn cấp cao này phục vụ cho một mối quan hệ con người trực tiếp, minh bạch và bền vững.</p>
-                    
-                    <div class="tech-box">
-                        <h4 class="tech-title">Triết lý O.S.P+: Gần gũi, Lắng nghe, Sạch sẽ & Bảo mật Cao</h4>
-                        <ul class="philo-list">
-                            <li>💬 <strong>Lắng nghe tận tâm & tùy chỉnh:</strong> Không qua trung gian hay nền tảng ẩn danh.</li>
-                            <li>🛡️🔒 <strong>Bảo mật & Quyền riêng tư nâng cao:</strong> Sự can thiệp của chúng tôi được giới hạn nghiêm ngặt ở một hoặc hai nhân viên. Ít người qua lại đồng nghĩa với sự riêng tư tuyệt đối.</li>
-                            <li>👤 <strong>Một đầu mối duy nhất, một cam kết duy nhất:</strong> Từ lần tiếp xúc thương mại đầu tiên cho đến khi thực hiện dịch vụ, bạn chỉ làm việc với cùng một chuyên gia.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="faq" class="services scroll-animate" style="background: var(--blanc);">
-        <h2 class="section-title">Câu hỏi <span class="text-green">Thường gặp</span></h2>
-        <div class="services-grid">
-            <div class="card faq-card">
-                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>Thời gian đáp ứng?</h3><p>Thường trong vòng 48h đến 72h.</p></div>
-                <div class="dynamic-slide"><h3>Có làm việc vào buổi tối không?</h3><p>Có, đối với văn phòng, bắt đầu từ 5h sáng.</p></div>
-                <div class="card-border"></div>
-            </div>
-            <div class="card faq-card">
-                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>Sản phẩm sử dụng?</h3><p>Sản phẩm chuyên dụng, hiệu quả và thân thiện với môi trường.</p></div>
-                <div class="dynamic-slide"><h3>Thời gian khô cho vải?</h3><p>Nhờ máy hút bụi chuyên dụng, thời gian khô từ 4 đến 6 tiếng.</p></div>
-                <div class="card-border"></div>
-            </div>
-            <div class="card faq-card">
-                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>Khu vực phục vụ?</h3><p>Miễn phí đi lại trong bán kính 15km quanh Toulouse.</p></div>
-                <div class="dynamic-slide"><h3>Phương thức thanh toán?</h3><p>Chấp nhận thẻ tín dụng, tiền mặt hoặc chuyển khoản.</p></div>
-                <div class="card-border"></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo1.jpg" alt="Dự án OSP+ 1" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 1"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo2.jpg" alt="Dự án OSP+ 2" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 2"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo3.jpg" alt="Dự án OSP+ 3" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 3"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo4.jpg" alt="Dự án OSP+ 4" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 4"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo5.jpg" alt="Dự án OSP+ 5" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 5"><div class="card-border"></div></div>
             </div>
         </div>
     </section>
 
     <section id="contact" class="contact scroll-animate">
-        <h2 class="section-title">Liên hệ <span class="text-green">Với tôi</span></h2>
+        <h2 class="section-title"><span class="text-green">Liên hệ</span> với tôi</h2>
         <div class="who-container">
             <div class="contact-grid-triple">
                 <div class="contact-cat">
-                    <h3>🕒 Thi công</h3>
+                    <h3>🕒 Giờ làm việc</h3>
                     <ul class="contact-list">
                         <li><strong>Thứ 2 - Thứ 6:</strong> 05:00 - 10:30 & 20:00 - 22:00</li>
                         <li><strong>Thứ 7:</strong> 05:00 - 22:00</li>
-                        <li><strong>Chủ Nhật:</strong> Tùy điều kiện cụ thể</li>
+                        <li><strong>Chủ nhật:</strong> Theo một số điều kiện</li>
                     </ul>
                 </div>
                 <div class="contact-cat">
-                    <h3>📞 Hỗ trợ (SĐT, SMS, Email)</h3>
+                    <h3>📞 Hỗ trợ (Điện thoại, SMS, Email)</h3>
                     <ul class="contact-list">
-                        <li><strong>T2 - T6:</strong> 08:00 - 10:30</li>
-                        <li><strong>T7 - CN:</strong> 08:00 - 22:00</li>
-                        <li><strong>SĐT:</strong> 07 45 02 76 24</li>
+                        <li><strong>Điện thoại:</strong> +33 7 45 02 76 24</li>
                         <li><strong>Email:</strong> contact@ospplus.com</li>
                     </ul>
-                    <div class="social-original">
-                        <a href="https://wa.me/33745027624" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
-                        <a href="#" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook"></a>
-                        <a href="#" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram"></a>
-                    </div>
                 </div>
                 <div class="contact-cat">
-                    <h3>📍 Khu vực Phục vụ</h3>
-                    <ul class="contact-list"><li>Toulouse & 15km (Miễn phí)</li></ul>
-                    <div class="villes-tags">
-                        <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span><span class="tag-ville">Saint-Orens</span><span class="tag-ville">Labège</span><span class="tag-ville">Blagnac</span><span class="tag-ville">Tournefeuille</span><span class="tag-ville">L'Union</span><span class="tag-ville">Ramonville</span><span class="tag-ville">Castanet</span><span class="tag-ville">Cugnaux</span><span class="tag-ville">Aucamville</span>
-                    </div>
+                    <h3>📍 Khu vực Dịch vụ</h3>
+                    <ul class="contact-list"><li>Toulouse & bao gồm 15km</li></ul>
                 </div>
             </div>
-            <div class="map-container-full"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184758.4619427306!2d1.2635431668749873!3d43.600678619932024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb6fec7552ff%3A0x408f3468f40a120!2sToulouse!5e0!3m2!1sfr!2sfr!4v1716386561139!5m2!1sfr!2sfr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
             <div class="mentions-center-wrapper">
-                <button onclick="openMentions()" class="btn-mentions-link">Xem Điều khoản Pháp lý</button>
+                <button onclick="openMentions()" class="btn-mentions-link">Xem Thông báo Pháp lý</button>
             </div>
         </div>
     </section>
 
     <footer>
-        <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Occitanie Service Propreté</span> <span class="text-green">Plus</span>)</strong></p>
-        <p><span class="text-bleu">Doanh nghiệp Cá nhân</span> | <span class="text-green">SIRET : 105 799 787 00012</span> | <span class="text-bleu">*Không áp dụng VAT.</span></p>
+        <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Dịch vụ Vệ sinh Occitanie</span> <span class="text-green">Plus</span>)</strong></p>
+        <p><span class="text-bleu">Doanh nghiệp tư nhân</span> | <span class="text-green">SIRET: 105 799 787 00012</span></p>
     </footer>
-    
-    <div id="mentionsModal" class="modal">
-        <div class="modal-content large" style="max-width: 800px;">
-            <span class="close-modal" onclick="closeMentions()">×</span>
-            <div class="modal-header"><h2>Điều khoản Pháp lý & GDPR</h2></div>
-            <div class="modal-body-simple" style="max-height: 70vh; overflow-y: auto;">
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-bottom: 10px;">1. Nhà xuất bản Trang web</h3>
-                <p><strong>O.S.P+ (Occitanie Service Propreté Plus)</strong><br>
-                Quản lý : Alexandre Jonot<br>
-                Trạng thái: Doanh nghiệp Cá nhân (Artisan)<br>
-                SIRET: 105 799 787 00012<br>
-                Địa chỉ: 6 PLACE du Président Thomas Woodrow Wilson, 31000 Toulouse, FRANCE<br>
-                Điện thoại: 07 45 02 76 24<br>
-                Email: contact@ospplus.com</p>
 
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Lưu trữ Trang web</h3>
-                <p>Trang web được lưu trữ bởi: <strong>GitHub Pages (GitHub, Inc.)</strong><br>
-                Địa chỉ: 88 Colin P Kelly Jr St, San Francisco, CA 94107, Hoa Kỳ<br>
-                Trang web: <a href="https://github.com/" target="_blank" style="color: var(--vert); text-decoration: none;">https://github.com/</a></p>
-
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">3. Chính sách Bảo mật (GDPR)</h3>
-                <p>Thông tin thu thập qua biểu mẫu báo giá được ghi lại và xử lý độc quyền bởi Alexandre Jonot. Chúng chỉ được sử dụng cho mục đích báo giá thương mại và quản lý quan hệ khách hàng. Dữ liệu không được bán, cho thuê hoặc chuyển nhượng cho bên thứ ba.</p>
-                
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. Quyền của bạn</h3>
-                <p>Theo quy định GDPR, bạn có quyền truy cập, chỉnh sửa, chuyển đổi và xóa dữ liệu cá nhân của mình. Liên hệ với chúng tôi tại: contact@ospplus.com.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="clientModal" class="modal">
-        <div class="modal-content small" style="padding: 30px; text-align: center;">
-            <span class="close-modal" onclick="closeClientModal()">×</span>
-            <h3 style="color: var(--bleu); margin-bottom: 15px;">Khu vực Khách hàng</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 20px;">Nhập mã bí mật của bạn để nhận <strong>10% giảm giá Thân thiết</strong> cho báo giá mới của bạn.</p>
-            <input type="text" id="clientCodeInput" placeholder="Mã cá nhân của bạn..." style="padding: 12px; width: 80%; border-radius: 8px; border: 2px solid #e1e8ef; margin-bottom: 15px; font-size: 1rem; text-align: center; text-transform: uppercase;">
-            <br>
-            <button class="btn-submit-form" onclick="applyClientCode()" style="width: auto; padding: 10px 25px; margin-top: 0;">Xác nhận mã của tôi</button>
-            <p id="clientCodeMsg" style="margin-top: 15px; font-weight: bold; font-size: 0.9rem;"></p>
-        </div>
-    </div>
-
-    <div id="quoteModal" class="modal">
-        <div class="modal-content large">
-            <span class="close-modal" onclick="closeQuote()">×</span>
-            <div class="modal-header">
-                <h2 id="modalTitle">Báo giá <span class="text-green">Tùy chỉnh của bạn</span></h2>
-            </div>
-            
-            <div id="topPriceBanner" class="top-price-banner">
-                <div class="price-left" id="estimatedAmount">
-                    <div class="price-left-main">0.00 €*</div>
-                </div>
-                <div class="price-right">
-                    ⚠️ <em>Ước tính mang tính tham khảo.</em> Mức giá cuối cùng sẽ được xác nhận sau khi khảo sát kỹ thuật tại hiện trường (không ràng buộc).
-                </div>
-            </div>
-
-            <form id="interactiveForm">
-                <div class="modal-body-flex">
-                    <div class="modal-col-left">
-                        <div id="dynamicFields"></div>
-                    </div>
-                    
-                    <div class="modal-col-right">
-                        <div class="form-section-compact">
-                            
-                            <div style="background: #f4f8fb; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #e1e8ef;">
-                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* Giá của các yêu cầu cụ thể sẽ được tính toán tùy chỉnh.</p>
-                                <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;">
-                                    <span>+</span> Thêm yêu cầu cụ thể
-                                </button>
-                                <div id="customRowsContainer"></div>
-                            </div>
-
-                            <h3 class="form-subtitle">Thông tin của bạn</h3>
-                            <div style="display: flex; flex-direction: column; gap: 15px;">
-                                
-                                <div class="input-group">
-                                    <label>Bạn là:</label>
-                                    <div style="display: flex; gap: 20px; margin-top: 5px;">
-                                        <label style="font-weight: normal; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
-                                            <input type="radio" name="statut" value="Particulier" required style="width: auto; transform: scale(1.1); margin: 0;" onchange="toggleCompanyField()"> Cá nhân
-                                        </label>
-                                        <label style="font-weight: normal; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
-                                            <input type="radio" name="statut" value="Entreprise" required style="width: auto; transform: scale(1.1); margin: 0;" onchange="toggleCompanyField()"> Công ty, Tổ chức...
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="input-group" id="companyNameGroup" style="display: none; margin-top: 5px;">
-                                    <label>Tên cơ cấu (Công ty, Tổ chức...)</label>
-                                    <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="Ex: OSP Plus...">
-                                </div>
-
-                                <div class="input-group" id="employeeCountGroup" style="display: none; margin-top: 10px;">
-                                    <label>Số lượng nhân viên tại cơ sở:</label>
-                                    <input type="number" id="nbEmployes" name="nbEmployes" min="1" value="1" oninput="calculatePrice()">
-                                </div>
-                                <div class="input-group"><label>Họ</label><input type="text" name="nom" required></div>
-                                <div class="input-group"><label>Tên</label><input type="text" name="prenom" required></div>
-                                <div class="input-group"><label>Email</label><input type="email" name="email" required></div>
-                                <div class="input-group"><label>Địa chỉ đầy đủ</label><input type="text" name="adresse" placeholder="Số nhà và đường..." required></div>
-                                <div class="input-group"><label>Thành phố</label><input type="text" name="ville" placeholder="Mã bưu điện và Thành phố..." required></div>
-                                <div class="input-group"><label>Người liên hệ tại chỗ <span style="font-weight:normal; font-size:0.7rem; color:#666;">(Nếu khác)</span></label><input type="text" name="interlocuteur" placeholder="Họ và tên..."></div>
-                                
-                                <div class="input-group" style="margin-top: 10px; margin-bottom: 5px; background: #eef3f8; padding: 15px; border-radius: 8px; border: 1px dashed var(--vert);">
-                                    <label style="color: var(--bleu);">Mã Khuyến mãi (Tùy chọn)</label>
-                                    <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                        <input type="text" id="promoCodeInputDevis" placeholder="Ex: GIAMGIA10" style="text-transform: uppercase; flex: 1;">
-                                        <button type="button" onclick="applyPromoCodeDevis()" class="btn-validate-custom" style="padding: 10px 15px; font-size: 0.85rem;">Áp dụng</button>
-                                    </div>
-                                    <p id="promoCodeMsgDevis" style="font-size: 0.8rem; margin-top: 5px; font-weight: bold; line-height: 1.4;"></p>
-                                </div>
-
-                                <button type="button" class="btn-submit-form" id="btnSubmitForm" onclick="submitInteractiveForm()">GỬI YÊU CẦU BÁO GIÁ CỦA TÔI</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <div id="postSubmitChoice" style="display: none; text-align: center; padding: 40px;">
-                <h3 style="color: var(--bleu); font-size: 2rem;">✓ Đã gửi Báo giá!</h3>
-                <p style="margin-top: 15px; color: #555; font-size: 1.1rem;">Cảm ơn bạn đã yêu cầu. Tôi sẽ liên hệ lại với bạn trong thời gian sớm nhất.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="planningModal" class="day-modal">
-        <div class="planning-modal-content">
-            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Lập kế hoạch</h4>
-            
-            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">1. Các ngày trong tuần:</p>
-            <div class="grid-checkboxes" id="planDaysGrid"></div>
-            
-            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 20px;">2. Lặp lại <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Tùy chọn)</span>:</p>
-            
-            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">A) Nguyên tháng:</p>
-            <div class="grid-checkboxes" id="planMonthsGrid" style="margin-bottom:15px;"></div>
-            
-            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">B) Hoặc Giai đoạn cụ thể:</p>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items:center;">
-                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Từ:</label><input type="date" id="planStartDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
-                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Đến:</label><input type="date" id="planEndDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
-            </div>
-            
-            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">3. Ghi chú <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Tùy chọn)</span>:</p>
-            <textarea id="planComment" placeholder="Ex: Đóng cửa vào Thứ Ba..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
-            
-            <button type="button" class="btn-validate-days" onclick="savePlanning()">XÁC NHẬN LỰA CHỌN</button>
-        </div>
-    </div>
-
-    <div id="levelModal" class="sub-modal">
-        <div class="sub-modal-content">
-            <div class="sub-modal-header"><h4>Thêm tầng</h4></div>
-            <div class="sub-modal-body">
-                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:10px;">Lựa chọn nhanh:</p>
-                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 25px;">
-                    <button class="btn-quick-add" onclick="addSpecificLevel('Tầng 5')">Tầng 5</button>
-                    <button class="btn-quick-add" onclick="addSpecificLevel('Tầng 6')">Tầng 6</button>
-                    <button class="btn-quick-add" onclick="addSpecificLevel('Tầng hầm 1')">Tầng hầm 1</button>
-                    <button class="btn-quick-add" onclick="addSpecificLevel('Tầng hầm 2')">Tầng hầm 2</button>
-                    <button class="btn-quick-add" onclick="addSpecificLevel('Sân thượng')">Sân thượng</button>
-                    <button class="btn-quick-add" onclick="addSpecificLevel('Ngoại thất')">Ngoại thất</button>
-                </div>
-                
-                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:5px;">Hoặc nhập tên:</p>
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <input type="text" id="customLevelInput" placeholder="Ex: Tòa nhà B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
-                    <button onclick="addCustomLevel()" class="btn-validate-custom">Thêm</button>
-                </div>
-            </div>
-            <div style="padding: 15px; background: #f4f8fb; text-align:center; border-top:1px solid #eee;">
-                <button type="button" class="btn-validate" onclick="closeLevelModal()" style="padding:8px 20px; background:#ccc; color:#333; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Hủy</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="carteModal" class="modal">
-        <div class="modal-content small" style="padding: 30px; text-align: center; max-width: 750px;">
-            <span class="close-modal" onclick="closeCarteModal()">×</span>
-            <h3 style="color: var(--bleu); margin-bottom: 5px;">Danh thiếp của tôi</h3>
-            <p style="font-size: 0.85rem; color: #555; margin-bottom: 20px;">Nhấp vào danh thiếp để lật</p>
-            
-            <div class="flip-card" onclick="toggleFlipCard()">
-                <div class="flip-card-inner" id="businessCardInner">
-                    <div class="flip-card-front"><img src="Carte visite A.jpg?v=12" alt="Mặt trước Danh thiếp OSP+"></div>
-                    <div class="flip-card-back"><img src="Carte visite B.jpg?v=12" alt="Mặt sau Danh thiếp OSP+"></div>
-                </div>
-            </div>
-
-            <div class="carte-actions" style="margin-top: 25px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <button class="btn-carte-action btn-tourner" onclick="toggleFlipCard()">🔄 Lật</button>
-                <button class="btn-carte-action btn-telecharger" onclick="downloadCarte()">⬇️ Tải xuống</button>
-                <button class="btn-carte-action btn-imprimer" onclick="printCarte()">🖨️ In</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="imageModal" class="modal">
-        <span class="close-modal" onclick="closeImageModal()" style="color: white; font-size: 50px; right: 30px; top: 15px;">×</span>
-        <img class="modal-content-img" id="fullSizeImage">
-    </div>
-
-    <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
+    <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank" aria-label="Liên hệ với chúng tôi trên WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Logo WhatsApp"></a>
 
     <script src="script.js"></script>
 </body>
