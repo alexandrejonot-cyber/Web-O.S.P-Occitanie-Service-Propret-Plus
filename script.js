@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v3.3"; 
+const APP_VERSION = "v3.4"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
