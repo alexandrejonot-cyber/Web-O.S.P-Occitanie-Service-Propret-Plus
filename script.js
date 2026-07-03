@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v3.5"; 
+const APP_VERSION = "v3.6"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
@@ -1338,11 +1338,9 @@ function submitInteractiveForm() {
                 Adresse: form.adresse.value + ", " + form.ville.value,
                 TypePrestation: activeServices.join(', '),
                 Prix: prixFinalAEnvoyer,
-                // CORRECTION : Transformation de l'objet en texte simple pour que Sheets l'accepte dans une seule case
                 DataJSON: JSON.stringify({ activeServices: activeServices, planData: planData, interlocuteur: form.interlocuteur.value })
             };
 
-            // CORRECTION : Remplacement par votre véritable URL Google Apps Script
             const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxu65v97Rz9WkgO3njSoxhbZ4cRV_Z8mRBCBwii_jS8YuS0uQCbJVBoUS5Bef_6j54F/exec";
             
             fetch(GOOGLE_API_URL, { 
