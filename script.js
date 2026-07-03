@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v3.4"; 
+const APP_VERSION = "v3.5"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
@@ -1338,12 +1338,20 @@ function submitInteractiveForm() {
                 Adresse: form.adresse.value + ", " + form.ville.value,
                 TypePrestation: activeServices.join(', '),
                 Prix: prixFinalAEnvoyer,
-                DataJSON: { activeServices: activeServices, planData: planData, interlocuteur: form.interlocuteur.value }
+                // CORRECTION : Transformation de l'objet en texte simple pour que Sheets l'accepte dans une seule case
+                DataJSON: JSON.stringify({ activeServices: activeServices, planData: planData, interlocuteur: form.interlocuteur.value })
             };
 
-            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxXF1r_Ki3PSLQsHF6XKFsUtUI9lmSMVSo1k1SSvnPj9ckhbIjSqymX3ZFox8_YUPTM/exec";
-            fetch(GOOGLE_API_URL, { method: 'POST', headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(formDataPayload) })
-            .then(res => console.log("✅ Devis envoyé vers Google Sheets avec succès")).catch(e => console.error("Erreur d'envoi vers Sheets:", e));
+            // CORRECTION : Remplacement par votre véritable URL Google Apps Script
+            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxu65v97Rz9WkgO3njSoxhbZ4cRV_Z8mRBCBwii_jS8YuS0uQCbJVBoUS5Bef_6j54F/exec";
+            
+            fetch(GOOGLE_API_URL, { 
+                method: 'POST', 
+                headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                body: JSON.stringify(formDataPayload) 
+            })
+            .then(res => console.log("✅ Devis envoyé vers Google Sheets avec succès"))
+            .catch(e => console.error("Erreur d'envoi vers Sheets:", e));
 
             function getPlanningRecap(data) {
                 if (!data || (data.days.length === 0 && data.months.length === 0 && !data.start && !data.end && (!data.comment || data.comment.trim() === ''))) return "Détails de planification à voir ensemble";
