@@ -1102,7 +1102,7 @@ function openQuote(baseService) {
                 <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
                     <li style="margin-bottom: 5px;"><b>1. Xe của bạn:</b> Gói trọn gói đã được chọn.</li>
                     <li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng xe.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để chọn ngày can thiệp.</li>
+                    <li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" to chọn ngày can thiệp.</li>
                 </ul>
             </div>`;
         } else if (langKey === 'en') {
@@ -1341,7 +1341,8 @@ function submitInteractiveForm() {
                 DataJSON: JSON.stringify({ activeServices: activeServices, planData: planData, interlocuteur: form.interlocuteur.value })
             };
 
-            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycby03W7nPsJPI3WCcWvAzNvbQI6cOadhRBvF-5MCmZyeY3yOCjjdJAL7DO50dQfOK7dm/exec";
+            // URL modifiée avec succès ici :
+            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxDkn-vzKdHaKrRqO45qkPbkb41qvsd2u5w-5neIrD41AixBaYyHTpp6f5ExKARuedqKA/exec";
             
             fetch(GOOGLE_API_URL, { 
                 method: 'POST', 
@@ -1556,6 +1557,15 @@ function toggleFlipCard() { const flipCard = document.querySelector('.flip-card'
 function downloadCarte() {
     let linkA = document.createElement('a'); linkA.href = 'Carte visite A.jpg?v=12'; linkA.download = 'OSP_Plus_Carte_Recto.jpg'; document.body.appendChild(linkA); linkA.click(); document.body.removeChild(linkA);
     setTimeout(() => { let linkB = document.createElement('a'); linkB.href = 'Carte visite B.jpg?v=12'; linkB.download = 'OSP_Plus_Carte_Verso.jpg'; document.body.appendChild(linkB); linkB.click(); document.body.removeChild(linkB); }, 500);
+}
+
+function printCarte() {
+    let printWindow = window.open('', '_blank');
+    if (printWindow) {
+        printWindow.document.write(`<html><head><title>Imprimer - Carte de Visite O.S.P+</title><style>body { text-align: center; font-family: sans-serif; padding: 20px; } img { max-width: 100%; width: 400px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; } p { color: #1a3c6c; font-weight: bold; }</style></head><body><p>Découpez le long des bords :</p><img src="Carte visite A.jpg?v=12" alt="Recto"><br><img src="Carte visite B.jpg?v=12" alt="Verso"></body></html>`);
+        printWindow.document.close(); printWindow.focus();
+        setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
+    }
 }
 
 function printCarte() {
