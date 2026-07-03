@@ -1341,7 +1341,7 @@ function submitInteractiveForm() {
                 DataJSON: { activeServices: activeServices, planData: planData, interlocuteur: form.interlocuteur.value }
             };
 
-            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbyLrV60s2b8veFwqk4Rw0WMXqrEQ_WkRrs2WDfidGt1eaRoh70htg8Lu477Sc4jafAA/exec";
+            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxXF1r_Ki3PSLQsHF6XKFsUtUI9lmSMVSo1k1SSvnPj9ckhbIjSqymX3ZFox8_YUPTM/exec";
             fetch(GOOGLE_API_URL, { method: 'POST', headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(formDataPayload) })
             .then(res => console.log("✅ Devis envoyé vers Google Sheets avec succès")).catch(e => console.error("Erreur d'envoi vers Sheets:", e));
 
