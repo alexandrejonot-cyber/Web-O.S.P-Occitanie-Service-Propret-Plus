@@ -1459,7 +1459,7 @@ function submitInteractiveForm() {
                 "Recapitulatif": recap
             };
 
-            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwQOR1TB5pLH6vBUzeOnI22edu2Ys0qQQlHWZE9AtdnMbDsJOle0X7VAY_siUZwzY4k0A/exec";
+            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwYgDzR732TQcEKTElZ1iQi7TesSiR7URzsb-Gw-J_gtn11k7vvQz0f-xpjqYonW56osg/exec";
             
             fetch(GOOGLE_API_URL, { 
                 method: 'POST', 
