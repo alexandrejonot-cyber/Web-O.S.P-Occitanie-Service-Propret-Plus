@@ -1329,17 +1329,18 @@ function submitInteractiveForm() {
             const radios = document.getElementsByName('statut');
             for (let i = 0; i < radios.length; i++) { if (radios[i].checked) { statut = radios[i].value; break; } }
 
-            // NOUVEAU PAYLOAD : Uniquement les coordonnées client
+            // NOUVEAU PAYLOAD : Aligné exactement avec les colonnes du Google Sheet
             const formDataPayload = {
-                SessionID: "WEB_" + Date.now(),
-                Statut: "Nouvelle Demande",
-                TypeClient: statut,
-                NomClient: (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value + " " + form.prenom.value,
-                NomContact: form.nom.value + " " + form.prenom.value,
-                Email: form.email.value,
-                Telephone: form.telephone ? form.telephone.value : "Non renseigné",
-                Adresse: form.adresse.value + ", " + form.ville.value,
-                Interlocuteur: form.interlocuteur.value
+                "Date": new Date().toLocaleString('fr-FR'),
+                "Session ID": "WEB_" + Date.now(),
+                "Nom Client": (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value,
+                "Prénom Client": form.prenom.value,
+                "Email": form.email.value,
+                "Téléphone": form.telephone ? form.telephone.value : "Non renseigné",
+                "Adresse": form.adresse.value + ", " + form.ville.value,
+                "Statut": statut,
+                "Type Prestation": activeServices.join(', '), 
+                "Prix": prixFinalAEnvoyer
             };
 
             // URL mise à jour ici :
@@ -1558,15 +1559,6 @@ function toggleFlipCard() { const flipCard = document.querySelector('.flip-card'
 function downloadCarte() {
     let linkA = document.createElement('a'); linkA.href = 'Carte visite A.jpg?v=12'; linkA.download = 'OSP_Plus_Carte_Recto.jpg'; document.body.appendChild(linkA); linkA.click(); document.body.removeChild(linkA);
     setTimeout(() => { let linkB = document.createElement('a'); linkB.href = 'Carte visite B.jpg?v=12'; linkB.download = 'OSP_Plus_Carte_Verso.jpg'; document.body.appendChild(linkB); linkB.click(); document.body.removeChild(linkB); }, 500);
-}
-
-function printCarte() {
-    let printWindow = window.open('', '_blank');
-    if (printWindow) {
-        printWindow.document.write(`<html><head><title>Imprimer - Carte de Visite O.S.P+</title><style>body { text-align: center; font-family: sans-serif; padding: 20px; } img { max-width: 100%; width: 400px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; } p { color: #1a3c6c; font-weight: bold; }</style></head><body><p>Découpez le long des bords :</p><img src="Carte visite A.jpg?v=12" alt="Recto"><br><img src="Carte visite B.jpg?v=12" alt="Verso"></body></html>`);
-        printWindow.document.close(); printWindow.focus();
-        setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
-    }
 }
 
 function printCarte() {
