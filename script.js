@@ -1329,20 +1329,21 @@ function submitInteractiveForm() {
             const radios = document.getElementsByName('statut');
             for (let i = 0; i < radios.length; i++) { if (radios[i].checked) { statut = radios[i].value; break; } }
 
+            // NOUVEAU PAYLOAD : Uniquement les coordonnées client
             const formDataPayload = {
                 SessionID: "WEB_" + Date.now(),
-                Statut: "En attente (Site Web)",
+                Statut: "Nouvelle Demande",
+                TypeClient: statut,
                 NomClient: (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value + " " + form.prenom.value,
+                NomContact: form.nom.value + " " + form.prenom.value,
                 Email: form.email.value,
-                Telephone: "Non renseigné sur le site",
+                Telephone: form.telephone ? form.telephone.value : "Non renseigné",
                 Adresse: form.adresse.value + ", " + form.ville.value,
-                TypePrestation: activeServices.join(', '),
-                Prix: prixFinalAEnvoyer,
-                DataJSON: JSON.stringify({ activeServices: activeServices, planData: planData, interlocuteur: form.interlocuteur.value })
+                Interlocuteur: form.interlocuteur.value
             };
 
-            // URL modifiée avec succès ici :
-            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxDkn-vzKdHaKrRqO45qkPbkb41qvsd2u5w-5neIrD41AixBaYyHTpp6f5ExKARuedqKA/exec";
+            // URL mise à jour ici :
+            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbw5jZjmo7OcFUZG4BOZtqgE_zpY0wSn-eoep-jmoSKGfsfK1ud-DjHd0pMcSsinSqbu/exec";
             
             fetch(GOOGLE_API_URL, { 
                 method: 'POST', 
