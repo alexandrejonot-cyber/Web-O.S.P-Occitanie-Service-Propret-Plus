@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v4.0"; 
+const APP_VERSION = "v3.9"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
@@ -392,7 +392,7 @@ function toggleCompanyField() {
     } else {
         if (companyGroup) companyGroup.style.display = 'none';
         if (companyInput) { companyInput.required = false; companyInput.value = ''; }
-        if (employeeGroup) employeeGroup.style.display = 'none';
+        if (employeeGroup) { employeeGroup.style.display = 'none'; }
         if (employeeInput) { employeeInput.required = false; employeeInput.value = '1'; }
     }
     calculatePrice();
@@ -1020,7 +1020,7 @@ function openQuote(baseService) {
             <div class="guide-remplissage">
                 <strong>ℹ️ Comment remplir votre devis ?</strong>
                 <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Vos niveaux :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
+                    <li style="margin-bottom: 5px;"><b>1. Vos niveau :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
                     <li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau.</li>
                     <li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce.</li>
                     <li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence.</li>
@@ -1329,31 +1329,7 @@ function submitInteractiveForm() {
             const radios = document.getElementsByName('statut');
             for (let i = 0; i < radios.length; i++) { if (radios[i].checked) { statut = radios[i].value; break; } }
 
-            // NOUVEAU PAYLOAD : Aligné exactement avec les colonnes du Google Sheet
-            const formDataPayload = {
-                "Date": new Date().toLocaleString('fr-FR'),
-                "Session ID": "WEB_" + Date.now(),
-                "Nom Client": (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value,
-                "Prénom Client": form.prenom.value,
-                "Email": form.email.value,
-                "Téléphone": form.telephone ? form.telephone.value : "Non renseigné",
-                "Adresse": form.adresse.value + ", " + form.ville.value,
-                "Statut": statut,
-                "Type Prestation": activeServices.join(', '), 
-                "Prix": prixFinalAEnvoyer
-            };
-
-            // URL mise à jour ici :
-            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbw5jZjmo7OcFUZG4BOZtqgE_zpY0wSn-eoep-jmoSKGfsfK1ud-DjHd0pMcSsinSqbu/exec";
-            
-            fetch(GOOGLE_API_URL, { 
-                method: 'POST', 
-                headers: { "Content-Type": "text/plain;charset=utf-8" }, 
-                body: JSON.stringify(formDataPayload) 
-            })
-            .then(res => console.log("✅ Devis envoyé vers Google Sheets avec succès"))
-            .catch(e => console.error("Erreur d'envoi vers Sheets:", e));
-
+            // 1. CRÉATION DU RÉCAPITULATIF COMPLET
             function getPlanningRecap(data) {
                 if (!data || (data.days.length === 0 && data.months.length === 0 && !data.start && !data.end && (!data.comment || data.comment.trim() === ''))) return "Détails de planification à voir ensemble";
                 const fullDays = { 'Lun':'Lundi', 'Mar':'Mardi', 'Mer':'Mercredi', 'Jeu':'Jeudi', 'Ven':'Vendredi', 'Sam':'Samedi', 'Dim':'Dimanche' };
@@ -1468,16 +1444,51 @@ function submitInteractiveForm() {
             recap += `Prix final proposé au client : ${prixFinalAEnvoyer}\n`;
             if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 60,00 € car son panier initial était trop faible.\n`;
 
+            // 2. ENVOI DES DONNÉES ET DU RÉCAPITULATIF À GOOGLE DRIVE POUR LE PDF
+            const formDataPayload = {
+                "Date": new Date().toLocaleString('fr-FR'),
+                "Session ID": "WEB_" + Date.now(),
+                "Nom Client": (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value,
+                "Prénom Client": form.prenom.value,
+                "Email": form.email.value,
+                "Téléphone": form.telephone ? form.telephone.value : "Non renseigné",
+                "Adresse": form.adresse.value + ", " + form.ville.value,
+                "Statut": statut,
+                "Type Prestation": activeServices.join(', '), 
+                "Prix": prixFinalAEnvoyer,
+                "Recapitulatif": recap
+            };
+
+            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbx6z0I0JW2mT5xXBPsXisss4Cj5buSkozV-xsv__3ANg5zNNTRwkKOJawyzd2qxsD6r/exec";
+            
+            fetch(GOOGLE_API_URL, { 
+                method: 'POST', 
+                headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                body: JSON.stringify(formDataPayload) 
+            })
+            .then(res => console.log("✅ Données envoyées vers Google Drive pour création du PDF"))
+            .catch(e => console.error("Erreur d'envoi vers Google:", e));
+
+            // 3. ENVOI DE L'EMAIL VIA EMAILJS
             const btn = document.getElementById('btnSubmitForm');
             btn.innerText = "Envoi en cours..."; btn.disabled = true;
             
             emailjs.send('service_wfrbr4e', 'template_oncrl1l', {
-                statut: statut, nom: form.nom.value, prenom: form.prenom.value, email: form.email.value, email_client: form.email.value,
-                adresse: form.adresse.value, ville: form.ville.value, interlocuteur: form.interlocuteur.value, prix: prixFinalAEnvoyer, recapitulatif: recap
+                statut: statut, 
+                nom: form.nom.value, 
+                prenom: form.prenom.value, 
+                email: form.email.value, 
+                telephone: form.telephone ? form.telephone.value : "Non renseigné", // 📞 TÉLÉPHONE AJOUTÉ ICI POUR EMAILJS !
+                email_client: form.email.value,
+                adresse: form.adresse.value, 
+                ville: form.ville.value, 
+                interlocuteur: form.interlocuteur.value, 
+                prix: prixFinalAEnvoyer, 
+                recapitulatif: recap
             }).then(() => {
                 if (window.activeClientCode || window.activePromoCodeDevis) {
                     let codeUtilise = window.activeClientCode || window.activePromoCodeDevis;
-                    let messageAlerte = `⚠️ ALERTE IMPORTANTE :\n\nLe code de remise "${codeUtilise}" vient d'être utilisé par ${form.nom.value} ${form.prenom.value} (Email: ${form.email.value}).\n\nSi ce code est à usage unique, n'oubliez pas d'ajouter la mention "-FIN" à côté du code dans votre fichier codes.js pour le désactiver.`;
+                    let messageAlerte = `⚠️ ALERTE IMPORTANTE :\n\nLe code de remise "${codeUtilise}" vient d'être utilisé par ${form.nom.value} ${form.prenom.value} (Email: ${form.email.value}, Tél: ${form.telephone ? form.telephone.value : "Non renseigné"}).\n\nSi ce code est à usage unique, n'oubliez pas d'ajouter la mention "-FIN" à côté du code dans votre fichier codes.js pour le désactiver.`;
                     
                     emailjs.send('service_wfrbr4e', 'template_alerte_code', {
                         alerte_message: messageAlerte,
@@ -1604,15 +1615,11 @@ function closeImageModal() { document.getElementById("imageModal").style.display
 // ⌨️ ACCESSIBILITÉ : NAVIGATION AU CLAVIER (ENTRÉE / ESPACE)
 // ==========================================
 document.addEventListener('keydown', function(event) {
-    // Vérifie si la touche pressée est "Entrée" ou "Espace"
     if (event.key === 'Enter' || event.key === ' ') {
-        // Récupère l'élément actuellement surligné (en focus jaune)
         let elementActif = document.activeElement;
-        
-        // Si cet élément est défini comme un bouton accessible
         if (elementActif && elementActif.getAttribute('role') === 'button') {
-            event.preventDefault(); // Empêche la page de scroller si on appuie sur Espace
-            elementActif.click();   // Simule un clic de souris virtuel
+            event.preventDefault();
+            elementActif.click();
         }
     }
 });
