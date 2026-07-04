@@ -392,7 +392,7 @@ function toggleCompanyField() {
     } else {
         if (companyGroup) companyGroup.style.display = 'none';
         if (companyInput) { companyInput.required = false; companyInput.value = ''; }
-        if (employeeGroup) employeeGroup.style.display = 'none';
+        if (employeeGroup) { employeeGroup.style.display = 'none'; }
         if (employeeInput) { employeeInput.required = false; employeeInput.value = '1'; }
     }
     calculatePrice();
@@ -1020,7 +1020,7 @@ function openQuote(baseService) {
             <div class="guide-remplissage">
                 <strong>ℹ️ Comment remplir votre devis ?</strong>
                 <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Vos niveaux :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
+                    <li style="margin-bottom: 5px;"><b>1. Vos niveau :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
                     <li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau.</li>
                     <li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce.</li>
                     <li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence.</li>
@@ -1459,6 +1459,7 @@ function submitInteractiveForm() {
                 "Recapitulatif": recap
             };
 
+            // URL DE TON NOUVEAU DÉPLOIEMENT MAQUETTÉE CI-DESSOUS
             const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbw5jZjmo7OcFUZG4BOZtqgE_zpY0wSn-eoep-jmoSKGfsfK1ud-DjHd0pMcSsinSqbu/exec";
             
             fetch(GOOGLE_API_URL, { 
@@ -1606,15 +1607,11 @@ function closeImageModal() { document.getElementById("imageModal").style.display
 // ⌨️ ACCESSIBILITÉ : NAVIGATION AU CLAVIER (ENTRÉE / ESPACE)
 // ==========================================
 document.addEventListener('keydown', function(event) {
-    // Vérifie si la touche pressée est "Entrée" ou "Espace"
     if (event.key === 'Enter' || event.key === ' ') {
-        // Récupère l'élément actuellement surligné (en focus jaune)
         let elementActif = document.activeElement;
-        
-        // Si cet élément est défini comme un bouton accessible
         if (elementActif && elementActif.getAttribute('role') === 'button') {
-            event.preventDefault(); // Empêche la page de scroller si on appuie sur Espace
-            elementActif.click();   // Simule un clic de souris virtuel
+            event.preventDefault();
+            elementActif.click();
         }
     }
 });
