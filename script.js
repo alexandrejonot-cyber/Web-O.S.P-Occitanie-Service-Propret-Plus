@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v3.10"; 
+const APP_VERSION = "v4.0"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
@@ -392,7 +392,7 @@ function toggleCompanyField() {
     } else {
         if (companyGroup) companyGroup.style.display = 'none';
         if (companyInput) { companyInput.required = false; companyInput.value = ''; }
-        if (employeeGroup) { employeeGroup.style.display = 'none'; }
+        if (employeeGroup) employeeGroup.style.display = 'none';
         if (employeeInput) { employeeInput.required = false; employeeInput.value = '1'; }
     }
     calculatePrice();
@@ -411,8 +411,8 @@ const prestationsData = {
     'Salle de sport': { obligatoires: ['Vidage poubelles', 'Aération'], optionnelles: ['Aspiration / Lavage', 'Désinfection machines', 'Miroirs', 'Mise en place consommables'] },
     'Ascenseur principal': { obligatoires: ['Désinfection boutons', 'Aspiration / Lavage'], optionnelles: ['Nettoyage miroir', 'Traces portes int/ext'] },
     'Ascenseur secondaire': { obligatoires: ['Désinfection boutons', 'Aspiration / Lavage'], optionnelles: ['Nettoyage miroir', 'Traces portes int/ext'] },
-    'Escalier principal': { obligatoires: ['Aspiration / Lavage', 'Dépoussiérage plinthes', 'Nettoyage main courante'], optionnelles: [] },
-    'Escalier secondaire': { obligatoires: ['Aspiration / Lavage', 'Dépoussiérage plinthes', 'Nettoyage main courante'], optionnelles: [] },
+    'Escalier principal': { obligatoires: [], optionnelles: ['Aspiration / Lavage', 'Dépoussiérage plinthes', 'Nettoyage main courante'] },
+    'Escalier secondaire': { obligatoires: [], optionnelles: ['Aspiration / Lavage', 'Dépoussiérage plinthes', 'Nettoyage main courante'] },
     'Palier': { obligatoires: [], optionnelles: ['Aspiration / Lavage', 'Dépoussiérage', 'Plinthes'] },
     'Couloir': { obligatoires: [], optionnelles: ['Aspiration / Lavage', 'Dépoussiérage plinthes'] },
     'Parking': { obligatoires: [], optionnelles: ['Ramassage déchets', 'Balayage', 'Toiles d\'araignées'] },
@@ -1020,7 +1020,7 @@ function openQuote(baseService) {
             <div class="guide-remplissage">
                 <strong>ℹ️ Comment remplir votre devis ?</strong>
                 <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Vos niveau :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
+                    <li style="margin-bottom: 5px;"><b>1. Vos niveaux :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
                     <li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau.</li>
                     <li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce.</li>
                     <li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence.</li>
@@ -1329,7 +1329,31 @@ function submitInteractiveForm() {
             const radios = document.getElementsByName('statut');
             for (let i = 0; i < radios.length; i++) { if (radios[i].checked) { statut = radios[i].value; break; } }
 
-            // 1. CRÉATION DU RÉCAPITULATIF COMPLET
+            // NOUVEAU PAYLOAD : Aligné exactement avec les colonnes du Google Sheet
+            const formDataPayload = {
+                "Date": new Date().toLocaleString('fr-FR'),
+                "Session ID": "WEB_" + Date.now(),
+                "Nom Client": (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value,
+                "Prénom Client": form.prenom.value,
+                "Email": form.email.value,
+                "Téléphone": form.telephone ? form.telephone.value : "Non renseigné",
+                "Adresse": form.adresse.value + ", " + form.ville.value,
+                "Statut": statut,
+                "Type Prestation": activeServices.join(', '), 
+                "Prix": prixFinalAEnvoyer
+            };
+
+            // URL mise à jour ici :
+            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbw5jZjmo7OcFUZG4BOZtqgE_zpY0wSn-eoep-jmoSKGfsfK1ud-DjHd0pMcSsinSqbu/exec";
+            
+            fetch(GOOGLE_API_URL, { 
+                method: 'POST', 
+                headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                body: JSON.stringify(formDataPayload) 
+            })
+            .then(res => console.log("✅ Devis envoyé vers Google Sheets avec succès"))
+            .catch(e => console.error("Erreur d'envoi vers Sheets:", e));
+
             function getPlanningRecap(data) {
                 if (!data || (data.days.length === 0 && data.months.length === 0 && !data.start && !data.end && (!data.comment || data.comment.trim() === ''))) return "Détails de planification à voir ensemble";
                 const fullDays = { 'Lun':'Lundi', 'Mar':'Mardi', 'Mer':'Mercredi', 'Jeu':'Jeudi', 'Ven':'Vendredi', 'Sam':'Samedi', 'Dim':'Dimanche' };
@@ -1444,33 +1468,6 @@ function submitInteractiveForm() {
             recap += `Prix final proposé au client : ${prixFinalAEnvoyer}\n`;
             if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 60,00 € car son panier initial était trop faible.\n`;
 
-            // 2. ENVOI DES DONNÉES ET DU RÉCAPITULATIF À GOOGLE DRIVE POUR LE PDF
-            const formDataPayload = {
-                "Date": new Date().toLocaleString('fr-FR'),
-                "Session ID": "WEB_" + Date.now(),
-                "Nom Client": (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value,
-                "Prénom Client": form.prenom.value,
-                "Email": form.email.value,
-                "Téléphone": form.telephone ? form.telephone.value : "Non renseigné",
-                "Adresse": form.adresse.value + ", " + form.ville.value,
-                "Statut": statut,
-                "Type Prestation": activeServices.join(', '), 
-                "Prix": prixFinalAEnvoyer,
-                "Recapitulatif": recap
-            };
-
-            // URL DE TON NOUVEAU DÉPLOIEMENT MAQUETTÉE CI-DESSOUS
-            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbw5jZjmo7OcFUZG4BOZtqgE_zpY0wSn-eoep-jmoSKGfsfK1ud-DjHd0pMcSsinSqbu/exec";
-            
-            fetch(GOOGLE_API_URL, { 
-                method: 'POST', 
-                headers: { "Content-Type": "text/plain;charset=utf-8" }, 
-                body: JSON.stringify(formDataPayload) 
-            })
-            .then(res => console.log("✅ Données envoyées vers Google Drive pour création du PDF"))
-            .catch(e => console.error("Erreur d'envoi vers Google:", e));
-
-            // 3. ENVOI DE L'EMAIL VIA EMAILJS
             const btn = document.getElementById('btnSubmitForm');
             btn.innerText = "Envoi en cours..."; btn.disabled = true;
             
@@ -1500,15 +1497,122 @@ function submitInteractiveForm() {
                 surchargeMessage.innerHTML = `
                     <div style="background: #fdf8e4; border-left: 5px solid var(--vert); padding: 25px; border-radius: 8px; text-align: center; margin-top: 20px; animation: fadeInDown 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
                         <h3 style="color: var(--bleu); margin-bottom: 15px; font-size: 1.4rem;">🔥 Victime de notre succès !</h3>
-                        <p style="color: #444; font-size: 1rem; margin-bottom: 15px; line-height: 1.5;">En raison d'un <strong>très grand nombre de demandes</strong>, notre serveur d'envoi est temporairement saturé.</p>
-                        <p style="color: #444; font-size: 1rem; margin-bottom: 0;">Veuillez nous contacter directement ou réessayer plus tard.</p>
+                        <p style="color: #444; font-size: 1rem; margin-bottom: 15px; line-height: 1.5;">En raison d'un <strong>très grand nombre de demandes de devis</strong> aujourd'hui, notre systeme automatique est temporairement saturé.</p>
+                        <p style="color: #444; font-size: 1rem; margin-bottom: 20px;">Pas d'inquiétude, votre estimation (<strong>${prixFinalAEnvoyer}</strong>) a bien été calculée ! Pour ne pas perdre votre demande et la traiter en priorité, contactez-moi directement :</p>
+                        <a href="mailto:alexandre.jonot@ospplus.com?subject=Validation devis prioritaire OSP+ - ${prixFinalAEnvoyer}" style="display: inline-block; background: var(--vert); color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; transition: transform 0.2s;">✉️ alexandre.jonot@ospplus.com</a>
+                        <p style="color: var(--bleu); font-weight: 800; font-size: 1.1rem; margin-top: 5px;">📞 Ou par téléphone au 07 45 02 76 24</p>
                     </div>`;
-                form.parentElement.appendChild(surchargeMessage);
+                form.parentNode.insertBefore(surchargeMessage, form);
             });
-        } else {
-            form.reportValidity();
-        }
-    } catch (e) {
-        console.error("Erreur inattendue lors de la soumission du formulaire :", e);
+        } else { form.reportValidity(); }
+    } catch (erreurGlobale) {
+        console.error("Erreur inattendue dans le script :", erreurGlobale);
+        alert("Une erreur inattendue empêche l'envoi. Rechargez la page ou contactez-moi au 07 45 02 76 24.");
+        document.getElementById('btnSubmitForm').innerText = "ENVOYER MON DEVIS"; document.getElementById('btnSubmitForm').disabled = false;
     }
 }
+
+function closeQuote() { document.getElementById('quoteModal').style.display = "none"; }
+
+window.onclick = function(e) { 
+    if(e.target.id === 'quoteModal') closeQuote(); 
+    if(e.target.id === 'clientModal') closeClientModal(); 
+    if(e.target.id === 'mentionsModal') closeMentions(); 
+    if(e.target.id === 'levelModal') closeLevelModal();
+    if(e.target.id === 'planningModal') document.getElementById('planningModal').style.display = "none";
+    if(e.target.id === 'carteModal') closeCarteModal();
+    if(e.target.id === 'imageModal') closeImageModal(); 
+}
+
+function initDynamicSliders() {
+    document.querySelectorAll('.faq-card, .review-card').forEach(container => {
+        const slides = container.querySelectorAll('.dynamic-slide');
+        if (slides.length <= 1) return;
+        let i = 0; setInterval(() => { slides[i].classList.remove('active'); i = (i + 1) % slides.length; slides[i].classList.add('active'); }, 10000);
+    });
+}
+window.addEventListener('DOMContentLoaded', initDynamicSliders);
+
+const animationObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.scroll-animate').forEach(section => { animationObserver.observe(section); });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburgerBtn = document.getElementById('mobile-menu-btn');
+    const navLinks = document.getElementById('nav-links');
+    if (hamburgerBtn && navLinks) {
+        hamburgerBtn.addEventListener('click', () => { hamburgerBtn.classList.toggle('active'); navLinks.classList.toggle('active'); });
+        navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { hamburgerBtn.classList.remove('active'); navLinks.classList.remove('active'); }); });
+    }
+});
+
+function openCarteModal() { document.getElementById('carteModal').style.display = 'flex'; }
+function closeCarteModal() {
+    document.getElementById('carteModal').style.display = 'none';
+    const flipCard = document.querySelector('.flip-card');
+    if (flipCard) flipCard.classList.remove('flipped');
+}
+function toggleFlipCard() { const flipCard = document.querySelector('.flip-card'); if (flipCard) flipCard.classList.toggle('flipped'); }
+
+function downloadCarte() {
+    let linkA = document.createElement('a'); linkA.href = 'Carte visite A.jpg?v=12'; linkA.download = 'OSP_Plus_Carte_Recto.jpg'; document.body.appendChild(linkA); linkA.click(); document.body.removeChild(linkA);
+    setTimeout(() => { let linkB = document.createElement('a'); linkB.href = 'Carte visite B.jpg?v=12'; linkB.download = 'OSP_Plus_Carte_Verso.jpg'; document.body.appendChild(linkB); linkB.click(); document.body.removeChild(linkB); }, 500);
+}
+
+function printCarte() {
+    let printWindow = window.open('', '_blank');
+    if (printWindow) {
+        printWindow.document.write(`<html><head><title>Imprimer - Carte de Visite O.S.P+</title><style>body { text-align: center; font-family: sans-serif; padding: 20px; } img { max-width: 100%; width: 400px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; } p { color: #1a3c6c; font-weight: bold; }</style></head><body><p>Découpez le long des bords :</p><img src="Carte visite A.jpg?v=12" alt="Recto"><br><img src="Carte visite B.jpg?v=12" alt="Verso"></body></html>`);
+        printWindow.document.close(); printWindow.focus();
+        setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
+    }
+}
+
+function gererEtiquettesNouveautes() {
+    const badges = document.querySelectorAll('.dynamic-badge');
+    if (badges.length === 0) return;
+    const dateActuelle = new Date(), anneeEnCours = dateActuelle.getFullYear(), dateLancement = new Date(anneeEnCours, 7, 15); 
+    badges.forEach(badge => { badge.innerText = (dateActuelle >= dateLancement) ? "Nouveau service" : "Dispo le 15 Août"; });
+}
+window.addEventListener('DOMContentLoaded', gererEtiquettesNouveautes);
+
+function toggleFullScreenComp(btn) {
+    const container = btn.closest('.comparison-container');
+    if (!document.fullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+        else if (container.msRequestFullscreen) container.msRequestFullscreen();
+        btn.innerHTML = "✖ Quitter le plein écran";
+    } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
+        btn.innerHTML = "🔍 Plein écran";
+    }
+}
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) document.querySelectorAll('.btn-fullscreen-comp').forEach(b => b.innerHTML = "🔍 Plein écran"); });
+
+function openImageModal(imageSource) {
+    document.getElementById("fullSizeImage").src = imageSource; 
+    document.getElementById("imageModal").style.display = "flex"; 
+}
+function closeImageModal() { document.getElementById("imageModal").style.display = "none"; }
+
+// ==========================================
+// ⌨️ ACCESSIBILITÉ : NAVIGATION AU CLAVIER (ENTRÉE / ESPACE)
+// ==========================================
+document.addEventListener('keydown', function(event) {
+    // Vérifie si la touche pressée est "Entrée" ou "Espace"
+    if (event.key === 'Enter' || event.key === ' ') {
+        // Récupère l'élément actuellement surligné (en focus jaune)
+        let elementActif = document.activeElement;
+        
+        // Si cet élément est défini comme un bouton accessible
+        if (elementActif && elementActif.getAttribute('role') === 'button') {
+            event.preventDefault(); // Empêche la page de scroller si on appuie sur Espace
+            elementActif.click();   // Simule un clic de souris virtuel
+        }
+    }
+});
