@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v3.9"; 
+const APP_VERSION = "v4.2"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
@@ -162,16 +162,11 @@ window.addEventListener('DOMContentLoaded', afficherVersion);
 
 function parserEtValiderDate(dateStr, lettre1, lettre2) {
     if (!dateStr || dateStr.length !== 8) return null;
-    
-    // Vérification stricte de la position des lettres de sécurité
     if (dateStr[2] !== lettre1 || dateStr[5] !== lettre2) return null;
-    
-    // Extraction
     const jour = parseInt(dateStr.substring(0, 2), 10);
     const mois = parseInt(dateStr.substring(3, 5), 10) - 1; 
     const annee = parseInt("20" + dateStr.substring(6, 8), 10); 
     const dateObj = new Date(annee, mois, jour);
-    
     if (dateObj.getDate() !== jour || dateObj.getMonth() !== mois || dateObj.getFullYear() !== annee) return null;
     return dateObj;
 }
@@ -180,7 +175,6 @@ function validerCodeRemise(code, idClientActuel = null) {
     if (!code) return { valide: false, statut: "REJETE", remise: null, message: msgLang.codeVide };
     const segments = code.split('-');
     const prefixe = segments[0];
-
     const now = new Date();
     const DATE_REFERENCE = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -188,20 +182,16 @@ function validerCodeRemise(code, idClientActuel = null) {
         if (window.mesCodesFideles.includes(code + "-FIN") || window.mesCodesFideles.includes(code + " (FIN)")) {
             return { valide: false, statut: "REJETE", remise: null, message: msgLang.expire };
         }
-
         if (window.mesCodesFideles.includes(code)) {
             if (prefixe === 'PROMO' || prefixe === 'PROMO-EXCEPT') {
                 const montantRemise = parseInt(segments[segments.length - 1], 10);
                 const dateSegment = segments[segments.length - 2];
-                
                 const dateValidation = parserEtValiderDate(dateSegment, 'X', 'Z');
                 if (!dateValidation) {
                     return { valide: false, statut: "REJETE", remise: null, message: msgLang.securiteDate };
                 }
-                
                 return { valide: true, statut: "VALIDE", remise: montantRemise, message: msgLang.valideExcept(montantRemise) };
             }
-
             let remise = code.endsWith("-5") ? 5 : 10;
             return { valide: true, statut: "VALIDE", remise: remise, message: msgLang.valideBase(remise) };
         }
@@ -214,30 +204,21 @@ function validerCodeRemise(code, idClientActuel = null) {
         if (!dateCode) return { valide: false, statut: "REJETE", remise: null, message: msgLang.lettresOsp };
         const montantRemise = parseInt(segments[2], 10);
         if (montantRemise !== 5 && montantRemise !== 10) return { valide: false, statut: "REJETE", remise: null, message: msgLang.montantInvalide };
-
-        if (dateCode > DATE_REFERENCE) {
-            return { valide: false, statut: "EN_ATTENTE", remise: null, message: msgLang.ospFutur };
-        }
-        
+        if (dateCode > DATE_REFERENCE) return { valide: false, statut: "EN_ATTENTE", remise: null, message: msgLang.ospFutur };
         return { valide: true, statut: "VALIDE", remise: montantRemise, message: msgLang.ospOk(montantRemise) };
     }
-    
     else if (prefixe === 'VIP' && segments.length === 5) {
         const dateDebut = parserEtValiderDate(segments[1], 'X', 'Z');
         const dateFin = parserEtValiderDate(segments[2], 'W', 'Q');
         if (!dateDebut || !dateFin) return { valide: false, statut: "REJETE", remise: null, message: msgLang.vipInvalide };
-        
         const codeClient = segments[3];
         if (!idClientActuel || codeClient !== idClientActuel) return { valide: false, statut: "REJETE", remise: null, message: msgLang.vipClient };
-        
         const montantRemise = parseInt(segments[4], 10);
         if (montantRemise !== 5 && montantRemise !== 10) return { valide: false, statut: "REJETE", remise: null, message: msgLang.montantInvalide };
-
         if (DATE_REFERENCE < dateDebut) return { valide: false, statut: "EN_ATTENTE", remise: null, message: msgLang.vipFutur };
         else if (DATE_REFERENCE > dateFin) return { valide: false, statut: "REJETE", remise: null, message: msgLang.vipExpire };
         else return { valide: true, statut: "VALIDE", remise: montantRemise, message: msgLang.vipOk(montantRemise) };
     }
-
     return { valide: false, statut: "REJETE", remise: null, message: msgLang.inconnu };
 }
 
@@ -267,21 +248,12 @@ function applyClientCode() {
     const code = document.getElementById('clientCodeInput').value.trim().toUpperCase();
     const msg = document.getElementById('clientCodeMsg');
     
-    if (!code) {
-        msg.style.color = 'red';
-        msg.innerText = msgLang.saisirCode;
-        return;
-    }
+    if (!code) { msg.style.color = 'red'; msg.innerText = msgLang.saisirCode; return; }
 
     let idClientActuel = null;
-    
     if (code.startsWith('VIP') && code.split('-').length === 5) {
         idClientActuel = prompt(msgLang.securitePrompt);
-        if (!idClientActuel) {
-            msg.style.color = 'red';
-            msg.innerText = msgLang.annulePrompt;
-            return;
-        }
+        if (!idClientActuel) { msg.style.color = 'red'; msg.innerText = msgLang.annulePrompt; return; }
         idClientActuel = idClientActuel.trim();
     }
 
@@ -308,11 +280,7 @@ function applyPromoCodeDevis() {
     const msg = document.getElementById('promoCodeMsgDevis');
     
     if (code === "") {
-        window.promoDiscountDevis = 0;
-        window.activePromoCodeDevis = "";
-        msg.innerText = "";
-        calculatePrice();
-        return;
+        window.promoDiscountDevis = 0; window.activePromoCodeDevis = ""; msg.innerText = ""; calculatePrice(); return;
     }
 
     const resultat = validerCodeRemise(code);
@@ -347,8 +315,7 @@ function getEaster(year) {
 function getMobileHolidays(year) {
     const easter = getEaster(year);
     const addDays = (date, days) => {
-        let d = new Date(date);
-        d.setDate(d.getDate() + days);
+        let d = new Date(date); d.setDate(d.getDate() + days);
         return String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
     };
     return [ addDays(easter, 1), addDays(easter, 39), addDays(easter, 50) ];
@@ -364,16 +331,13 @@ function checkHolidays() {
     const fixedHolidays = ['01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25'];
     const mobileHolidays = getMobileHolidays(currentYear);
     const testDates = ['06-01', '06-02', '06-03'];
-
     const allHolidays = fixedHolidays.concat(mobileHolidays).concat(testDates);
 
     if (allHolidays.includes(formattedDate)) {
         const banner = document.getElementById('promo-banner');
         if (banner) banner.style.display = 'block';
         window.holidayPromoActive = true;
-    } else {
-        window.holidayPromoActive = false;
-    }
+    } else { window.holidayPromoActive = false; }
 }
 window.addEventListener('DOMContentLoaded', checkHolidays);
 
@@ -493,10 +457,7 @@ function toggleAccordion(headerElement) {
     document.querySelectorAll('.accordion-header').forEach(el => { el.classList.remove('active'); });
     document.querySelectorAll('.accordion-body').forEach(el => { el.classList.remove('active'); });
 
-    if (!isActive) {
-        headerElement.classList.add('active');
-        body.classList.add('active');
-    }
+    if (!isActive) { headerElement.classList.add('active'); body.classList.add('active'); }
 }
 
 function updateLevelSummaries() {
@@ -515,18 +476,14 @@ function updateLevelSummaries() {
                     if (nameSpan) {
                         let typeText = nameSpan.innerText;
                         let customInput = card.querySelector('input[type="text"]');
-                        if (customInput && customInput.value.trim() !== '') {
-                            typeText = customInput.value.trim();
-                        }
+                        if (customInput && customInput.value.trim() !== '') { typeText = customInput.value.trim(); }
                         roomNames.push(typeText);
                     }
                 });
                 let summaryText = roomNames.join(', ');
                 if (summaryText.length > 40) summaryText = summaryText.substring(0, 37) + '...';
                 titleSpan.innerHTML = `📍 ${levelName} <span style="font-size:0.75rem; color:#888; margin-left:8px; font-weight:normal; font-style:italic;">(${roomCards.length} ${roomsWord} : ${summaryText})</span>`;
-            } else {
-                titleSpan.innerHTML = `📍 ${levelName}`;
-            }
+            } else { titleSpan.innerHTML = `📍 ${levelName}`; }
         }
     });
 }
@@ -535,7 +492,6 @@ function createLevelAccordion(levelName) {
     const levelId = 'level_' + Date.now() + Math.floor(Math.random() * 1000);
     
     let subtitleText = langKey === 'vi' ? 'Thêm các không gian cho tầng này :' : (langKey === 'en' ? 'Add your spaces for this level:' : 'Ajoutez vos espaces pour ce niveau :');
-    
     let btnBureau = langKey === 'vi' ? '💼 Văn phòng' : (langKey === 'en' ? '💼 Office' : '💼 Bureau');
     let btnReunion = langKey === 'vi' ? '🗣️ Phòng họp' : (langKey === 'en' ? '🗣️ Meeting' : '🗣️ Réunion');
     let btnSanitaires = langKey === 'vi' ? '🚻 Vệ sinh' : (langKey === 'en' ? '🚻 Restrooms' : '🚻 Sanitaires');
@@ -991,140 +947,37 @@ function openQuote(baseService) {
     
     let guideHtml = '';
     
-    // Génération du guide dynamique selon le service sélectionné et la langue
     if (baseService === 'bureaux') {
         if (langKey === 'vi') {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Các tầng:</b> Thêm các tầng cho cơ sở của bạn (Tầng trệt, tầng 1...).</li>
-                    <li style="margin-bottom: 5px;"><b>2. Các phòng:</b> Chi tiết các phòng cấu thành mỗi tầng.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Bảo dưỡng:</b> Chỉ định nội dung công việc cho từng phòng.</li>
-                    <li style="margin-bottom: 5px;"><b>4. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để xác định tần suất.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Các tầng:</b> Thêm các tầng cho cơ sở của bạn (Tầng trệt, tầng 1...).</li><li style="margin-bottom: 5px;"><b>2. Các phòng:</b> Chi tiết các phòng cấu thành mỗi tầng.</li><li style="margin-bottom: 5px;"><b>3. Bảo dưỡng:</b> Chỉ định nội dung công việc cho từng phòng.</li><li style="margin-bottom: 5px;"><b>4. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để xác định tần suất.</li></ul></div>`;
         } else if (langKey === 'en') {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ How to fill out your quote?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Your levels:</b> Add the floors of your premises (Ground floor, 1st floor...).</li>
-                    <li style="margin-bottom: 5px;"><b>2. Your rooms:</b> Detail what makes up each level.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Maintenance:</b> Specify the tasks for each room.</li>
-                    <li style="margin-bottom: 5px;"><b>4. Planning:</b> Click "+ Schedule" to define the frequency.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your levels:</b> Add the floors of your premises (Ground floor, 1st floor...).</li><li style="margin-bottom: 5px;"><b>2. Your rooms:</b> Detail what makes up each level.</li><li style="margin-bottom: 5px;"><b>3. Maintenance:</b> Specify the tasks for each room.</li><li style="margin-bottom: 5px;"><b>4. Planning:</b> Click "+ Schedule" to define the frequency.</li></ul></div>`;
         } else {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ Comment remplir votre devis ?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Vos niveau :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li>
-                    <li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau.</li>
-                    <li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce.</li>
-                    <li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos niveau :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li><li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau.</li><li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce.</li><li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence.</li></ul></div>`;
         }
     } else if (baseService === 'vitrerie') {
         if (langKey === 'vi') {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Cửa kính:</b> Chọn loại cửa sổ của bạn.</li>
-                    <li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng cửa.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Bảo dưỡng:</b> Chọn làm sạch Trong, Ngoài hoặc Toàn bộ.</li>
-                    <li style="margin-bottom: 5px;"><b>4. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để xác định ngày.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Cửa kính:</b> Chọn loại cửa sổ của bạn.</li><li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng cửa.</li><li style="margin-bottom: 5px;"><b>3. Bảo dưỡng:</b> Chọn làm sạch Trong, Ngoài hoặc Toàn bộ.</li><li style="margin-bottom: 5px;"><b>4. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để xác định ngày.</li></ul></div>`;
         } else if (langKey === 'en') {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ How to fill out your quote?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Your windows:</b> Choose your window type.</li>
-                    <li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Maintenance:</b> Choose Interior, Exterior, or Complete.</li>
-                    <li style="margin-bottom: 5px;"><b>4. Planning:</b> Click "+ Schedule" to define the frequency.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your windows:</b> Choose your window type.</li><li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number.</li><li style="margin-bottom: 5px;"><b>3. Maintenance:</b> Choose Interior, Exterior, or Complete.</li><li style="margin-bottom: 5px;"><b>4. Planning:</b> Click "+ Schedule" to define the frequency.</li></ul></div>`;
         } else {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ Comment remplir votre devis ?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Vos vitrages :</b> Choisissez le type de fenêtre.</li>
-                    <li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Entretien :</b> Intérieur, Extérieur ou Complet.</li>
-                    <li style="margin-bottom: 5px;"><b>4. Planification :</b> Cliquez sur "+ Planifier".</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos vitrages :</b> Choisissez le type de fenêtre.</li><li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre.</li><li style="margin-bottom: 5px;"><b>3. Entretien :</b> Intérieur, Extérieur ou Complet.</li><li style="margin-bottom: 5px;"><b>4. Planification :</b> Cliquez sur "+ Planifier".</li></ul></div>`;
         }
     } else if (baseService === 'shampouinage') {
         if (langKey === 'vi') {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Đồ vải:</b> Chọn loại (Sô pha, thảm...).</li>
-                    <li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng cần làm sạch.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để chỉ định ngày mong muốn.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Đồ vải:</b> Chọn loại (Sô pha, thảm...).</li><li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng cần làm sạch.</li><li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để chỉ định ngày mong muốn.</li></ul></div>`;
         } else if (langKey === 'en') {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ How to fill out your quote?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Your textiles:</b> Select the type (Sofa, Rug...).</li>
-                    <li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number to clean.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Planning:</b> Click "+ Schedule" to specify the desired date.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your textiles:</b> Select the type (Sofa, Rug...).</li><li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number to clean.</li><li style="margin-bottom: 5px;"><b>3. Planning:</b> Click "+ Schedule" to specify the desired date.</li></ul></div>`;
         } else {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ Comment remplir votre devis ?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Vos textiles :</b> Sélectionnez le type (Canapé, Tapis...).</li>
-                    <li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre à nettoyer.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier" pour préciser la date.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos textiles :</b> Sélectionnez le type (Canapé, Tapis...).</li><li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre à nettoyer.</li><li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier" pour préciser la date.</li></ul></div>`;
         }
     } else if (baseService === 'vehicule') {
         if (langKey === 'vi') {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Xe của bạn:</b> Gói trọn gói đã được chọn.</li>
-                    <li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng xe.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" to chọn ngày can thiệp.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Xe của bạn:</b> Gói trọn gói đã được chọn.</li><li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng xe.</li><li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" to chọn ngày can thiệp.</li></ul></div>`;
         } else if (langKey === 'en') {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ How to fill out your quote?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Your vehicle:</b> The full pack is selected.</li>
-                    <li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number of vehicles.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Planning:</b> Click "+ Schedule" to choose an intervention date.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your vehicle:</b> The full pack is selected.</li><li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number of vehicles.</li><li style="margin-bottom: 5px;"><b>3. Planning:</b> Click "+ Schedule" to choose an intervention date.</li></ul></div>`;
         } else {
-            guideHtml = `
-            <div class="guide-remplissage">
-                <strong>ℹ️ Comment remplir votre devis ?</strong>
-                <ul style="margin-top: 10px; padding-left: 20px; color: #444;">
-                    <li style="margin-bottom: 5px;"><b>1. Votre véhicule :</b> Le pack complet est sélectionné.</li>
-                    <li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre de véhicules.</li>
-                    <li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier" pour choisir la date d'intervention.</li>
-                </ul>
-            </div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Votre véhicule :</b> Le pack complet est sélectionné.</li><li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre de véhicules.</li><li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier" pour choisir la date d'intervention.</li></ul></div>`;
         }
     }
 
@@ -1137,6 +990,8 @@ function openQuote(baseService) {
     document.getElementById('interactiveForm').style.display = "block";
     document.getElementById('postSubmitChoice').style.display = "none";
     
+    if (document.getElementById('quotePreviewContainer')) document.getElementById('quotePreviewContainer').style.display = 'none';
+
     let submitText = langKey === 'vi' ? "GỬI YÊU CẦU BÁO GIÁ" : (langKey === 'en' ? "SEND MY QUOTE REQUEST" : "ENVOYER MON DEVIS");
     document.getElementById('btnSubmitForm').innerText = submitText;
     document.getElementById('btnSubmitForm').disabled = false;
@@ -1292,6 +1147,13 @@ function removeRow(id) {
     updateLevelSummaries();
 }
 
+// ==========================================
+// 🚀 NOUVEAU SYSTÈME D'ENVOI EN 2 ÉTAPES (Vérification + Envoi)
+// ==========================================
+let pendingGooglePayload = null;
+let pendingEmailParams = null;
+let pendingClientCodeAlert = null;
+
 function submitInteractiveForm() {
     try {
         const form = document.getElementById('interactiveForm');
@@ -1300,23 +1162,15 @@ function submitInteractiveForm() {
             let prixFinalAEnvoyer = elAmountText[elAmountText.length - 1]; 
             let majorationAppliquee = false;
             
+            // 1. Alerte des 60€ minimum
             if (window.currentTotalValue > 0 && window.currentTotalValue < 60) {
                 let messageAlerte = "";
                 if (langKey === 'vi') {
-                    messageAlerte = "⚠️ Ước tính chi tiết của bạn là " + window.currentTotalValue.toFixed(2) + " €.\n\n" +
-                                    "Tuy nhiên, các dịch vụ của chúng tôi áp dụng mức tối thiểu hóa đơn là 60,00 € (để chi trả chi phí di chuyển và thiết bị).\n\n" +
-                                    "💡 MẸO: Bạn có thể hủy và thêm các dịch vụ khác (Lau kính, Sô pha...) để đạt mốc 60 € này và tối ưu hóa chi phí bưu giá!\n\n" +
-                                    "Bạn có muốn gửi yêu cầu với mức giá trọn gói tối thiểu là 60,00 € không?";
+                    messageAlerte = "⚠️ Ước tính chi tiết của bạn là " + window.currentTotalValue.toFixed(2) + " €.\n\nTuy nhiên, các dịch vụ của chúng tôi áp dụng mức tối thiểu hóa đơn là 60,00 € (để chi trả chi phí di chuyển và thiết bị).\n\n💡 MẸO: Bạn có thể hủy và thêm các dịch vụ khác (Lau kính, Sô pha...) để đạt mốc 60 € này và tối ưu hóa chi phí bưu giá!\n\nBạn có muốn gửi yêu cầu với mức giá trọn gói tối thiểu là 60,00 € không?";
                 } else if (langKey === 'en') {
-                    messageAlerte = "⚠️ Your detailed estimate is " + window.currentTotalValue.toFixed(2) + " €.\n\n" +
-                                    "However, our interventions are subject to a minimum billing of 60.00 € (to cover travel and equipment expenses).\n\n" +
-                                    "💡 TIP: You can cancel and add other services (Windows, Sofas...) to reach this 60 € mark and get full value!\n\n" +
-                                    "Do you still want to send the request at the flat rate of 60.00 €?";
+                    messageAlerte = "⚠️ Your detailed estimate is " + window.currentTotalValue.toFixed(2) + " €.\n\nHowever, our interventions are subject to a minimum billing of 60.00 € (to cover travel and equipment expenses).\n\n💡 TIP: You can cancel and add other services (Windows, Sofas...) to reach this 60 € mark and get full value!\n\nDo you still want to send the request at the flat rate of 60.00 €?";
                 } else {
-                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.\n\n" +
-                                    "Cependant, nos interventions sont soumises à un minimum de facturation de 60,00 € (pour couvrir le déplacement et le matériel).\n\n" +
-                                    "💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 60 € et rentabiliser votre devis !\n\n" +
-                                    "Voulez-vous quand même envoyer la demande au prix forfaitaire de 60,00 € ?";
+                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.\n\nCependant, nos interventions sont soumises à un minimum de facturation de 60,00 € (pour couvrir le déplacement et le matériel).\n\n💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 60 € et rentabiliser votre devis !\n\nVoulez-vous quand même envoyer la demande au prix forfaitaire de 60,00 € ?";
                 }
                 
                 let clientAccepte = confirm(messageAlerte);
@@ -1329,7 +1183,7 @@ function submitInteractiveForm() {
             const radios = document.getElementsByName('statut');
             for (let i = 0; i < radios.length; i++) { if (radios[i].checked) { statut = radios[i].value; break; } }
 
-            // 1. CRÉATION DU RÉCAPITULATIF COMPLET
+            // 2. CRÉATION DU RÉCAPITULATIF COMPLET
             function getPlanningRecap(data) {
                 if (!data || (data.days.length === 0 && data.months.length === 0 && !data.start && !data.end && (!data.comment || data.comment.trim() === ''))) return "Détails de planification à voir ensemble";
                 const fullDays = { 'Lun':'Lundi', 'Mar':'Mardi', 'Mer':'Mercredi', 'Jeu':'Jeudi', 'Ven':'Vendredi', 'Sam':'Samedi', 'Dim':'Dimanche' };
@@ -1377,40 +1231,60 @@ function submitInteractiveForm() {
             }
             if (aDesTextiles) recap += "\n";
 
+            // NOUVEAU SYSTÈME DE REGROUPEMENT ULTRA-COMPACT (Pour Sheets et PDF)
             let aDesLocaux = false;
+            let recapParNiveau = {}; 
+
             for (let roomId in planData) {
                 if (roomId.startsWith('room_detail_')) {
-                    if (!aDesLocaux) { recap += "🏢 BUREAUX & LOCAUX EXTRAITS :\n"; aDesLocaux = true; }
+                    aDesLocaux = true;
                     let roomInfo = planData[roomId];
                     let card = document.getElementById('row_' + roomId);
-                    let solSelect = card ? card.querySelector('select') : null;
-                    let typeSol = solSelect ? solSelect.value : 'Non précisé';
-                    recap += `  - Espace : ${roomInfo.roomType} (Type de sol : ${typeSol})\n`;
                     
-                    if (roomInfo.roomType === 'Sanitaires' || roomInfo.roomType === 'Douche' || roomInfo.roomType === 'Vestiaire') {
-                        let h = document.getElementById(`qty_h_${roomId}`)?.value || 0;
-                        let f = document.getElementById(`qty_f_${roomId}`)?.value || 0;
-                        recap += `    Quantité : Homme(s) x${h} / Femme(s) x${f}\n`;
-                    } else if (roomInfo.roomType === 'Restauration') {
-                        let esp = document.getElementById(`qty_${roomId}`)?.value || 1;
-                        let tab = document.getElementById(`qty_tables_${roomId}`)?.value || 0;
-                        let cha = document.getElementById(`qty_chaises_${roomId}`)?.value || 0;
-                        recap += `    Quantité : Espace(s) x${esp} (${tab} tables, ${cha} chaises)\n`;
-                    } else {
-                        let qty = document.getElementById(`qty_${roomId}`)?.value || 1;
-                        recap += `    Quantité : x${qty}\n`;
-                    }
-                    let consSelect = document.getElementById(`cons_select_${roomId}`);
-                    if (consSelect) recap += `    Consommables : ${consSelect.value === 'osp' ? 'Fournis par O.S.P+' : 'À la charge du client'}\n`;
-                    
-                    let prestCochees = [];
+                    let levelName = "Non précisé";
                     if (card) {
-                        card.querySelectorAll('.prest-pill input[type="checkbox"]:checked').forEach(p => { prestCochees.push(p.parentElement.querySelector('label').innerText); });
+                        let accordion = card.closest('.level-accordion');
+                        if (accordion) levelName = accordion.getAttribute('data-levelname');
                     }
-                    recap += `    Prestations demandées : [${prestCochees.join(', ')}]\n    Planning de l'espace : ${getPlanningRecap(roomInfo)}\n`;
+
+                    let qty = 0;
+                    if (roomInfo.roomType === 'Sanitaires' || roomInfo.roomType === 'Douche' || roomInfo.roomType === 'Vestiaire') {
+                        let h = parseInt(document.getElementById(`qty_h_${roomId}`)?.value) || 0;
+                        let f = parseInt(document.getElementById(`qty_f_${roomId}`)?.value) || 0;
+                        qty = h + f;
+                    } else {
+                        qty = parseInt(document.getElementById(`qty_${roomId}`)?.value) || 1;
+                    }
+
+                    let planningText = getPlanningRecap(roomInfo);
+                    if (planningText === "Détails de planification à voir ensemble") {
+                        planningText = "À définir";
+                    } else {
+                        planningText = planningText.replace('Jours [', '').replace(']', '');
+                    }
+
+                    if (!recapParNiveau[levelName]) recapParNiveau[levelName] = {};
+                    let cleRegroupement = `${roomInfo.roomType} === ${planningText}`;
+                    if (!recapParNiveau[levelName][cleRegroupement]) recapParNiveau[levelName][cleRegroupement] = 0;
+                    recapParNiveau[levelName][cleRegroupement] += qty;
                 }
             }
-            if (aDesLocaux) recap += "\n";
+
+            if (aDesLocaux) {
+                let lignesEtages = [];
+                for (let niveau in recapParNiveau) {
+                    let piecesDeLetage = [];
+                    for (let cle in recapParNiveau[niveau]) {
+                        let details = cle.split(' === ');
+                        let typePiece = details[0];
+                        let planning = details[1];
+                        let quantiteTotale = recapParNiveau[niveau][cle];
+                        if (quantiteTotale > 0) piecesDeLetage.push(`${typePiece} x${quantiteTotale} (${planning})`);
+                    }
+                    lignesEtages.push(`📍 ${niveau} ➔ ` + piecesDeLetage.join(' | '));
+                }
+                recap += `🏢 LOCAUX : ` + lignesEtages.join(' /// ') + `\n\n`;
+            }
 
             let aDesDemandesParticulieres = false;
             for (let id in planData) {
@@ -1444,8 +1318,8 @@ function submitInteractiveForm() {
             recap += `Prix final proposé au client : ${prixFinalAEnvoyer}\n`;
             if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 60,00 € car son panier initial était trop faible.\n`;
 
-            // 2. ENVOI DES DONNÉES ET DU RÉCAPITULATIF À GOOGLE DRIVE POUR LE PDF
-            const formDataPayload = {
+            // 3. STOCKAGE DES DONNÉES EN ATTENTE (On n'envoie rien pour le moment !)
+            pendingGooglePayload = {
                 "Date": new Date().toLocaleString('fr-FR'),
                 "Session ID": "WEB_" + Date.now(),
                 "Nom Client": (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value,
@@ -1459,68 +1333,139 @@ function submitInteractiveForm() {
                 "Recapitulatif": recap
             };
 
-            const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwgsHmaXX1a33a2lY4IenMp83_BSBpLw88u5uPkPMBQC7iXQG5QLn5w-IYl9uR0EQ4/exec";
-            
-            fetch(GOOGLE_API_URL, { 
-                method: 'POST', 
-                headers: { "Content-Type": "text/plain;charset=utf-8" }, 
-                body: JSON.stringify(formDataPayload) 
-            })
-            .then(res => console.log("✅ Données envoyées vers Google Drive pour création du PDF"))
-            .catch(e => console.error("Erreur d'envoi vers Google:", e));
-
-            // 3. ENVOI DE L'EMAIL VIA EMAILJS
-            const btn = document.getElementById('btnSubmitForm');
-            btn.innerText = "Envoi en cours..."; btn.disabled = true;
-            
-            emailjs.send('service_wfrbr4e', 'template_oncrl1l', {
+            pendingEmailParams = {
                 statut: statut, 
                 nom: form.nom.value, 
                 prenom: form.prenom.value, 
                 email: form.email.value, 
-                telephone: form.telephone ? form.telephone.value : "Non renseigné", // 📞 TÉLÉPHONE AJOUTÉ ICI POUR EMAILJS !
+                telephone: form.telephone ? form.telephone.value : "Non renseigné",
                 email_client: form.email.value,
                 adresse: form.adresse.value, 
                 ville: form.ville.value, 
                 interlocuteur: form.interlocuteur.value, 
                 prix: prixFinalAEnvoyer, 
                 recapitulatif: recap
-            }).then(() => {
-                if (window.activeClientCode || window.activePromoCodeDevis) {
-                    let codeUtilise = window.activeClientCode || window.activePromoCodeDevis;
-                    let messageAlerte = `⚠️ ALERTE IMPORTANTE :\n\nLe code de remise "${codeUtilise}" vient d'être utilisé par ${form.nom.value} ${form.prenom.value} (Email: ${form.email.value}, Tél: ${form.telephone ? form.telephone.value : "Non renseigné"}).\n\nSi ce code est à usage unique, n'oubliez pas d'ajouter la mention "-FIN" à côté du code dans votre fichier codes.js pour le désactiver.`;
-                    
-                    emailjs.send('service_wfrbr4e', 'template_alerte_code', {
-                        alerte_message: messageAlerte,
-                        code_utilise: codeUtilise
-                    }).then(() => {
-                        console.log("Email d'alerte code envoyé !");
-                    }).catch((error) => {
-                         console.error("Erreur lors de l'envoi de l'alerte code :", error);
-                    });
-                }
+            };
 
-                form.style.display = "none"; document.getElementById('postSubmitChoice').style.display = "block";
-            }).catch((error) => {
-                console.error("Erreur détaillée EmailJS :", error);
-                form.style.display = "none";
-                let surchargeMessage = document.createElement('div');
-                surchargeMessage.innerHTML = `
-                    <div style="background: #fdf8e4; border-left: 5px solid var(--vert); padding: 25px; border-radius: 8px; text-align: center; margin-top: 20px; animation: fadeInDown 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                        <h3 style="color: var(--bleu); margin-bottom: 15px; font-size: 1.4rem;">🔥 Victime de notre succès !</h3>
-                        <p style="color: #444; font-size: 1rem; margin-bottom: 15px; line-height: 1.5;">En raison d'un <strong>très grand nombre de demandes de devis</strong> aujourd'hui, notre systeme automatique est temporairement saturé.</p>
-                        <p style="color: #444; font-size: 1rem; margin-bottom: 20px;">Pas d'inquiétude, votre estimation (<strong>${prixFinalAEnvoyer}</strong>) a bien été calculée ! Pour ne pas perdre votre demande et la traiter en priorité, contactez-moi directement :</p>
-                        <a href="mailto:alexandre.jonot@ospplus.com?subject=Validation devis prioritaire OSP+ - ${prixFinalAEnvoyer}" style="display: inline-block; background: var(--vert); color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; transition: transform 0.2s;">✉️ alexandre.jonot@ospplus.com</a>
-                        <p style="color: var(--bleu); font-weight: 800; font-size: 1.1rem; margin-top: 5px;">📞 Ou par téléphone au 07 45 02 76 24</p>
-                    </div>`;
-                form.parentNode.insertBefore(surchargeMessage, form);
-            });
+            if (window.activeClientCode || window.activePromoCodeDevis) {
+                let codeUti = window.activeClientCode || window.activePromoCodeDevis;
+                pendingClientCodeAlert = {
+                    alerte_message: `⚠️ ALERTE IMPORTANTE :\n\nLe code de remise "${codeUti}" vient d'être utilisé par ${form.nom.value} ${form.prenom.value} (Email: ${form.email.value}, Tél: ${form.telephone ? form.telephone.value : "Non renseigné"}).\n\nSi ce code est à usage unique, n'oubliez pas d'ajouter la mention "-FIN" à côté du code dans votre fichier codes.js.`,
+                    code_utilise: codeUti
+                };
+            } else {
+                pendingClientCodeAlert = null;
+            }
+
+            // 4. CRÉATION ET AFFICHAGE DE L'ÉCRAN DE VÉRIFICATION
+            let textPreviewTitle = langKey === 'vi' ? "🔍 Kiểm tra yêu cầu của bạn" : (langKey === 'en' ? "🔍 Review your request" : "🔍 Vérifiez votre demande");
+            let textPreviewSub = langKey === 'vi' ? "Vui lòng xem lại thông tin của bạn trước khi xác nhận gửi." : (langKey === 'en' ? "Please review your information before final submission." : "Veuillez relire vos informations avant de valider l'envoi définitif.");
+            let textBtnEdit = langKey === 'vi' ? "⬅️ Sửa" : (langKey === 'en' ? "⬅️ Edit" : "⬅️ Modifier");
+            let textBtnConfirm = langKey === 'vi' ? "✅ Xác nhận và Gửi" : (langKey === 'en' ? "✅ Confirm and Send" : "✅ Confirmer et Envoyer");
+
+            let previewText = `👤 VOS COORDONNÉES :\nNom : ${form.nom.value} ${form.prenom.value}\nEmail : ${form.email.value}\nTéléphone : ${form.telephone ? form.telephone.value : "Non renseigné"}\nAdresse : ${form.adresse.value}, ${form.ville.value}\n\n`;
+            previewText += recap;
+
+            let previewContainer = document.getElementById('quotePreviewContainer');
+            if (!previewContainer) {
+                previewContainer = document.createElement('div');
+                previewContainer.id = 'quotePreviewContainer';
+                previewContainer.style.padding = '20px';
+                form.parentNode.insertBefore(previewContainer, form.nextSibling);
+            }
+
+            previewContainer.innerHTML = `
+                <h3 style="color: var(--bleu); font-size: 1.5rem; margin-bottom: 10px; border-bottom: 2px solid var(--vert); padding-bottom: 10px; text-align: center;">${textPreviewTitle}</h3>
+                <p style="text-align: center; font-size: 0.9rem; color: #555; margin-bottom: 15px;">${textPreviewSub}</p>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;">
+                    <button type="button" class="btn-validate" onclick="editQuote()" style="background: #e1e8ef; color: var(--bleu); border: none; padding: 12px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; flex: 1; max-width: 250px;">${textBtnEdit}</button>
+                    <button type="button" class="btn-submit-form btn-confirm-send" onclick="confirmAndSendQuote()" style="margin: 0; padding: 12px 20px; flex: 1; max-width: 250px;">${textBtnConfirm}</button>
+                </div>
+
+                <div id="previewContent" style="background: #fdfdfd; padding: 15px; border-radius: 8px; font-size: 0.85rem; color: #333; line-height: 1.6; max-height: 35vh; overflow-y: auto; white-space: pre-wrap; margin-bottom: 15px; border: 1px solid #ccc; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);"></div>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button type="button" class="btn-validate" onclick="editQuote()" style="background: #e1e8ef; color: var(--bleu); border: none; padding: 12px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; flex: 1; max-width: 250px;">${textBtnEdit}</button>
+                    <button type="button" class="btn-submit-form btn-confirm-send" onclick="confirmAndSendQuote()" style="margin: 0; padding: 12px 20px; flex: 1; max-width: 250px;">${textBtnConfirm}</button>
+                </div>
+            `;
+            
+            document.getElementById('previewContent').textContent = previewText;
+
+            // On cache le formulaire et on affiche la vérification
+            form.style.display = 'none';
+            document.getElementById('postSubmitChoice').style.display = 'none';
+            previewContainer.style.display = 'block';
+            
+            // On remonte tout en haut de la fenêtre modale
+            document.querySelector('.modal-content.large').scrollTo({ top: 0, behavior: 'smooth' });
+
         } else { form.reportValidity(); }
     } catch (erreurGlobale) {
         console.error("Erreur inattendue dans le script :", erreurGlobale);
         alert("Une erreur inattendue empêche l'envoi. Rechargez la page ou contactez-moi au 07 45 02 76 24.");
         document.getElementById('btnSubmitForm').innerText = "ENVOYER MON DEVIS"; document.getElementById('btnSubmitForm').disabled = false;
     }
+}
+
+// ==========================================
+// FONCTION POUR MODIFIER LA DEMANDE (RETOUR)
+// ==========================================
+function editQuote() {
+    document.getElementById('quotePreviewContainer').style.display = 'none';
+    document.getElementById('interactiveForm').style.display = 'block';
+}
+
+// ==========================================
+// FONCTION POUR CONFIRMER ET ENVOYER LE DEVIS
+// ==========================================
+function confirmAndSendQuote() {
+    let textSending = langKey === 'vi' ? "Đang gửi..." : (langKey === 'en' ? "Sending..." : "Envoi en cours...");
+    
+    // On désactive tous les boutons avec la classe btn-confirm-send
+    const btns = document.querySelectorAll('.btn-confirm-send');
+    btns.forEach(btn => {
+        btn.innerText = textSending; 
+        btn.disabled = true;
+    });
+
+    // A. Envoi vers Google Drive
+    const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwgsHmaXX1a33a2lY4IenMp83_BSBpLw88u5uPkPMBQC7iXQG5QLn5w-IYl9uR0EQ4/exec";
+    fetch(GOOGLE_API_URL, { 
+        method: 'POST', 
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+        body: JSON.stringify(pendingGooglePayload) 
+    })
+    .then(res => console.log("✅ Données envoyées vers Google Drive pour création du PDF"))
+    .catch(e => console.error("Erreur d'envoi vers Google:", e));
+
+    // B. Envoi de l'Email via EmailJS
+    emailjs.send('service_wfrbr4e', 'template_oncrl1l', pendingEmailParams)
+    .then(() => {
+        if (pendingClientCodeAlert) {
+            emailjs.send('service_wfrbr4e', 'template_alerte_code', pendingClientCodeAlert)
+            .then(() => console.log("Email d'alerte code envoyé !"))
+            .catch((error) => console.error("Erreur lors de l'envoi de l'alerte code :", error));
+        }
+
+        document.getElementById('quotePreviewContainer').style.display = "none"; 
+        document.getElementById('postSubmitChoice').style.display = "block";
+    }).catch((error) => {
+        console.error("Erreur détaillée EmailJS :", error);
+        document.getElementById('quotePreviewContainer').style.display = "none";
+        let form = document.getElementById('interactiveForm');
+        let surchargeMessage = document.createElement('div');
+        surchargeMessage.innerHTML = `
+            <div style="background: #fdf8e4; border-left: 5px solid var(--vert); padding: 25px; border-radius: 8px; text-align: center; margin-top: 20px; animation: fadeInDown 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <h3 style="color: var(--bleu); margin-bottom: 15px; font-size: 1.4rem;">🔥 Victime de notre succès !</h3>
+                <p style="color: #444; font-size: 1rem; margin-bottom: 15px; line-height: 1.5;">En raison d'un <strong>très grand nombre de demandes de devis</strong> aujourd'hui, notre systeme automatique est temporairement saturé.</p>
+                <p style="color: #444; font-size: 1rem; margin-bottom: 20px;">Pas d'inquiétude, votre estimation (<strong>${pendingEmailParams.prix}</strong>) a bien été calculée ! Pour ne pas perdre votre demande et la traiter en priorité, contactez-moi directement :</p>
+                <a href="mailto:alexandre.jonot@ospplus.com?subject=Validation devis prioritaire OSP+ - ${pendingEmailParams.prix}" style="display: inline-block; background: var(--vert); color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; transition: transform 0.2s;">✉️ alexandre.jonot@ospplus.com</a>
+                <p style="color: var(--bleu); font-weight: 800; font-size: 1.1rem; margin-top: 5px;">📞 Ou par téléphone au 07 45 02 76 24</p>
+            </div>`;
+        form.parentNode.insertBefore(surchargeMessage, form);
+    });
 }
 
 function closeQuote() { document.getElementById('quoteModal').style.display = "none"; }
