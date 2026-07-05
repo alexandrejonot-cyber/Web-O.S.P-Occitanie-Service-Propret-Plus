@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v4.2"; 
+const APP_VERSION = "v4.7"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
@@ -234,6 +234,9 @@ let currentPlanId = null;
 let roomCounter = 0;
 let activeServices = [];
 
+// Stockage intelligent des sols (pour éviter de redemander)
+let defaultFloors = { global: {}, levels: {} };
+
 window.clientDiscount = 0; 
 window.activeClientCode = "";
 window.promoDiscountDevis = 0;
@@ -244,7 +247,59 @@ window.originalTotalValue = 0;
 function openClientModal() { document.getElementById('clientModal').style.display = 'flex'; }
 function closeClientModal() { document.getElementById('clientModal').style.display = 'none'; }
 
-function applyClientCode() {
+// ==========================================
+// 🛠️ MOTEUR DE FENÊTRES SUR-MESURE OSP+
+// ==========================================
+function askCustomQuestion(title, message, buttons, showInput = false) {
+    return new Promise((resolve) => {
+        document.getElementById('customConfirmTitle').innerText = title;
+        document.getElementById('customConfirmMessage').innerHTML = message;
+        
+        let existingInput = document.getElementById('customConfirmInput');
+        if(!existingInput) {
+            existingInput = document.createElement('input');
+            existingInput.id = 'customConfirmInput';
+            existingInput.type = 'text';
+            existingInput.style.cssText = "display:none; padding: 12px; width: 80%; margin: 0 auto 20px auto; border-radius: 8px; border: 2px solid #e1e8ef; font-size:1rem; text-align:center; font-weight:bold;";
+            document.getElementById('customConfirmMessage').after(existingInput);
+        }
+        
+        if (showInput) {
+            existingInput.style.display = 'block';
+            existingInput.value = '';
+            setTimeout(() => existingInput.focus(), 100);
+        } else {
+            existingInput.style.display = 'none';
+        }
+
+        const btnContainer = document.getElementById('customConfirmButtons');
+        btnContainer.innerHTML = ''; 
+
+        buttons.forEach(btn => {
+            let buttonEl = document.createElement('button');
+            buttonEl.style.cssText = `padding: 10px 15px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.85rem; flex: 1; min-width: 120px; max-width: 250px; ${btn.style}`;
+            buttonEl.innerText = btn.text;
+            
+            buttonEl.onmouseenter = () => buttonEl.style.opacity = "0.8";
+            buttonEl.onmouseleave = () => buttonEl.style.opacity = "1";
+
+            buttonEl.onclick = () => {
+                document.getElementById('customConfirmModal').style.display = 'none';
+                if (showInput && btn.value === true) {
+                    resolve(existingInput.value);
+                } else {
+                    resolve(btn.value); 
+                }
+            };
+            btnContainer.appendChild(buttonEl);
+        });
+
+        document.getElementById('customConfirmModal').style.display = 'flex';
+    });
+}
+
+// Validation client modifiée avec askCustomQuestion (Zéro alerte navigateur)
+async function applyClientCode() {
     const code = document.getElementById('clientCodeInput').value.trim().toUpperCase();
     const msg = document.getElementById('clientCodeMsg');
     
@@ -252,9 +307,17 @@ function applyClientCode() {
 
     let idClientActuel = null;
     if (code.startsWith('VIP') && code.split('-').length === 5) {
-        idClientActuel = prompt(msgLang.securitePrompt);
-        if (!idClientActuel) { msg.style.color = 'red'; msg.innerText = msgLang.annulePrompt; return; }
-        idClientActuel = idClientActuel.trim();
+        document.getElementById('clientModal').style.display = 'none'; // On cache la modale client pour afficher la modale question
+
+        let vipId = await askCustomQuestion("🔒 SÉCURITÉ VIP", msgLang.securitePrompt, [
+            { text: langKey==='en'?"Unlock":"Déverrouiller", value: true, style: "background: var(--vert); color: white;" },
+            { text: langKey==='en'?"Cancel":"Annuler", value: false, style: "background: #e1e8ef; color: #555;" }
+        ], true);
+
+        document.getElementById('clientModal').style.display = 'flex'; // On réaffiche la modale client
+
+        if (!vipId) { msg.style.color = 'red'; msg.innerText = msgLang.annulePrompt; return; }
+        idClientActuel = vipId.trim();
     }
 
     const resultat = validerCodeRemise(code, idClientActuel);
@@ -558,6 +621,105 @@ function addCustomLevel() {
     }
 }
 
+// ==========================================
+// 🔄 LOGIQUE INTELLIGENTE ET CIBLÉE DES SOLS (POPOVER LOCAL)
+// ==========================================
+function handleSolChange(selectElement, roomId, roomType) {
+    selectElement.style.border = "1px solid #ccc";
+    selectElement.style.backgroundColor = "transparent";
+    let label = selectElement.parentElement.querySelector('label');
+    if(label) label.style.color = "var(--bleu)";
+
+    const selectedValue = selectElement.value;
+    if (selectedValue === "non_precise") return;
+
+    document.querySelectorAll('.popover-sol').forEach(el => el.remove());
+
+    let solNom = selectElement.options[selectElement.selectedIndex].text;
+
+    let msg = langKey === 'vi' ? `Áp dụng <strong>${solNom}</strong> cho tất cả <strong>${roomType}</strong>?` :
+              langKey === 'en' ? `Apply <strong>${solNom}</strong> to all <strong>${roomType}</strong>?` :
+              `Appliquer <strong>${solNom}</strong> pour tous vos <strong>${roomType}</strong> ?`;
+
+    let btnTous = langKey === 'vi' ? "Tầng này và các tầng khác" : (langKey === 'en' ? "This floor and others" : "Cet étage et les autres");
+    let btnNiveau = langKey === 'vi' ? "Chỉ tầng này" : (langKey === 'en' ? "This floor only" : "Cet étage uniquement");
+    let btnNon = langKey === 'vi' ? "Chỉ phòng này" : (langKey === 'en' ? "Just this room" : "Juste cette pièce");
+
+    let popover = document.createElement('div');
+    popover.className = 'popover-sol';
+    popover.style.cssText = `
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 5px;
+        background: white;
+        border: 2px solid var(--vert);
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        padding: 12px;
+        z-index: 1000;
+        width: 250px;
+        font-size: 0.8rem;
+        animation: fadeInDown 0.2s ease;
+    `;
+
+    popover.innerHTML = `
+        <p style="margin-top: 0; margin-bottom: 10px; color: var(--bleu); font-weight: bold; line-height: 1.3;">${msg}</p>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+            <button type="button" id="pop-tous" style="background: var(--vert); color: white; border: none; padding: 6px; border-radius: 4px; cursor: pointer; font-weight: bold;">${btnTous}</button>
+            <button type="button" id="pop-niveau" style="background: var(--bleu); color: white; border: none; padding: 6px; border-radius: 4px; cursor: pointer; font-weight: bold;">${btnNiveau}</button>
+            <button type="button" id="pop-non" style="background: #e1e8ef; color: var(--bleu); border: none; padding: 6px; border-radius: 4px; cursor: pointer; font-weight: bold;">${btnNon}</button>
+        </div>
+    `;
+
+    let boxContainer = selectElement.closest('.sol-box') || selectElement.parentElement;
+    boxContainer.style.position = 'relative'; 
+    boxContainer.appendChild(popover);
+
+    let currentAccordion = selectElement.closest('.level-accordion');
+    let currentLevelId = currentAccordion ? currentAccordion.id : null;
+
+    popover.querySelector('#pop-tous').onclick = () => appliquerSol(selectedValue, roomType, "tous", currentLevelId, selectElement, popover);
+    popover.querySelector('#pop-niveau').onclick = () => appliquerSol(selectedValue, roomType, "niveau", currentLevelId, selectElement, popover);
+    popover.querySelector('#pop-non').onclick = () => popover.remove();
+
+    setTimeout(() => {
+        document.addEventListener('click', function closePop(e) {
+            if (!popover.contains(e.target) && e.target !== selectElement) {
+                popover.remove();
+                document.removeEventListener('click', closePop);
+            }
+        });
+    }, 10);
+}
+
+function appliquerSol(selectedValue, roomType, scope, currentLevelId, triggerSelect, popover) {
+    if (scope === "tous") {
+        defaultFloors.global[roomType] = selectedValue;
+    } else if (scope === "niveau" && currentLevelId) {
+        defaultFloors.levels[`${currentLevelId}_${roomType}`] = selectedValue;
+    }
+
+    let otherSimilarRooms = Array.from(document.querySelectorAll(`select[id^="sol_"][data-type="${roomType.replace(/'/g, "\\'")}"]`))
+        .filter(sel => sel.id !== triggerSelect.id && sel.value !== selectedValue);
+
+    otherSimilarRooms.forEach(otherSelect => {
+        let otherAccordion = otherSelect.closest('.level-accordion');
+        
+        if (scope === "niveau" && currentLevelId && otherAccordion && otherAccordion.id !== currentLevelId) {
+            return; 
+        }
+
+        otherSelect.value = selectedValue;
+        otherSelect.style.border = "1px solid #ccc";
+        otherSelect.style.backgroundColor = "transparent";
+        let otherLabel = otherSelect.parentElement.querySelector('label');
+        if(otherLabel) otherLabel.style.color = "var(--bleu)";
+    });
+
+    popover.remove();
+}
+
 function addStructuredRoom(levelId, type) {
     roomCounter++;
     const roomId = 'room_detail_' + roomCounter;
@@ -570,55 +732,74 @@ function addStructuredRoom(levelId, type) {
     let customNameHtml = type === 'Autre' ? `<input type="text" placeholder="${phAutre}" style="font-size:0.8rem; padding:6px; margin-bottom:10px; width:100%; border:1px solid #ccc; border-radius:5px;" oninput="updateLevelSummaries()">` : '';
     let qtyHtml = '';
     
-    let lblHommes = langKey === 'vi' ? '🚹 Nam (số lượng)' : (langKey === 'en' ? '🚹 Men (number)' : '🚹 Hommes (nombre)');
-    let lblFemmes = langKey === 'vi' ? '🚺 Nữ (số lượng)' : (langKey === 'en' ? '🚺 Women (number)' : '🚺 Femmes (nombre)');
-    let lblNbEspaces = langKey === 'vi' ? 'Số lượng khu vực' : (langKey === 'en' ? 'Number of spaces' : 'Nombre d\'espaces');
-    let lblNbTables = langKey === 'vi' ? 'Số lượng bàn' : (langKey === 'en' ? 'Number of tables' : 'Nombre de tables');
-    let lblNbChaises = langKey === 'vi' ? 'Số lượng ghế' : (langKey === 'en' ? 'Number of chairs' : 'Nombre de chaises');
+    // Nouveaux labels obligatoires
+    let lblHommes = langKey === 'vi' ? '🚹 Nam (số lượng) *' : (langKey === 'en' ? '🚹 Men (number) *' : '🚹 Hommes (nombre) *');
+    let lblFemmes = langKey === 'vi' ? '🚺 Nữ (số lượng) *' : (langKey === 'en' ? '🚺 Women (number) *' : '🚺 Femmes (nombre) *');
+    let lblMixte = langKey === 'vi' ? '🚹🚺 Hỗn hợp (SL) *' : (langKey === 'en' ? '🚹🚺 Mixed (qty) *' : '🚹🚺 Mixte (nombre) *');
+    
+    let lblTotalBur = langKey === 'vi' ? 'Tổng số văn phòng *' : (langKey === 'en' ? 'Total offices *' : 'Bureaux (total) *');
+    let lblOccBur = langKey === 'vi' ? 'Văn phòng có người *' : (langKey === 'en' ? 'Occupied offices *' : 'Bureaux occupés *');
+
+    let lblNbEspaces = langKey === 'vi' ? 'Số lượng khu vực *' : (langKey === 'en' ? 'Number of spaces *' : 'Nombre d\'espaces *');
+    let lblNbTables = langKey === 'vi' ? 'Số lượng bàn *' : (langKey === 'en' ? 'Number of tables *' : 'Nombre de tables *');
+    let lblNbChaises = langKey === 'vi' ? 'Số lượng ghế *' : (langKey === 'en' ? 'Number of chairs *' : 'Nombre de chaises *');
 
     if (type === 'Sanitaires' || type === 'Douche' || type === 'Vestiaire') {
         qtyHtml = `
-        <div class="qty-input-box"><label>${lblHommes}</label><input type="number" id="qty_h_${roomId}" min="0" value="1" oninput="calculatePrice()"></div>
-        <div class="qty-input-box"><label>${lblFemmes}</label><input type="number" id="qty_f_${roomId}" min="0" value="1" oninput="calculatePrice()"></div>`;
+        <div class="qty-input-box"><label>${lblHommes}</label><input type="number" id="qty_h_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>
+        <div class="qty-input-box"><label>${lblFemmes}</label><input type="number" id="qty_f_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>
+        <div class="qty-input-box"><label>${lblMixte}</label><input type="number" id="qty_m_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>`;
+    } else if (type === 'Bureau') {
+        qtyHtml = `
+        <div class="qty-input-box"><label>${lblTotalBur}</label><input type="number" id="qty_tot_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>
+        <div class="qty-input-box"><label>${lblOccBur}</label><input type="number" id="qty_occ_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>`;
     } else if (type === 'Restauration') {
         qtyHtml = `
-        <div class="qty-input-box"><label>${lblNbEspaces}</label><input type="number" id="qty_${roomId}" min="1" value="1" oninput="calculatePrice()"></div>
-        <div class="qty-input-box"><label>${lblNbTables}</label><input type="number" id="qty_tables_${roomId}" min="0" value="5" oninput="calculatePrice()"></div>
-        <div class="qty-input-box"><label>${lblNbChaises}</label><input type="number" id="qty_chaises_${roomId}" min="0" value="10" oninput="calculatePrice()"></div>`;
+        <div class="qty-input-box"><label>${lblNbEspaces}</label><input type="number" id="qty_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>
+        <div class="qty-input-box"><label>${lblNbTables}</label><input type="number" id="qty_tables_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>
+        <div class="qty-input-box"><label>${lblNbChaises}</label><input type="number" id="qty_chaises_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>`;
     } else {
-        let labelQty = langKey === 'vi' ? "Số lượng phòng" : (langKey === 'en' ? "Number of rooms" : "Nombre de pièces");
-        if (type === 'Bureau') labelQty = langKey === 'vi' ? "Số lượng văn phòng" : (langKey === 'en' ? "Number of offices" : "Nombre de bureaux");
-        else if (type.includes('Ascenseur')) labelQty = langKey === 'vi' ? "Số lượng thang máy" : (langKey === 'en' ? "Number of elevators" : "Nombre d'ascenseurs");
-        else if (type.includes('Escalier')) labelQty = langKey === 'vi' ? "Số lượng cầu thang" : (langKey === 'en' ? "Number of stairs" : "Nombre d'escaliers");
-        else if (type === 'Palier') labelQty = langKey === 'vi' ? "Số lượng chiếu nghỉ" : (langKey === 'en' ? "Number of landings" : "Nombre de paliers");
-        else if (type === 'Terrasse') labelQty = langKey === 'vi' ? "Số lượng sân thượng" : (langKey === 'en' ? "Number of terraces" : "Nombre de terrasses");
-        else if (type === 'Parking') labelQty = langKey === 'vi' ? "Số lượng chỗ đậu" : (langKey === 'en' ? "Number of spaces" : "Nombre de places");
-        else if (type === 'Couloir') labelQty = langKey === 'vi' ? "Số lượng hành lang" : (langKey === 'en' ? "Number of hallways" : "Nombre de couloirs");
-        else if (type === 'Salle de réunion') labelQty = langKey === 'vi' ? "Số lượng phòng" : (langKey === 'en' ? "Number of rooms" : "Nombre de salles");
-        else if (type === 'Cuisine') labelQty = langKey === 'vi' ? "Số lượng nhà bếp" : (langKey === 'en' ? "Number of kitchens" : "Nombre de cuisines");
-        else if (type === 'Local technique') labelQty = langKey === 'vi' ? "Số lượng phòng kỹ thuật" : (langKey === 'en' ? "Number of tech rooms" : "Nombre de locaux");
-        else if (['Accueil', 'Salle de repos', 'Salle de sport'].includes(type)) labelQty = langKey === 'vi' ? "Số lượng khu vực" : (langKey === 'en' ? "Number of spaces" : "Nombre d'espaces");
-        qtyHtml = `<div class="qty-input-box"><label>${labelQty}</label><input type="number" id="qty_${roomId}" min="1" value="1" oninput="calculatePrice()"></div>`;
+        let labelQty = langKey === 'vi' ? "Số lượng phòng *" : (langKey === 'en' ? "Number of rooms *" : "Nombre de pièces *");
+        if (type.includes('Ascenseur')) labelQty = langKey === 'vi' ? "Số lượng thang máy *" : (langKey === 'en' ? "Number of elevators *" : "Nombre d'ascenseurs *");
+        else if (type.includes('Escalier')) labelQty = langKey === 'vi' ? "Số lượng cầu thang *" : (langKey === 'en' ? "Number of stairs *" : "Nombre d'escaliers *");
+        else if (type === 'Palier') labelQty = langKey === 'vi' ? "Số lượng chiếu nghỉ *" : (langKey === 'en' ? "Number of landings *" : "Nombre de paliers *");
+        else if (type === 'Terrasse') labelQty = langKey === 'vi' ? "Số lượng sân thượng *" : (langKey === 'en' ? "Number of terraces *" : "Nombre de terrasses *");
+        else if (type === 'Parking') labelQty = langKey === 'vi' ? "Số lượng chỗ đậu *" : (langKey === 'en' ? "Number of spaces *" : "Nombre de places *");
+        else if (type === 'Couloir') labelQty = langKey === 'vi' ? "Số lượng hành lang *" : (langKey === 'en' ? "Number of hallways *" : "Nombre de couloirs *");
+        else if (type === 'Salle de réunion') labelQty = langKey === 'vi' ? "Số lượng phòng *" : (langKey === 'en' ? "Number of rooms *" : "Nombre de salles *");
+        else if (type === 'Cuisine') labelQty = langKey === 'vi' ? "Số lượng nhà bếp *" : (langKey === 'en' ? "Number of kitchens *" : "Nombre de cuisines *");
+        else if (type === 'Local technique') labelQty = langKey === 'vi' ? "Số lượng phòng kỹ thuật *" : (langKey === 'en' ? "Number of tech rooms *" : "Nombre de locaux *");
+        else if (['Accueil', 'Salle de repos', 'Salle de sport'].includes(type)) labelQty = langKey === 'vi' ? "Số lượng khu vực *" : (langKey === 'en' ? "Number of spaces *" : "Nombre d'espaces *");
+        qtyHtml = `<div class="qty-input-box"><label>${labelQty}</label><input type="number" id="qty_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>`;
     }
 
-    let lblSol = langKey === 'vi' ? 'Sàn' : (langKey === 'en' ? 'Floor' : 'Sol');
-    let optNonPrecise = langKey === 'vi' ? 'Chưa xác định' : (langKey === 'en' ? 'Not specified' : 'Non précisé');
+    let defaultSol = "non_precise";
+    if (defaultFloors.levels[`${levelId}_${type}`]) {
+        defaultSol = defaultFloors.levels[`${levelId}_${type}`];
+    } else if (defaultFloors.global[type]) {
+        defaultSol = defaultFloors.global[type];
+    }
+
+    let lblSol = langKey === 'vi' ? 'Sàn *' : (langKey === 'en' ? 'Floor *' : 'Sol *');
+    let optNonPrecise = langKey === 'vi' ? '-- Chọn sàn --' : (langKey === 'en' ? '-- Select floor --' : '-- Choisir le sol --');
     let optMoquette = langKey === 'vi' ? 'Thảm' : (langKey === 'en' ? 'Carpet' : 'Moquette');
     let optCarrelage = langKey === 'vi' ? 'Gạch men' : (langKey === 'en' ? 'Tiles' : 'Carrelage');
     let optLino = langKey === 'vi' ? 'Lino / PVC' : (langKey === 'en' ? 'Lino / PVC' : 'Lino / PVC');
     let optParquet = langKey === 'vi' ? 'Bê tông / Nhựa' : (langKey === 'en' ? 'Concrete / Resin' : 'Béton / Résine');
     let optAutre = langKey === 'vi' ? 'Khác' : (langKey === 'en' ? 'Other' : 'Autre');
 
+    let colorLabelSol = defaultSol === 'non_precise' ? '#e74c3c' : 'var(--bleu)';
+
     let surfaceHtml = `
-    <div class="qty-input-box">
-        <label>${lblSol}</label>
-        <select>
-            <option value="non_precise">${optNonPrecise}</option>
-            <option value="moquette">${optMoquette}</option>
-            <option value="carrelage">${optCarrelage}</option>
-            <option value="lino">${optLino}</option>
-            <option value="parquet">${optParquet}</option>
-            <option value="autre">${optAutre}</option>
+    <div class="qty-input-box sol-box">
+        <label style="color: ${colorLabelSol}; font-weight: bold;">${lblSol}</label>
+        <select id="sol_${roomId}" data-type="${type.replace(/'/g, "\\'")}" onchange="handleSolChange(this, '${roomId}', '${type.replace(/'/g, "\\'")}')" style="transition: 0.3s; outline: none; ${defaultSol !== 'non_precise' ? 'border: 1px solid #ccc; background-color: transparent;' : ''}">
+            <option value="non_precise" ${defaultSol === 'non_precise' ? 'selected' : ''} disabled>${optNonPrecise}</option>
+            <option value="moquette" ${defaultSol === 'moquette' ? 'selected' : ''}>${optMoquette}</option>
+            <option value="carrelage" ${defaultSol === 'carrelage' ? 'selected' : ''}>${optCarrelage}</option>
+            <option value="lino" ${defaultSol === 'lino' ? 'selected' : ''}>${optLino}</option>
+            <option value="parquet" ${defaultSol === 'parquet' ? 'selected' : ''}>${optParquet}</option>
+            <option value="autre" ${defaultSol === 'autre' ? 'selected' : ''}>${optAutre}</option>
         </select>
     </div>`;
 
@@ -847,7 +1028,12 @@ function calculatePrice() {
             if (type === 'Sanitaires' || type === 'Douche' || type === 'Vestiaire') {
                 let inputH = document.getElementById(`qty_h_${roomId}`);
                 let inputF = document.getElementById(`qty_f_${roomId}`);
-                nbEspaces = (inputH ? parseInt(inputH.value) || 0 : 0) + (inputF ? parseInt(inputF.value) || 0 : 0);
+                let inputM = document.getElementById(`qty_m_${roomId}`);
+                nbEspaces = (inputH ? parseInt(inputH.value) || 0 : 0) + (inputF ? parseInt(inputF.value) || 0 : 0) + (inputM ? parseInt(inputM.value) || 0 : 0);
+                tempsMinutes = 20; 
+            } else if (type === 'Bureau') {
+                let inputOcc = document.getElementById(`qty_occ_${roomId}`);
+                nbEspaces = inputOcc ? parseInt(inputOcc.value) || 0 : 0;
                 tempsMinutes = 20; 
             } else if (type === 'Restauration') {
                 let esp = document.getElementById(`qty_${roomId}`) ? parseInt(document.getElementById(`qty_${roomId}`).value) || 0 : 1;
@@ -858,7 +1044,7 @@ function calculatePrice() {
             } else {
                 let inputQty = document.getElementById(`qty_${roomId}`);
                 nbEspaces = inputQty ? parseInt(inputQty.value) || 0 : 0;
-                if (['Bureau', 'Salle de réunion', 'Accueil', 'Cuisine', 'Salle de repos', 'Salle de sport', 'Local technique'].includes(type)) tempsMinutes = 20; 
+                if (['Salle de réunion', 'Accueil', 'Cuisine', 'Salle de repos', 'Salle de sport', 'Local technique'].includes(type)) tempsMinutes = 20; 
                 else if (['Ascenseur principal', 'Ascenseur secondaire', 'Palier', 'Couloir'].includes(type)) tempsMinutes = 15; 
                 else if (['Escalier principal', 'Escalier secondaire'].includes(type)) tempsMinutes = 25; 
                 else if (['Parking', 'Terrasse'].includes(type)) tempsMinutes = 30; 
@@ -1148,32 +1334,189 @@ function removeRow(id) {
 }
 
 // ==========================================
-// 🚀 NOUVEAU SYSTÈME D'ENVOI EN 2 ÉTAPES (Vérification + Envoi)
+// 🚀 NOUVEAU SYSTÈME D'ENVOI EN 2 ÉTAPES ASYNCHRONE
 // ==========================================
 let pendingGooglePayload = null;
 let pendingEmailParams = null;
 let pendingClientCodeAlert = null;
 
-function submitInteractiveForm() {
+async function submitInteractiveForm() {
     try {
         const form = document.getElementById('interactiveForm');
         if (form.checkValidity()) {
+
+            // --- 🌟 NOUVEAU : VÉRIFICATION DES MODULES GLOBAUX ---
+            // 1. Vitrerie
+            if (activeServices.includes('vitrerie')) {
+                let totalVitres = 0;
+                let vitresInputs = document.querySelectorAll('input[id^="qty_vit_"]');
+                vitresInputs.forEach(input => totalVitres += (parseInt(input.value) || 0));
+                if (totalVitres === 0) {
+                    vitresInputs.forEach(input => {
+                        input.style.border = "2px solid #e74c3c";
+                        input.style.backgroundColor = "#fadbd8";
+                    });
+                    if(vitresInputs.length > 0) {
+                        vitresInputs[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => vitresInputs[0].focus(), 500);
+                    }
+                    return;
+                } else {
+                    vitresInputs.forEach(input => {
+                        input.style.border = "1px solid #ccc";
+                        input.style.backgroundColor = "white";
+                    });
+                }
+            }
+
+            // 2. Shampouinage
+            if (activeServices.includes('shampouinage')) {
+                let totalShamp = 0;
+                let ids = ['qty_can23', 'qty_can45', 'qty_canAng', 'qty_tapis', 'qty_moq'];
+                let shampInputs = [];
+                ids.forEach(id => {
+                    let el = document.getElementById(id);
+                    if (el) { shampInputs.push(el); totalShamp += (parseFloat(el.value) || 0); }
+                });
+                if (totalShamp === 0 && shampInputs.length > 0) {
+                    shampInputs.forEach(input => {
+                        input.style.border = "2px solid #e74c3c";
+                        input.style.backgroundColor = "#fadbd8";
+                    });
+                    shampInputs[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => shampInputs[0].focus(), 500);
+                    return;
+                } else {
+                    shampInputs.forEach(input => {
+                        input.style.border = "1px solid #ccc";
+                        input.style.backgroundColor = "white";
+                    });
+                }
+            }
+
+            // 3. Véhicule
+            if (activeServices.includes('vehicule')) {
+                let vehInput = document.getElementById('qty_pack_v');
+                if (vehInput && (parseInt(vehInput.value) || 0) === 0) {
+                    vehInput.style.border = "2px solid #e74c3c";
+                    vehInput.style.backgroundColor = "#fadbd8";
+                    vehInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => vehInput.focus(), 500);
+                    return;
+                } else if (vehInput) {
+                    vehInput.style.border = "1px solid #ccc";
+                    vehInput.style.backgroundColor = "white";
+                }
+            }
+
+            // --- 🌟 NOUVEAU : VÉRIFICATION DES QUANTITÉS À ZÉRO DANS LES LOCAUX ---
+            let missingQty = false;
+            let firstMissingQtyElement = null;
+
+            document.querySelectorAll('.structured-room-card').forEach(card => {
+                let isSanitaire = card.querySelector('input[id^="qty_h_"]');
+                let isBureau = card.querySelector('input[id^="qty_tot_"]');
+                let isRestauration = card.querySelector('input[id^="qty_tables_"]');
+
+                if (isSanitaire) {
+                    let h = card.querySelector('input[id^="qty_h_"]');
+                    let f = card.querySelector('input[id^="qty_f_"]');
+                    let m = card.querySelector('input[id^="qty_m_"]');
+                    let total = (parseInt(h.value)||0) + (parseInt(f.value)||0) + (parseInt(m.value)||0);
+                    if (total === 0) {
+                        missingQty = true;
+                        [h, f, m].forEach(i => { if(i){ i.style.border = "2px solid #e74c3c"; i.style.backgroundColor = "#fadbd8"; }});
+                        if (!firstMissingQtyElement) firstMissingQtyElement = h;
+                    } else {
+                        [h, f, m].forEach(i => { if(i){ i.style.border = "1px solid #ccc"; i.style.backgroundColor = "white"; }});
+                    }
+                } else if (isBureau) {
+                    let tot = card.querySelector('input[id^="qty_tot_"]');
+                    let occ = card.querySelector('input[id^="qty_occ_"]');
+                    // Occ is mandatory
+                    if ((parseInt(occ.value)||0) === 0) {
+                        missingQty = true;
+                        if(occ) { occ.style.border = "2px solid #e74c3c"; occ.style.backgroundColor = "#fadbd8"; }
+                        if (!firstMissingQtyElement) firstMissingQtyElement = occ;
+                    } else {
+                        if(occ) { occ.style.border = "1px solid #ccc"; occ.style.backgroundColor = "white"; }
+                    }
+                } else if (isRestauration) {
+                    let esp = card.querySelector('input[id^="qty_room_detail_"]');
+                    if (esp && (parseInt(esp.value)||0) === 0) {
+                        missingQty = true;
+                        esp.style.border = "2px solid #e74c3c"; esp.style.backgroundColor = "#fadbd8";
+                        if (!firstMissingQtyElement) firstMissingQtyElement = esp;
+                    } else if (esp) {
+                        esp.style.border = "1px solid #ccc"; esp.style.backgroundColor = "white";
+                    }
+                } else {
+                    let input = card.querySelector('input[type="number"][id^="qty_"]');
+                    if (input && (parseInt(input.value)||0) === 0) {
+                        missingQty = true;
+                        input.style.border = "2px solid #e74c3c"; input.style.backgroundColor = "#fadbd8";
+                        if (!firstMissingQtyElement) firstMissingQtyElement = input;
+                    } else if (input) {
+                        input.style.border = "1px solid #ccc"; input.style.backgroundColor = "white";
+                    }
+                }
+            });
+
+            if (missingQty) {
+                if(firstMissingQtyElement) {
+                    firstMissingQtyElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => firstMissingQtyElement.focus(), 500);
+                }
+                return; // Bloque l'envoi
+            }
+            // --- FIN DE LA VÉRIFICATION DES QUANTITÉS ---
+
+            // --- VÉRIFICATION DES SOLS OBLIGATOIRES ---
+            let missingSol = false;
+            let firstMissingElement = null;
+
+            document.querySelectorAll('select[id^="sol_"]').forEach(select => {
+                if (select.value === "non_precise") {
+                    missingSol = true;
+                    select.style.border = "2px solid #e74c3c"; 
+                    select.style.backgroundColor = "#fadbd8"; 
+                    
+                    if (!firstMissingElement) {
+                        firstMissingElement = select; 
+                    }
+                } else {
+                    select.style.border = "1px solid #ccc";
+                    select.style.backgroundColor = "transparent";
+                }
+            });
+
+            if (missingSol) {
+                firstMissingElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => firstMissingElement.focus(), 500);
+                return; // On bloque l'envoi
+            }
+            // --- FIN DE LA VÉRIFICATION DES SOLS ---
+
             let elAmountText = document.getElementById('estimatedAmount').innerText.split('\n');
             let prixFinalAEnvoyer = elAmountText[elAmountText.length - 1]; 
             let majorationAppliquee = false;
             
-            // 1. Alerte des 60€ minimum
+            // 1. Alerte des 60€ minimum via la modale Custom !
             if (window.currentTotalValue > 0 && window.currentTotalValue < 60) {
                 let messageAlerte = "";
                 if (langKey === 'vi') {
-                    messageAlerte = "⚠️ Ước tính chi tiết của bạn là " + window.currentTotalValue.toFixed(2) + " €.\n\nTuy nhiên, các dịch vụ của chúng tôi áp dụng mức tối thiểu hóa đơn là 60,00 € (để chi trả chi phí di chuyển và thiết bị).\n\n💡 MẸO: Bạn có thể hủy và thêm các dịch vụ khác (Lau kính, Sô pha...) để đạt mốc 60 € này và tối ưu hóa chi phí bưu giá!\n\nBạn có muốn gửi yêu cầu với mức giá trọn gói tối thiểu là 60,00 € không?";
+                    messageAlerte = "⚠️ Ước tính chi tiết của bạn là " + window.currentTotalValue.toFixed(2) + " €.<br><br>Tuy nhiên, các dịch vụ của chúng tôi áp dụng mức tối thiểu hóa đơn là 60,00 € (để chi trả chi phí di chuyển và thiết bị).<br><br>💡 MẸO: Bạn có thể hủy và thêm các dịch vụ khác (Lau kính, Sô pha...) để đạt mốc 60 € này và tối ưu hóa chi phí bưu giá!<br><br>Bạn có muốn gửi yêu cầu với mức giá trọn gói tối thiểu là 60,00 € không?";
                 } else if (langKey === 'en') {
-                    messageAlerte = "⚠️ Your detailed estimate is " + window.currentTotalValue.toFixed(2) + " €.\n\nHowever, our interventions are subject to a minimum billing of 60.00 € (to cover travel and equipment expenses).\n\n💡 TIP: You can cancel and add other services (Windows, Sofas...) to reach this 60 € mark and get full value!\n\nDo you still want to send the request at the flat rate of 60.00 €?";
+                    messageAlerte = "⚠️ Your detailed estimate is " + window.currentTotalValue.toFixed(2) + " €.<br><br>However, our interventions are subject to a minimum billing of 60.00 € (to cover travel and equipment expenses).<br><br>💡 TIP: You can cancel and add other services (Windows, Sofas...) to reach this 60 € mark and get full value!<br><br>Do you still want to send the request at the flat rate of 60.00 €?";
                 } else {
-                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.\n\nCependant, nos interventions sont soumises à un minimum de facturation de 60,00 € (pour couvrir le déplacement et le matériel).\n\n💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 60 € et rentabiliser votre devis !\n\nVoulez-vous quand même envoyer la demande au prix forfaitaire de 60,00 € ?";
+                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.<br><br>Cependant, nos interventions sont soumises à un minimum de facturation de 60,00 € (pour couvrir le déplacement et le matériel).<br><br>💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 60 € et rentabiliser votre devis !<br><br>Voulez-vous quand même envoyer la demande au prix forfaitaire de 60,00 € ?";
                 }
                 
-                let clientAccepte = confirm(messageAlerte);
+                let clientAccepte = await askCustomQuestion("⚠️ Minimum de facturation", messageAlerte, [
+                    { text: langKey==='en'?"Yes, apply flat rate (60€)":"Oui, appliquer le forfait (60€)", value: true, style: "background: var(--vert); color: white;" },
+                    { text: langKey==='en'?"No, add options":"Non, ajouter des options", value: false, style: "background: #e1e8ef; color: var(--bleu);" }
+                ]);
+
                 if (!clientAccepte) return;
                 majorationAppliquee = true;
                 prixFinalAEnvoyer = langKey === 'vi' ? "60.00 € (Áp dụng mức tối thiểu trọn gói)" : (langKey === 'en' ? "60.00 € (Minimum flat rate applied)" : "60.00 € (Forfait minimum appliqué)");
@@ -1231,7 +1574,7 @@ function submitInteractiveForm() {
             }
             if (aDesTextiles) recap += "\n";
 
-            // NOUVEAU SYSTÈME DE REGROUPEMENT ULTRA-COMPACT (Pour Sheets et PDF)
+            // NOUVEAU SYSTÈME DE REGROUPEMENT ULTRA-COMPACT (Pour Sheets et PDF) avec les types de sols
             let aDesLocaux = false;
             let recapParNiveau = {}; 
 
@@ -1248,10 +1591,24 @@ function submitInteractiveForm() {
                     }
 
                     let qty = 0;
+                    let detailSupp = "";
+
                     if (roomInfo.roomType === 'Sanitaires' || roomInfo.roomType === 'Douche' || roomInfo.roomType === 'Vestiaire') {
                         let h = parseInt(document.getElementById(`qty_h_${roomId}`)?.value) || 0;
                         let f = parseInt(document.getElementById(`qty_f_${roomId}`)?.value) || 0;
-                        qty = h + f;
+                        let m = parseInt(document.getElementById(`qty_m_${roomId}`)?.value) || 0;
+                        qty = 1; // Unité = ce bloc de configuration exact
+                        let s=[];
+                        if(h>0)s.push(h+"H"); if(f>0)s.push(f+"F"); if(m>0)s.push(m+"M");
+                        detailSupp = ` [${s.join(', ')}]`;
+                    } else if (roomInfo.roomType === 'Bureau') {
+                        let t = parseInt(document.getElementById(`qty_tot_${roomId}`)?.value) || 0;
+                        let o = parseInt(document.getElementById(`qty_occ_${roomId}`)?.value) || 0;
+                        qty = 1; // Unité = ce bloc de configuration exact
+                        detailSupp = ` (Tot:${t}, Occ:${o})`;
+                    } else if (roomInfo.roomType === 'Restauration') {
+                        let esp = parseInt(document.getElementById(`qty_${roomId}`)?.value) || 1;
+                        qty = esp;
                     } else {
                         qty = parseInt(document.getElementById(`qty_${roomId}`)?.value) || 1;
                     }
@@ -1263,8 +1620,11 @@ function submitInteractiveForm() {
                         planningText = planningText.replace('Jours [', '').replace(']', '');
                     }
 
+                    let selectSol = document.getElementById('sol_' + roomId);
+                    let solValue = selectSol ? selectSol.options[selectSol.selectedIndex].text : "Non précisé";
+
                     if (!recapParNiveau[levelName]) recapParNiveau[levelName] = {};
-                    let cleRegroupement = `${roomInfo.roomType} === ${planningText}`;
+                    let cleRegroupement = `${roomInfo.roomType}${detailSupp} (Sol: ${solValue}) === ${planningText}`;
                     if (!recapParNiveau[levelName][cleRegroupement]) recapParNiveau[levelName][cleRegroupement] = 0;
                     recapParNiveau[levelName][cleRegroupement] += qty;
                 }
@@ -1276,10 +1636,10 @@ function submitInteractiveForm() {
                     let piecesDeLetage = [];
                     for (let cle in recapParNiveau[niveau]) {
                         let details = cle.split(' === ');
-                        let typePiece = details[0];
+                        let typePieceSol = details[0]; 
                         let planning = details[1];
                         let quantiteTotale = recapParNiveau[niveau][cle];
-                        if (quantiteTotale > 0) piecesDeLetage.push(`${typePiece} x${quantiteTotale} (${planning})`);
+                        if (quantiteTotale > 0) piecesDeLetage.push(`${typePieceSol} x${quantiteTotale} (${planning})`);
                     }
                     lignesEtages.push(`📍 ${niveau} ➔ ` + piecesDeLetage.join(' | '));
                 }
@@ -1404,7 +1764,10 @@ function submitInteractiveForm() {
         } else { form.reportValidity(); }
     } catch (erreurGlobale) {
         console.error("Erreur inattendue dans le script :", erreurGlobale);
-        alert("Une erreur inattendue empêche l'envoi. Rechargez la page ou contactez-moi au 07 45 02 76 24.");
+        let errorMsg = langKey === 'vi' ? "Có lỗi xảy ra. Vui lòng thử lại hoặc gọi 07 45 02 76 24." :
+                       langKey === 'en' ? "An error occurred. Please try again or call 07 45 02 76 24." :
+                       "Une erreur inattendue empêche l'envoi. Rechargez la page ou contactez-moi au 07 45 02 76 24.";
+        await askCustomQuestion("Erreur technique", errorMsg, [{text: "Fermer", value: "ok", style: "background: var(--bleu); color: white;"}]);
         document.getElementById('btnSubmitForm').innerText = "ENVOYER MON DEVIS"; document.getElementById('btnSubmitForm').disabled = false;
     }
 }
