@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v4.7"; 
+const APP_VERSION = "v4.10 (Suppression Étages)"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
@@ -298,7 +298,6 @@ function askCustomQuestion(title, message, buttons, showInput = false) {
     });
 }
 
-// Validation client modifiée avec askCustomQuestion (Zéro alerte navigateur)
 async function applyClientCode() {
     const code = document.getElementById('clientCodeInput').value.trim().toUpperCase();
     const msg = document.getElementById('clientCodeMsg');
@@ -307,14 +306,14 @@ async function applyClientCode() {
 
     let idClientActuel = null;
     if (code.startsWith('VIP') && code.split('-').length === 5) {
-        document.getElementById('clientModal').style.display = 'none'; // On cache la modale client pour afficher la modale question
+        document.getElementById('clientModal').style.display = 'none'; 
 
         let vipId = await askCustomQuestion("🔒 SÉCURITÉ VIP", msgLang.securitePrompt, [
             { text: langKey==='en'?"Unlock":"Déverrouiller", value: true, style: "background: var(--vert); color: white;" },
             { text: langKey==='en'?"Cancel":"Annuler", value: false, style: "background: #e1e8ef; color: #555;" }
         ], true);
 
-        document.getElementById('clientModal').style.display = 'flex'; // On réaffiche la modale client
+        document.getElementById('clientModal').style.display = 'flex'; 
 
         if (!vipId) { msg.style.color = 'red'; msg.innerText = msgLang.annulePrompt; return; }
         idClientActuel = vipId.trim();
@@ -530,11 +529,16 @@ function updateLevelSummaries() {
         let roomsContainer = accordion.querySelector('[id^="rooms_container_"]');
         let titleSpan = accordion.querySelector('.level-title-display');
         
+        let roomTypesPresent = new Set(); // Pour mémoriser les types actifs
+
         if (roomsContainer && titleSpan) {
             let roomCards = roomsContainer.querySelectorAll('.structured-room-card');
             if (roomCards.length > 0) {
                 let roomNames = [];
                 roomCards.forEach(card => {
+                    let typeAttr = card.getAttribute('data-roomtype');
+                    if (typeAttr) roomTypesPresent.add(typeAttr);
+
                     let nameSpan = card.querySelector('h5 span');
                     if (nameSpan) {
                         let typeText = nameSpan.innerText;
@@ -548,6 +552,27 @@ function updateLevelSummaries() {
                 titleSpan.innerHTML = `📍 ${levelName} <span style="font-size:0.75rem; color:#888; margin-left:8px; font-weight:normal; font-style:italic;">(${roomCards.length} ${roomsWord} : ${summaryText})</span>`;
             } else { titleSpan.innerHTML = `📍 ${levelName}`; }
         }
+
+        // Coloration dynamique des boutons "Quick Add"
+        let quickAddBtns = accordion.querySelectorAll('.btn-quick-add');
+        quickAddBtns.forEach(btn => {
+            let onclickStr = btn.getAttribute('onclick');
+            if (onclickStr) {
+                let match = onclickStr.match(/'([^']+)'\)$/);
+                if (match && match[1]) {
+                    let typeT = match[1];
+                    if (roomTypesPresent.has(typeT)) {
+                        btn.style.backgroundColor = 'var(--bleu)';
+                        btn.style.color = 'white';
+                        btn.style.borderColor = 'var(--bleu)';
+                    } else {
+                        btn.style.backgroundColor = '';
+                        btn.style.color = '';
+                        btn.style.borderColor = '';
+                    }
+                }
+            }
+        });
     });
 }
 
@@ -574,6 +599,9 @@ function createLevelAccordion(levelName) {
     let btnTech = langKey === 'vi' ? '🔧 Phòng KT' : (langKey === 'en' ? '🔧 Tech Room' : '🔧 Local tech.');
     let btnAutre = langKey === 'vi' ? '➕ Khác' : (langKey === 'en' ? '➕ Other' : '➕ Autre');
     
+    let btnClone = langKey === 'vi' ? '📄 Nhân bản' : (langKey === 'en' ? '📄 Clone floor' : '📄 Dupliquer cet étage');
+    let btnDeleteLevel = langKey === 'vi' ? '🗑️ Xóa' : (langKey === 'en' ? '🗑️ Delete' : '🗑️ Supprimer');
+
     let html = `
     <div class="level-accordion" id="block_${levelId}" data-levelname="${levelName}">
         <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -581,7 +609,13 @@ function createLevelAccordion(levelName) {
             <span class="accordion-icon">+</span>
         </div>
         <div class="accordion-body">
-            <p style="font-size:0.75rem; color:#666; margin-bottom:8px;">${subtitleText}</p>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
+                <p style="font-size:0.75rem; color:#666; margin:0;">${subtitleText}</p>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" onclick="openCloneModal('${levelId}', '${levelName.replace(/'/g, "\\'")}')" style="background:#eef3f8; color:var(--bleu); border:1px solid var(--bleu); padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold; cursor:pointer; transition:0.2s;" onmouseover="this.style.background='var(--bleu)'; this.style.color='white';" onmouseout="this.style.background='#eef3f8'; this.style.color='var(--bleu)';">${btnClone}</button>
+                    <button type="button" onclick="confirmDeleteLevel('${levelId}', '${levelName.replace(/'/g, "\\'")}')" style="background:#fadbd8; color:#c0392b; border:1px solid #c0392b; padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold; cursor:pointer; transition:0.2s;" onmouseover="this.style.background='#c0392b'; this.style.color='white';" onmouseout="this.style.background='#fadbd8'; this.style.color='#c0392b';">${btnDeleteLevel}</button>
+                </div>
+            </div>
             <div class="room-quick-adds">
                 <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Bureau')">${btnBureau}</button>
                 <button type="button" class="btn-quick-add" onclick="addStructuredRoom('${levelId}', 'Salle de réunion')">${btnReunion}</button>
@@ -607,6 +641,44 @@ function createLevelAccordion(levelName) {
     </div>`;
     document.getElementById('levelsContainer').insertAdjacentHTML('beforeend', html);
     updateLevelSummaries();
+    
+    return levelId;
+}
+
+// 🗑️ Suppression d'étage
+async function confirmDeleteLevel(levelId, levelName) {
+    let txtTitle = langKey === 'vi' ? '🗑️ Xóa tầng' : (langKey === 'en' ? '🗑️ Delete floor' : '🗑️ Supprimer l\'étage');
+    let txtMsg = langKey === 'vi' ? `Bạn có chắc chắn muốn xóa <strong>${levelName}</strong> và tất cả các phòng trong đó không?` : 
+                 (langKey === 'en' ? `Are you sure you want to delete <strong>${levelName}</strong> and all its rooms?` : 
+                 `Êtes-vous sûr de vouloir supprimer <strong>${levelName}</strong> et toutes les pièces qu'il contient ?`);
+    
+    let btnYes = langKey === 'vi' ? 'Có, xóa' : (langKey === 'en' ? 'Yes, delete' : 'Oui, supprimer');
+    let btnNo = langKey === 'vi' ? 'Hủy' : (langKey === 'en' ? 'Cancel' : 'Annuler');
+
+    let confirm = await askCustomQuestion(txtTitle, txtMsg, [
+        { text: btnYes, value: true, style: "background: #e74c3c; color: white;" },
+        { text: btnNo, value: false, style: "background: #e1e8ef; color: var(--bleu);" }
+    ]);
+
+    if (confirm) {
+        deleteLevel(levelId);
+    }
+}
+
+function deleteLevel(levelId) {
+    let container = document.getElementById('rooms_container_' + levelId);
+    if(container) {
+        let cards = container.querySelectorAll('.structured-room-card');
+        cards.forEach(card => {
+            let roomId = card.id.replace('row_', '');
+            if (planData[roomId]) delete planData[roomId];
+        });
+    }
+    let accordion = document.getElementById('block_' + levelId);
+    if (accordion) accordion.remove();
+    
+    calculatePrice();
+    updateLevelSummaries();
 }
 
 function openLevelModal() { document.getElementById('levelModal').style.display = 'flex'; }
@@ -620,6 +692,19 @@ function addCustomLevel() {
         closeLevelModal();
     }
 }
+
+// Validation Bureaux : Empêche Occupé d'être > à Total
+window.validateBureaux = function(roomId) {
+    let totInput = document.getElementById(`qty_tot_${roomId}`);
+    let occInput = document.getElementById(`qty_occ_${roomId}`);
+    if(totInput && occInput) {
+        let tot = parseInt(totInput.value) || 0;
+        let occ = parseInt(occInput.value) || 0;
+        if(occ > tot) {
+            occInput.value = tot;
+        }
+    }
+};
 
 // ==========================================
 // 🔄 LOGIQUE INTELLIGENTE ET CIBLÉE DES SOLS (POPOVER LOCAL)
@@ -732,7 +817,6 @@ function addStructuredRoom(levelId, type) {
     let customNameHtml = type === 'Autre' ? `<input type="text" placeholder="${phAutre}" style="font-size:0.8rem; padding:6px; margin-bottom:10px; width:100%; border:1px solid #ccc; border-radius:5px;" oninput="updateLevelSummaries()">` : '';
     let qtyHtml = '';
     
-    // Nouveaux labels obligatoires
     let lblHommes = langKey === 'vi' ? '🚹 Nam (số lượng) *' : (langKey === 'en' ? '🚹 Men (number) *' : '🚹 Hommes (nombre) *');
     let lblFemmes = langKey === 'vi' ? '🚺 Nữ (số lượng) *' : (langKey === 'en' ? '🚺 Women (number) *' : '🚺 Femmes (nombre) *');
     let lblMixte = langKey === 'vi' ? '🚹🚺 Hỗn hợp (SL) *' : (langKey === 'en' ? '🚹🚺 Mixed (qty) *' : '🚹🚺 Mixte (nombre) *');
@@ -751,8 +835,8 @@ function addStructuredRoom(levelId, type) {
         <div class="qty-input-box"><label>${lblMixte}</label><input type="number" id="qty_m_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>`;
     } else if (type === 'Bureau') {
         qtyHtml = `
-        <div class="qty-input-box"><label>${lblTotalBur}</label><input type="number" id="qty_tot_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>
-        <div class="qty-input-box"><label>${lblOccBur}</label><input type="number" id="qty_occ_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>`;
+        <div class="qty-input-box"><label>${lblTotalBur}</label><input type="number" id="qty_tot_${roomId}" min="0" value="0" oninput="validateBureaux('${roomId}'); calculatePrice()"></div>
+        <div class="qty-input-box"><label>${lblOccBur}</label><input type="number" id="qty_occ_${roomId}" min="0" value="0" oninput="validateBureaux('${roomId}'); calculatePrice()"></div>`;
     } else if (type === 'Restauration') {
         qtyHtml = `
         <div class="qty-input-box"><label>${lblNbEspaces}</label><input type="number" id="qty_${roomId}" min="0" value="0" oninput="calculatePrice()"></div>
@@ -845,7 +929,7 @@ function addStructuredRoom(levelId, type) {
     let btnPlanDaysText = langKey === 'vi' ? '+ Lập kế hoạch ngày' : (langKey === 'en' ? '+ Schedule days' : '+ Planifier les jours');
 
     let html = `
-    <div class="structured-room-card" id="row_${roomId}">
+    <div class="structured-room-card" id="row_${roomId}" data-roomtype="${type.replace(/'/g, "\\'")}">
         <h5><span>${displayTitle}</span><button type="button" class="btn-delete-row" onclick="removeRoom('${roomId}')">×</button></h5>
         ${customNameHtml}
         ${qtyHtml}
@@ -858,6 +942,8 @@ function addStructuredRoom(levelId, type) {
     document.getElementById('rooms_container_' + levelId).insertAdjacentHTML('beforeend', html);
     calculatePrice();
     updateLevelSummaries();
+    
+    return roomId;
 }
 
 function removeRoom(roomId) {
@@ -1345,7 +1431,7 @@ async function submitInteractiveForm() {
         const form = document.getElementById('interactiveForm');
         if (form.checkValidity()) {
 
-            // --- 🌟 NOUVEAU : VÉRIFICATION DES MODULES GLOBAUX ---
+            // --- 🌟 VÉRIFICATION DES MODULES GLOBAUX ---
             // 1. Vitrerie
             if (activeServices.includes('vitrerie')) {
                 let totalVitres = 0;
@@ -1409,7 +1495,7 @@ async function submitInteractiveForm() {
                 }
             }
 
-            // --- 🌟 NOUVEAU : VÉRIFICATION DES QUANTITÉS À ZÉRO DANS LES LOCAUX ---
+            // --- 🌟 VÉRIFICATION DES QUANTITÉS À ZÉRO DANS LES LOCAUX ---
             let missingQty = false;
             let firstMissingQtyElement = null;
 
@@ -1433,7 +1519,6 @@ async function submitInteractiveForm() {
                 } else if (isBureau) {
                     let tot = card.querySelector('input[id^="qty_tot_"]');
                     let occ = card.querySelector('input[id^="qty_occ_"]');
-                    // Occ is mandatory
                     if ((parseInt(occ.value)||0) === 0) {
                         missingQty = true;
                         if(occ) { occ.style.border = "2px solid #e74c3c"; occ.style.backgroundColor = "#fadbd8"; }
@@ -1467,9 +1552,8 @@ async function submitInteractiveForm() {
                     firstMissingQtyElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     setTimeout(() => firstMissingQtyElement.focus(), 500);
                 }
-                return; // Bloque l'envoi
+                return;
             }
-            // --- FIN DE LA VÉRIFICATION DES QUANTITÉS ---
 
             // --- VÉRIFICATION DES SOLS OBLIGATOIRES ---
             let missingSol = false;
@@ -1493,15 +1577,13 @@ async function submitInteractiveForm() {
             if (missingSol) {
                 firstMissingElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 setTimeout(() => firstMissingElement.focus(), 500);
-                return; // On bloque l'envoi
+                return; 
             }
-            // --- FIN DE LA VÉRIFICATION DES SOLS ---
 
             let elAmountText = document.getElementById('estimatedAmount').innerText.split('\n');
             let prixFinalAEnvoyer = elAmountText[elAmountText.length - 1]; 
             let majorationAppliquee = false;
             
-            // 1. Alerte des 60€ minimum via la modale Custom !
             if (window.currentTotalValue > 0 && window.currentTotalValue < 60) {
                 let messageAlerte = "";
                 if (langKey === 'vi') {
@@ -1574,7 +1656,6 @@ async function submitInteractiveForm() {
             }
             if (aDesTextiles) recap += "\n";
 
-            // NOUVEAU SYSTÈME DE REGROUPEMENT ULTRA-COMPACT (Pour Sheets et PDF) avec les types de sols
             let aDesLocaux = false;
             let recapParNiveau = {}; 
 
@@ -1597,14 +1678,14 @@ async function submitInteractiveForm() {
                         let h = parseInt(document.getElementById(`qty_h_${roomId}`)?.value) || 0;
                         let f = parseInt(document.getElementById(`qty_f_${roomId}`)?.value) || 0;
                         let m = parseInt(document.getElementById(`qty_m_${roomId}`)?.value) || 0;
-                        qty = 1; // Unité = ce bloc de configuration exact
+                        qty = 1; 
                         let s=[];
                         if(h>0)s.push(h+"H"); if(f>0)s.push(f+"F"); if(m>0)s.push(m+"M");
                         detailSupp = ` [${s.join(', ')}]`;
                     } else if (roomInfo.roomType === 'Bureau') {
                         let t = parseInt(document.getElementById(`qty_tot_${roomId}`)?.value) || 0;
                         let o = parseInt(document.getElementById(`qty_occ_${roomId}`)?.value) || 0;
-                        qty = 1; // Unité = ce bloc de configuration exact
+                        qty = 1; 
                         detailSupp = ` (Tot:${t}, Occ:${o})`;
                     } else if (roomInfo.roomType === 'Restauration') {
                         let esp = parseInt(document.getElementById(`qty_${roomId}`)?.value) || 1;
@@ -1678,7 +1759,7 @@ async function submitInteractiveForm() {
             recap += `Prix final proposé au client : ${prixFinalAEnvoyer}\n`;
             if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 60,00 € car son panier initial était trop faible.\n`;
 
-            // 3. STOCKAGE DES DONNÉES EN ATTENTE (On n'envoie rien pour le moment !)
+            // 3. STOCKAGE DES DONNÉES EN ATTENTE
             pendingGooglePayload = {
                 "Date": new Date().toLocaleString('fr-FR'),
                 "Session ID": "WEB_" + Date.now(),
@@ -1753,12 +1834,10 @@ async function submitInteractiveForm() {
             
             document.getElementById('previewContent').textContent = previewText;
 
-            // On cache le formulaire et on affiche la vérification
             form.style.display = 'none';
             document.getElementById('postSubmitChoice').style.display = 'none';
             previewContainer.style.display = 'block';
             
-            // On remonte tout en haut de la fenêtre modale
             document.querySelector('.modal-content.large').scrollTo({ top: 0, behavior: 'smooth' });
 
         } else { form.reportValidity(); }
@@ -1772,28 +1851,20 @@ async function submitInteractiveForm() {
     }
 }
 
-// ==========================================
-// FONCTION POUR MODIFIER LA DEMANDE (RETOUR)
-// ==========================================
 function editQuote() {
     document.getElementById('quotePreviewContainer').style.display = 'none';
     document.getElementById('interactiveForm').style.display = 'block';
 }
 
-// ==========================================
-// FONCTION POUR CONFIRMER ET ENVOYER LE DEVIS
-// ==========================================
 function confirmAndSendQuote() {
     let textSending = langKey === 'vi' ? "Đang gửi..." : (langKey === 'en' ? "Sending..." : "Envoi en cours...");
     
-    // On désactive tous les boutons avec la classe btn-confirm-send
     const btns = document.querySelectorAll('.btn-confirm-send');
     btns.forEach(btn => {
         btn.innerText = textSending; 
         btn.disabled = true;
     });
 
-    // A. Envoi vers Google Drive
     const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwgsHmaXX1a33a2lY4IenMp83_BSBpLw88u5uPkPMBQC7iXQG5QLn5w-IYl9uR0EQ4/exec";
     fetch(GOOGLE_API_URL, { 
         method: 'POST', 
@@ -1803,7 +1874,6 @@ function confirmAndSendQuote() {
     .then(res => console.log("✅ Données envoyées vers Google Drive pour création du PDF"))
     .catch(e => console.error("Erreur d'envoi vers Google:", e));
 
-    // B. Envoi de l'Email via EmailJS
     emailjs.send('service_wfrbr4e', 'template_oncrl1l', pendingEmailParams)
     .then(() => {
         if (pendingClientCodeAlert) {
@@ -1931,3 +2001,191 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
+
+// ==========================================
+// 📄 MOTEUR DE CLONAGE D'ÉTAGES (DUPLICATION) MODALE AVANCÉE
+// ==========================================
+
+window.currentCloneList = [];
+
+function openCloneModal(sourceLevelId, sourceName) {
+    let existingModal = document.getElementById('cloneFloorModal');
+    if (existingModal) existingModal.remove();
+
+    let txtTitle = langKey === 'vi' ? 'Nhân bản: ' + sourceName : (langKey === 'en' ? 'Clone: ' + sourceName : 'Dupliquer : ' + sourceName);
+    let txtPredef = langKey === 'vi' ? 'Chọn tầng có sẵn để tạo:' : (langKey === 'en' ? 'Select predefined floors:' : 'Ajouter des étages rapides :');
+    let txtCustom = langKey === 'vi' ? 'Hoặc nhập tên tùy chỉnh:' : (langKey === 'en' ? 'Or enter a custom name:' : 'Ou ajouter un nom sur-mesure :');
+    let txtList = langKey === 'vi' ? 'Các tầng sẽ được nhân bản:' : (langKey === 'en' ? 'Floors to be created:' : 'Liste des étages qui seront créés :');
+    let btnAdd = langKey === 'vi' ? 'Thêm' : (langKey === 'en' ? 'Add' : 'Ajouter');
+    let btnConfirm = langKey === 'vi' ? 'Xác nhận & Nhân bản' : (langKey === 'en' ? 'Confirm & Clone' : 'Confirmer & Cloner');
+    let btnCancel = langKey === 'vi' ? 'Hủy' : (langKey === 'en' ? 'Cancel' : 'Annuler');
+
+    let predefFloors = [];
+    if (langKey === 'vi') predefFloors = ['Tầng trệt (RDC)', 'Tầng 1', 'Tầng 2', 'Tầng 3', 'Tầng 4', 'Tầng lửng', 'Bãi đậu xe'];
+    else if (langKey === 'en') predefFloors = ['Ground Floor (RDC)', 'Floor 1', 'Floor 2', 'Floor 3', 'Floor 4', 'Mezzanine', 'Parking Lot'];
+    else predefFloors = ['RDC', 'Étage 1', 'Étage 2', 'Étage 3', 'Étage 4', 'Entresol', 'Parking'];
+
+    window.currentCloneList = [];
+
+    let predefHtml = predefFloors.map(f => `<button type="button" onclick="addFloorToCloneList('${f.replace(/'/g, "\\'")}')" style="margin:2px; padding:6px 12px; font-size:0.85rem; background:#eef3f8; border:1px solid var(--bleu); border-radius:4px; cursor:pointer; color:var(--bleu); transition:0.2s;" onmouseover="this.style.background='var(--bleu)'; this.style.color='white';" onmouseout="this.style.background='#eef3f8'; this.style.color='var(--bleu)';">${f} +</button>`).join('');
+
+    let modalHtml = `
+    <div id="cloneFloorModal" style="display:flex; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; justify-content:center; align-items:center;">
+        <div style="background:white; padding:25px; border-radius:10px; width:90%; max-width:550px; box-shadow:0 4px 15px rgba(0,0,0,0.2); max-height:90vh; overflow-y:auto; font-family:sans-serif;">
+            <h3 style="color:var(--bleu); margin-top:0; border-bottom:2px solid var(--vert); padding-bottom:10px;">📄 ${txtTitle}</h3>
+            
+            <div style="margin-bottom:20px; margin-top:15px;">
+                <label style="font-size:0.9rem; font-weight:bold; color:#444;">${txtPredef}</label>
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">${predefHtml}</div>
+            </div>
+
+            <div style="margin-bottom:20px;">
+                <label style="font-size:0.9rem; font-weight:bold; color:#444;">${txtCustom}</label>
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                    <input type="text" id="cloneCustomInput" placeholder="${langKey==='en'?"Ex: Annex building":"Ex: Bâtiment Annexe"}" style="flex:1; padding:10px; border:1px solid #ccc; border-radius:4px; font-size:0.9rem;">
+                    <button type="button" onclick="addCustomFloorToCloneList()" style="background:var(--vert); color:white; border:none; padding:10px 20px; border-radius:4px; font-weight:bold; cursor:pointer; transition:0.2s;">${btnAdd}</button>
+                </div>
+            </div>
+
+            <div style="margin-bottom:25px; background:#f9f9f9; padding:15px; border-radius:8px; border:1px dashed #ccc;">
+                <label style="font-size:0.9rem; font-weight:bold; color:var(--bleu); display:block; margin-bottom:10px;">${txtList}</label>
+                <div id="cloneListContainer" style="min-height:50px; display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <button type="button" onclick="confirmCloneAction('${sourceLevelId}')" style="flex:1; background:var(--vert); color:white; border:none; padding:14px; border-radius:5px; font-weight:bold; font-size:1rem; cursor:pointer;">${btnConfirm}</button>
+                <button type="button" onclick="closeCloneModal()" style="flex:1; background:#e1e8ef; color:var(--bleu); border:none; padding:14px; border-radius:5px; font-weight:bold; font-size:1rem; cursor:pointer;">${btnCancel}</button>
+            </div>
+        </div>
+    </div>`;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    renderCloneList();
+}
+
+window.addFloorToCloneList = function(name) {
+    if(!window.currentCloneList.includes(name)) {
+        window.currentCloneList.push(name);
+        renderCloneList();
+    }
+};
+
+window.addCustomFloorToCloneList = function() {
+    let input = document.getElementById('cloneCustomInput');
+    let val = input.value.trim();
+    if(val !== '' && !window.currentCloneList.includes(val)) {
+        window.currentCloneList.push(val);
+        input.value = '';
+        renderCloneList();
+    }
+};
+
+window.removeFloorFromCloneList = function(index) {
+    window.currentCloneList.splice(index, 1);
+    renderCloneList();
+};
+
+window.renderCloneList = function() {
+    let container = document.getElementById('cloneListContainer');
+    if(!container) return;
+    if(window.currentCloneList.length === 0) {
+        container.innerHTML = `<span style="font-size:0.85rem; color:#888; font-style:italic;">${langKey==='en'?"No floor added yet.":"Aucun étage ajouté pour le moment."}</span>`;
+        return;
+    }
+    container.innerHTML = window.currentCloneList.map((f, i) => `
+        <div style="display:flex; justify-content:space-between; align-items:center; background:white; padding:8px 12px; border:1px solid #e1e8ef; border-radius:4px; font-size:0.9rem; font-weight:bold; color:var(--bleu); box-shadow:0 2px 5px rgba(0,0,0,0.02);">
+            <span>📍 ${f}</span>
+            <button type="button" onclick="removeFloorFromCloneList(${i})" style="background:#e74c3c; color:white; border:none; border-radius:4px; width:25px; height:25px; display:flex; justify-content:center; align-items:center; cursor:pointer; font-weight:bold; font-size:1rem;" title="${langKey==='en'?"Remove":"Supprimer"}">×</button>
+        </div>
+    `).join('');
+};
+
+window.closeCloneModal = function() {
+    let existingModal = document.getElementById('cloneFloorModal');
+    if (existingModal) existingModal.remove();
+};
+
+window.confirmCloneAction = function(sourceLevelId) {
+    if(window.currentCloneList.length === 0) {
+        alert(langKey==='en'?"Please add at least one floor to clone to.":"Veuillez ajouter au moins un étage à cloner.");
+        return;
+    }
+    executeFloorClone(sourceLevelId, window.currentCloneList);
+    closeCloneModal();
+};
+
+function executeFloorClone(sourceLevelId, newNames) {
+    let sourceRoomsContainer = document.getElementById('rooms_container_' + sourceLevelId);
+    if(!sourceRoomsContainer) return;
+    let sourceRoomCards = sourceRoomsContainer.querySelectorAll('.structured-room-card');
+    
+    let sourceRoomIds = [];
+    sourceRoomCards.forEach(card => {
+        sourceRoomIds.push(card.id.replace('row_', ''));
+    });
+
+    newNames.forEach(newName => {
+        let targetLevelId = createLevelAccordion(newName);
+
+        sourceRoomIds.forEach(srcRoomId => {
+            let srcPlan = planData[srcRoomId];
+            if(!srcPlan) return;
+            
+            let roomType = srcPlan.roomType;
+            let targetRoomId = addStructuredRoom(targetLevelId, roomType); 
+            
+            let srcCard = document.getElementById('row_' + srcRoomId);
+            let tgtCard = document.getElementById('row_' + targetRoomId);
+            
+            if(srcCard && tgtCard) {
+                let srcInputs = srcCard.querySelectorAll('input[type="number"], input[type="text"]');
+                srcInputs.forEach((sInp) => {
+                    let tInpId = sInp.id.replace(srcRoomId, targetRoomId);
+                    let tInp = document.getElementById(tInpId);
+                    if(tInp) {
+                        tInp.value = sInp.value;
+                        tInp.style.backgroundColor = sInp.style.backgroundColor;
+                        tInp.style.border = sInp.style.border;
+                    }
+                });
+                
+                let srcSelects = srcCard.querySelectorAll('select');
+                srcSelects.forEach(sSel => {
+                    let tSelId = sSel.id.replace(srcRoomId, targetRoomId);
+                    let tSel = document.getElementById(tSelId);
+                    if(tSel) {
+                        tSel.value = sSel.value;
+                        tSel.style.backgroundColor = sSel.style.backgroundColor;
+                        tSel.style.border = sSel.style.border;
+                        let srcLabel = sSel.parentElement.querySelector('label');
+                        let tgtLabel = tSel.parentElement.querySelector('label');
+                        if (srcLabel && tgtLabel) tgtLabel.style.color = srcLabel.style.color;
+                    }
+                });
+                
+                let srcChecks = srcCard.querySelectorAll('input[type="checkbox"]');
+                srcChecks.forEach(sChk => {
+                    let tChkId = sChk.id.replace(srcRoomId, targetRoomId);
+                    let tChk = document.getElementById(tChkId);
+                    if(tChk && !tChk.disabled) tChk.checked = sChk.checked;
+                });
+                
+                planData[targetRoomId].days = [...srcPlan.days];
+                planData[targetRoomId].months = [...srcPlan.months];
+                planData[targetRoomId].start = srcPlan.start;
+                planData[targetRoomId].end = srcPlan.end;
+                planData[targetRoomId].comment = srcPlan.comment;
+                
+                let srcBtnPlan = document.getElementById('btn_plan_' + srcRoomId);
+                let tgtBtnPlan = document.getElementById('btn_plan_' + targetRoomId);
+                if(srcBtnPlan && tgtBtnPlan) {
+                    tgtBtnPlan.innerText = srcBtnPlan.innerText;
+                    tgtBtnPlan.className = srcBtnPlan.className; 
+                }
+            }
+        });
+    });
+    
+    calculatePrice();
+    updateLevelSummaries();
+}
