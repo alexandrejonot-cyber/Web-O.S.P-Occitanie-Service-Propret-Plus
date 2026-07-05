@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v4.10 (Suppression Étages)"; 
+const APP_VERSION = "v4.10"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
