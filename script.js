@@ -1074,7 +1074,7 @@ function savePlanning() {
 function calculatePrice() {
     let total = 0;
     let hasOspConsommables = false; 
-    const TAUX_HORAIRE = 45.00; 
+    const TAUX_HORAIRE = 25.00; 
     const vPrices = { vit_fen: 10, vit_baie: 19, vit_velux: 15, vit_ver: 29, vit_porte: 12, vit_com: 39 };
     
     document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
@@ -1189,8 +1189,8 @@ function calculatePrice() {
     }
 
     window.currentTotalValue = total;
-    let txtAstuce = langKey === 'vi' ? "💡 Mẹo: Áp dụng mức tối thiểu hóa đơn 60,00 €. Hãy thêm dịch vụ khác." : (langKey === 'en' ? "💡 Tip: A minimum billing of 60.00 € applies. Add other services." : "💡 Astuce : Un minimum de facturation de 60,00 € s'applique. Ajoutez d'autres prestations.");
-    let mentionMinimum = (total > 0 && total < 60.00) ? `<div class="price-min-alert" style="margin-top:8px;">${txtAstuce}</div>` : "";
+    let txtAstuce = langKey === 'vi' ? "💡 Mẹo: Áp dụng mức tối thiểu hóa đơn 25,00 €. Hãy thêm dịch vụ khác." : (langKey === 'en' ? "💡 Tip: A minimum billing of 25.00 € applies. Add other services." : "💡 Astuce : Un minimum de facturation de 25,00 € s'applique. Ajoutez d'autres prestations.");
+    let mentionMinimum = (total > 0 && total < 25.00) ? `<div class="price-min-alert" style="margin-top:8px;">${txtAstuce}</div>` : "";
     
     const elAmount = document.getElementById('estimatedAmount');
     if (elAmount) {
@@ -1584,24 +1584,24 @@ async function submitInteractiveForm() {
             let prixFinalAEnvoyer = elAmountText[elAmountText.length - 1]; 
             let majorationAppliquee = false;
             
-            if (window.currentTotalValue > 0 && window.currentTotalValue < 60) {
+            if (window.currentTotalValue > 0 && window.currentTotalValue < 25) {
                 let messageAlerte = "";
                 if (langKey === 'vi') {
-                    messageAlerte = "⚠️ Ước tính chi tiết của bạn là " + window.currentTotalValue.toFixed(2) + " €.<br><br>Tuy nhiên, các dịch vụ của chúng tôi áp dụng mức tối thiểu hóa đơn là 60,00 € (để chi trả chi phí di chuyển và thiết bị).<br><br>💡 MẸO: Bạn có thể hủy và thêm các dịch vụ khác (Lau kính, Sô pha...) để đạt mốc 60 € này và tối ưu hóa chi phí bưu giá!<br><br>Bạn có muốn gửi yêu cầu với mức giá trọn gói tối thiểu là 60,00 € không?";
+                    messageAlerte = "⚠️ Ước tính chi tiết của bạn là " + window.currentTotalValue.toFixed(2) + " €.<br><br>Tuy nhiên, các dịch vụ của chúng tôi áp dụng mức tối thiểu hóa đơn là 25,00 € (để chi trả chi phí di chuyển và thiết bị).<br><br>💡 MẸO: Bạn có thể hủy và thêm các dịch vụ khác (Lau kính, Sô pha...) để đạt mốc 25 € này và tối ưu hóa chi phí bưu giá!<br><br>Bạn có muốn gửi yêu cầu với mức giá trọn gói tối thiểu là 25,00 € không?";
                 } else if (langKey === 'en') {
-                    messageAlerte = "⚠️ Your detailed estimate is " + window.currentTotalValue.toFixed(2) + " €.<br><br>However, our interventions are subject to a minimum billing of 60.00 € (to cover travel and equipment expenses).<br><br>💡 TIP: You can cancel and add other services (Windows, Sofas...) to reach this 60 € mark and get full value!<br><br>Do you still want to send the request at the flat rate of 60.00 €?";
+                    messageAlerte = "⚠️ Your detailed estimate is " + window.currentTotalValue.toFixed(2) + " €.<br><br>However, our interventions are subject to a minimum billing of 25.00 € (to cover travel and equipment expenses).<br><br>💡 TIP: You can cancel and add other services (Windows, Sofas...) to reach this 25 € mark and get full value!<br><br>Do you still want to send the request at the flat rate of 25.00 €?";
                 } else {
-                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.<br><br>Cependant, nos interventions sont soumises à un minimum de facturation de 60,00 € (pour couvrir le déplacement et le matériel).<br><br>💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 60 € et rentabiliser votre devis !<br><br>Voulez-vous quand même envoyer la demande au prix forfaitaire de 60,00 € ?";
+                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.<br><br>Cependant, nos interventions sont soumises à un minimum de facturation de 25,00 € (pour couvrir le déplacement et le matériel).<br><br>💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 25 € et rentabiliser votre devis !<br><br>Voulez-vous quand même envoyer la demande au prix forfaitaire de 25,00 € ?";
                 }
                 
                 let clientAccepte = await askCustomQuestion("⚠️ Minimum de facturation", messageAlerte, [
-                    { text: langKey==='en'?"Yes, apply flat rate (60€)":"Oui, appliquer le forfait (60€)", value: true, style: "background: var(--vert); color: white;" },
+                    { text: langKey==='en'?"Yes, apply flat rate (25€)":"Oui, appliquer le forfait (25€)", value: true, style: "background: var(--vert); color: white;" },
                     { text: langKey==='en'?"No, add options":"Non, ajouter des options", value: false, style: "background: #e1e8ef; color: var(--bleu);" }
                 ]);
 
                 if (!clientAccepte) return;
                 majorationAppliquee = true;
-                prixFinalAEnvoyer = langKey === 'vi' ? "60.00 € (Áp dụng mức tối thiểu trọn gói)" : (langKey === 'en' ? "60.00 € (Minimum flat rate applied)" : "60.00 € (Forfait minimum appliqué)");
+                prixFinalAEnvoyer = langKey === 'vi' ? "25.00 € (Áp dụng mức tối thiểu trọn gói)" : (langKey === 'en' ? "25.00 € (Minimum flat rate applied)" : "25.00 € (Forfait minimum appliqué)");
             }
 
             let statut = "";
@@ -1757,7 +1757,7 @@ async function submitInteractiveForm() {
             let totalPercent = finalClientDiscount + finalPromoDevis + (window.holidayPromoActive ? 0.05 : 0);
             if (totalPercent > 0) recap += `✅ TOTAL DES REMISES CUMULÉES EXTRAITES : ${Math.round(totalPercent * 100)}%\n`;
             recap += `Prix final proposé au client : ${prixFinalAEnvoyer}\n`;
-            if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 60,00 € car son panier initial était trop faible.\n`;
+            if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 25,00 € car son panier initial était trop faible.\n`;
 
             // 3. STOCKAGE DES DONNÉES EN ATTENTE
             pendingGooglePayload = {
