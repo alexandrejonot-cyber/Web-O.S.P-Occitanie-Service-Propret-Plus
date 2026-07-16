@@ -145,7 +145,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v4.10"; 
+const APP_VERSION = "v4.19"; 
 
 function afficherVersion() {
     let versionBadge = document.createElement('div');
@@ -155,6 +155,14 @@ function afficherVersion() {
     console.log("🚀 OSP+ Script Chargé - " + APP_VERSION + " [Langue: " + langKey.toUpperCase() + "]");
 }
 window.addEventListener('DOMContentLoaded', afficherVersion);
+
+// ==========================================
+// 📍 FONCTION GLOBALE POUR LES BADGES D'ÉTAPES (UX)
+// ==========================================
+window.getStepBadge = function(num) {
+    let w = langKey === 'vi' ? 'BƯỚC' : (langKey === 'en' ? 'STEP' : 'ÉTAPE');
+    return `<span style="background: var(--vert); color: white; padding: 2px 6px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; margin-right: 6px; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; vertical-align: middle;">${w} ${num}</span>`;
+};
 
 // ==========================================
 // ⚙️ MOTEUR DE VALIDATION DE CODES (HYBRIDE)
@@ -234,7 +242,6 @@ let currentPlanId = null;
 let roomCounter = 0;
 let activeServices = [];
 
-// Stockage intelligent des sols (pour éviter de redemander)
 let defaultFloors = { global: {}, levels: {} };
 
 window.clientDiscount = 0; 
@@ -247,9 +254,6 @@ window.originalTotalValue = 0;
 function openClientModal() { document.getElementById('clientModal').style.display = 'flex'; }
 function closeClientModal() { document.getElementById('clientModal').style.display = 'none'; }
 
-// ==========================================
-// 🛠️ MOTEUR DE FENÊTRES SUR-MESURE OSP+
-// ==========================================
 function askCustomQuestion(title, message, buttons, showInput = false) {
     return new Promise((resolve) => {
         document.getElementById('customConfirmTitle').innerText = title;
@@ -410,11 +414,19 @@ function toggleCompanyField() {
     const employeeGroup = document.getElementById('employeeCountGroup');
     const employeeInput = document.getElementById('nbEmployes');
 
+    const hasBureaux = activeServices.includes('bureaux');
+
     if (isEntreprise) {
         if (companyGroup) companyGroup.style.display = 'flex';
         if (companyInput) companyInput.required = true;
-        if (employeeGroup) employeeGroup.style.display = 'flex';
-        if (employeeInput) employeeInput.required = true;
+
+        if (hasBureaux) {
+            if (employeeGroup) employeeGroup.style.display = 'flex';
+            if (employeeInput) employeeInput.required = true;
+        } else {
+            if (employeeGroup) employeeGroup.style.display = 'none';
+            if (employeeInput) { employeeInput.required = false; employeeInput.value = '1'; }
+        }
     } else {
         if (companyGroup) companyGroup.style.display = 'none';
         if (companyInput) { companyInput.required = false; companyInput.value = ''; }
@@ -454,6 +466,30 @@ function generateRowHtml(id, name) {
         <label>${name}</label>
         <input type="number" id="qty_${id}" min="0" value="0" oninput="calculatePrice()">
         <button type="button" id="btn_plan_${id}" class="btn-planifier" onclick="openPlanningModal('${id}', '${name.replace(/'/g, "\\'")}')">${textPlan}</button>
+    </div>`;
+}
+
+function generateVehiculeRowHtml(id, name, hasTapisOption, tooltip) {
+    let textPlan = langKey === 'vi' ? '+ Lập KH' : (langKey === 'en' ? '+ Plan' : '+ Planifier');
+    let cbHtml = '';
+    let gridLayout = '1fr 45px 80px'; 
+    
+    if (hasTapisOption) {
+        let lblTapis = langKey === 'vi' ? '+ Thảm' : (langKey === 'en' ? '+ Mat' : '+ Tapis');
+        cbHtml = `
+        <label style="font-size:0.65rem; font-weight:800; color:var(--bleu); display:flex; align-items:center; justify-content:center; gap:3px; background:white; padding:4px; border-radius:4px; border:1px solid #ccc; cursor:pointer;" title="Ajouter le nettoyage du tapis associé">
+            <input type="checkbox" id="cb_tapis_${id}" onchange="handleVehiculeChange('detail')" style="width:14px; height:14px; margin:0; cursor:pointer;">
+            ${lblTapis}
+        </label>`;
+        gridLayout = '1fr 45px 65px 75px';
+    }
+
+    return `
+    <div class="quote-row-item" id="row_${id}" style="grid-template-columns: ${gridLayout}; padding: 6px; gap: 5px; align-items: center; margin-bottom: 4px;">
+        <label style="font-size: 0.65rem; line-height: 1.1; display:flex; align-items:center; word-wrap: break-word;">${name}${tooltip}</label>
+        <input type="number" id="qty_${id}" min="0" value="0" oninput="handleVehiculeChange('detail')" style="padding: 4px; width: 100%; box-sizing: border-box; text-align:center;">
+        ${cbHtml}
+        <button type="button" id="btn_plan_${id}" class="btn-planifier" onclick="openPlanningModal('${id}', '${name.replace(/'/g, "\\'")}')" style="padding: 4px; font-size: 0.6rem; width: 100%; box-sizing: border-box;">${textPlan}</button>
     </div>`;
 }
 
@@ -529,7 +565,7 @@ function updateLevelSummaries() {
         let roomsContainer = accordion.querySelector('[id^="rooms_container_"]');
         let titleSpan = accordion.querySelector('.level-title-display');
         
-        let roomTypesPresent = new Set(); // Pour mémoriser les types actifs
+        let roomTypesPresent = new Set(); 
 
         if (roomsContainer && titleSpan) {
             let roomCards = roomsContainer.querySelectorAll('.structured-room-card');
@@ -553,7 +589,6 @@ function updateLevelSummaries() {
             } else { titleSpan.innerHTML = `📍 ${levelName}`; }
         }
 
-        // Coloration dynamique des boutons "Quick Add"
         let quickAddBtns = accordion.querySelectorAll('.btn-quick-add');
         quickAddBtns.forEach(btn => {
             let onclickStr = btn.getAttribute('onclick');
@@ -610,7 +645,7 @@ function createLevelAccordion(levelName) {
         </div>
         <div class="accordion-body">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
-                <p style="font-size:0.75rem; color:#666; margin:0;">${subtitleText}</p>
+                <p style="font-size:0.85rem; font-weight:bold; color:var(--bleu); margin:0;">${window.getStepBadge(2)} ${subtitleText}</p>
                 <div style="display:flex; gap:10px;">
                     <button type="button" onclick="openCloneModal('${levelId}', '${levelName.replace(/'/g, "\\'")}')" style="background:#eef3f8; color:var(--bleu); border:1px solid var(--bleu); padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold; cursor:pointer; transition:0.2s;" onmouseover="this.style.background='var(--bleu)'; this.style.color='white';" onmouseout="this.style.background='#eef3f8'; this.style.color='var(--bleu)';">${btnClone}</button>
                     <button type="button" onclick="confirmDeleteLevel('${levelId}', '${levelName.replace(/'/g, "\\'")}')" style="background:#fadbd8; color:#c0392b; border:1px solid #c0392b; padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:bold; cursor:pointer; transition:0.2s;" onmouseover="this.style.background='#c0392b'; this.style.color='white';" onmouseout="this.style.background='#fadbd8'; this.style.color='#c0392b';">${btnDeleteLevel}</button>
@@ -693,22 +728,6 @@ function addCustomLevel() {
     }
 }
 
-// Validation Bureaux : Empêche Occupé d'être > à Total
-window.validateBureaux = function(roomId) {
-    let totInput = document.getElementById(`qty_tot_${roomId}`);
-    let occInput = document.getElementById(`qty_occ_${roomId}`);
-    if(totInput && occInput) {
-        let tot = parseInt(totInput.value) || 0;
-        let occ = parseInt(occInput.value) || 0;
-        if(occ > tot) {
-            occInput.value = tot;
-        }
-    }
-};
-
-// ==========================================
-// 🔄 LOGIQUE INTELLIGENTE ET CIBLÉE DES SOLS (POPOVER LOCAL)
-// ==========================================
 function handleSolChange(selectElement, roomId, roomType) {
     selectElement.style.border = "1px solid #ccc";
     selectElement.style.backgroundColor = "transparent";
@@ -933,10 +952,13 @@ function addStructuredRoom(levelId, type) {
         <h5><span>${displayTitle}</span><button type="button" class="btn-delete-row" onclick="removeRoom('${roomId}')">×</button></h5>
         ${customNameHtml}
         ${qtyHtml}
-        <div style="font-size:0.75rem; color:var(--bleu); font-weight:700; margin-top:5px; margin-bottom:8px; display:flex; align-items:center;">${lblCleanTitle} <span class="help-bubble">?<span class="tooltip-text">${ttClean}</span></span> :</div>
+        <div style="font-size:0.75rem; color:var(--bleu); font-weight:700; margin-top:5px; margin-bottom:8px; display:flex; align-items:center;">${window.getStepBadge(3)} ${lblCleanTitle} <span class="help-bubble">?<span class="tooltip-text">${ttClean}</span></span> :</div>
         ${prets.obligatoires && prets.obligatoires.length > 0 ? `<div style="font-size:0.65rem; color:#888; font-style:italic; margin-top:-5px; margin-bottom:5px; display:flex; align-items:center;">${lblHygiene} <span class="help-bubble">?<span class="tooltip-text">${ttHygiene}</span></span></div>` : ""}
         ${pretsHtml}
-        <div style="margin-top:10px;"><button type="button" id="btn_plan_${roomId}" class="btn-planifier" onclick="openPlanningModal('${roomId}', '${type.replace(/'/g, "\\'")}')">${btnPlanDaysText}</button></div>
+        <div style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+            ${window.getStepBadge(4)}
+            <button type="button" id="btn_plan_${roomId}" class="btn-planifier" onclick="openPlanningModal('${roomId}', '${type.replace(/'/g, "\\'")}')" style="flex:1;">${btnPlanDaysText}</button>
+        </div>
     </div>`;
 
     document.getElementById('rooms_container_' + levelId).insertAdjacentHTML('beforeend', html);
@@ -1071,137 +1093,6 @@ function savePlanning() {
     calculatePrice();
 }
 
-function calculatePrice() {
-    let total = 0;
-    let hasOspConsommables = false; 
-    const TAUX_HORAIRE = 25.00; 
-    const vPrices = { vit_fen: 10, vit_baie: 19, vit_velux: 15, vit_ver: 29, vit_porte: 12, vit_com: 39 };
-    
-    document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
-        let idFull = input.id.replace('qty_', ''); 
-        let baseId = idFull.split('_dup_')[0]; 
-        let q = parseFloat(input.value) || 0;
-        let data = planData[idFull] || {days:[], months:[], start:'', end:''};
-        let exactMultiplier = getRealInterventionCount(data.days, data.months, data.start, data.end);
-        let priceRatio = 1; 
-        let typeSelect = document.getElementById('type_' + idFull);
-        if (typeSelect && (typeSelect.value === 'interieur' || typeSelect.value === 'exterieur')) priceRatio = 0.6; 
-        if (vPrices[baseId]) total += q * (vPrices[baseId] * priceRatio) * exactMultiplier;
-    });
-
-    const pricesFixed = { 'can23': 89, 'can45': 139, 'canAng': 159, 'tapis': 49, 'moq': 7, 'pack_v': 259 };
-    for (let id in pricesFixed) {
-        const qtyInput = document.getElementById('qty_' + id);
-        if (qtyInput) {
-            let q = parseFloat(qtyInput.value) || 0;
-            let data = planData[id] || {days:[], months:[], start:'', end:''};
-            let exactMultiplier = getRealInterventionCount(data.days, data.months, data.start, data.end);
-            total += q * pricesFixed[id] * exactMultiplier;
-        }
-    }
-
-    for (let roomId in planData) {
-        if (roomId.startsWith('room_detail_')) {
-            let roomInfo = planData[roomId];
-            let type = roomInfo.roomType;
-            let exactMultiplier = getRealInterventionCount(roomInfo.days, roomInfo.months, roomInfo.start, roomInfo.end);
-            
-            let consSelect = document.getElementById(`cons_select_${roomId}`);
-            if (consSelect && consSelect.value === 'osp') hasOspConsommables = true;
-
-            let tempsMinutes = 0, nbEspaces = 1;
-
-            if (type === 'Sanitaires' || type === 'Douche' || type === 'Vestiaire') {
-                let inputH = document.getElementById(`qty_h_${roomId}`);
-                let inputF = document.getElementById(`qty_f_${roomId}`);
-                let inputM = document.getElementById(`qty_m_${roomId}`);
-                nbEspaces = (inputH ? parseInt(inputH.value) || 0 : 0) + (inputF ? parseInt(inputF.value) || 0 : 0) + (inputM ? parseInt(inputM.value) || 0 : 0);
-                tempsMinutes = 20; 
-            } else if (type === 'Bureau') {
-                let inputOcc = document.getElementById(`qty_occ_${roomId}`);
-                nbEspaces = inputOcc ? parseInt(inputOcc.value) || 0 : 0;
-                tempsMinutes = 20; 
-            } else if (type === 'Restauration') {
-                let esp = document.getElementById(`qty_${roomId}`) ? parseInt(document.getElementById(`qty_${roomId}`).value) || 0 : 1;
-                let tab = document.getElementById(`qty_tables_${roomId}`) ? parseInt(document.getElementById(`qty_tables_${roomId}`).value) || 0 : 0;
-                let cha = document.getElementById(`qty_chaises_${roomId}`) ? parseInt(document.getElementById(`qty_chaises_${roomId}`).value) || 0 : 0;
-                tempsMinutes = (15 + (tab * 2) + (cha * 1) + 5) * esp;
-                nbEspaces = 1; 
-            } else {
-                let inputQty = document.getElementById(`qty_${roomId}`);
-                nbEspaces = inputQty ? parseInt(inputQty.value) || 0 : 0;
-                if (['Salle de réunion', 'Accueil', 'Cuisine', 'Salle de repos', 'Salle de sport', 'Local technique'].includes(type)) tempsMinutes = 20; 
-                else if (['Ascenseur principal', 'Ascenseur secondaire', 'Palier', 'Couloir'].includes(type)) tempsMinutes = 15; 
-                else if (['Escalier principal', 'Escalier secondaire'].includes(type)) tempsMinutes = 25; 
-                else if (['Parking', 'Terrasse'].includes(type)) tempsMinutes = 30; 
-                else tempsMinutes = 20;
-            }
-            total += nbEspaces * ((tempsMinutes / 60) * TAUX_HORAIRE) * exactMultiplier;
-        }
-    }
-    
-    if (hasOspConsommables) {
-        let nbEmployes = 1;
-        let isEntreprise = document.querySelector('input[name="statut"][value="Entreprise"]')?.checked;
-        if (isEntreprise) {
-            let inputEmployes = document.getElementById('nbEmployes');
-            if (inputEmployes && inputEmployes.value > 0) nbEmployes = parseInt(inputEmployes.value);
-        }
-        total += (nbEmployes * 7.00);
-    }
-
-    let originalTotal = total;
-    window.originalTotalValue = originalTotal;
-    let discountText = "";
-    let totalDiscountPercent = 0;
-    
-    let appliedPromoDevis = window.promoDiscountDevis;
-    let appliedClientDiscount = window.clientDiscount;
-    let appliedHoliday = window.holidayPromoActive ? 0.05 : 0; 
-    let conflict10 = false;
-
-    let count10 = 0;
-    if (appliedPromoDevis === 0.10) count10++;
-    if (appliedClientDiscount === 0.10) count10++;
-    if (count10 >= 2) { conflict10 = true; appliedPromoDevis = 0; }
-
-    if (appliedClientDiscount > 0) totalDiscountPercent += appliedClientDiscount;
-    if (appliedPromoDevis > 0) totalDiscountPercent += appliedPromoDevis;
-    if (appliedHoliday > 0) totalDiscountPercent += appliedHoliday;
-
-    let txtVip = langKey === 'vi' ? "✓ Mã VIP Thân thiết" : (langKey === 'en' ? "✓ VIP Loyalty Code" : "✓ Code VIP Fidélité");
-    let txtHoliday = langKey === 'vi' ? "✓ Ưu đãi Ngày lễ" : (langKey === 'en' ? "✓ Holiday Offer" : "✓ Offre Jour Férié");
-    let txtPromo = langKey === 'vi' ? "✓ Mã giảm giá" : (langKey === 'en' ? "✓ Promo Code" : "✓ Code Promo");
-    let txtConflict = langKey === 'vi' ? "⚠️ Không thể cộng dồn hai mức giảm giá 10%." : (langKey === 'en' ? "⚠️ Two 10% discounts cannot be combined." : "⚠️ Deux réductions de 10% ne sont pas cumulables.");
-    let txtSuper = (pct) => langKey === 'vi' ? `🎉 TUYỆT VỜI! Bạn nhận được tổng giảm giá ${pct}%!` : (langKey === 'en' ? `🎉 SUPER! You get a total discount of ${pct}%!` : `🎉 SUPER ! Vous bénéficiez de ${pct}% de remise totale !`);
-    let txtOffre = (pct) => langKey === 'vi' ? `🎉 ƯU ĐÃI HIỆN TẠI: Giảm tổng cộng ${pct}%!` : (langKey === 'en' ? `🎉 CURRENT OFFER: Total discount of ${pct}%!` : `🎉 OFFRE EN COURS : ${pct}% de remise totale !`);
-
-    if (totalDiscountPercent > 0) {
-        total -= (originalTotal * totalDiscountPercent);
-        if (appliedClientDiscount > 0) discountText += `<div class="price-discount-text">${txtVip} (-${appliedClientDiscount * 100}%)</div>`;
-        if (appliedHoliday > 0) discountText += `<div class="price-discount-text">${txtHoliday} (-5%)</div>`;
-        if (appliedPromoDevis > 0) discountText += `<div class="price-discount-text">${txtPromo} (-${appliedPromoDevis * 100}%)</div>`;
-        if (conflict10) discountText += `<div class="price-min-alert" style="color: #e67e22; margin-top: 5px;">${txtConflict}</div>`;
-
-        let pctTotalRounded = Math.round(totalDiscountPercent * 100);
-        if (totalDiscountPercent >= 0.15) discountText += `<div class="price-discount-text" style="font-weight: 800; color: var(--vert); margin-top: 5px; font-size: 0.85rem;">${txtSuper(pctTotalRounded)}</div>`;
-        else discountText += `<div class="price-discount-text" style="font-weight: 800; color: var(--vert); margin-top: 5px; font-size: 0.85rem;">${txtOffre(pctTotalRounded)}</div>`;
-    }
-
-    window.currentTotalValue = total;
-    let txtAstuce = langKey === 'vi' ? "💡 Mẹo: Áp dụng mức tối thiểu hóa đơn 25,00 €. Hãy thêm dịch vụ khác." : (langKey === 'en' ? "💡 Tip: A minimum billing of 25.00 € applies. Add other services." : "💡 Astuce : Un minimum de facturation de 25,00 € s'applique. Ajoutez d'autres prestations.");
-    let mentionMinimum = (total > 0 && total < 25.00) ? `<div class="price-min-alert" style="margin-top:8px;">${txtAstuce}</div>` : "";
-    
-    const elAmount = document.getElementById('estimatedAmount');
-    if (elAmount) {
-        let mainPrice = `<div class="price-left-main">`;
-        if (originalTotal > total) mainPrice += `<span class="price-left-old">${originalTotal.toFixed(2)} €</span> `;
-        mainPrice += `${total.toFixed(2)} €*</div>`;
-        if (originalTotal === 0) elAmount.innerHTML = `<div class="price-left-main">0.00 €*</div>`;
-        else elAmount.innerHTML = mainPrice + discountText + mentionMinimum;
-    }
-}
-
 function openQuote(baseService) {
     vitrerieVisibleCount = {}; vitrerieIndexCount = {}; customVisibleCount = 0; customIndexCount = 0;
     planData = {}; activeServices = []; roomCounter = 0;
@@ -1225,35 +1116,56 @@ function openQuote(baseService) {
         } else if (langKey === 'en') {
             guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your levels:</b> Add the floors of your premises (Ground floor, 1st floor...).</li><li style="margin-bottom: 5px;"><b>2. Your rooms:</b> Detail what makes up each level.</li><li style="margin-bottom: 5px;"><b>3. Maintenance:</b> Specify the tasks for each room.</li><li style="margin-bottom: 5px;"><b>4. Planning:</b> Click "+ Schedule" to define the frequency.</li></ul></div>`;
         } else {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos niveau :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li><li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau.</li><li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce.</li><li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence.</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos niveaux :</b> Ajoutez les étages de vos locaux (RDC, 1er étage...).</li><li style="margin-bottom: 5px;"><b>2. Vos pièces :</b> Détaillez ce qui compose chaque niveau.</li><li style="margin-bottom: 5px;"><b>3. L'entretien :</b> Précisez le contenu de chaque pièce.</li><li style="margin-bottom: 5px;"><b>4. La planification :</b> Cliquez sur "+ Planifier" pour définir la fréquence.</li></ul></div>`;
         }
     } else if (baseService === 'vitrerie') {
         if (langKey === 'vi') {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Cửa kính:</b> Chọn loại cửa sổ của bạn.</li><li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng cửa.</li><li style="margin-bottom: 5px;"><b>3. Bảo dưỡng:</b> Chọn làm sạch Trong, Ngoài hoặc Toàn bộ.</li><li style="margin-bottom: 5px;"><b>4. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để xác định ngày.</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Cửa kính & SL:</b> Chọn loại cửa sổ và số lượng của bạn.</li><li style="margin-bottom: 5px;"><b>2. Bảo dưỡng:</b> Chọn làm sạch Trong, Ngoài hoặc Toàn bộ.</li><li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để xác định ngày.</li></ul></div>`;
         } else if (langKey === 'en') {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your windows:</b> Choose your window type.</li><li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number.</li><li style="margin-bottom: 5px;"><b>3. Maintenance:</b> Choose Interior, Exterior, or Complete.</li><li style="margin-bottom: 5px;"><b>4. Planning:</b> Click "+ Schedule" to define the frequency.</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your windows & QTY:</b> Choose your window type and number.</li><li style="margin-bottom: 5px;"><b>2. Maintenance:</b> Choose Interior, Exterior, or Complete.</li><li style="margin-bottom: 5px;"><b>3. Planning:</b> Click "+ Schedule" to define the frequency.</li></ul></div>`;
         } else {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos vitrages :</b> Choisissez le type de fenêtre.</li><li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre.</li><li style="margin-bottom: 5px;"><b>3. Entretien :</b> Intérieur, Extérieur ou Complet.</li><li style="margin-bottom: 5px;"><b>4. Planification :</b> Cliquez sur "+ Planifier".</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos vitrages & Quantité :</b> Choisissez le type de fenêtre et indiquez le nombre.</li><li style="margin-bottom: 5px;"><b>2. Entretien :</b> Intérieur, Extérieur ou Complet.</li><li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier".</li></ul></div>`;
         }
     } else if (baseService === 'shampouinage') {
         if (langKey === 'vi') {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Đồ vải:</b> Chọn loại (Sô pha, thảm...).</li><li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng cần làm sạch.</li><li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để chỉ định ngày mong muốn.</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Đồ vải & Số lượng:</b> Chọn loại (Sô pha, thảm...) và số lượng.</li><li style="margin-bottom: 5px;"><b>2. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" để chỉ định ngày mong muốn.</li></ul></div>`;
         } else if (langKey === 'en') {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your textiles:</b> Select the type (Sofa, Rug...).</li><li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number to clean.</li><li style="margin-bottom: 5px;"><b>3. Planning:</b> Click "+ Schedule" to specify the desired date.</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your textiles & QTY:</b> Select the type and number.</li><li style="margin-bottom: 5px;"><b>2. Planning:</b> Click "+ Schedule" to specify the desired date.</li></ul></div>`;
         } else {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos textiles :</b> Sélectionnez le type (Canapé, Tapis...).</li><li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre à nettoyer.</li><li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier" pour préciser la date.</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos textiles & Quantité :</b> Sélectionnez le type (Canapé, Tapis...) et le nombre.</li><li style="margin-bottom: 5px;"><b>2. Planification :</b> Cliquez sur "+ Planifier" pour préciser la date.</li></ul></div>`;
         }
     } else if (baseService === 'vehicule') {
         if (langKey === 'vi') {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Xe của bạn:</b> Gói trọn gói đã được chọn.</li><li style="margin-bottom: 5px;"><b>2. Số lượng:</b> Cho biết số lượng xe.</li><li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch" to chọn ngày can thiệp.</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Hướng dẫn điền báo giá của bạn ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Số lượng xe:</b> Nhập số lượng theo kích thước.</li><li style="margin-bottom: 5px;"><b>2. Gói cước:</b> Chọn dịch vụ của bạn (Trọn gói hoặc Tùy chọn).</li><li style="margin-bottom: 5px;"><b>3. Lập kế hoạch:</b> Chọn ngày can thiệp.</li></ul></div>`;
         } else if (langKey === 'en') {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Your vehicle:</b> The full pack is selected.</li><li style="margin-bottom: 5px;"><b>2. Quantity:</b> Indicate the number of vehicles.</li><li style="margin-bottom: 5px;"><b>3. Planning:</b> Click "+ Schedule" to choose an intervention date.</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ How to fill out your quote?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vehicle quantity:</b> Enter the number of vehicles by size.</li><li style="margin-bottom: 5px;"><b>2. Services:</b> Select your options (Pack or Custom).</li><li style="margin-bottom: 5px;"><b>3. Planning:</b> Choose an intervention date.</li></ul></div>`;
         } else {
-            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Votre véhicule :</b> Le pack complet est sélectionné.</li><li style="margin-bottom: 5px;"><b>2. Quantité :</b> Indiquez le nombre de véhicules.</li><li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier" pour choisir la date d'intervention.</li></ul></div>`;
+            guideHtml = `<div class="guide-remplissage"><strong>ℹ️ Comment remplir votre devis ?</strong><ul style="margin-top: 10px; padding-left: 20px; color: #444;"><li style="margin-bottom: 5px;"><b>1. Vos véhicules :</b> Indiquez le nombre pour chaque gabarit.</li><li style="margin-bottom: 5px;"><b>2. Prestations :</b> Choisissez vos options (Pack ou À la carte).</li><li style="margin-bottom: 5px;"><b>3. Planification :</b> Cliquez sur "+ Planifier" pour choisir la date d'intervention.</li></ul></div>`;
         }
     }
 
-    fields.innerHTML = guideHtml + `
+    // --- NOUVEAUTÉ : GÉNÉRATION DE LA LÉGENDE DYNAMIQUE ---
+    let txtObligatoire = langKey === 'vi' ? 'Bắt buộc điền' : (langKey === 'en' ? 'Mandatory field' : 'Champ obligatoire');
+    let txtAide = langKey === 'vi' ? 'Hướng dẫn / Giải thích' : (langKey === 'en' ? 'Guide / Explanation' : 'Guide / Explication');
+    let txtLock = langKey === 'vi' ? 'Bắt buộc (Vệ sinh)' : (langKey === 'en' ? 'Mandatory (Hygiene)' : 'Inclus d\'office (Hygiène)');
+
+    let legendAsterisk = `<span style="display:flex; align-items:center;"><span style="color:#e74c3c; font-weight:bold; font-size:1.2rem; margin-right:5px; line-height:0.5; margin-top:5px;">*</span> ${txtObligatoire}</span>`;
+    let legendHelp = `<span style="display:flex; align-items:center;"><span class="help-bubble" style="margin-right:5px; transform:none; position:static;">?</span> ${txtAide}</span>`;
+    let legendLock = `<span style="display:flex; align-items:center;"><span>🔒</span> <span style="margin-left:5px;">${txtLock}</span></span>`;
+
+    let legendItems = [legendHelp]; 
+    if (baseService === 'bureaux' || baseService === 'vehicule') {
+        legendItems.unshift(legendAsterisk); 
+    }
+    if (baseService === 'bureaux') {
+        legendItems.push(legendLock); 
+    }
+
+    let legendHtml = `<div style="background:white; border:1px solid #e1e8ef; border-radius:8px; padding:10px; margin-bottom:20px; display:flex; gap:15px; justify-content:center; font-size:0.8rem; color:#555; flex-wrap:wrap; box-shadow:0 2px 5px rgba(0,0,0,0.02);">
+        ${legendItems.join('')}
+    </div>`;
+
+    fields.innerHTML = guideHtml + legendHtml + `
         <div id="allServicesContainer" style="display:flex; flex-direction:column; gap:20px;"></div>
         <div id="crossSellContainer" style="margin-top:25px; padding-top:20px; border-top:2px dashed #e1e8ef; text-align:center;"></div>
     `;
@@ -1288,7 +1200,8 @@ function addServiceToQuote(service) {
         let ttPlan = langKey === 'vi' ? 'Xác định tần suất can thiệp.' : (langKey === 'en' ? 'Define the frequency of intervention.' : 'Définissez la fréquence d\'intervention.');
 
         html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">${tVitres}</h3>`;
-        html += `<div style="display: grid; grid-template-columns: 1fr 45px 75px 75px 25px; gap: 5px; padding: 0 6px; margin-bottom: 8px; align-items: center;"><span style="font-size:0.60rem; font-weight:800; color:var(--bleu);">${lblPrest}</span><span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center;">${lblQte}</span><span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center; display:flex; align-items:center; justify-content:center;">${lblType} <span class="help-bubble">?<span class="tooltip-text">${ttType}</span></span></span><span style="font-size:0.60rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">${lblPlan} <span class="help-bubble">?<span class="tooltip-text">${ttPlan}</span></span></span><span></span></div>`;
+        html += `<div style="margin-bottom: 15px; font-size: 0.85rem; font-weight: bold; color: var(--bleu); display: flex; align-items: center;">${window.getStepBadge(1)} Vos Vitrages et Quantités</div>`;
+        html += `<div style="display: grid; grid-template-columns: 1fr 45px 75px 75px 25px; gap: 5px; padding: 0 6px; margin-bottom: 8px; align-items: center;"><span style="font-size:0.60rem; font-weight:800; color:var(--bleu);">${lblPrest}</span><span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center;">${lblQte}</span><span style="font-size:0.60rem; font-weight:800; color:var(--bleu); text-align:center; display:flex; align-items:center; justify-content:center;">${window.getStepBadge(2)} ${lblType} <span class="help-bubble">?<span class="tooltip-text">${ttType}</span></span></span><span style="font-size:0.60rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">${window.getStepBadge(3)} ${lblPlan} <span class="help-bubble">?<span class="tooltip-text">${ttPlan}</span></span></span><span></span></div>`;
         
         const rows = [
             {id:'vit_fen', n: langKey==='vi'?'Cửa sổ':(langKey==='en'?'Windows':'Fenêtres')},
@@ -1307,7 +1220,8 @@ function addServiceToQuote(service) {
         let ttPlan = langKey === 'vi' ? 'Ngày cụ thể hoặc định kỳ.' : (langKey === 'en' ? 'Specific or recurring date.' : 'Date précise ou récurrente.');
 
         html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">${tTextiles}</h3>`;
-        html += `<div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;"><span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">${lblPrest}</span><span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">${lblQte}</span><span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">${lblPlan} <span class="help-bubble">?<span class="tooltip-text">${ttPlan}</span></span></span></div>`;
+        html += `<div style="margin-bottom: 15px; font-size: 0.85rem; font-weight: bold; color: var(--bleu); display: flex; align-items: center;">${window.getStepBadge(1)} Textiles et Quantités</div>`;
+        html += `<div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;"><span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">${lblPrest}</span><span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">${lblQte}</span><span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">${window.getStepBadge(2)} ${lblPlan} <span class="help-bubble">?<span class="tooltip-text">${ttPlan}</span></span></span></div>`;
         
         const rows = [
             {id:'can23', n: langKey==='vi'?'Sô pha 2-3 chỗ':(langKey==='en'?'Sofa 2-3 str':'Canapé 2-3pl')},
@@ -1323,18 +1237,83 @@ function addServiceToQuote(service) {
         let lblQte = langKey === 'vi' ? 'SL' : (langKey === 'en' ? 'QTY' : 'QTÉ');
         let lblPlan = langKey === 'vi' ? 'LẬP KẾ HOẠCH' : (langKey === 'en' ? 'PLANNING' : 'PLANIFICATION');
         let ttPlan = langKey === 'vi' ? 'Ngày bạn muốn thực hiện vệ sinh.' : (langKey === 'en' ? 'Date on which you want the cleaning.' : 'Date à laquelle vous souhaitez le nettoyage.');
-        let packName = langKey === 'vi' ? 'Gói trọn gói' : (langKey === 'en' ? 'Full Pack' : 'Pack Complet');
 
         html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">${tVehicule}</h3>`;
-        html += `<div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;"><span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">${lblPrest}</span><span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">${lblQte}</span><span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">${lblPlan} <span class="help-bubble">?<span class="tooltip-text">${ttPlan}</span></span></span></div>`;
-        html += generateRowHtml('pack_v', packName);
+
+        html += `
+        <div style="margin-bottom: 15px; background: #eef3f8; padding: 15px; border-radius: 8px; border: 1px solid var(--bleu);">
+            <label style="font-size: 0.85rem; font-weight: bold; color: var(--bleu); display: flex; align-items: center; margin-bottom: 10px;">${window.getStepBadge(1)} Gabarits de vos véhicules <span style="color:#e74c3c; margin-left: 5px; line-height:0.5; font-size:1.2rem;">*</span></label>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="qty-input-box" style="width: 100%; justify-content: space-between; background: white;">
+                    <label style="font-size: 0.8rem;">Standard (Auto, SUV)</label>
+                    <input type="number" id="qty_veh_std" min="0" value="0" oninput="handleVehiculeChange('gabarit')" style="width: 60px;">
+                </div>
+                <div class="qty-input-box" style="width: 100%; justify-content: space-between; background: white;">
+                    <label style="font-size: 0.8rem;">Gros Volume (Fourgon)</label>
+                    <input type="number" id="qty_veh_large" min="0" value="0" oninput="handleVehiculeChange('gabarit')" style="width: 60px;">
+                </div>
+                <div class="qty-input-box" style="width: 100%; justify-content: space-between; background: white;">
+                    <label style="font-size: 0.8rem;">Poids Lourd (> 3.5t)</label>
+                    <input type="number" id="qty_veh_pl" min="0" value="0" oninput="handleVehiculeChange('gabarit')" style="width: 60px;">
+                </div>
+            </div>
+
+            <p style="font-size: 0.7rem; color: #666; margin-top: 10px; font-style: italic; line-height: 1.3;">
+                ℹ️ <strong>Pourquoi cette majoration ?</strong> Les véhicules grand format ou poids lourds nécessitent plus de temps et de produits professionnels. Indiquez la quantité pour chaque type.
+            </p>
+        </div>
+        
+        <div id="vehicule_upsell" style="display:none; background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; margin-bottom: 15px; border-radius: 5px; font-size: 0.8rem; color: #555; animation: fadeInDown 0.3s ease;">
+            💡 <strong>Conseil :</strong> Le total de vos éléments séparés est élevé. Prenez le <strong>Pack Complet</strong> pour faire des économies !
+        </div>
+        `;
+
+        html += `<div style="margin-bottom: 15px; margin-top: 25px; font-size: 0.85rem; font-weight: bold; color: var(--bleu); display: flex; align-items: center;">${window.getStepBadge(2)} Choix des prestations (Pack ou Détail)</div>`;
+        html += `<div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;"><span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">${lblPrest}</span><span style="font-size:0.65rem; font-weight:800; color:var(--bleu);">${lblQte}</span><span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">${window.getStepBadge(3)} ${lblPlan} <span class="help-bubble">?<span class="tooltip-text">${ttPlan}</span></span></span></div>`;
+        
+        html += generateRowHtml('pack_v', 'Pack Complet').replace('calculatePrice()', "handleVehiculeChange('pack')");
+        
+        html += `<div style="text-align: center; margin: 15px 0; font-size: 0.8rem; font-weight: bold; color: #888; text-transform: uppercase;">Ou À la carte</div>`;
+        
+        let ttSiege = ` <span class="help-bubble" style="margin-left:5px;">?<span class="tooltip-text">Inclus : l'assise, le dossier et l'appui-tête.</span></span>`;
+        
+        let txtTapisAG = langKey === 'vi' ? 'Ghế trước trái' : (langKey === 'en' ? 'Front left seat' : 'Siège avant gauche');
+        let txtTapisAD = langKey === 'vi' ? 'Ghế trước phải' : (langKey === 'en' ? 'Front right seat' : 'Siège avant droit');
+        let txtBanqAR = langKey === 'vi' ? 'Băng ghế sau' : (langKey === 'en' ? 'Rear bench' : 'Banquette arrière');
+        let txtCoffre = langKey === 'vi' ? 'Cốp / Malle' : (langKey === 'en' ? 'Trunk' : 'Coffre / Malle');
+
+        html += generateVehiculeRowHtml('siege_ag', txtTapisAG, true, ttSiege);
+        html += generateVehiculeRowHtml('siege_ad', txtTapisAD, true, ttSiege);
+        html += generateVehiculeRowHtml('banq_ar', txtBanqAR, true, ttSiege);
+        html += generateVehiculeRowHtml('coffre_auto', txtCoffre, false, '');
+
+        let txtSep = langKey === 'vi' ? 'Thảm (nếu không chọn ghế) :' : (langKey === 'en' ? 'Mats alone :' : 'Tapis seuls (si sièges non sélectionnés) :');
+        html += `<div style="margin: 15px 0 10px 0; font-size: 0.75rem; font-weight: bold; color: var(--bleu); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">${txtSep}</div>`;
+        
+        let txtTapAG = langKey === 'vi' ? 'Thảm trước trái' : (langKey === 'en' ? 'Front left mat' : 'Tapis avant gauche');
+        let txtTapAD = langKey === 'vi' ? 'Thảm trước phải' : (langKey === 'en' ? 'Front right mat' : 'Tapis avant droit');
+        let txtTapARG = langKey === 'vi' ? 'Thảm sau trái' : (langKey === 'en' ? 'Rear left mat' : 'Tapis arrière gauche');
+        let txtTapARD = langKey === 'vi' ? 'Thảm sau phải' : (langKey === 'en' ? 'Rear right mat' : 'Tapis arrière droit');
+        let txtTapCoffre = langKey === 'vi' ? 'Thảm cốp' : (langKey === 'en' ? 'Trunk mat' : 'Tapis de coffre');
+
+        html += generateVehiculeRowHtml('tapis_ag', txtTapAG, false, '');
+        html += generateVehiculeRowHtml('tapis_ad', txtTapAD, false, '');
+        html += generateVehiculeRowHtml('tapis_arg', txtTapARG, false, '');
+        html += generateVehiculeRowHtml('tapis_ard', txtTapARD, false, '');
+        html += generateVehiculeRowHtml('tapis_coffre', txtTapCoffre, false, '');
+
+        let btnAddVehicule = langKey === 'vi' ? '<span>+</span> Thêm xe khác' : (langKey === 'en' ? '<span>+</span> Add another vehicle' : '<span>+</span> Ajouter un autre véhicule');
+        html += `<div id="vehiculesSupplementairesContainer"></div>`;
+        html += `<button type="button" class="btn-add-row" onclick="addCustomRowVehicule()" style="margin-top: 15px;">${btnAddVehicule}</button>`;
+
     } else if(service === 'bureaux') {
         let tBureaux = langKey === 'vi' ? '🏢 Văn phòng & Cơ sở' : (langKey === 'en' ? '🏢 Offices & Premises' : '🏢 Bureaux & Locaux');
         let pText = langKey === 'vi' ? '<strong>Cấu trúc không gian của bạn:</strong> Chọn một tầng, sau đó thêm các phòng. <span class="help-bubble">?<span class="tooltip-text">Bước này giúp chúng tôi hiểu rõ sơ đồ bố trí chính xác cơ sở của bạn.</span></span>' : (langKey === 'en' ? '<strong>Structure your spaces:</strong> Choose a level, then add the rooms. <span class="help-bubble">?<span class="tooltip-text">This step allows us to understand the exact layout of your premises.</span></span>' : '<strong>Structurez vos espaces :</strong> Choisissez un niveau, puis ajoutez les pièces. <span class="help-bubble">?<span class="tooltip-text">Cette étape nous permet de comprendre l\'agencement exact de vos locaux.</span></span>');
         let btnAddLevel = langKey === 'vi' ? '<span>+</span> Thêm tầng hoặc khu vực ngoại cảnh' : (langKey === 'en' ? '<span>+</span> Add a level or outdoor area' : '<span>+</span> Ajouter un niveau ou espace extérieur');
 
         html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">${tBureaux}</h3>`;
-        html += `<p style="font-size:0.85rem; color:var(--bleu); margin-bottom:15px; background:#eef3f8; padding:10px; border-radius:8px; border-left:4px solid var(--bleu);">${pText}</p><div id="levelsContainer"></div><button type="button" class="btn-add-row" onclick="openLevelModal()" style="margin-top: 15px;">${btnAddLevel}</button>`;
+        html += `<p style="font-size:0.85rem; color:var(--bleu); margin-bottom:15px; background:#eef3f8; padding:10px; border-radius:8px; border-left:4px solid var(--bleu);">${pText}</p><div id="levelsContainer"></div><button type="button" class="btn-add-row" onclick="openLevelModal()" style="margin-top: 15px;">${window.getStepBadge(1)} ${btnAddLevel}</button>`;
     }
     
     html += `</div>`;
@@ -1353,10 +1332,16 @@ function addServiceToQuote(service) {
         }
     }
 
-    updateCrossSellButtons(); calculatePrice();
+    updateCrossSellButtons(); 
+    calculatePrice();
+    toggleCompanyField(); 
     const newBlock = document.getElementById('block_' + service);
     if(newBlock) newBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+// ==========================================
+// Suite du script (inchangée) pour les calculs et formulaires
+// ==========================================
 
 function updateCrossSellButtons() {
     const csContainer = document.getElementById('crossSellContainer');
@@ -1419,13 +1404,6 @@ function removeRow(id) {
     updateLevelSummaries();
 }
 
-// ==========================================
-// 🚀 NOUVEAU SYSTÈME D'ENVOI EN 2 ÉTAPES ASYNCHRONE
-// ==========================================
-let pendingGooglePayload = null;
-let pendingEmailParams = null;
-let pendingClientCodeAlert = null;
-
 async function submitInteractiveForm() {
     try {
         const form = document.getElementById('interactiveForm');
@@ -1482,16 +1460,50 @@ async function submitInteractiveForm() {
 
             // 3. Véhicule
             if (activeServices.includes('vehicule')) {
-                let vehInput = document.getElementById('qty_pack_v');
-                if (vehInput && (parseInt(vehInput.value) || 0) === 0) {
-                    vehInput.style.border = "2px solid #e74c3c";
-                    vehInput.style.backgroundColor = "#fadbd8";
-                    vehInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setTimeout(() => vehInput.focus(), 500);
+                let vehIds = ['qty_pack_v', 'qty_siege_ag', 'qty_siege_ad', 'qty_banq_ar', 'qty_coffre_auto', 'qty_tapis_ag', 'qty_tapis_ad', 'qty_tapis_arg', 'qty_tapis_ard', 'qty_tapis_coffre'];
+                let totalVehItems = 0;
+                let vehInputs = [];
+                
+                vehIds.forEach(id => {
+                    let el = document.getElementById(id);
+                    if (el) { vehInputs.push(el); totalVehItems += (parseInt(el.value) || 0); }
+                });
+                
+                ['cb_tapis_siege_ag', 'cb_tapis_siege_ad', 'cb_tapis_banq_ar'].forEach(id => {
+                    if (document.getElementById(id)?.checked) totalVehItems++;
+                });
+
+                let qStd = parseInt(document.getElementById('qty_veh_std')?.value) || 0;
+                let qLarge = parseInt(document.getElementById('qty_veh_large')?.value) || 0;
+                let qPl = parseInt(document.getElementById('qty_veh_pl')?.value) || 0;
+                let totalGabarits = qStd + qLarge + qPl;
+
+                if (totalVehItems > 0 && totalGabarits === 0) {
+                    ['qty_veh_std', 'qty_veh_large', 'qty_veh_pl'].forEach(id => {
+                        let el = document.getElementById(id);
+                        if(el) { el.style.border = "2px solid #e74c3c"; el.style.backgroundColor = "#fadbd8"; }
+                    });
+                    document.getElementById('qty_veh_std')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     return;
-                } else if (vehInput) {
-                    vehInput.style.border = "1px solid #ccc";
-                    vehInput.style.backgroundColor = "white";
+                } else {
+                    ['qty_veh_std', 'qty_veh_large', 'qty_veh_pl'].forEach(id => {
+                        let el = document.getElementById(id);
+                        if(el) { el.style.border = "1px solid #ccc"; el.style.backgroundColor = "white"; }
+                    });
+                }
+
+                if (totalVehItems === 0) {
+                    vehInputs.forEach(input => {
+                        input.style.border = "2px solid #e74c3c";
+                        input.style.backgroundColor = "#fadbd8";
+                    });
+                    vehInputs[0]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                } else {
+                    vehInputs.forEach(input => {
+                        input.style.border = "1px solid #ccc";
+                        input.style.backgroundColor = "white";
+                    });
                 }
             }
 
@@ -1626,8 +1638,12 @@ async function submitInteractiveForm() {
             let recap = "--- RÉCAPITULATIF DU DEVIS ---\n\n";
             if (statut === "Entreprise") {
                 recap += `🏢 STRUCTURE : ${document.getElementById('nomEntreprise').value}\n`;
-                let eff = document.getElementById('nbEmployes')?.value || "Non précisé";
-                recap += `👥 EFFECTIF : ${eff} collaborateur(s) sur site\n\n`;
+                if (activeServices.includes('bureaux')) {
+                    let eff = document.getElementById('nbEmployes')?.value || "Non précisé";
+                    recap += `👥 EFFECTIF : ${eff} collaborateur(s) sur site\n\n`;
+                } else {
+                    recap += `\n`;
+                }
             }
 
             let aDesVitres = false;
@@ -1645,16 +1661,56 @@ async function submitInteractiveForm() {
             if (aDesVitres) recap += "\n";
 
             let aDesTextiles = false;
-            const fixesIds = { 'can23': 'Canapé 2-3 places', 'can45': 'Canapé 4-5 places', 'canAng': 'Canapé d\'angle', 'tapis': 'Tapis', 'moq': 'Moquette (m²)', 'pack_v': 'Pack Véhicule Complet' };
+            const fixesIds = { 
+                'can23': 'Canapé 2-3 places', 'can45': 'Canapé 4-5 places', 'canAng': 'Canapé d\'angle', 
+                'tapis': 'Tapis de salon', 'moq': 'Moquette (m²)', 
+                'pack_v': 'Pack Véhicule Complet', 
+                'siege_ag': 'Siège avant gauche', 
+                'siege_ad': 'Siège avant droit', 
+                'banq_ar': 'Banquette arrière', 
+                'coffre_auto': 'Coffre / Malle',
+                'tapis_ag': 'Tapis avant gauche',
+                'tapis_ad': 'Tapis avant droit',
+                'tapis_arg': 'Tapis arrière gauche',
+                'tapis_ard': 'Tapis arrière droit',
+                'tapis_coffre': 'Tapis de coffre'
+            };
+
             for (let id in fixesIds) {
                 let input = document.getElementById('qty_' + id);
                 let q = parseInt(input ? input.value : 0) || 0;
-                if (q > 0) {
+                let cb = document.getElementById('cb_tapis_' + id);
+                let isCbChecked = cb ? cb.checked : false;
+
+                if (q > 0 || isCbChecked) {
                     if (!aDesTextiles) { recap += "🛋️ TEXTILES / VÉHICULES :\n"; aDesTextiles = true; }
-                    recap += `  - ${fixesIds[id]} : ${q}\n    Planning : ${getPlanningRecap(planData[id])}\n`;
+                    let nameStr = fixesIds[id];
+                    if (isCbChecked) {
+                        nameStr += (id === 'banq_ar') ? " (+ Tapis AR)" : " (+ Tapis)";
+                    }
+                    let finalQ = q > 0 ? q : 1;
+                    recap += `  - ${nameStr} : ${finalQ}\n    Planning : ${getPlanningRecap(planData[id])}\n`;
                 }
             }
             if (aDesTextiles) recap += "\n";
+            
+            let hasVehiculeChoisi = ['pack_v', 'siege_ag', 'siege_ad', 'banq_ar', 'coffre_auto', 'tapis_ag', 'tapis_ad', 'tapis_arg', 'tapis_ard', 'tapis_coffre'].some(id => (parseInt(document.getElementById('qty_'+id)?.value) || 0) > 0 || document.getElementById('cb_tapis_'+id)?.checked);
+            if (hasVehiculeChoisi) {
+                let qStd = parseInt(document.getElementById('qty_veh_std')?.value) || 0;
+                let qLarge = parseInt(document.getElementById('qty_veh_large')?.value) || 0;
+                let qPl = parseInt(document.getElementById('qty_veh_pl')?.value) || 0;
+
+                let gabaritsText = [];
+                if(qStd > 0) gabaritsText.push(`${qStd} Standard(s)`);
+                if(qLarge > 0) gabaritsText.push(`${qLarge} Gros Volume(s) [+30€/u]`);
+                if(qPl > 0) gabaritsText.push(`${qPl} Poids Lourd(s) [+50€/u]`);
+
+                if(gabaritsText.length > 0) {
+                    recap += `  ▶ Gabarits déclarés : ${gabaritsText.join(' | ')}\n\n`;
+                } else {
+                    recap += `  ▶ Gabarits déclarés : Aucun renseigné\n\n`;
+                }
+            }
 
             let aDesLocaux = false;
             let recapParNiveau = {}; 
