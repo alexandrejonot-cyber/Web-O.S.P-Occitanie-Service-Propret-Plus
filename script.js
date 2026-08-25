@@ -465,36 +465,46 @@ async function calculerEligibilite30km() {
 }
 
 // ==========================================
-// 📢 BANNER PUBLICITAIRE ROTATIF (C'EST ICI QU'IL FAUT MODIFIER)
+// 📢 BANNER PUBLICITAIRE ROTATIF DYNAMIQUE
 // ==========================================
+
+// Liste des messages 100% en une seule ligne avec actions au clic intégrées
 const MES_PUBLICITES = [
-    '<span class="badge-promo-top">VENTE FLASH</span> <strong>-10% SUR VOTRE FACTURE FINALE !</strong><br><em>Valable pour toute réservation ce mois-ci</em>',
-    '🚗 <strong>DÉPLACEMENT OFFERT</strong> jusqu\'à 30 km autour de Toulouse !',
-    '✨ <strong>NETTOYAGE CANAPÉS & TEXTILES</strong> : Séchage rapide en 4h à 6h !',
-    '🏢 <strong>LOCAUX & BUREAUX</strong> : Intervention dès 5h du matin pour ne pas vous gêner.'
+    { text: '<span class="badge-promo-top">VENTE FLASH</span> <strong>-10% SUR VOTRE FACTURE !</strong> <em>(Cliquez ici)</em>', action: "document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" },
+    { text: '🛋️ <strong>NETTOYAGE CANAPÉS & TEXTILES</strong> : ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('shampouinage')" },
+    { text: '🏢 <strong>LOCAUX & BUREAUX</strong> : Dès 5h du matin ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('bureaux')" },
+    { text: '🪟 <strong>VITRERIE PRO</strong> : Fenêtres, baies, vérandas ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('vitrerie')" },
+    { text: '🚗 <strong>PACK VÉHICULES</strong> : Intérieur complet ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('vehicule')" },
+    { text: '🪦 <strong>SÉPULTURES</strong> : Nettoyage et fleurissement ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('sepulture')" },
+    { text: '🎉 <strong>REMISE EN ÉTAT SALLE</strong> : Événements ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('evenements')" },
+    { text: '✅ <strong>ASSURANCE RC PRO</strong> & <strong>20 ANS D\'EXPERTISE</strong> ➡️ <em>Découvrir OSP+</em>', action: "document.getElementById('qui-suis-je').scrollIntoView({behavior: 'smooth'});" },
+    { text: '📞 <strong>CONTACT : 07 45 02 76 24</strong> | 🕒 Lun-Sam 5h-22h ➡️ <em>Être rappelé</em>', action: "openCallbackModal()" },
+    { text: '🚗 <strong>DÉPLACEMENT OFFERT</strong> : 30 km autour de Toulouse !', action: "document.getElementById('services').scrollIntoView({behavior: 'smooth'});" }
 ];
 
-// Changement du délai à 15000 millisecondes (15 secondes)
-const DELAI_ROTATION = 15000; 
+const DELAI_ROTATION = 15000; // 15 secondes
 let indexPubActuelle = 0;
 
 function lancerPanneauPub() {
     const promoBanner = document.getElementById('promo-banner');
     if (!promoBanner || MES_PUBLICITES.length === 0) return;
 
-    promoBanner.innerHTML = MES_PUBLICITES[0];
+    // Fonction pour appliquer le texte ET l'action de clic dynamiquement
+    function setPub(index) {
+        promoBanner.innerHTML = MES_PUBLICITES[index].text;
+        promoBanner.setAttribute('onclick', MES_PUBLICITES[index].action);
+    }
+
+    setPub(0);
 
     if (MES_PUBLICITES.length === 1) return;
 
     setInterval(() => {
         indexPubActuelle = (indexPubActuelle + 1) % MES_PUBLICITES.length;
-        
-        // Disparition en douceur (le CSS gère la transition)
         promoBanner.style.opacity = 0;
         
-        // Attente de 300ms avant de changer le texte et de le faire réapparaître
         setTimeout(() => {
-            promoBanner.innerHTML = MES_PUBLICITES[indexPubActuelle];
+            setPub(indexPubActuelle);
             promoBanner.style.opacity = 1;
         }, 300);
 
@@ -502,7 +512,6 @@ function lancerPanneauPub() {
 }
 
 window.addEventListener('DOMContentLoaded', lancerPanneauPub);
-
 // ==========================================
 // 🛠️ MOTEUR DE FENÊTRES SUR-MESURE OSP+
 // ==========================================
