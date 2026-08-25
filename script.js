@@ -24,7 +24,7 @@ const TRANSLATIONS = {
         vipOk: (montant) => `Code VIP Fidélité appliqué (-${montant}%) !`,
         inconnu: "Code inconnu, expiré ou mal orthographié.",
         saisirCode: "Veuillez saisir un code.",
-        securitePrompt: "🔒 SÉCURITÉ VIP : Veuillez renseigner votre Identifiant Client pour déverrouiller ce code (ex: client123) :",
+        securitePrompt: "🔒 SÉCURITÉ VIP : Veuillez renseigner votre Identifiant Client pour déverrouiller ce code (ex : client123) :",
         annulePrompt: "✗ Validation annulée : Identifiant requis."
     },
     en: {
@@ -73,11 +73,9 @@ const TRANSLATIONS = {
     }
 };
 
-// Récupération automatique du pack de langue (par défaut français si non trouvé)
 const langKey = TRANSLATIONS[siteLang] ? siteLang : 'fr';
 const msgLang = TRANSLATIONS[langKey];
 
-// Mappings linguistiques pour l'interface utilisateur des pièces et espaces
 const mappingDisplay = {
     'Bureau': { fr: '💼 Bureau', en: '💼 Office', vi: '💼 Văn phòng' },
     'Salle de réunion': { fr: '🗣️ Réunion', en: '🗣️ Meeting Room', vi: '🗣️ Phòng họp' },
@@ -101,7 +99,6 @@ const mappingDisplay = {
     'Autre': { fr: '➕ Autre', en: '➕ Other', vi: '➕ Khác' }
 };
 
-// Mapping pour les descriptions de tâches internes des cartes d'espaces
 const taskTranslations = {
     'Aspiration / Lavage': { fr: 'Aspiration / Lavage', vi: 'Hút bụi / Lau sàn', en: 'Vacuuming / Mopping' },
     'Dépoussiérage bureaux': { fr: 'Dépoussiérage bureaux', vi: 'Quét bụi bàn làm việc', en: 'Dusting desks' },
@@ -145,16 +142,146 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v4.18"; 
+const APP_VERSION = "v4.35-EVT-FULL-AUTO-CALC-30KM"; 
 
 function afficherVersion() {
-    let versionBadge = document.createElement('div');
-    versionBadge.innerHTML = APP_VERSION;
-    versionBadge.style.cssText = "position: fixed; top: 5px; left: 5px; background: rgba(0, 0, 0, 0.6); color: white; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; z-index: 10000; pointer-events: none; font-weight: bold; font-family: sans-serif;";
-    document.body.appendChild(versionBadge);
-    console.log("🚀 OSP+ Script Chargé - " + APP_VERSION + " [Langue: " + langKey.toUpperCase() + "]");
+    console.log("🚀 OSP+ Script Chargé - " + APP_VERSION + " [Langue : " + langKey.toUpperCase() + "]");
 }
 window.addEventListener('DOMContentLoaded', afficherVersion);
+
+// ==========================================
+// 💡 BULLES D'INFORMATION DES CARTES (HERO)
+// ==========================================
+function toggleCardBubble(event, bubbleId) {
+    event.stopPropagation();
+    const targetBubble = document.getElementById(bubbleId);
+    const isAlreadyOpen = targetBubble ? targetBubble.classList.contains('active') : false;
+
+    document.querySelectorAll('.card-info-bubble').forEach(b => {
+        b.classList.remove('active');
+        const parentCard = b.closest('.hero-service-card');
+        if (parentCard) parentCard.style.zIndex = '';
+    });
+
+    if (!isAlreadyOpen && targetBubble) {
+        targetBubble.classList.add('active');
+        const activeCard = targetBubble.closest('.hero-service-card');
+        if (activeCard) {
+            activeCard.style.zIndex = '200';
+        }
+    }
+}
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.card-info-bubble') && !e.target.closest('.card-info-btn')) {
+        document.querySelectorAll('.card-info-bubble').forEach(b => {
+            b.classList.remove('active');
+            const parentCard = b.closest('.hero-service-card');
+            if (parentCard) parentCard.style.zIndex = '';
+        });
+    }
+});
+
+// ==========================================
+// 👑 MOTEUR DE SIMULATION DATE & MODE ADMIN
+// ==========================================
+
+function getSimulatedDate() {
+    const simDate = localStorage.getItem('osp_simulated_date');
+    const simTimestamp = localStorage.getItem('osp_simulated_timestamp');
+
+    if (simDate && simTimestamp) {
+        const now = Date.now();
+        const dixMinutes = 10 * 60 * 1000; 
+
+        if (now - parseInt(simTimestamp, 10) > dixMinutes) {
+            localStorage.removeItem('osp_simulated_date');
+            localStorage.removeItem('osp_simulated_timestamp');
+            console.log("🔄 Reset automatique du mode simulation après 10 minutes.");
+            return new Date(); 
+        }
+
+        const parts = simDate.split('-');
+        if (parts.length === 3) {
+            return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        }
+    }
+    return new Date(); 
+}
+
+function initAdminModalUI() {
+    if (document.getElementById('adminModal')) return;
+
+    const modalHtml = `
+    <div id="adminModal" class="modal" style="display:none; z-index: 100000;">
+        <div class="modal-content small" style="border: 3px solid var(--vert); background: white; padding: 20px; border-radius: 15px; text-align: center;">
+            <div style="background: var(--bleu); color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;">
+                👑 MODE ADMINISTRATEUR - SIMULATION JOUR FÉRIÉ
+            </div>
+            
+            <div style="font-size: 0.85rem; margin-bottom: 15px; background: #f4f8fb; padding: 10px; border-radius: 8px; text-align: left;">
+                📅 <strong>Date réelle :</strong> <span id="adminRealDateDisplay"></span><br>
+                📍 <strong>Date active (site) :</strong> <span id="adminSimDateDisplay" style="color: var(--vert); font-weight: bold;"></span>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label for="adminDateInput">Choisir une date de simulation :</label>
+                <input type="date" id="adminDateInput" style="padding: 10px; border-radius: 8px; border: 2px solid var(--bleu); width: 100%; box-sizing: border-box; text-align: center; font-weight: bold;">
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button type="button" onclick="validerSimulationAdmin()" style="background: var(--vert); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1;">Valider</button>
+                <button type="button" onclick="resetSimulationAdmin()" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1;">Reset (Normal)</button>
+            </div>
+            
+            <button type="button" onclick="closeAdminModal()" style="margin-top: 15px; background: transparent; border: none; color: #888; text-decoration: underline; cursor: pointer; font-size: 0.8rem;">Fermer la fenêtre</button>
+        </div>
+    </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function openAdminModal() {
+    initAdminModalUI();
+    const now = new Date();
+    const simDate = getSimulatedDate();
+
+    document.getElementById('adminRealDateDisplay').innerText = now.toLocaleDateString('fr-FR');
+    document.getElementById('adminSimDateDisplay').innerText = simDate.toLocaleDateString('fr-FR') + (localStorage.getItem('osp_simulated_date') ? ' (Simulée)' : ' (Réelle)');
+    
+    const year = simDate.getFullYear();
+    const month = String(simDate.getMonth() + 1).padStart(2, '0');
+    const day = String(simDate.getDate()).padStart(2, '0');
+    document.getElementById('adminDateInput').value = `${year}-${month}-${day}`;
+
+    document.getElementById('adminModal').style.display = 'flex';
+}
+
+function closeAdminModal() {
+    const m = document.getElementById('adminModal');
+    if (m) m.style.display = 'none';
+}
+
+function validerSimulationAdmin() {
+    const val = document.getElementById('adminDateInput').value;
+    if (val) {
+        localStorage.setItem('osp_simulated_date', val);
+        localStorage.setItem('osp_simulated_timestamp', Date.now()); 
+        closeAdminModal();
+        alert("✅ Mode Simulation activé à la date du : " + val + "\n\nLa page va se recharger pour appliquer les événements automatiquement.");
+        window.location.reload(); 
+    }
+}
+
+function resetSimulationAdmin() {
+    localStorage.removeItem('osp_simulated_date');
+    localStorage.removeItem('osp_simulated_timestamp'); 
+    closeAdminModal();
+    alert("🔄 Mode normal réactivé (Date du jour système).\n\nLa page va se recharger.");
+    window.location.reload(); 
+}
+
+window.addEventListener('DOMContentLoaded', initAdminModalUI);
 
 // ==========================================
 // ⚙️ MOTEUR DE VALIDATION DE CODES (HYBRIDE)
@@ -175,7 +302,7 @@ function validerCodeRemise(code, idClientActuel = null) {
     if (!code) return { valide: false, statut: "REJETE", remise: null, message: msgLang.codeVide };
     const segments = code.split('-');
     const prefixe = segments[0];
-    const now = new Date();
+    const now = getSimulatedDate();
     const DATE_REFERENCE = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     if (window.mesCodesFideles) {
@@ -234,7 +361,6 @@ let currentPlanId = null;
 let roomCounter = 0;
 let activeServices = [];
 
-// Stockage intelligent des sols (pour éviter de redemander)
 let defaultFloors = { global: {}, levels: {} };
 
 window.clientDiscount = 0; 
@@ -244,8 +370,138 @@ window.activePromoCodeDevis = "";
 window.currentTotalValue = 0;
 window.originalTotalValue = 0; 
 
+// Stockage des frais kilométriques de déplacement
+window.fraisDeplacementKilometrique = 0;
+
+// Stockage de la décomposition des heures "Pendant l'événement"
+window.evtPendantData = { totalCost: 0, totalHours: 0, dayHours: 0, nightHours: 0, dayCost: 0, nightCost: 0 };
+
 function openClientModal() { document.getElementById('clientModal').style.display = 'flex'; }
 function closeClientModal() { document.getElementById('clientModal').style.display = 'none'; }
+
+// ==========================================
+// 🚗 SIMULATEUR D'ÉLIGIBILITÉ 30 KM GRATUITS
+// ==========================================
+function resetDistanceCalc() {
+    const msgBox = document.getElementById('distanceResultMsg');
+    if (msgBox) {
+        msgBox.style.display = 'none';
+        msgBox.className = 'distance-result-msg';
+        msgBox.innerHTML = '';
+    }
+    window.fraisDeplacementKilometrique = 0;
+    if (typeof calculatePrice === "function") calculatePrice();
+}
+
+async function calculerEligibilite30km() {
+    const rue = document.getElementById('inputAdresseRue')?.value.trim();
+    const ville = document.getElementById('inputAdresseVille')?.value.trim();
+    const msgBox = document.getElementById('distanceResultMsg');
+
+    if (!rue || !ville) {
+        msgBox.className = 'distance-result-msg error';
+        msgBox.innerHTML = '⚠️ Veuillez renseigner votre rue et votre ville/code postal.';
+        msgBox.style.display = 'block';
+        return;
+    }
+
+    msgBox.className = 'distance-result-msg';
+    msgBox.style.display = 'block';
+    msgBox.style.color = 'var(--bleu)';
+    msgBox.innerHTML = '⏳ Calcul du trajet en cours...';
+
+    // Coordonnées de départ : Place Wilson, 31000 Toulouse (Siège O.S.P+)
+    const latOsp = 43.60446;
+    const lonOsp = 1.44594;
+
+    try {
+        const adresseComplete = `${rue}, ${ville}`;
+        const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(adresseComplete)}`;
+        
+        const response = await fetch(geocodeUrl);
+        const data = await response.json();
+
+        if (!data || data.length === 0) {
+            msgBox.className = 'distance-result-msg error';
+            msgBox.innerHTML = '❌ Adresse introuvable. Vérifiez la saisie.';
+            return;
+        }
+
+        const latClient = parseFloat(data[0].lat);
+        const lonClient = parseFloat(data[0].lon);
+
+        // Calcul de la distance à vol d'oiseau (Formule de Haversine)
+        const R = 6371; 
+        const dLat = (latClient - latOsp) * Math.PI / 180;
+        const dLon = (lonClient - lonOsp) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(latOsp * Math.PI / 180) * Math.cos(latClient * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        
+        // Estimation de la distance routière (coefficient moyen x1.3)
+        const distanceAllerSimple = Math.round((R * c * 1.3) * 10) / 10;
+        const distanceAllerRetour = Math.round((distanceAllerSimple * 2) * 10) / 10;
+
+        if (distanceAllerRetour <= 30) {
+            msgBox.className = 'distance-result-msg success';
+            msgBox.innerHTML = `✅ <strong>Éligible !</strong> Dist. A/R estimée : <strong>${distanceAllerRetour} km</strong>.<br>🎉 Déplacement 100 % GRATUIT.`;
+            window.fraisDeplacementKilometrique = 0;
+        } else {
+            const kmSupplementaires = Math.round((distanceAllerRetour - 30) * 10) / 10;
+            const surcout = Math.round((kmSupplementaires * 0.50) * 100) / 100;
+            window.fraisDeplacementKilometrique = surcout;
+
+            msgBox.className = 'distance-result-msg warning';
+            msgBox.innerHTML = `📍 Distance A/R estimée : <strong>${distanceAllerRetour} km</strong>.<br>30 km inclus + ${kmSupplementaires} km supp. à 0,50 €/km (+${surcout.toFixed(2)} €).`;
+        }
+
+        if (typeof calculatePrice === "function") calculatePrice();
+
+    } catch (err) {
+        msgBox.className = 'distance-result-msg error';
+        msgBox.innerHTML = '⚠️ Service de calcul temporairement indisponible.';
+    }
+}
+
+// ==========================================
+// 📢 BANNER PUBLICITAIRE ROTATIF (C'EST ICI QU'IL FAUT MODIFIER)
+// ==========================================
+const MES_PUBLICITES = [
+    '<span class="badge-promo-top">VENTE FLASH</span> <strong>-10% SUR VOTRE FACTURE FINALE !</strong><br><em>Valable pour toute réservation ce mois-ci</em>',
+    '🚗 <strong>DÉPLACEMENT OFFERT</strong> jusqu\'à 30 km autour de Toulouse !',
+    '✨ <strong>NETTOYAGE CANAPÉS & TEXTILES</strong> : Séchage rapide en 4h à 6h !',
+    '🏢 <strong>LOCAUX & BUREAUX</strong> : Intervention dès 5h du matin pour ne pas vous gêner.'
+];
+
+// Changement du délai à 15000 millisecondes (15 secondes)
+const DELAI_ROTATION = 15000; 
+let indexPubActuelle = 0;
+
+function lancerPanneauPub() {
+    const promoBanner = document.getElementById('promo-banner');
+    if (!promoBanner || MES_PUBLICITES.length === 0) return;
+
+    promoBanner.innerHTML = MES_PUBLICITES[0];
+
+    if (MES_PUBLICITES.length === 1) return;
+
+    setInterval(() => {
+        indexPubActuelle = (indexPubActuelle + 1) % MES_PUBLICITES.length;
+        
+        // Disparition en douceur (le CSS gère la transition)
+        promoBanner.style.opacity = 0;
+        
+        // Attente de 300ms avant de changer le texte et de le faire réapparaître
+        setTimeout(() => {
+            promoBanner.innerHTML = MES_PUBLICITES[indexPubActuelle];
+            promoBanner.style.opacity = 1;
+        }, 300);
+
+    }, DELAI_ROTATION);
+}
+
+window.addEventListener('DOMContentLoaded', lancerPanneauPub);
 
 // ==========================================
 // 🛠️ MOTEUR DE FENÊTRES SUR-MESURE OSP+
@@ -299,9 +555,18 @@ function askCustomQuestion(title, message, buttons, showInput = false) {
 }
 
 async function applyClientCode() {
-    const code = document.getElementById('clientCodeInput').value.trim().toUpperCase();
+    const input = document.getElementById('clientCodeInput');
+    const code = input ? input.value.trim() : '';
     const msg = document.getElementById('clientCodeMsg');
     
+    if (code.toLowerCase() === 'feriedate@administrateur') {
+        closeClientModal();
+        if (input) input.value = '';
+        if (msg) msg.innerText = '';
+        openAdminModal();
+        return;
+    }
+
     if (!code) { msg.style.color = 'red'; msg.innerText = msgLang.saisirCode; return; }
 
     let idClientActuel = null;
@@ -384,22 +649,40 @@ function getMobileHolidays(year) {
 }
 
 function checkHolidays() {
-    const today = new Date();
+    const today = getSimulatedDate();
+    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const currentYear = today.getFullYear();
-    const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
-    const currentDay = String(today.getDate()).padStart(2, '0');
-    const formattedDate = currentMonth + '-' + currentDay;
 
     const fixedHolidays = ['01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25'];
     const mobileHolidays = getMobileHolidays(currentYear);
     const testDates = ['06-01', '06-02', '06-03'];
-    const allHolidays = fixedHolidays.concat(mobileHolidays).concat(testDates);
+    const allHolidaysStr = fixedHolidays.concat(mobileHolidays).concat(testDates);
 
-    if (allHolidays.includes(formattedDate)) {
-        const banner = document.getElementById('promo-banner');
+    let isPromoActive = false;
+
+    for (let dateStr of allHolidaysStr) {
+        const parts = dateStr.split('-');
+        const month = parseInt(parts[0], 10) - 1;
+        const day = parseInt(parts[1], 10);
+        
+        const holidayDate = new Date(currentYear, month, day);
+        const endDate = new Date(holidayDate);
+        endDate.setDate(endDate.getDate() + 15);
+
+        if (todayDate >= holidayDate && todayDate <= endDate) {
+            isPromoActive = true;
+            break; 
+        }
+    }
+
+    const banner = document.getElementById('promo-banner');
+    if (isPromoActive) {
         if (banner) banner.style.display = 'block';
         window.holidayPromoActive = true;
-    } else { window.holidayPromoActive = false; }
+    } else { 
+        if (banner) banner.style.display = 'none';
+        window.holidayPromoActive = false; 
+    }
 }
 window.addEventListener('DOMContentLoaded', checkHolidays);
 
@@ -465,6 +748,50 @@ function generateRowHtml(id, name) {
     </div>`;
 }
 
+function generateSepultureFlowerRowHtml(id, name, typeFleurs) {
+    let textPlan = langKey === 'vi' ? '+ Lập kế hoạch' : (langKey === 'en' ? '+ Schedule' : '+ Planifier');
+    const simDate = getSimulatedDate();
+    const currentMonth = simDate.getMonth() + 1; 
+
+    let optionsFleurs = '';
+    
+    if (typeFleurs === 'artificielles') {
+        optionsFleurs = `
+            <option value="rose_art">Roses synthétiques (Toutes saisons)</option>
+            <option value="lys_art">Lys artificiels (Toutes saisons)</option>
+            <option value="compo_art">Composition intemporelle</option>
+        `;
+    } else {
+        const fleursSaisons = [
+            { id: 'pensees', name: 'Pensées', mois: [1, 2, 3, 10, 11, 12] },
+            { id: 'chrysanthemes', name: 'Chrysanthèmes', mois: [10, 11] },
+            { id: 'tulipes', name: 'Tulipes', mois: [3, 4, 5] },
+            { id: 'geraniums', name: 'Géraniums', mois: [5, 6, 7, 8, 9] },
+            { id: 'cyclamens', name: 'Cyclamens', mois: [9, 10, 11, 12] },
+            { id: 'roses_nat', name: 'Roses naturelles', mois: [5, 6, 7, 8, 9, 10] }
+        ];
+
+        fleursSaisons.forEach(fleur => {
+            const estEnSaison = fleur.mois.includes(currentMonth);
+            if (estEnSaison) {
+                optionsFleurs += `<option value="${fleur.id}">${fleur.name}</option>`;
+            } else {
+                optionsFleurs += `<option value="${fleur.id}" disabled style="color: #aaa; background-color: #f0f0f0;">${fleur.name} (pas de saison)</option>`;
+            }
+        });
+    }
+
+    return `
+    <div class="quote-row-item" id="row_${id}" style="display: grid; grid-template-columns: 1fr 140px 50px 80px; gap: 5px; align-items: center; margin-bottom: 6px;">
+        <label style="font-size:0.8rem; font-weight:bold; color:var(--bleu);">${name}</label>
+        <select id="flower_choice_${id}" onchange="calculatePrice()" style="font-size: 0.75rem; padding: 4px; border-radius: 4px; border: 1px solid #ccc;">
+            ${optionsFleurs}
+        </select>
+        <input type="number" id="qty_${id}" min="0" value="0" oninput="calculatePrice()" style="padding: 4px; text-align: center;">
+        <button type="button" id="btn_plan_${id}" class="btn-planifier" onclick="openPlanningModal('${id}', '${name.replace(/'/g, "\\'")}')" style="font-size: 0.65rem; padding: 4px;">${textPlan}</button>
+    </div>`;
+}
+
 function generateVehiculeRowHtml(id, name, hasTapisOption, tooltip) {
     let textPlan = langKey === 'vi' ? '+ Lập KH' : (langKey === 'en' ? '+ Plan' : '+ Planifier');
     let cbHtml = '';
@@ -485,7 +812,7 @@ function generateVehiculeRowHtml(id, name, hasTapisOption, tooltip) {
         <label style="font-size: 0.65rem; line-height: 1.1; display:flex; align-items:center; word-wrap: break-word;">${name}${tooltip}</label>
         <input type="number" id="qty_${id}" min="0" value="0" oninput="handleVehiculeChange('detail')" style="padding: 4px; width: 100%; box-sizing: border-box; text-align:center;">
         ${cbHtml}
-        <button type="button" id="btn_plan_${id}" class="btn-planifier" onclick="openPlanningModal('${id}', '${name.replace(/'/g, "\\'")}')" style="padding: 4px; font-size: 0.6rem; width: 100%; box-sizing: border-box;">${textPlan}</button>
+        <button type="button" id="btn_plan_${id}" class="btn-planifier" onclick="openPlanningModal('${id}', '${name.replace(/'/g, "\\'")}')" style="padding: 4px; font-size: 0.6rem; width: 100\%; box-sizing: border-box;">${textPlan}</button>
     </div>`;
 }
 
@@ -509,8 +836,7 @@ function generateVitrerieRowHtml(id, name, dupIndex) {
             <option value="interieur">${optInterieur}</option>
             <option value="exterieur">${optExterieur}</option>
         </select>
-        <button type="button" id="btn_plan_${actualId}" class="btn-planifier" onclick="openPlanningModal('${actualId}', '${name.replace(/'/g, "\\'")}')" style="padding: 4px; font-size: 0.6rem; width: 100%; box-sizing: border-box;">${btnPlanText}</button>
-        ${btnPlus}
+        <button type="button" id="btn_plan_${actualId}" class="btn-planifier" onclick="openPlanningModal('${actualId}', '${name.replace(/'/g, "\\'")}')" style="padding: 4px; font-size: 0.6rem; width: 100%; box-sizing: border-box;">${btnPlanText}</button>${btnPlus}
     </div>`;
 }
 
@@ -548,10 +874,21 @@ function toggleAccordion(headerElement) {
     const body = headerElement.nextElementSibling;
     const isActive = headerElement.classList.contains('active');
     
-    document.querySelectorAll('.accordion-header').forEach(el => { el.classList.remove('active'); });
-    document.querySelectorAll('.accordion-body').forEach(el => { el.classList.remove('active'); });
+    document.querySelectorAll('.accordion-header').forEach(el => { 
+        el.classList.remove('active'); 
+        let icon = el.querySelector('.accordion-icon');
+        if(icon) icon.innerText = '▼';
+    });
+    document.querySelectorAll('.accordion-body').forEach(el => { 
+        el.classList.remove('active'); 
+    });
 
-    if (!isActive) { headerElement.classList.add('active'); body.classList.add('active'); }
+    if (!isActive) { 
+        headerElement.classList.add('active'); 
+        body.classList.add('active'); 
+        let icon = headerElement.querySelector('.accordion-icon');
+        if(icon) icon.innerText = '▲';
+    }
 }
 
 function updateLevelSummaries() {
@@ -573,7 +910,7 @@ function updateLevelSummaries() {
 
                     let nameSpan = card.querySelector('h5 span');
                     if (nameSpan) {
-                        let typeText = nameSpan.innerText;
+                        let typeText = nameSpan.innerText.split('(')[0].trim();
                         let customInput = card.querySelector('input[type="text"]');
                         if (customInput && customInput.value.trim() !== '') { typeText = customInput.value.trim(); }
                         roomNames.push(typeText);
@@ -581,7 +918,7 @@ function updateLevelSummaries() {
                 });
                 let summaryText = roomNames.join(', ');
                 if (summaryText.length > 40) summaryText = summaryText.substring(0, 37) + '...';
-                titleSpan.innerHTML = `📍 ${levelName} <span style="font-size:0.75rem; color:#888; margin-left:8px; font-weight:normal; font-style:italic;">(${roomCards.length} ${roomsWord} : ${summaryText})</span>`;
+                titleSpan.innerHTML = `📍 ${levelName} <span style="font-size:0.75rem; color:#888; margin-left:8px; font-weight:normal; font-style:italic;">(${roomCards.length} ${roomsWord} :${summaryText})</span>`;
             } else { titleSpan.innerHTML = `📍 ${levelName}`; }
         }
 
@@ -611,7 +948,6 @@ function createLevelAccordion(levelName) {
     const levelId = 'level_' + Date.now() + Math.floor(Math.random() * 1000);
     
     let subtitleText = langKey === 'vi' ? 'Thêm các không gian cho tầng này :' : (langKey === 'en' ? 'Add your spaces for this level:' : 'Ajoutez vos espaces pour ce niveau :');
-    // Ajout visuel de la pastille 2 pour la section Bureaux
     subtitleText = `<span style="background: var(--vert); color: white; min-width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem; margin-right: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">2</span>` + subtitleText;
 
     let btnBureau = langKey === 'vi' ? '💼 Văn phòng' : (langKey === 'en' ? '💼 Office' : '💼 Bureau');
@@ -640,7 +976,7 @@ function createLevelAccordion(levelName) {
     <div class="level-accordion" id="block_${levelId}" data-levelname="${levelName}">
         <div class="accordion-header" onclick="toggleAccordion(this)">
             <span class="level-title-display">📍 ${levelName}</span>
-            <span class="accordion-icon">+</span>
+            <span class="accordion-icon" style="transition: none; transform: none; font-size: 0.9rem;">▼</span>
         </div>
         <div class="accordion-body">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
@@ -710,6 +1046,7 @@ function deleteLevel(levelId) {
     
     calculatePrice();
     updateLevelSummaries();
+    window.filterRooms();
 }
 
 function openLevelModal() { document.getElementById('levelModal').style.display = 'flex'; }
@@ -832,6 +1169,141 @@ function appliquerSol(selectedValue, roomType, scope, currentLevelId, triggerSel
     popover.remove();
 }
 
+window.filterRooms = function() {
+    let input = document.getElementById('roomSearchInput');
+    let filter = input ? input.value.toLowerCase().trim() : "";
+    let accordions = document.querySelectorAll('.level-accordion');
+    let createContainer = document.getElementById('searchCreateBtnContainer');
+    let totalVisibleRooms = 0;
+
+    if (filter.length < 3) {
+        accordions.forEach(acc => {
+            acc.style.display = "block";
+            let roomCards = acc.querySelectorAll('.structured-room-card');
+            roomCards.forEach(card => card.style.display = "block");
+        });
+        if (createContainer) createContainer.style.display = "none";
+        return;
+    }
+
+    accordions.forEach(acc => {
+        let levelName = acc.getAttribute('data-levelname').toLowerCase();
+        let roomCards = acc.querySelectorAll('.structured-room-card');
+        let hasVisibleRoom = false;
+
+        roomCards.forEach(card => {
+            let roomTitle = card.querySelector('h5 span').innerText.toLowerCase();
+            let customInput = card.querySelector('input[type="text"]');
+            if (customInput && customInput.value.trim() !== '') {
+                roomTitle += ' ' + customInput.value.toLowerCase();
+            }
+
+            if (roomTitle.includes(filter) || levelName.includes(filter)) {
+                card.style.display = "block";
+                hasVisibleRoom = true;
+                totalVisibleRooms++;
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        if (hasVisibleRoom) {
+            acc.style.display = "block";
+            let header = acc.querySelector('.accordion-header');
+            let body = acc.querySelector('.accordion-body');
+            if (!header.classList.contains('active')) {
+                header.classList.add('active');
+                body.classList.add('active');
+                let icon = header.querySelector('.accordion-icon');
+                if(icon) icon.innerText = '▲';
+            }
+        } else {
+            acc.style.display = "none";
+        }
+    });
+
+    if (createContainer && input) {
+        if (totalVisibleRooms === 0) {
+            let btnText = langKey === 'vi' ? `+ Tạo "${input.value}"` : (langKey === 'en' ? `+ Create "${input.value}"` : `+ Créer l'espace "${input.value}"`);
+            createContainer.innerHTML = `<button type="button" class="btn-main pulse-animation" style="padding: 10px 20px; font-size: 0.9rem;" onclick="promptCreateRoomFromSearch('${input.value.replace(/'/g, "\\'")}')">${btnText}</button>`;
+            createContainer.style.display = "block";
+        } else {
+            createContainer.style.display = "none";
+        }
+    }
+};
+
+window.promptCreateRoomFromSearch = async function(roomName) {
+    let msg1 = langKey === 'vi' ? `Phòng "<strong>${roomName}</strong>" chưa tồn tại.<br>Bạn có muốn tạo nó không?` : 
+               (langKey === 'en' ? `The room "<strong>${roomName}</strong>" does not exist.<br>Do you want to create it?` : 
+               `La pièce "<strong>${roomName}</strong>" n'existe pas.<br>Voulez-vous la créer ?`);
+               
+    let confirm1 = await askCustomQuestion("Création de pièce", msg1, [
+        { text: langKey==='en'?"Yes, create it":"Oui, la créer", value: true, style: "background: var(--vert); color: white;" },
+        { text: langKey==='en'?"No":"Non", value: false, style: "background: #e1e8ef; color: var(--bleu);" }
+    ]);
+    
+    if (!confirm1) return;
+    
+    let accordions = document.querySelectorAll('.level-accordion');
+    let floorButtons = [];
+    accordions.forEach(acc => {
+        let lvlId = acc.id.replace('block_', '');
+        let lvlName = acc.getAttribute('data-levelname');
+        floorButtons.push({ text: lvlName, value: lvlId, style: "background: var(--gris); color: var(--bleu); border: 1px solid var(--bleu);" });
+    });
+    
+    floorButtons.push({ text: langKey==='en'?"+ New floor":"+ Nouvel étage", value: "NEW", style: "background: var(--bleu); color: white;" });
+    floorButtons.push({ text: langKey==='en'?"Cancel":"Annuler", value: null, style: "background: transparent; color: #888; border: none; text-decoration: underline;" });
+    
+    let msg2 = langKey === 'vi' ? `Chọn tầng cho "<strong>${roomName}</strong>":` : 
+               (langKey === 'en' ? `Choose a floor for "<strong>${roomName}</strong>":` : 
+               `Choisissez l'étage pour "<strong>${roomName}</strong>" :`);
+               
+    let chosenLevel = await askCustomQuestion("Choix de l'étage", msg2, floorButtons);
+    
+    if (!chosenLevel) return;
+    
+    let targetLevelId = chosenLevel;
+    
+    if (chosenLevel === "NEW") {
+        let msg3 = langKey === 'vi' ? `Tên tầng mới:` : 
+                   (langKey === 'en' ? `Name of the new floor:` : 
+                   `Nom du nouvel étage :`);
+        let newLevelName = await askCustomQuestion("Nouvel étage", msg3, [
+            { text: langKey==='en'?"Create":"Créer", value: true, style: "background: var(--vert); color: white;" },
+            { text: langKey==='en'?"Cancel":"Annuler", value: false, style: "background: #e1e8ef; color: var(--bleu);" }
+        ], true);
+        
+        if (!newLevelName || newLevelName.trim() === '') return;
+        targetLevelId = createLevelAccordion(newLevelName.trim());
+    }
+    
+    let newRoomId = addStructuredRoom(targetLevelId, 'Autre');
+    
+    let newRoomCard = document.getElementById('row_' + newRoomId);
+    if (newRoomCard) {
+        let customInput = newRoomCard.querySelector('input[type="text"]');
+        if (customInput) {
+            customInput.value = roomName;
+            updateLevelSummaries();
+        }
+    }
+    
+    let searchInput = document.getElementById('roomSearchInput');
+    if (searchInput) searchInput.value = '';
+    filterRooms();
+    
+    if (newRoomCard) {
+        setTimeout(() => {
+            newRoomCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            newRoomCard.style.transition = "box-shadow 0.5s ease";
+            newRoomCard.style.boxShadow = "0 0 15px 5px var(--vert)";
+            setTimeout(() => newRoomCard.style.boxShadow = "none", 2000);
+        }, 300);
+    }
+};
+
 function addStructuredRoom(levelId, type) {
     roomCounter++;
     const roomId = 'room_detail_' + roomCounter;
@@ -840,8 +1312,14 @@ function addStructuredRoom(levelId, type) {
     let displayTitle = (mappingDisplay[type] && mappingDisplay[type][langKey]) ? mappingDisplay[type][langKey] : type;
     if (type === 'Autre') displayTitle = langKey === 'vi' ? 'Không gian mới' : (langKey === 'en' ? 'New space' : 'Nouvel espace');
 
+    let levelName = "";
+    let acc = document.getElementById('block_' + levelId);
+    if(acc) levelName = acc.getAttribute('data-levelname');
+    
+    displayTitle = `${displayTitle} <span style="font-size: 0.75rem; color: #888; font-weight: normal; margin-left: 5px;">(${levelName})</span>`;
+
     let phAutre = langKey === 'vi' ? 'Ví dụ: Phòng sao chụp...' : (langKey === 'en' ? 'Ex: Copy Room...' : 'Ex: Espace Reprographie...');
-    let customNameHtml = type === 'Autre' ? `<input type="text" placeholder="${phAutre}" style="font-size:0.8rem; padding:6px; margin-bottom:10px; width:100%; border:1px solid #ccc; border-radius:5px;" oninput="updateLevelSummaries()">` : '';
+    let customNameHtml = type === 'Autre' ? `<input type="text" placeholder="${phAutre}" style="font-size:0.8rem; padding:6px; margin-bottom:10px; width:100%; border:1px solid #ccc; border-radius:5px;" oninput="updateLevelSummaries(); filterRooms();">` : '';
     let qtyHtml = '';
     
     let lblHommes = langKey === 'vi' ? '🚹 Nam (số lượng) *' : (langKey === 'en' ? '🚹 Men (number) *' : '🚹 Hommes (nombre) *');
@@ -949,7 +1427,6 @@ function addStructuredRoom(levelId, type) {
     }
     pretsHtml += `</div>`;
 
-    // Ajout visuel de la pastille 3 pour la section Bureaux
     let lblCleanTitle = langKey === 'vi' ? 'Các dịch vụ làm sạch' : (langKey === 'en' ? 'Cleaning services' : 'Prestations de nettoyage');
     lblCleanTitle = `<span style="background: var(--vert); color: white; min-width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.6rem; margin-right: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">3</span>` + lblCleanTitle;
 
@@ -977,6 +1454,7 @@ function addStructuredRoom(levelId, type) {
     document.getElementById('rooms_container_' + levelId).insertAdjacentHTML('beforeend', html);
     calculatePrice();
     updateLevelSummaries();
+    if(window.filterRooms) window.filterRooms();
     
     return roomId;
 }
@@ -987,9 +1465,12 @@ function removeRoom(roomId) {
     if (planData[roomId]) delete planData[roomId];
     calculatePrice();
     updateLevelSummaries();
+    if(window.filterRooms) window.filterRooms();
 }
 
-function getRealInterventionCount(selectedDays, selectedMonths, startDate, endDate) {
+function getRealInterventionCount(selectedDays = [], selectedMonths = [], startDate = '', endDate = '') {
+    if (!selectedDays) selectedDays = [];
+    if (!selectedMonths) selectedMonths = [];
     if (selectedDays.length === 0 && selectedMonths.length === 0 && !startDate && !endDate) return 1;
     const mapDays = {'Dim':0, 'Lun':1, 'Mar':2, 'Mer':3, 'Jeu':4, 'Ven':5, 'Sam':6};
     let totalInterventions = 0;
@@ -1012,7 +1493,7 @@ function getRealInterventionCount(selectedDays, selectedMonths, startDate, endDa
     if (selectedMonths.length > 0) {
         if (selectedDays.length === 0) return selectedMonths.length; 
         const mapMonths = {'Jan':0, 'Fév':1, 'Mar':2, 'Avr':3, 'Mai':4, 'Juin':5, 'Juil':6, 'Août':7, 'Sep':8, 'Oct':9, 'Nov':10, 'Déc':11};
-        const now = new Date();
+        const now = getSimulatedDate();
         const currentYear = now.getFullYear();
         const currentMonth = now.getMonth();
 
@@ -1153,10 +1634,82 @@ window.handleVehiculeChange = function(source) {
     calculatePrice();
 };
 
+window.updateEvtPendantCalculations = function() {
+    let startVal = document.getElementById('evt_start_time')?.value;
+    let endVal = document.getElementById('evt_end_time')?.value;
+    let box = document.getElementById('evt_pendant_result_box');
+
+    if (!startVal || !endVal) {
+        if (box) { box.style.display = 'none'; box.innerHTML = ''; }
+        window.evtPendantData = { totalCost: 0, totalHours: 0, dayHours: 0, nightHours: 0, dayCost: 0, nightCost: 0 };
+        calculatePrice();
+        return;
+    }
+
+    let [sH, sM] = startVal.split(':').map(Number);
+    let [eH, eM] = endVal.split(':').map(Number);
+    
+    let start = sH + (sM / 60);
+    let end = eH + (eM / 60);
+    
+    if (end <= start) {
+        end += 24; 
+    }
+    
+    let totalMinutes = Math.round((end - start) * 60);
+    let startMin = Math.round(start * 60);
+    
+    let dayMins = 0;
+    let nightMins = 0;
+    
+    for (let m = 0; m < totalMinutes; m++) {
+        let currentMinOfDay = (startMin + m) % (24 * 60);
+        if (currentMinOfDay >= 360 && currentMinOfDay < 1260) {
+            dayMins++;
+        } else {
+            nightMins++;
+        }
+    }
+    
+    let dayHours = dayMins / 60;
+    let nightHours = nightMins / 60;
+    
+    let dayCost = dayHours * 25;
+    let nightCost = nightHours * 30; 
+    let totalCost = dayCost + nightCost;
+
+    window.evtPendantData = {
+        totalHours: totalMinutes / 60,
+        dayHours: dayHours,
+        nightHours: nightHours,
+        dayCost: dayCost,
+        nightCost: nightCost,
+        totalCost: totalCost
+    };
+
+    if (box) {
+        box.style.display = 'block';
+        let dayStr = dayHours > 0 ? `☀️ <strong>${dayHours.toFixed(2).replace(/\.00$/,'')}h Jour</strong> (06h-21h à 25 €/h) : ${dayCost.toFixed(2)} €` : '';
+        let nightStr = nightHours > 0 ? `🌙 <strong>${nightHours.toFixed(2).replace(/\.00$/,'')}h Nuit (+20%)</strong> (21h-06h à 30 €/h) : ${nightCost.toFixed(2)} €` : '';
+        
+        let parts = [dayStr, nightStr].filter(Boolean).join('<br>');
+
+        box.innerHTML = `
+            <strong>⏱️ Durée totale : ${(totalMinutes/60).toFixed(2).replace(/\.00$/,'')} heure(s) (de ${startVal} à ${endVal})</strong><br>
+            ${parts}
+            <div style="margin-top:6px; font-weight:800; font-size:0.85rem; border-top:1px dashed #e67e22; padding-top:4px;">
+                Sous-total Présence : ${totalCost.toFixed(2)} €
+            </div>
+        `;
+    }
+
+    calculatePrice();
+};
+
 function calculatePrice() {
     let total = 0;
     let hasOspConsommables = false; 
-    const TAUX_HORAIRE = 25.00; 
+    const TAUX_HORAIRE = 35.00; 
     const vPrices = { vit_fen: 10, vit_baie: 19, vit_velux: 15, vit_ver: 29, vit_porte: 12, vit_com: 39 };
     
     document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
@@ -1176,7 +1729,11 @@ function calculatePrice() {
         'pack_v': 150, 
         'siege_ag': 35, 'siege_ad': 35, 'banq_ar': 70, 
         'coffre_auto': 20,
-        'tapis_ag': 10, 'tapis_ad': 10, 'tapis_arg': 10, 'tapis_ard': 10, 'tapis_coffre': 10
+        'tapis_ag': 10, 'tapis_ad': 10, 'tapis_arg': 10, 'tapis_ard': 10, 'tapis_coffre': 10,
+        'sep_simple': 45, 'sep_double': 65, 'sep_caveau': 85, 'sep_columbarium': 25, 'sep_terre': 40,
+        'sep_fleurs_art': 15, 'sep_fleurs_vrai': 25, 'sep_pots_acc': 10,
+        'sep_sub_4': 69, 'sep_sub_6': 59, 'sep_sub_12': 89, 'sep_sub_24': 119,
+        'evt_salle_petite': 149, 'evt_salle_grande': 289
     };
 
     for (let id in pricesFixed) {
@@ -1187,6 +1744,22 @@ function calculatePrice() {
             let exactMultiplier = getRealInterventionCount(data.days, data.months, data.start, data.end);
             total += q * pricesFixed[id] * exactMultiplier;
         }
+    }
+
+    // Checkboxes Événements
+    if (document.getElementById('cb_evt_nettoyage_avant')?.checked) total += 70;
+    if (document.getElementById('cb_evt_ext_terrasse')?.checked) total += 70;
+    if (document.getElementById('cb_evt_poubelles')?.checked) total += 70;
+
+    // Consommables Événement
+    let consSelectEvt = document.getElementById('cons_select_evt');
+    if (consSelectEvt && consSelectEvt.value === 'osp') {
+        total += 29;
+    }
+
+    // Coût calculé de l'option Pendant (Jour / Nuit combinés via la fonction de découpe horaire)
+    if (window.evtPendantData && window.evtPendantData.totalCost) {
+        total += window.evtPendantData.totalCost;
     }
 
     if (document.getElementById('cb_tapis_siege_ag')?.checked) total += (parseInt(document.getElementById('qty_siege_ag')?.value)||1) * 10 * getRealInterventionCount(planData['siege_ag']?.days||[], planData['siege_ag']?.months||[], planData['siege_ag']?.start, planData['siege_ag']?.end);
@@ -1249,6 +1822,9 @@ function calculatePrice() {
         total += (qLarge * 30) + (qPl * 50);
     }
 
+    // Ajout automatique des frais de déplacement au total global s'il y a un surcoût hors 30km
+    total += window.fraisDeplacementKilometrique;
+
     let originalTotal = total;
     window.originalTotalValue = originalTotal;
     let discountText = "";
@@ -1256,13 +1832,18 @@ function calculatePrice() {
     
     let appliedPromoDevis = window.promoDiscountDevis;
     let appliedClientDiscount = window.clientDiscount;
-    let appliedHoliday = window.holidayPromoActive ? 0.05 : 0; 
+    let appliedHoliday = window.holidayPromoActive ? 0.10 : 0; 
     let conflict10 = false;
 
     let count10 = 0;
     if (appliedPromoDevis === 0.10) count10++;
     if (appliedClientDiscount === 0.10) count10++;
-    if (count10 >= 2) { conflict10 = true; appliedPromoDevis = 0; }
+    if (appliedHoliday === 0.10) count10++; 
+
+    if (count10 >= 2) { 
+        conflict10 = true; 
+        appliedPromoDevis = 0; 
+    }
 
     if (appliedClientDiscount > 0) totalDiscountPercent += appliedClientDiscount;
     if (appliedPromoDevis > 0) totalDiscountPercent += appliedPromoDevis;
@@ -1278,7 +1859,7 @@ function calculatePrice() {
     if (totalDiscountPercent > 0) {
         total -= (originalTotal * totalDiscountPercent);
         if (appliedClientDiscount > 0) discountText += `<div class="price-discount-text">${txtVip} (-${appliedClientDiscount * 100}%)</div>`;
-        if (appliedHoliday > 0) discountText += `<div class="price-discount-text">${txtHoliday} (-5%)</div>`;
+        if (appliedHoliday > 0) discountText += `<div class="price-discount-text">${txtHoliday} (-10%)</div>`;
         if (appliedPromoDevis > 0) discountText += `<div class="price-discount-text">${txtPromo} (-${appliedPromoDevis * 100}%)</div>`;
         if (conflict10) discountText += `<div class="price-min-alert" style="color: #e67e22; margin-top: 5px;">${txtConflict}</div>`;
 
@@ -1288,8 +1869,8 @@ function calculatePrice() {
     }
 
     window.currentTotalValue = total;
-    let txtAstuce = langKey === 'vi' ? "💡 Mẹo: Áp dụng mức tối thiểu hóa đơn 25,00 €. Hãy thêm dịch vụ khác." : (langKey === 'en' ? "💡 Tip: A minimum billing of 25.00 € applies. Add other services." : "💡 Astuce : Un minimum de facturation de 25,00 € s'applique. Ajoutez d'autres prestations.");
-    let mentionMinimum = (total > 0 && total < 25.00) ? `<div class="price-min-alert" style="margin-top:8px;">${txtAstuce}</div>` : "";
+    let txtAstuce = langKey === 'vi' ? "💡 Mẹo: Áp dụng mức tối thiểu hóa đơn 35,00 €. Hãy thêm dịch vụ khác." : (langKey === 'en' ? "💡 Tip: A minimum billing of 35.00 € applies. Add other services." : "💡 Astuce : Un minimum de facturation de 35,00 € s'applique. Ajoutez d'autres prestations.");
+    let mentionMinimum = (total > 0 && total < 35.00) ? `<div class="price-min-alert" style="margin-top:8px;">${txtAstuce}</div>` : "";
     
     const elAmount = document.getElementById('estimatedAmount');
     if (elAmount) {
@@ -1304,6 +1885,8 @@ function calculatePrice() {
 function openQuote(baseService) {
     vitrerieVisibleCount = {}; vitrerieIndexCount = {}; customVisibleCount = 0; customIndexCount = 0;
     planData = {}; activeServices = []; roomCounter = 0;
+    window.evtPendantData = { totalCost: 0, totalHours: 0, dayHours: 0, nightHours: 0, dayCost: 0, nightCost: 0 };
+    window.fraisDeplacementKilometrique = 0;
     
     window.promoDiscountDevis = 0;
     window.activePromoCodeDevis = "";
@@ -1335,6 +1918,16 @@ function openQuote(baseService) {
         if (langKey === 'vi') steps = ['<b>Số lượng xe:</b> Nhập số lượng theo kích thước.', '<b>Gói cước:</b> Chọn dịch vụ của bạn.', '<b>Lập kế hoạch:</b> Chọn ngày can thiệp.'];
         else if (langKey === 'en') steps = ['<b>Vehicle quantity:</b> Enter the number of vehicles.', '<b>Services:</b> Select your options.', '<b>Planning:</b> Choose an intervention date.'];
         else steps = ['<b>Vos véhicules :</b> Indiquez le nombre pour chaque gabarit.', '<b>Prestations :</b> Choisissez vos options (Pack ou À la carte).', '<b>Planification :</b> Choisissez la date d\'intervention.'];
+    } 
+    else if (baseService === 'sepulture') {
+        if (langKey === 'vi') steps = ['<b>Mộ:</b> Chọn loại mộ của bạn.', '<b>Số lượng:</b> Cho biết số lượng.', '<b>Dịch vụ:</b> Làm sạch, hoa...', '<b>Lập kế hoạch:</b> Nhấp vào "+ Lập kế hoạch".'];
+        else if (langKey === 'en') steps = ['<b>Graves:</b> Choose your grave type.', '<b>Quantity:</b> Indicate the number.', '<b>Services:</b> Cleaning, flowers...', '<b>Planning:</b> Click "+ Schedule".'];
+        else steps = ['<b>Sépultures :</b> Choisissez le type de monument.', '<b>Quantité :</b> Indiquez le nombre.', '<b>Options :</b> Nettoyage, fleurissement...', '<b>Planification :</b> Définissez la fréquence.'];
+    }
+    else if (baseService === 'evenements') {
+        if (langKey === 'vi') steps = ['<b>Quy mô:</b> Chọn diện tích phòng.', '<b>Tùy chọn:</b> Thêm vệ sinh Trước/Trong sự kiện hoặc vật tư tiêu hao.', '<b>Lập kế hoạch:</b> Chọn ngày can thiệp.'];
+        else if (langKey === 'en') steps = ['<b>Hall size:</b> Choose the formula according to area.', '<b>Options:</b> Add cleaning BEFORE/DURING event or hygiene consumables.', '<b>Planning:</b> Choose intervention dates.'];
+        else steps = ['<b>Surface :</b> Choisissez la formule selon la taille de votre salle.', '<b>Options :</b> Ajoutez le nettoyage AVANT/PENDANT ou la fourniture de consommables.', '<b>Planification :</b> Choisissez vos dates d\'intervention.'];
     }
 
     let guideHtml = `<div class="guide-remplissage"><strong>${guideTitle}</strong><div style="margin-top: 15px; display: flex; flex-direction: column; gap: 12px; color: #444;">`;
@@ -1521,6 +2114,160 @@ function addServiceToQuote(service) {
         html += `<div id="vehiculesSupplementairesContainer"></div>`;
         html += `<button type="button" class="btn-add-row" onclick="addCustomRowVehicule()" style="margin-top: 15px;">${btnAddVehicule}</button>`;
 
+    } else if(service === 'sepulture') {
+        let tSepulture = langKey === 'vi' ? '🪦 Bảo trì mộ' : (langKey === 'en' ? '🪦 Grave Maintenance' : '🪦 Entretien Sépultures');
+        let lblPrest = langKey === 'vi' ? 'DỊCH VỤ' : (langKey === 'en' ? 'SERVICE' : 'PRESTATION');
+        let lblQte = langKey === 'vi' ? 'SL' : (langKey === 'en' ? 'QTY' : 'QTÉ');
+        let lblPlan = langKey === 'vi' ? 'LỊCH' : (langKey === 'en' ? 'PLAN' : 'PLANIFICATION');
+        let ttPlan = langKey === 'vi' ? 'Ngày cụ thể hoặc định kỳ.' : (langKey === 'en' ? 'Specific or recurring date.' : 'Date précise ou récurrente.');
+
+        html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">${tSepulture}</h3>`;
+        
+        html += `
+        <div style="background-color: #eef3f8; border-left: 4px solid var(--bleu); padding: 10px 15px; margin-bottom: 15px; border-radius: 5px; font-size: 0.8rem; color: #333;">
+            ℹ️ <strong>Le prix comprend :</strong> Le désherbage, le nettoyage complet de la sépulture et des plaques. Le fleurissement est en option.
+        </div>
+        `;
+
+        html += `<div style="display: grid; grid-template-columns: 1fr 60px 140px; gap: 10px; padding: 0 10px; margin-bottom: 8px;">
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu); display:flex; align-items:center;">
+                        <span style="background: var(--vert); color: white; min-width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem; margin-right: 5px;">1</span>${lblPrest}
+                    </span>
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--bleu); display:flex; align-items:center; justify-content:center;">
+                        <span style="background: var(--vert); color: white; min-width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem; margin-right: 5px;">2</span>${lblQte}
+                    </span>
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--vert); text-align:center; display:flex; align-items:center; justify-content:center;">
+                        <span style="background: var(--vert); color: white; min-width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem; margin-right: 5px;">3</span>${lblPlan} <span class="help-bubble">?<span class="tooltip-text">${ttPlan}</span></span>
+                    </span>
+                </div>`;
+        
+        let txtSpontane = langKey === 'vi' ? 'Can thiệp tự phát :' : (langKey === 'en' ? 'Spontaneous intervention:' : 'Entretien Spontané (interventions ponctuelles) :');
+        html += `<div style="margin: 15px 0 10px 0; font-size: 0.85rem; font-weight: 900; color: var(--bleu); border-bottom: 2px solid var(--vert); padding-bottom: 5px; text-transform: uppercase;">${txtSpontane}</div>`;
+
+        const rows = [
+            {id:'sep_simple', n: langKey==='vi'?'Mộ đơn':(langKey==='en'?'Single grave':'Sépulture simple')},
+            {id:'sep_double', n: langKey==='vi'?'Mộ đôi':(langKey==='en'?'Double grave':'Sépulture double')},
+            {id:'sep_caveau', n: langKey==='vi'?'Hầm mộ / Nhà nguyện':(langKey==='en'?'Vault / Chapel':'Caveau / Chapelle')},
+            {id:'sep_columbarium', n: langKey==='vi'?'Hộc lưu tro cốt':(langKey==='en'?'Columbarium':'Columbarium')},
+            {id:'sep_terre', n: langKey==='vi'?'Mộ đất':(langKey==='en'?'Soil grave':'Tombe pleine terre')}
+        ];
+        rows.forEach(r => html += generateRowHtml(r.id, r.n));
+
+        let txtOptions = langKey === 'vi' ? 'Tùy chọn bổ sung :' : (langKey === 'en' ? 'Additional options:' : 'Options supplémentaires (personnalisation) :');
+        html += `<div style="margin: 20px 0 10px 0; font-size: 0.85rem; font-weight: 900; color: var(--bleu); border-bottom: 2px solid var(--vert); padding-bottom: 5px; text-transform: uppercase;">${txtOptions}</div>`;
+
+        html += generateSepultureFlowerRowHtml('sep_fleurs_art', 'Fleurissement (Fleurs artificielles)', 'artificielles');
+        html += generateSepultureFlowerRowHtml('sep_fleurs_vrai', 'Fleurissement (Vraies fleurs)', 'vraies');
+        html += generateRowHtml('sep_pots_acc', 'Nettoyage pots et accessoires plaque ect... supp.');
+
+        let txtAbo = langKey === 'vi' ? 'Đăng ký (Giá mỗi tháng) :' : (langKey === 'en' ? 'Subscriptions (Price per month):' : 'Abonnements (contrats réguliers) :');
+        html += `<div style="margin: 25px 0 10px 0; font-size: 0.85rem; font-weight: 900; color: var(--bleu); border-bottom: 2px solid var(--vert); padding-bottom: 5px; text-transform: uppercase;">${txtAbo}</div>`;
+        
+        const abos = [
+            {id:'sep_sub_4', n: langKey==='vi'?'4 lần/năm (69 €/tháng)':(langKey==='en'?'4 interventions (69 €/mo)':'Abonnement 4 interventions (69 €/mois)')},
+            {id:'sep_sub_6', n: langKey==='vi'?'6 lần/năm (59 €/tháng)':(langKey==='en'?'6 interventions (59 €/mo)':'Abonnement 6 interventions (59 €/mois)')},
+            {id:'sep_sub_12', n: langKey==='vi'?'12 lần/năm (89 €/tháng)':(langKey==='en'?'12 interventions (89 €/mo)':'Abonnement 12 interventions (89 €/mois)')},
+            {id:'sep_sub_24', n: langKey==='vi'?'24 lần/năm (119 €/tháng)':(langKey==='en'?'24 interventions (119 €/mo)':'Abonnement 24 interventions (119 €/mois)')}
+        ];
+        abos.forEach(r => html += generateRowHtml(r.id, r.n));
+
+    } else if(service === 'evenements') {
+        let tEvt = langKey === 'vi' ? '🎉 Dọn dẹp sau sự kiện' : (langKey === 'en' ? '🎉 Post-Event Cleaning' : '🎉 Remise en État de Salle & Événements');
+        let infoTxt = langKey === 'vi' ? '🔒 <strong>Bao gồm:</strong> Kiểm tra hình ảnh trước/sau sự kiện (Bảo vệ tiền đặt cọc) + Dọn dẹp toàn bộ SƠ SỰ KIỆN. Thiết bị, sản phẩm & túi rác được CUNG CẤP. Giấy vệ sinh/xà phòng không bao gồm mặc định.' :
+                      (langKey === 'en' ? '🔒 <strong>Included:</strong> Pre/Post event photo inventory (Deposit protection) + Full AFTER-EVENT cleaning. Pro equipment, products & trash bags PROVIDED. Toilet paper/soap not included by default.' :
+                      '🔒 <strong>INCLUS D\'OFFICE :</strong><br>• 📸 <strong>États des lieux photo AVANT et APRÈS</strong> (pour vous protéger et garantir votre caution contre tout litige).<br>• 🧹 <strong>Nettoyage complet APRÈS l\'événement</strong> (sols, sanitaires, dégraissage zone traiteur/cuisine).<br>• 🧼 <strong>Matériel & Produits INCLUS :</strong> Sacs poubelles, produits professionnels et matériel pro fournis.<br>• 🧻 <em>Note : Les consommables d\'hygiène (papier toilette, savon, essuie-mains) sont à la charge du client sauf si option souscrite ci-dessous.</em>');
+
+        html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">${tEvt}</h3>`;
+        html += `<div style="background-color: #eef3f8; border-left: 4px solid var(--vert); padding: 12px 15px; margin-bottom: 15px; border-radius: 5px; font-size: 0.8rem; color: #333; line-height: 1.5;">${infoTxt}</div>`;
+
+        let txtCatSalle = langKey === 'vi' ? '1. Quy mô phòng (Đã bao gồm Dọn dẹp SAU sự kiện) *' : (langKey === 'en' ? '1. Hall Size (AFTER Cleaning Included) *' : '1. Taille de la salle (Nettoyage APRÈS inclus) *');
+        let txtPetite = langKey === 'vi' ? 'Phòng < 100 m² (Sinh nhật, Lễ rửa tội, Cousinade)' : (langKey === 'en' ? 'Hall < 100 m² (Birthday, Baptism, Family reunion)' : 'Salle < 100 m² (Anniversaire, Baptême, Cousinade)');
+        let txtGrande = langKey === 'vi' ? 'Phòng lớn / Khu nghỉ dưỡng > 100 m² (Đám cưới, Bữa ăn công ty)' : (langKey === 'en' ? 'Large Hall / Estate > 100 m² (Wedding, Corporate meal)' : 'Grande Salle / Domaine > 100 m² (Mariage, Repas pro)');
+
+        html += `<div style="font-size:0.85rem; font-weight:900; color:var(--bleu); margin-bottom:10px; text-transform:uppercase;">${txtCatSalle}</div>`;
+        html += generateRowHtml('evt_salle_petite', txtPetite);
+        html += generateRowHtml('evt_salle_grande', txtGrande);
+
+        let txtCatOptions = langKey === 'vi' ? '2. Tùy chọn bổ sung' : (langKey === 'en' ? '2. Additional Options' : '2. Options Supplémentaires');
+        let txtAvant = langKey === 'vi' ? 'Tùy chọn Dọn dẹp & Chuẩn bị TRƯỚC sự kiện (70 €)' : (langKey === 'en' ? 'Cleaning & Preparation BEFORE event option (€70)' : 'Option Nettoyage & Préparation AVANT l\'événement (70 €)');
+        let txtConsommablesOpt = langKey === 'vi' ? 'Option Cung cấp vật tư tiêu hao (Giấy vệ sinh, xà phòng, khăn lau tay)' : (langKey === 'en' ? 'Hygiene consumables supply option (Toilet paper, soap, paper towels)' : 'Option Fourniture des consommables hygiène (Papier toilette, savon, essuie-mains)');
+        let txtPendantTitle = langKey === 'vi' ? 'Tùy chọn Có mặt & Dọn dẹp TRONG KHI diễn ra sự kiện' : (langKey === 'en' ? 'Presence & Cleaning DURING the event option' : 'Option Présence & Nettoyage PENDANT l\'événement');
+        let txtExt = langKey === 'vi' ? 'Vệ sinh sân thượng & ngoài trời (70 €)' : (langKey === 'en' ? 'Terrace & outdoor cleaning (€70)' : 'Nettoyage terrasse & extérieurs (70 €)');
+        let txtPoubelles = langKey === 'vi' ? 'Quản lý & vận chuyển rác thải (70 €)' : (langKey === 'en' ? 'Waste management & disposal (€70)' : 'Gestion & évacuation des déchets (70 €)');
+
+        html += `<div style="font-size:0.85rem; font-weight:900; color:var(--bleu); margin:15px 0 10px 0; text-transform:uppercase; border-top:1px dashed #ccc; padding-top:10px;">${txtCatOptions}</div>`;
+        
+        // Option Avant (Checkbox + message 2h)
+        html += `
+        <div class="quote-row-item" style="display:flex; flex-direction:column; align-items:flex-start; gap:6px; background:var(--gris); padding:12px; border-radius:10px; margin-bottom:8px; border:1px solid #e1e8ef;">
+            <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+                <label style="font-size:0.8rem; font-weight:bold; color:var(--bleu); cursor:pointer;" for="cb_evt_nettoyage_avant">${txtAvant}</label>
+                <input type="checkbox" id="cb_evt_nettoyage_avant" onchange="calculatePrice()" style="width:20px; height:20px; cursor:pointer;">
+            </div>
+            <p style="font-size:0.7rem; color:#e67e22; margin:0; font-weight:bold;">
+                ⚠️ Espace dégagé requis au minimum 2h avant le début de l'événement.
+            </p>
+        </div>
+        `;
+
+        // Consommables
+        html += `
+        <div class="quote-row-item" style="display:flex; justify-content:space-between; align-items:center; background:var(--gris); padding:12px; border-radius:10px; margin-bottom:8px; border:1px solid #e1e8ef;">
+            <label style="font-size:0.8rem; font-weight:bold; color:var(--bleu);">🧻 Fourniture (Papier toilette, savon mains, essuie-mains)</label>
+            <select id="cons_select_evt" onchange="calculatePrice()" style="padding:6px; border-radius:5px; border:1px solid #ccc; font-weight:bold; color:var(--bleu);">
+                <option value="client">À votre charge</option>
+                <option value="osp">Fournis par O.S.P+ (+29 €)</option>
+            </select>
+        </div>
+        `;
+
+        // Option Pendant (Saisie Heure Début + Heure Fin avec décomposition dynamique Jour/Nuit)
+        html += `
+        <div class="quote-row-item" id="row_evt_pendant_box" style="display:flex; flex-direction:column; align-items:flex-start; gap:10px; background:var(--gris); padding:12px; border-radius:10px; margin-bottom:8px; border:1px solid #e1e8ef;">
+            <label style="font-size:0.8rem; font-weight:bold; color:var(--bleu);">${txtPendantTitle}</label>
+            
+            <div style="background:#eef3f8; padding:8px 12px; border-radius:6px; font-size:0.7rem; color:#444; width:100%; border-left:3px solid var(--bleu); box-sizing:border-box;">
+                📌 <strong>Barème d'intervention :</strong><br>
+                • ☀️ <strong>JOUR (06h00 - 21h00) :</strong> 25 €/h<br>
+                • 🌙 <strong>NUIT (21h00 - 06h00) :</strong> 30 €/h (+20% majoré)
+            </div>
+
+            <div style="display:flex; gap:10px; align-items:center; width:100%; flex-wrap:wrap;">
+                <div style="flex:1; min-width:120px;">
+                    <label style="font-size:0.7rem; color:#666; font-weight:bold;">Heure de début :</label>
+                    <input type="time" id="evt_start_time" onchange="updateEvtPendantCalculations()" style="width:100%; padding:6px; border-radius:4px; border:1px solid #ccc; font-size:0.8rem;">
+                </div>
+                <div style="flex:1; min-width:120px;">
+                    <label style="font-size:0.7rem; color:#666; font-weight:bold;">Heure de fin :</label>
+                    <input type="time" id="evt_end_time" onchange="updateEvtPendantCalculations()" style="width:100%; padding:6px; border-radius:4px; border:1px solid #ccc; font-size:0.8rem;">
+                </div>
+            </div>
+
+            <!-- Encadré résultat dynamique -->
+            <div id="evt_pendant_result_box" style="display:none; background:#fff8e1; border:1px solid #ffc107; padding:10px 12px; border-radius:6px; font-size:0.75rem; color:#d35400; width:100%; box-sizing:border-box; line-height:1.4;"></div>
+
+            <p style="font-size:0.7rem; color:#666; margin:0; font-style:italic;">
+                ℹ️ Maintien de propreté (sanitaires, poubelles, verres) pendant votre soirée. ⚠️ <em>En cas de dépassement sur place, toute heure commencée supplémentaire sera facturée 12 €.</em>
+            </p>
+        </div>
+        `;
+
+        // Option Terrasse (Checkbox)
+        html += `
+        <div class="quote-row-item" style="display:flex; justify-content:space-between; align-items:center; background:var(--gris); padding:12px; border-radius:10px; margin-bottom:8px; border:1px solid #e1e8ef;">
+            <label style="font-size:0.8rem; font-weight:bold; color:var(--bleu); cursor:pointer;" for="cb_evt_ext_terrasse">${txtExt}</label>
+            <input type="checkbox" id="cb_evt_ext_terrasse" onchange="calculatePrice()" style="width:20px; height:20px; cursor:pointer;">
+        </div>
+        `;
+
+        // Option Poubelles (Checkbox)
+        html += `
+        <div class="quote-row-item" style="display:flex; justify-content:space-between; align-items:center; background:var(--gris); padding:12px; border-radius:10px; margin-bottom:8px; border:1px solid #e1e8ef;">
+            <label style="font-size:0.8rem; font-weight:bold; color:var(--bleu); cursor:pointer;" for="cb_evt_poubelles">${txtPoubelles}</label>
+            <input type="checkbox" id="cb_evt_poubelles" onchange="calculatePrice()" style="width:20px; height:20px; cursor:pointer;">
+        </div>
+        `;
+
     } else if(service === 'bureaux') {
         let tBureaux = langKey === 'vi' ? '🏢 Văn phòng & Cơ sở' : (langKey === 'en' ? '🏢 Offices & Premises' : '🏢 Bureaux & Locaux');
         let pText = langKey === 'vi' ? '<strong>Cấu trúc không gian của bạn:</strong> Chọn một tầng, sau đó thêm các phòng. <span class="help-bubble">?<span class="tooltip-text">Bước này giúp chúng tôi hiểu rõ sơ đồ bố trí chính xác cơ sở của bạn.</span></span>' : (langKey === 'en' ? '<strong>Structure your spaces:</strong> Choose a level, then add the rooms. <span class="help-bubble">?<span class="tooltip-text">This step allows us to understand the exact layout of your premises.</span></span>' : '<strong>Structurez vos espaces :</strong> Choisissez un niveau, puis ajoutez les pièces. <span class="help-bubble">?<span class="tooltip-text">Cette étape nous permet de comprendre l\'agencement exact de vos locaux.</span></span>');
@@ -1528,9 +2275,17 @@ function addServiceToQuote(service) {
         pText = `<span style="background: var(--vert); color: white; min-width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; margin-right: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">1</span>` + pText;
         
         let btnAddLevel = langKey === 'vi' ? '<span>+</span> Thêm tầng hoặc khu vực ngoại cảnh' : (langKey === 'en' ? '<span>+</span> Add a level or outdoor area' : '<span>+</span> Ajouter un niveau ou espace extérieur');
+        let searchPlaceholder = langKey === 'vi' ? '🔍 Tìm kiếm một phòng (Ví dụ: Nhà vệ sinh, Tầng 3...)' : (langKey === 'en' ? '🔍 Search for a room (Ex: Toilet, Floor 3...)' : '🔍 Rechercher une pièce (ex: Toilette, Bureau, Étage 3...)');
 
         html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">${tBureaux}</h3>`;
-        html += `<p style="font-size:0.85rem; color:var(--bleu); margin-bottom:15px; background:#eef3f8; padding:10px; border-radius:8px; border-left:4px solid var(--bleu); display:flex; align-items:center;">${pText}</p><div id="levelsContainer"></div><button type="button" class="btn-add-row" onclick="openLevelModal()" style="margin-top: 15px;">${btnAddLevel}</button>`;
+        html += `<p style="font-size:0.85rem; color:var(--bleu); margin-bottom:15px; background:#eef3f8; padding:10px; border-radius:8px; border-left:4px solid var(--bleu); display:flex; align-items:center;">${pText}</p>`;
+        
+        html += `<div id="searchContainer" style="margin-bottom: 15px;">
+            <input type="text" id="roomSearchInput" placeholder="${searchPlaceholder}" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef; font-size: 0.9rem; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--vert)'" onblur="this.style.borderColor='#e1e8ef'" oninput="filterRooms()">
+            <div id="searchCreateBtnContainer" style="margin-top:10px; display:none; text-align:center;"></div>
+        </div>`;
+
+        html += `<div id="levelsContainer"></div><button type="button" class="btn-add-row" onclick="openLevelModal()" style="margin-top: 15px;">${btnAddLevel}</button>`;
     }
     
     html += `</div>`;
@@ -1563,7 +2318,9 @@ function updateCrossSellButtons() {
         { id: 'vitrerie', name_fr: '🪟 Vitrerie', name_en: '🪟 Windows', name_vi: '🪟 Lau kính' }, 
         { id: 'shampouinage', name_fr: '🛋️ Textiles', name_en: '🛋️ Textiles', name_vi: '🛋️ Giặt vải' }, 
         { id: 'vehicule', name_fr: '🚗 Véhicule', name_en: '🚗 Vehicle', name_vi: '🚗 Xe hơi' }, 
-        { id: 'bureaux', name_fr: '🏢 Locaux', name_en: '🏢 Offices', name_vi: '🏢 Văn phòng' } 
+        { id: 'bureaux', name_fr: '🏢 Locaux', name_en: '🏢 Offices', name_vi: '🏢 Văn phòng' },
+        { id: 'sepulture', name_fr: '🪦 Sépultures', name_en: '🪦 Graves', name_vi: '🪦 Mộ' },
+        { id: 'evenements', name_fr: '🎉 Salle/Fêtes', name_en: '🎉 Events', name_vi: '🎉 Sự kiện' }
     ];
     
     let missingServices = availableServices.filter(s => !activeServices.includes(s.id));
@@ -1743,6 +2500,59 @@ async function submitInteractiveForm() {
                 }
             }
 
+            if (activeServices.includes('sepulture')) {
+                let totalSep = 0;
+                let ids = ['qty_sep_simple', 'qty_sep_double', 'qty_sep_caveau', 'qty_sep_columbarium', 'qty_sep_terre', 'qty_sep_fleurs_art', 'qty_sep_fleurs_vrai', 'qty_sep_pots_acc', 'qty_sep_sub_4', 'qty_sep_sub_6', 'qty_sep_sub_12', 'qty_sep_sub_24'];
+                let sepInputs = [];
+                ids.forEach(id => {
+                    let el = document.getElementById(id);
+                    if (el) { sepInputs.push(el); totalSep += (parseFloat(el.value) || 0); }
+                });
+                if (totalSep === 0 && sepInputs.length > 0) {
+                    sepInputs.forEach(input => {
+                        input.style.border = "2px solid #e74c3c";
+                        input.style.backgroundColor = "#fadbd8";
+                    });
+                    sepInputs[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => sepInputs[0].focus(), 500);
+                    return;
+                } else {
+                    sepInputs.forEach(input => {
+                        input.style.border = "1px solid #ccc";
+                        input.style.backgroundColor = "white";
+                    });
+                }
+            }
+
+            if (activeServices.includes('evenements')) {
+                let totalEvt = 0;
+                let qPetite = parseInt(document.getElementById('qty_evt_salle_petite')?.value) || 0;
+                let qGrande = parseInt(document.getElementById('qty_evt_salle_grande')?.value) || 0;
+                let cbAvant = document.getElementById('cb_evt_nettoyage_avant')?.checked;
+                let cbTerrasse = document.getElementById('cb_evt_ext_terrasse')?.checked;
+                let cbPoubelles = document.getElementById('cb_evt_poubelles')?.checked;
+                let consEvt = document.getElementById('cons_select_evt')?.value === 'osp';
+                let pendantCost = window.evtPendantData ? window.evtPendantData.totalCost : 0;
+
+                totalEvt = qPetite + qGrande + (cbAvant?1:0) + (cbTerrasse?1:0) + (cbPoubelles?1:0) + (consEvt?1:0) + pendantCost;
+
+                if (totalEvt === 0) {
+                    let pInput = document.getElementById('qty_evt_salle_petite');
+                    if (pInput) {
+                        pInput.style.border = "2px solid #e74c3c";
+                        pInput.style.backgroundColor = "#fadbd8";
+                        pInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                } else {
+                    let pInput = document.getElementById('qty_evt_salle_petite');
+                    if(pInput) {
+                        pInput.style.border = "1px solid #ccc";
+                        pInput.style.backgroundColor = "white";
+                    }
+                }
+            }
+
             let missingQty = false;
             let firstMissingQtyElement = null;
 
@@ -1830,24 +2640,24 @@ async function submitInteractiveForm() {
             let prixFinalAEnvoyer = elAmountText[elAmountText.length - 1]; 
             let majorationAppliquee = false;
             
-            if (window.currentTotalValue > 0 && window.currentTotalValue < 25) {
+            if (window.currentTotalValue > 0 && window.currentTotalValue < 35) {
                 let messageAlerte = "";
                 if (langKey === 'vi') {
-                    messageAlerte = "⚠️ Ước tính chi tiết của bạn là " + window.currentTotalValue.toFixed(2) + " €.<br><br>Tuy nhiên, các dịch vụ của chúng tôi áp dụng mức tối thiểu hóa đơn là 25,00 € (để chi trả chi phí di chuyển và thiết bị).<br><br>💡 MẸO: Bạn có thể hủy và thêm các dịch vụ khác (Lau kính, Sô pha...) để đạt mốc 25 € này và tối ưu hóa chi phí bưu giá!<br><br>Bạn có muốn gửi yêu cầu với mức giá trọn gói tối thiểu là 25,00 € không?";
+                    messageAlerte = "⚠️ Ước tính chi tiết của bạn là " + window.currentTotalValue.toFixed(2) + " €.<br><br>Tuy nhiên, các dịch vụ của chúng tôi áp dụng mức tối thiểu hóa đơn là 35,00 € (để chi trả chi phí di chuyển và thiết bị).<br><br>💡 MẸO: Bạn có thể hủy và thêm các dịch vụ khác (Lau kính, Sô pha...) để đạt mốc 35 € này và tối ưu hóa chi phí bưu giá!<br><br>Bạn có muốn gửi yêu cầu với mức giá trọn gói tối thiểu là 35,00 € không?";
                 } else if (langKey === 'en') {
-                    messageAlerte = "⚠️ Your detailed estimate is " + window.currentTotalValue.toFixed(2) + " €.<br><br>However, our interventions are subject to a minimum billing of 25.00 € (to cover travel and equipment expenses).<br><br>💡 TIP: You can cancel and add other services (Windows, Sofas...) to reach this 25 € mark and get full value!<br><br>Do you still want to send the request at the flat rate of 25.00 €?";
+                    messageAlerte = "⚠️ Your detailed estimate is " + window.currentTotalValue.toFixed(2) + " €.<br><br>However, our interventions are subject to a minimum billing of 35.00 € (to cover travel and equipment expenses).<br><br>💡 TIP: You can cancel and add other services (Windows, Sofas...) to reach this 35 € mark and get full value!<br><br>Do you still want to send the request at the flat rate of 35.00 €?";
                 } else {
-                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.<br><br>Cependant, nos interventions sont soumises à un minimum de facturation de 25,00 € (pour couvrir le déplacement et le matériel).<br><br>💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 25 € et rentabiliser votre devis !<br><br>Voulez-vous quand même envoyer la demande au prix forfaitaire de 25,00 € ?";
+                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.<br><br>Cependant, nos interventions sont soumises à un minimum de facturation de 35,00 € (pour couvrir le déplacement et le matériel).<br><br>💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 35 € et rentabiliser votre devis !<br><br>Voulez-vous quand même envoyer la demande au prix forfaitaire de 35,00 € ?";
                 }
                 
                 let clientAccepte = await askCustomQuestion("⚠️ Minimum de facturation", messageAlerte, [
-                    { text: langKey==='en'?"Yes, apply flat rate (25€)":"Oui, appliquer le forfait (25€)", value: true, style: "background: var(--vert); color: white;" },
+                    { text: langKey==='en'?"Yes, apply flat rate (35€)":"Oui, appliquer le forfait (35€)", value: true, style: "background: var(--vert); color: white;" },
                     { text: langKey==='en'?"No, add options":"Non, ajouter des options", value: false, style: "background: #e1e8ef; color: var(--bleu);" }
                 ]);
 
                 if (!clientAccepte) return;
                 majorationAppliquee = true;
-                prixFinalAEnvoyer = langKey === 'vi' ? "25.00 € (Áp dụng mức tối thiểu trọn gói)" : (langKey === 'en' ? "25.00 € (Minimum flat rate applied)" : "25.00 € (Forfait minimum appliqué)");
+                prixFinalAEnvoyer = langKey === 'vi' ? "35.00 € (Áp dụng mức tối thiểu trọn gói)" : (langKey === 'en' ? "35.00 € (Minimum flat rate applied)" : "35.00 € (Forfait minimum appliqué)");
             }
 
             let statut = "";
@@ -1945,6 +2755,71 @@ async function submitInteractiveForm() {
                 }
             }
 
+            let aDesSepultures = false;
+            const fixesIdsSep = {
+                'sep_simple': 'Sépulture simple',
+                'sep_double': 'Sépulture double',
+                'sep_caveau': 'Caveau / Chapelle',
+                'sep_columbarium': 'Columbarium',
+                'sep_terre': 'Tombe pleine terre',
+                'sep_fleurs_art': 'Fleurissement (Fleurs artificielles)',
+                'sep_fleurs_vrai': 'Fleurissement (Vraies fleurs)',
+                'sep_pots_acc': 'Nettoyage pots et accessoires plaque ect... supp.',
+                'sep_sub_4': 'Abonnement 4 interventions (69 €/mois)',
+                'sep_sub_6': 'Abonnement 6 interventions (59 €/mois)',
+                'sep_sub_12': 'Abonnement 12 interventions (89 €/mois)',
+                'sep_sub_24': 'Abonnement 24 interventions (119 €/mois)'
+            };
+
+            for (let id in fixesIdsSep) {
+                let input = document.getElementById('qty_' + id);
+                let q = parseInt(input ? input.value : 0) || 0;
+                if (q > 0) {
+                    if (!aDesSepultures) { recap += "🪦 ENTRETIEN SÉPULTURES :\n"; aDesSepultures = true; }
+                    let detailFleurs = "";
+                    if (id === 'sep_fleurs_art' || id === 'sep_fleurs_vrai') {
+                        let selectFleur = document.getElementById('flower_choice_' + id);
+                        if (selectFleur) {
+                            detailFleurs = ` (Variété choisie : ${selectFleur.options[selectFleur.selectedIndex].text})`;
+                        }
+                    }
+                    recap += `  - ${fixesIdsSep[id]}${detailFleurs} : ${q}\n    Planning : ${getPlanningRecap(planData[id])}\n`;
+                }
+            }
+            if (aDesSepultures) recap += "\n";
+
+            let aDesEvts = false;
+            let qPetite = parseInt(document.getElementById('qty_evt_salle_petite')?.value) || 0;
+            let qGrande = parseInt(document.getElementById('qty_evt_salle_grande')?.value) || 0;
+            let cbAvant = document.getElementById('cb_evt_nettoyage_avant')?.checked;
+            let cbTerrasse = document.getElementById('cb_evt_ext_terrasse')?.checked;
+            let cbPoubelles = document.getElementById('cb_evt_poubelles')?.checked;
+            let consEvt = document.getElementById('cons_select_evt');
+
+            if (qPetite > 0 || qGrande > 0 || cbAvant || cbTerrasse || cbPoubelles || (consEvt && consEvt.value === 'osp') || (window.evtPendantData && window.evtPendantData.totalCost > 0)) {
+                recap += "🎉 REMISE EN ÉTAT DE SALLE & ÉVÉNEMENTS :\n  ✔ INCLUS D'OFFICE : États des lieux photo AVANT/APRÈS + Matériel, produits et sacs poubelles.\n";
+                aDesEvts = true;
+                
+                if (qPetite > 0) recap += `  - Remise en état Salle < 100 m² (Nettoyage APRÈS inclus) : x${qPetite}\n`;
+                if (qGrande > 0) recap += `  - Remise en état Grande Salle / Domaine > 100 m² (Nettoyage APRÈS inclus) : x${qGrande}\n`;
+                if (cbAvant) recap += `  - Option Nettoyage & Préparation AVANT l'événement (70 €) : OUI\n    ⚠️ Espace dégagé requis 2h avant le début.\n`;
+                if (consEvt && consEvt.value === 'osp') recap += `  - Option Fourniture des consommables hygiène (Papier toilette, savon, essuie-mains) : OUI (+29 €)\n`;
+
+                if (window.evtPendantData && window.evtPendantData.totalCost > 0) {
+                    let bd = window.evtPendantData;
+                    let startVal = document.getElementById('evt_start_time')?.value;
+                    let endVal = document.getElementById('evt_end_time')?.value;
+                    recap += `  - Option Présence & Nettoyage PENDANT l'événement : Durée ${bd.totalHours.toFixed(2).replace(/\.00$/,'')}h (de ${startVal} à ${endVal})\n`;
+                    if (bd.dayHours > 0) recap += `    • ${bd.dayHours.toFixed(2).replace(/\.00$/,'')}h Jour (06h-21h à 25€/h) = ${bd.dayCost.toFixed(2)} €\n`;
+                    if (bd.nightHours > 0) recap += `    • ${bd.nightHours.toFixed(2).replace(/\.00$/,'')}h Nuit (21h-06h à 30€/h [+20%]) = ${bd.nightCost.toFixed(2)} €\n`;
+                    recap += `    ⚠️ Clause dépassement : +12 € par heure commencée supplémentaire si dépassement sur place.\n`;
+                }
+
+                if (cbTerrasse) recap += `  - Option Nettoyage terrasse & extérieurs (70 €) : OUI\n`;
+                if (cbPoubelles) recap += `  - Option Gestion & évacuation des déchets (70 €) : OUI\n`;
+                recap += "\n";
+            }
+
             let aDesLocaux = false;
             let recapParNiveau = {}; 
 
@@ -2029,6 +2904,9 @@ async function submitInteractiveForm() {
             }
 
             recap += `\n--- INFORMATIONS FINANCIÈRES ---\nBase de calcul initiale : ${window.originalTotalValue.toFixed(2)} €\n`;
+            if (window.fraisDeplacementKilometrique > 0) {
+                recap += `🚗 Frais de déplacement ajoutés : +${window.fraisDeplacementKilometrique.toFixed(2)} € (Surcoût hors 30 km inclus)\n`;
+            }
             
             let conflict10 = false;
             let finalPromoDevis = window.promoDiscountDevis;
@@ -2040,16 +2918,16 @@ async function submitInteractiveForm() {
 
             if (finalClientDiscount > 0) recap += `🎁 Remise Client VIP Fidélité (${finalClientDiscount * 100}%) active via Code : ${window.activeClientCode}\n`;
             if (finalPromoDevis > 0) recap += `🎁 Code Promo de validation (${finalPromoDevis * 100}%) appliqué avec le code : ${window.activePromoCodeDevis}\n`;
-            if (window.holidayPromoActive) recap += `🎁 Promo Jour Férié (5%) appliquée (Contrat final à signer sous 15 jours)\n`;
+            if (window.holidayPromoActive) recap += `🎁 Promo Jour Férié (10%) appliquée (Contrat final à signer sous 15 jours)\n`;
             if (conflict10) recap += `⚠️ Un cumul de deux offres à 10% a été détecté et bloqué conformément à la politique tarifaire.\n`;
             
             let totalPercent = finalClientDiscount + finalPromoDevis + (window.holidayPromoActive ? 0.05 : 0);
             if (totalPercent > 0) recap += `✅ TOTAL DES REMISES CUMULÉES EXTRAITES : ${Math.round(totalPercent * 100)}%\n`;
             recap += `Prix final proposé au client : ${prixFinalAEnvoyer}\n`;
-            if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 25,00 € car son panier initial était trop faible.\n`;
+            if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 35,00 € car son panier initial était trop faible.\n`;
 
             pendingGooglePayload = {
-                "Date": new Date().toLocaleString('fr-FR'),
+                "Date": getSimulatedDate().toLocaleString('fr-FR'),
                 "Session ID": "WEB_" + Date.now(),
                 "Nom Client": (statut === "Entreprise" && document.getElementById('nomEntreprise').value) ? document.getElementById('nomEntreprise').value : form.nom.value,
                 "Prénom Client": form.prenom.value,
@@ -2079,7 +2957,7 @@ async function submitInteractiveForm() {
             if (window.activeClientCode || window.activePromoCodeDevis) {
                 let codeUti = window.activeClientCode || window.activePromoCodeDevis;
                 pendingClientCodeAlert = {
-                    alerte_message: `⚠️ ALERTE IMPORTANTE :\n\nLe code de remise "${codeUti}" vient d'être utilisé par ${form.nom.value} ${form.prenom.value} (Email: ${form.email.value}, Tél: ${form.telephone ? form.telephone.value : "Non renseigné"}).\n\nSi ce code est à usage unique, n'oubliez pas d'ajouter la mention "-FIN" à côté du code dans votre fichier codes.js.`,
+                    alerte_message: `⚠️ ALERTE IMPORTANTE :\n\nLe code de remise "${codeUti}" vient d'être utilisé par ${form.nom.value} ${form.prenom.value} (Email : ${form.email.value}, Tél : ${form.telephone ? form.telephone.value : "Non renseigné"}).\n\nSi ce code est à usage unique, n'oubliez pas d'ajouter la mention "-FIN" à côté du code dans votre fichier codes.js.`,
                     code_utilise: codeUti
                 };
             } else {
@@ -2159,7 +3037,7 @@ function confirmAndSendQuote() {
         body: JSON.stringify(pendingGooglePayload) 
     })
     .then(res => console.log("✅ Données envoyées vers Google Drive pour création du PDF"))
-    .catch(e => console.error("Erreur d'envoi vers Google:", e));
+    .catch(e => console.error("Erreur d'envoi vers Google :", e));
 
     emailjs.send('service_wfrbr4e', 'template_oncrl1l', pendingEmailParams)
     .then(() => {
@@ -2179,7 +3057,7 @@ function confirmAndSendQuote() {
         surchargeMessage.innerHTML = `
             <div style="background: #fdf8e4; border-left: 5px solid var(--vert); padding: 25px; border-radius: 8px; text-align: center; margin-top: 20px; animation: fadeInDown 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
                 <h3 style="color: var(--bleu); margin-bottom: 15px; font-size: 1.4rem;">🔥 Victime de notre succès !</h3>
-                <p style="color: #444; font-size: 1rem; margin-bottom: 15px; line-height: 1.5;">En raison d'un <strong>très grand nombre de demandes de devis</strong> aujourd'hui, notre systeme automatique est temporairement saturé.</p>
+                <p style="color: #444; font-size: 1rem; margin-bottom: 15px; line-height: 1.5;">En raison d'un <strong>très grand nombre de demandes de devis</strong> aujourd'hui, notre système automatique est temporairement saturé.</p>
                 <p style="color: #444; font-size: 1rem; margin-bottom: 20px;">Pas d'inquiétude, votre estimation (<strong>${pendingEmailParams.prix}</strong>) a bien été calculée ! Pour ne pas perdre votre demande et la traiter en priorité, contactez-moi directement :</p>
                 <a href="mailto:alexandre.jonot@ospplus.com?subject=Validation devis prioritaire OSP+ - ${pendingEmailParams.prix}" style="display: inline-block; background: var(--vert); color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; transition: transform 0.2s;">✉️ alexandre.jonot@ospplus.com</a>
                 <p style="color: var(--bleu); font-weight: 800; font-size: 1.1rem; margin-top: 5px;">📞 Ou par téléphone au 07 45 02 76 24</p>
@@ -2189,16 +3067,6 @@ function confirmAndSendQuote() {
 }
 
 function closeQuote() { document.getElementById('quoteModal').style.display = "none"; }
-
-window.onclick = function(e) { 
-    if(e.target.id === 'quoteModal') closeQuote(); 
-    if(e.target.id === 'clientModal') closeClientModal(); 
-    if(e.target.id === 'mentionsModal') closeMentions(); 
-    if(e.target.id === 'levelModal') closeLevelModal();
-    if(e.target.id === 'planningModal') document.getElementById('planningModal').style.display = "none";
-    if(e.target.id === 'carteModal') closeCarteModal();
-    if(e.target.id === 'imageModal') closeImageModal(); 
-}
 
 function initDynamicSliders() {
     document.querySelectorAll('.faq-card, .review-card').forEach(container => {
@@ -2247,10 +3115,30 @@ function printCarte() {
 }
 
 function gererEtiquettesNouveautes() {
-    const badges = document.querySelectorAll('.dynamic-badge');
-    if (badges.length === 0) return;
-    const dateActuelle = new Date(), anneeEnCours = dateActuelle.getFullYear(), dateLancement = new Date(anneeEnCours, 7, 15); 
-    badges.forEach(badge => { badge.innerText = (dateActuelle >= dateLancement) ? "Nouveau service" : "Dispo le 15 Août"; });
+    const dateActuelle = getSimulatedDate();
+    const anneeEnCours = dateActuelle.getFullYear();
+
+    const badgesAout = document.querySelectorAll('.dynamic-badge');
+    if (badgesAout.length > 0) {
+        const dateLancementAout = new Date(anneeEnCours, 7, 15); 
+        badgesAout.forEach(badge => { 
+            badge.innerText = (dateActuelle >= dateLancementAout) ? "Nouveau service" : "Dispo le 15 Août"; 
+        });
+    }
+
+    const badgesSept = document.querySelectorAll('.dynamic-badge-sept');
+    if (badgesSept.length > 0) {
+        const dateLancementSept = new Date(anneeEnCours, 8, 1); 
+        badgesSept.forEach(badge => { 
+            if (dateActuelle >= dateLancementSept) {
+                badge.innerText = "Nouveau service";
+                badge.style.backgroundColor = ""; 
+            } else {
+                badge.innerText = "Dispo 1er septembre";
+                badge.style.backgroundColor = "var(--bleu)"; 
+            }
+        });
+    }
 }
 window.addEventListener('DOMContentLoaded', gererEtiquettesNouveautes);
 
@@ -2277,7 +3165,7 @@ function openImageModal(imageSource) {
 function closeImageModal() { document.getElementById("imageModal").style.display = "none"; }
 
 // ==========================================
-// ⌨️ ACCESSIBILITÉ : NAVIGATION AU CLAVIER (ENTRÉE / ESPACE)
+// ⌨️ ACCESSIBILITÉ : NAVIGATION AU CLAVIER
 // ==========================================
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -2290,7 +3178,7 @@ document.addEventListener('keydown', function(event) {
 });
 
 // ==========================================
-// 📄 MOTEUR DE CLONAGE D'ÉTAGES (DUPLICATION) MODALE AVANCÉE
+// 📄 MOTEUR DE CLONAGE D'ÉTAGES
 // ==========================================
 
 window.currentCloneList = [];

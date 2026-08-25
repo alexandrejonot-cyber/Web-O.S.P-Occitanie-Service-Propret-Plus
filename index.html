@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>O.S.P+ | Entreprise de Nettoyage Toulouse & Occitanie | 20 ans d'Expertise</title>
-    <meta name="description" content="O.S.P+ : Expert en nettoyage professionnel à Toulouse. Vitrerie, shampouinage canapés, tapis et bureaux. Service de propreté haute qualité en Occitanie. Devis Gratuit.">
-    <meta name="keywords" content="nettoyage toulouse, laveur de vitres toulouse, shampouinage canapé toulouse, nettoyage bureaux occitanie, propreté toulouse">
+    <meta name="description" content="O.S.P+ : Expert en nettoyage professionnel à Toulouse. Vitrerie, shampouinage canapés, tapis, bureaux et remise en état de salle. Service de propreté haute qualité en Occitanie. Devis Gratuit.">
+    <meta name="keywords" content="nettoyage toulouse, laveur de vitres toulouse, shampouinage canapé toulouse, nettoyage bureaux occitanie, nettoyage salle mariage toulouse, propreté toulouse">
     
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
     <script src="codes.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -42,7 +42,6 @@
             background: var(--vert, #27ae60);
             border-color: var(--vert, #27ae60);
         }
-        /* Style spécifique quand on passe en plein écran */
         .comparison-container:fullscreen {
             width: 100vw;
             height: 100vh;
@@ -65,12 +64,226 @@
             margin-top: 15px;
             font-size: 1.2rem;
         }
-        
-        /* Cacher le bouton plein écran sur mobile (écrans de moins de 768px) */
         @media (max-width: 768px) {
             .btn-fullscreen-comp {
                 display: none !important;
             }
+        }
+
+        .hero-content {
+            position: relative; 
+        }
+        
+        .promo-banner-wrapper {
+            background: linear-gradient(90deg, var(--bleu, #1a3c6c), #265494, var(--bleu, #1a3c6c));
+            position: relative;
+            z-index: auto !important;
+        }
+        .promo-banner {
+            background: transparent !important;
+            border-bottom: none !important;
+            flex-grow: 1;
+            min-height: auto;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .promo-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 9999 !important;
+        }
+        .btn-client-nav-top, .btn-carte-nav-top {
+            background: transparent;
+            color: var(--blanc, #ffffff);
+            border: 1px solid var(--blanc, #ffffff);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        .btn-client-nav-top:hover, .btn-carte-nav-top:hover {
+            background: var(--blanc, #ffffff);
+            color: var(--bleu, #1a3c6c);
+        }
+        .top-lang .selected-lang {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--blanc, #ffffff);
+            border: 1px solid var(--blanc, #ffffff);
+        }
+        .top-lang .selected-lang:hover {
+            background: var(--blanc, #ffffff);
+            color: var(--bleu, #1a3c6c);
+        }
+        .main-header {
+            border-top: 4px solid var(--vert, #8cc63f);
+            padding: 0 15px !important;
+            position: relative;
+            z-index: auto !important;
+        }
+        .logo-container {
+            margin-left: 0;
+            position: relative;
+            z-index: 9998 !important;
+        }
+        .promo-nav-link {
+            color: #e67e22 !important;
+            font-weight: 900 !important;
+        }
+        .promo-nav-link:hover {
+            color: var(--vert, #8cc63f) !important;
+        }
+        
+        .mobile-only-menu-item {
+            display: none !important;
+        }
+
+        @media (min-width: 1381px) {
+            .promo-banner-wrapper {
+                display: flex;
+                align-items: center;
+                min-height: 50px;
+            }
+            .promo-actions {
+                position: absolute;
+                right: 15px;
+            }
+            .promo-banner {
+                padding-left: 240px;
+                padding-right: 320px;
+            }
+
+            .logo-container {
+                width: 380px !important;
+                height: 60px !important;
+                margin-left: 0 !important;
+            }
+            .site-logo {
+                position: absolute !important;
+                top: -50px !important; 
+                left: 15px !important; 
+                height: 100px !important; 
+                width: auto !important;
+            }
+            .site-logo-capture {
+                position: absolute !important;
+                top: -48px !important; 
+                left: 115px !important;
+                height: 38px !important; 
+                width: auto !important;
+            }
+            .site-logo-texte {
+                position: absolute !important;
+                top: 15px !important; 
+                left: 115px !important; 
+                height: 30px !important; 
+                width: auto !important;
+            }
+            .nav-link {
+                font-size: 1.15rem !important; 
+                margin: 0 2px;
+            }
+            nav ul {
+                gap: 5px; 
+            }
+        }
+        
+        @media (max-width: 1380px) {
+            .promo-banner-wrapper {
+                flex-direction: row; 
+                padding: 5px 15px;
+                min-height: 40px;
+                gap: 10px;
+                justify-content: space-between;
+            }
+            .promo-banner {
+                width: auto;
+                flex: 1;
+                text-align: left;
+                padding: 0;
+            }
+            .promo-actions {
+                position: relative;
+                right: auto;
+                justify-content: flex-end;
+                flex-wrap: nowrap;
+                width: auto;
+            }
+            .btn-client-nav-top, .btn-carte-nav-top, .top-lang {
+                display: none !important; 
+            }
+            
+            .mobile-only-menu-item {
+                display: flex !important; 
+                justify-content: center;
+                width: 100%;
+                margin-top: 5px;
+            }
+
+            .main-header {
+                padding: 10px 15px !important; 
+            }
+            
+            .logo-container {
+                display: grid !important;
+                grid-template-columns: auto auto !important;
+                grid-template-rows: auto auto !important;
+                align-items: center !important;
+                justify-content: start !important;
+                gap: 0px 10px !important; 
+                position: relative !important;
+                width: auto !important;
+                height: auto !important;
+                margin-left: 0 !important;
+            }
+            .site-logo, .site-logo-capture, .site-logo-texte {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                margin: 0 !important;
+            }
+            .site-logo { 
+                grid-row: 1 / 3 !important; 
+                grid-column: 1 !important;
+                height: 48px !important; 
+            }
+            .site-logo-capture { 
+                grid-row: 1 !important; 
+                grid-column: 2 !important;
+                height: 22px !important; 
+                align-self: end !important; 
+                justify-self: start !important;
+            }
+            .site-logo-texte { 
+                grid-row: 2 !important; 
+                grid-column: 2 !important;
+                height: 16px !important; 
+                align-self: start !important; 
+                justify-self: start !important;
+            }
+
+            .nav-link {
+                font-size: 1.35rem !important;
+            }
+
+            .header-action-container { position: static; transform: none; margin-top: 15px; width: 100%; justify-content: center; } 
+            .btn-header-validate { width: 100%; }
+            .hamburger { display: flex; }
+            
+            nav ul { position: absolute; top: 100%; left: 0; width: 100%; background: var(--blanc); flex-direction: column; align-items: center; padding: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.1); max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; gap: 0; z-index: 2000;}
+            nav ul.active { max-height: 800px; padding: 20px 0; overflow-y: auto; }
+            nav ul li { width: 100%; display: flex; justify-content: center; margin: 8px 0; }
+            .nav-link { font-size: 1.3rem !important; }
+            .btn-devis-nav, .btn-phone-nav, .btn-client-nav, .btn-carte-nav { display: flex; justify-content: center; width: 90% !important; max-width: 300px; margin: 0; font-size: 1.2rem !important; padding: 10px !important; }
+            .lang-menu { width: 100%; display: flex; flex-direction: column; align-items: center; margin-left: 0; }
+            .lang-dropdown { position: relative; box-shadow: none; border: 1px solid #eee; margin: 10px auto; width: 90%; max-width: 300px; }
         }
     </style>
 </head>
@@ -78,17 +291,36 @@
 
     <a href="#services" class="skip-link">Aller directement aux services et devis</a>
 
+    <h1 class="sr-only">L'Exigence du Nettoyage à Toulouse & en Occitanie</h1>
+
     <div class="sr-only">Bienvenue sur le site O.S.P Plus. Ce site a été optimisé pour être pleinement accessible au clavier et aux lecteurs d'écran.</div>
 
     <div class="header-sticky-wrapper">
         
-        <div id="promo-banner" class="promo-banner" style="display: none;">
-            🎉 <strong>OFFRE SPÉCIALE JOUR FÉRIÉ : -10% sur votre facture finale !</strong> <em>(Valable si le contrat final est signé sous 15 jours)</em>
+        <div class="promo-banner-wrapper">
+            <div id="promo-banner" class="promo-banner" style="cursor: pointer;" onclick="document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" role="button" tabindex="0" aria-label="Aller aux promotions en cours">
+            </div>
+
+            <div class="promo-actions">
+                <button class="btn-client-nav-top" onclick="openClientModal()">Client Fidèle</button>
+                <button class="btn-carte-nav-top" onclick="openCarteModal()">Carte de Visite</button>
+                
+                <div class="lang-menu top-lang">
+                    <div class="selected-lang" role="button" tabindex="0" aria-label="Menu de sélection de la langue">🇫🇷 FR ▼</div>
+                    <ul class="lang-dropdown">
+                        <li><a href="index.html">🇫🇷 Français</a></li>
+                        <li><a href="index-en.html">🇬🇧 English</a></li>
+                        <li><a href="index-vi.html">🇻🇳 Tiếng Việt</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <header>
+        <header class="main-header">
             <div class="logo-container">
-                <img src="logo.png" alt="Logo O.S.P+ Occitanie Services Propreté Plus" class="site-logo" style="cursor: pointer;" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Agrandir le logo">
+                <img src="logo.png" alt="Logo O.S.P+" class="site-logo" style="cursor: pointer;" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Agrandir le logo">
+                <img src="Capture-Photoroom.png" alt="Badge OSP" class="site-logo-capture">
+                <img src="texte-osp.png" alt="O.S.P+ Occitanie service Propreté" class="site-logo-texte">
             </div>
 
             <div class="hamburger" id="mobile-menu-btn" role="button" tabindex="0" aria-label="Ouvrir le menu principal">
@@ -106,13 +338,14 @@
                     <li><a href="#qui-suis-je" class="nav-link">Expertise</a></li>
                     <li><a href="#faq" class="nav-link">FAQ</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
-                    <li><a href="tel:0745027624" class="btn-phone-nav">📞 07 45 02 76 24</a></li>
-                    <li><a href="#services" class="btn-devis-nav">Devis Gratuit</a></li>
-                    <li><button class="btn-client-nav" onclick="openClientModal()">Client Fidèle</button></li>
-                    <li><button class="btn-carte-nav" onclick="openCarteModal()">📇 Carte de Visite</button></li>
+                    <li><a href="#section-promo" class="nav-link text-green">Ventes Flash</a></li>
+                    <li><a href="#signification-osp" class="nav-link text-green">Que signifie O.S.P+ ?</a></li>
                     
-                    <li class="lang-menu">
-                        <div class="selected-lang" role="button" tabindex="0" aria-label="Menu de sélection de la langue">🇫🇷 FR ▼</div>
+                    <li class="mobile-only-menu-item"><button class="btn-client-nav" onclick="openClientModal()" style="width: 90%; max-width: 300px;">Client Fidèle</button></li>
+                    <li class="mobile-only-menu-item"><button class="btn-carte-nav" onclick="openCarteModal()" style="width: 90%; max-width: 300px;">Carte de Visite</button></li>
+                    
+                    <li class="mobile-only-menu-item lang-menu" style="margin-top: 15px;">
+                        <div class="selected-lang" role="button" tabindex="0" aria-label="Menu de sélection de la langue" style="width: 90%; max-width: 300px; justify-content: center;">🇫🇷 FR ▼</div>
                         <ul class="lang-dropdown">
                             <li><a href="index.html">🇫🇷 Français</a></li>
                             <li><a href="index-en.html">🇬🇧 English</a></li>
@@ -127,34 +360,638 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Notre Priorité, <span class="text-green">La Propreté.</span></h1>
-            <div class="hero-video-container">
+            
+            <div id="promo-mini-left" class="promo-ascension-box" style="display: none; cursor: pointer;" onclick="document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" role="button" tabindex="0" aria-label="Voir la promotion en cours"></div>
+            <div id="promo-mini-right" class="promo-ascension-box" style="display: none; cursor: pointer;" onclick="document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" role="button" tabindex="0" aria-label="Voir la promotion en cours"></div>
+
+            <div class="hero-video-container" style="max-width: 350px;">
                 <div class="video-wrapper">
-                    <video id="introVid" muted autoplay loop playsinline preload="metadata">
+                    <video id="introVid" playsinline preload="metadata" style="max-height: 30vh; cursor: pointer;" onclick="togglePlay('introVid')">
                         <source src="video-introduction.mp4" type="video/mp4">
                     </video>
                 </div>
-                <div class="custom-controls">
-                    <button class="control-btn" onclick="togglePlay('introVid')">⏯️ Play/Pause</button>
-                    <button class="control-btn" onclick="toggleMute('introVid')">🔊 Son</button>
-                    <button class="control-btn" onclick="restartVideo('introVid')">🔄 Reset</button>
-                    <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Full</button>
+                
+                <div class="video-controls-drawer">
+                    <div class="custom-controls" id="hiddenVideoControls">
+                        <button class="control-btn" id="btnPlayPause" onclick="togglePlay('introVid')">⏸️ Pause</button>
+                        <button class="control-btn" id="btnMute" onclick="toggleMute('introVid')">🔇 Son</button>
+                        <button class="control-btn" onclick="restartVideo('introVid')">🔄 Reset</button>
+                        <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Full</button>
+                    </div>
+                    <div class="video-tab" onclick="toggleVideoControls()">▼ Commande vidéo</div>
                 </div>
             </div>
+
+            <script>
+                function toggleVideoControls() {
+                    const controls = document.getElementById('hiddenVideoControls');
+                    const tab = document.querySelector('.video-tab');
+                    controls.classList.toggle('show-controls');
+                    
+                    if (controls.classList.contains('show-controls')) {
+                        tab.innerHTML = '▲ Fermer';
+                        tab.style.background = 'var(--vert)';
+                        tab.style.color = 'white';
+                    } else {
+                        tab.innerHTML = '▼ Commande vidéo';
+                        tab.style.background = 'var(--blanc)';
+                        tab.style.color = 'var(--bleu)';
+                    }
+                }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    const vid = document.getElementById('introVid');
+                    const btnMute = document.getElementById('btnMute');
+                    const btnPlay = document.getElementById('btnPlayPause');
+                    let hasStarted = false;
+                    
+                    if (vid) {
+                        function updateVideoUI() {
+                            if (vid.muted) {
+                                btnMute.innerHTML = '🔇 Son';
+                                btnMute.style.background = '#e74c3c';
+                                btnMute.style.color = 'white';
+                            } else {
+                                btnMute.innerHTML = '🔊 Son';
+                                btnMute.style.background = 'var(--vert)';
+                                btnMute.style.color = 'white';
+                            }
+
+                            if (btnPlay) {
+                                if (vid.paused) {
+                                    btnPlay.innerHTML = '▶️ Play';
+                                    btnPlay.style.background = '#e74c3c';
+                                    btnPlay.style.color = 'white';
+                                } else {
+                                    btnPlay.innerHTML = '⏸️ Pause';
+                                    btnPlay.style.background = 'rgba(255,255,255,0.9)';
+                                    btnPlay.style.color = 'var(--bleu)';
+                                }
+                            }
+                        }
+
+                        vid.muted = true;
+                        vid.loop = false;
+                        updateVideoUI();
+
+                        function initVideoSequence() {
+                            if (hasStarted) return;
+                            
+                            vid.currentTime = 0;
+                            vid.pause();
+
+                            setTimeout(function() {
+                                hasStarted = true;
+                                vid.currentTime = 3.00;
+                                
+                                let playPromise = vid.play();
+                                if (playPromise !== undefined) {
+                                    playPromise.catch(function() {
+                                        vid.muted = true;
+                                        vid.play();
+                                    });
+                                }
+                            }, 3000);
+                        }
+
+                        if (vid.readyState >= 1) {
+                            initVideoSequence();
+                        } else {
+                            vid.addEventListener('loadedmetadata', initVideoSequence);
+                        }
+                        
+                        vid.addEventListener('timeupdate', function() {
+                            if (hasStarted && vid.duration > 0) {
+                                if (vid.currentTime >= (vid.duration - 0.25)) {
+                                    vid.currentTime = 3.65; 
+                                }
+                            }
+                        });
+
+                        vid.addEventListener('volumechange', updateVideoUI);
+                        vid.addEventListener('play', updateVideoUI);
+                        vid.addEventListener('pause', updateVideoUI);
+                        
+                        vid.load();
+                    }
+                });
+            </script>
+
             <div class="hero-badges">
-                <span class="badge">20 Ans d'Expérience</span>
+                <span class="badge">⭐ 20 Ans d'Expérience</span>
                 <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Assurance RC Pro</span>
-                <span class="badge">Matériel Professionnel</span>
+                <span class="badge">🛠️ Matériel Professionnel</span>
             </div>
-            <a href="#services" class="btn-main pulse-animation">DEMANDER MON DEVIS GRATUIT</a>
+
+            <div class="hero-cta-container" style="align-items: flex-start;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <a href="#services" class="btn-main pulse-animation btn-devis-inline">MON DEVIS EN LIGNE</a>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; padding-top: 16px;">
+                    <span class="cta-separator">OU</span>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                    <button type="button" class="btn-main pulse-animation btn-rappel-inline" onclick="openCallbackModal()" style="margin-top: 0 !important;">CONTACT RAPIDE</button>
+                    <span style="font-size: 0.6rem; font-weight: 800; color: var(--bleu); text-transform: uppercase; text-align: center; line-height: 1.2;">Téléphone • Mail • WhatsApp • SMS</span>
+                </div>
+            </div>
+
         </div>
+
+        <div class="organigramme-container">
+            <div class="tree-badge">Votre expert nettoyage <span>Tout-en-1</span></div>
+            <div class="tree-trunk"></div>
+            <div class="tree-connection">
+                <div class="tree-line"></div>
+                <div class="tree-line"></div>
+                <div class="tree-line"></div>
+                <div class="tree-line"></div>
+            </div>
+        </div>
+        
+        <div class="hero-services-row">
+            <!-- Carte 1 : O - Occitanie -->
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-o')" aria-label="En savoir plus sur le déplacement et le devis">?</button>
+                <div id="bubble-o" class="card-info-bubble">
+                    <div class="bubble-title">Visite & Devis gratuit</div>
+                    <ul>
+                        <li>📍 <strong>Zone :</strong> 15 km inclus autour de Toulouse.</li>
+                        <li>🚗 <strong>Au-delà :</strong> 0,50 € / km supplémentaire.</li>
+                        <li>🕒 <strong>Créneaux :</strong> Du lundi au samedi sur RDV.</li>
+                        <li>🤝 <strong>Engagement :</strong> Devis 100 % gratuit et sans engagement après visite.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-bleu">O</span><span class="rest-word text-green">ccitanie</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-occitanie.jpg" alt="Visite technique & devis gratuit" class="service-image">
+                </div>
+                <span class="service-name">Visite technique & devis gratuit</span>
+            </div>
+            
+            <!-- Carte 2 : S - Service -->
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-s')" aria-label="En savoir plus sur la vitrerie et le shampouinage">?</button>
+                <div id="bubble-s" class="card-info-bubble">
+                    <div class="bubble-title">Vitrerie & Textiles</div>
+                    <ul>
+                        <li>🪟 <strong>Vitres :</strong> Fenêtres, baies, vérandas, vitrines.</li>
+                        <li>🛋️ <strong>Textiles :</strong> Injection / extraction pour canapés, tapis et moquettes.</li>
+                        <li>⏱️ <strong>Séchage :</strong> Rapide en 4h à 6h grâce au matériel pro.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-bleu">S</span><span class="rest-word text-green">ervice</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-textiles.jpg" alt="Vitrerie & Shampouinage textiles" class="service-image">
+                </div>
+                <span class="service-name">Vitrerie & Shampouinage textiles</span>
+            </div>
+            
+            <!-- Carte 3 : P - Propreté -->
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-p')" aria-label="En savoir plus sur le nettoyage pro et particulier">?</button>
+                <div id="bubble-p" class="card-info-bubble">
+                    <div class="bubble-title">Pro & Particuliers</div>
+                    <ul>
+                        <li>🏢 <strong>Locaux :</strong> Bureaux, commerces, cabinets et logements.</li>
+                        <li>⏰ <strong>Horaires :</strong> Dès 5h du matin ou en soirée pour ne pas gêner.</li>
+                        <li>🔒 <strong>Sécurité :</strong> Intervenant unique, discrétion garantie.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-bleu">P</span><span class="rest-word text-green">ropreté</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-bureaux.jpg" alt="Nettoyage pour Pro & Particulier" class="service-image">
+                </div>
+                <span class="service-name">Nettoyage pour Pro & Particulier</span>
+            </div>
+            
+            <!-- Carte 4 : + - Plus -->
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-plus')" aria-label="En savoir plus sur le nettoyage auto et sépultures">?</button>
+                <div id="bubble-plus" class="card-info-bubble">
+                    <div class="bubble-title">Autos & Sépultures</div>
+                    <ul>
+                        <li>🚗 <strong>Véhicules :</strong> Nettoyage intérieur complet sur site ou à domicile.</li>
+                        <li>🪦 <strong>Sépultures :</strong> Nettoyage respectueux, démoussage et fleurissement.</li>
+                        <li>✨ <strong>Sur-mesure :</strong> Prestations spécifiques à la demande.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-green">P</span><span class="rest-word text-bleu">lus</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-vehicules.jpg" alt="Nettoyage autos & Sépultures" class="service-image">
+                </div>
+                <span class="service-name">Nettoyage autos & Sépultures</span>
+            </div>
+        </div>
+
     </section>
 
     <div class="trust-bar"><p>📍 Secteur <strong>Toulouse (15 km inclus)</strong> et toute l'<strong>Occitanie*</strong></p></div>
 
+    <div id="event-image-container" class="scroll-animate" style="display: none; margin-top: 40px; margin-bottom: 20px;">
+        <div id="section-promo" style="scroll-margin-top: 120px;"></div>
+        <h2 class="section-title">Nos <span class="text-green">Ventes Flash</span> en cours</h2>
+        <div class="promo-image-container">
+            <div id="event-images-wrapper" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;"></div>
+            
+            <!-- Bloc des 4 étapes de réservation Flash -->
+            <div style="background: #ffffff; border: 2px solid var(--vert); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 1000px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                <h3 style="color: var(--bleu); font-size: 1.1rem; text-align: center; margin-bottom: 15px; text-transform: uppercase; font-weight: 800;">
+                    ⚡ Comment profiter de votre Vente Flash ?
+                </h3>
+                
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;">
+                    
+                    <!-- Étape 1 -->
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">1</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Bloquez les -10 %</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Contactez-nous (Devis, Tél, Mail...) pendant le décompte Flash.</span>
+                    </div>
+
+                    <!-- Étape 2 -->
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">2</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Réglez l'acompte</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Payez pour valider la réservation (CB, Espèces, SEPA).</span>
+                    </div>
+
+                    <!-- Étape 3 -->
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">3</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Planifiez quand vous voulez</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Fixez la date d'intervention de votre choix.</span>
+                    </div>
+
+                    <!-- Étape 4 -->
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">4</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Tarif garanti</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Prestation réalisée avec votre remise verrouillée !</span>
+                    </div>
+
+                </div>
+            </div>
+            <div id="event-image-text" style="font-size: 1.1rem; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+        </div>
+    </div>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const eventContainer = document.getElementById('event-image-container');
+        const eventImagesWrapper = document.getElementById('event-images-wrapper');
+        const eventImageText = document.getElementById('event-image-text');
+        
+        // 🔴 MODIFICATION ICI : On neutralise promoBanner pour laisser script.js faire son travail
+        const promoBanner = null; 
+        
+        const promoServicesText = document.getElementById('promo-services-text'); 
+
+        if (!eventContainer || !eventImagesWrapper) return;
+
+        function genererCalendrier(annee) {
+            function getEaster(y) {
+                let a = y % 19, b = Math.floor(y / 100), c = y % 100;
+                let d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+                let g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+                let i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
+                let m = Math.floor((a + 11 * h + 22 * l) / 451);
+                let mois = Math.floor((h + l - 7 * m + 114) / 31);
+                let jour = ((h + l - 7 * m + 114) % 31) + 1;
+                return new Date(y, mois - 1, jour);
+            }
+
+            function getNthDay(y, month, dayOfWeek, n) {
+                let d = new Date(y, month, 1);
+                let count = 0;
+                while (d.getMonth() === month) {
+                    if (d.getDay() === dayOfWeek) {
+                        count++;
+                        if (count === n) return new Date(d);
+                    }
+                    d.setDate(d.getDate() + 1);
+                }
+                return null;
+            }
+
+            function getLastSunday(y, month) {
+                let d = new Date(y, month + 1, 0); 
+                while (d.getDay() !== 0) d.setDate(d.getDate() - 1);
+                return new Date(d);
+            }
+
+            let paquesDim = getEaster(annee);
+            let pentecote = new Date(paquesDim); pentecote.setDate(pentecote.getDate() + 49);
+            
+            let paquesDeb = new Date(paquesDim);
+            paquesDeb.setDate(paquesDeb.getDate() - 2); // Vendredi
+            paquesDeb.setHours(19, 0, 0, 0);
+            let paquesFin = new Date(paquesDim);
+            paquesFin.setDate(paquesFin.getDate() + 1); // Lundi
+            paquesFin.setHours(10, 30, 0, 0);
+
+            let dimMeres = getLastSunday(annee, 4); 
+            if (dimMeres.getTime() === pentecote.getTime()) dimMeres = getNthDay(annee, 5, 0, 1); 
+            let feteMeresDeb = new Date(dimMeres);
+            feteMeresDeb.setDate(feteMeresDeb.getDate() - 2); // Vendredi
+            feteMeresDeb.setHours(19, 0, 0, 0);
+            let feteMeresFin = new Date(dimMeres);
+            feteMeresFin.setDate(feteMeresFin.getDate() + 1); // Lundi
+            feteMeresFin.setHours(10, 30, 0, 0);
+
+            let dimPeres = getNthDay(annee, 5, 0, 3);
+            let fetePeresDeb = new Date(dimPeres);
+            fetePeresDeb.setDate(fetePeresDeb.getDate() - 2); // Vendredi
+            fetePeresDeb.setHours(19, 0, 0, 0);
+            let fetePeresFin = new Date(dimPeres);
+            fetePeresFin.setDate(fetePeresFin.getDate() + 1); // Lundi
+            fetePeresFin.setHours(10, 30, 0, 0);
+
+            // Noël (Du 23 Décembre 19h00 au 26 Décembre 10h30)
+            let noelDeb = new Date(annee, 11, 23, 19, 0, 0, 0);
+            let noelFin = new Date(annee, 11, 26, 10, 30, 0, 0);
+
+            // Nouvel An (Du 31 Décembre 19h00 au 2 Janvier 10h30)
+            let nouvelAnDeb = new Date(annee, 11, 31, 19, 0, 0, 0);
+            let nouvelAnFin = new Date(annee + 1, 0, 2, 10, 30, 0, 0);
+
+            // Offre d'Hiver (Du 14 Janvier 19h00 au 18 Janvier 10h30)
+            let hiverDeb = new Date(annee, 0, 14, 19, 0, 0, 0);
+            let hiverFin = new Date(annee, 0, 18, 10, 30, 0, 0);
+
+            // Tết (Du 9 Février 19h00 au 14 Février 10h30)
+            let tetDeb = new Date(annee, 1, 9, 19, 0, 0, 0);
+            let tetFin = new Date(annee, 1, 14, 10, 30, 0, 0);
+
+            // Printemps (Du 19 Mars 19h00 au 28 Mars 10h30)
+            let printempsDeb = new Date(annee, 2, 19, 19, 0, 0, 0);
+            let printempsFin = new Date(annee, 2, 28, 10, 30, 0, 0);
+
+            // Ramadan / Aïd (Du 29 Mars 19h00 au 2 Avril 10h30)
+            let ramadanDeb = new Date(annee, 2, 29, 19, 0, 0, 0);
+            let ramadanFin = new Date(annee, 3, 2, 10, 30, 0, 0);
+
+            // Offre d'Été (Du 24 Juin 19h00 au 28 Juin 10h30)
+            let eteDeb = new Date(annee, 5, 24, 19, 0, 0, 0);
+            let eteFin = new Date(annee, 5, 28, 10, 30, 0, 0);
+
+            // La Rentrée (Du 31 Août 19h00 au 11 Septembre 10h30)
+            let rentreeDeb = new Date(annee, 7, 31, 19, 0, 0, 0);
+            let rentreeFin = new Date(annee, 8, 11, 10, 30, 0, 0);
+
+            // La Toussaint (Du 31 Octobre 19h00 au 4 Novembre 10h30)
+            let toussaintDeb = new Date(annee, 9, 31, 19, 0, 0, 0);
+            let toussaintFin = new Date(annee, 10, 4, 10, 30, 0, 0); 
+
+            return [
+                { nom: "le Nouvel An", dateDebutExacte: nouvelAnDeb, dateFinExacte: nouvelAnFin, image: "jour de l ans.png" }, 
+                { nom: "l'Offre d'Hiver", dateDebutExacte: hiverDeb, dateFinExacte: hiverFin, image: "SOLDE.PNG" }, 
+                { nom: "le Tết", dateDebutExacte: tetDeb, dateFinExacte: tetFin, image: "tet.png" }, 
+                { nom: "le Printemps", dateDebutExacte: printempsDeb, dateFinExacte: printempsFin, image: "nettoyage de printemps.png" },
+                { nom: "le Ramadan / Aïd", dateDebutExacte: ramadanDeb, dateFinExacte: ramadanFin, image: "aid_ramadan.png" }, 
+                { nom: "Pâques", dateDebutExacte: paquesDeb, dateFinExacte: paquesFin, image: "paque.png" }, 
+                { nom: "le 1er Mai", date: new Date(annee, 4, 1), image: "fete du travail.png", dureePromo: 1 },
+                { nom: "le 8 Mai", date: new Date(annee, 4, 8), image: "8 mai.png", dureePromo: 1 },
+                { nom: "la Fête des Mères", dateDebutExacte: feteMeresDeb, dateFinExacte: feteMeresFin, image: "fete des mere .png" },
+                { nom: "la Fête des Pères", dateDebutExacte: fetePeresDeb, dateFinExacte: fetePeresFin, image: "fete des pere .png" },
+                { nom: "l'Offre d'Été", dateDebutExacte: eteDeb, dateFinExacte: eteFin, image: "SOLDE.PNG" }, 
+                { nom: "le 14 Juillet", date: new Date(annee, 6, 14), image: "14 juillet.png", dureePromo: 1 },
+                { nom: "l'Assomption", date: new Date(annee, 7, 15), image: "15aout_2.png", dureePromo: 1 },
+                { nom: "la Rentrée", dateDebutExacte: rentreeDeb, dateFinExacte: rentreeFin, image: "rentré des classe.png" },
+                { nom: "Halloween", date: new Date(annee, 9, 30), image: "Halloween.png", dureePromo: 1 }, 
+                { nom: "la Toussaint", dateDebutExacte: toussaintDeb, dateFinExacte: toussaintFin, image: "toussaint.png" }, 
+                { nom: "Noël", dateDebutExacte: noelDeb, dateFinExacte: noelFin, image: "noel.png" } 
+            ];
+        }
+
+        let displayedEventKey = "";
+
+        function updateEventEngine() {
+            const todayDateObj = typeof getSimulatedDate === 'function' ? getSimulatedDate() : new Date();
+            const realNow = new Date();
+            todayDateObj.setHours(realNow.getHours(), realNow.getMinutes(), realNow.getSeconds());
+
+            const anneeEnCours = todayDateObj.getFullYear();
+            const tousLesEvenements = [
+                ...genererCalendrier(anneeEnCours - 1),
+                ...genererCalendrier(anneeEnCours),
+                ...genererCalendrier(anneeEnCours + 1)
+            ];
+
+            let evenementsActifs = []; 
+
+            for (let evt of tousLesEvenements) {
+                let dateDebut, dateFin;
+                if (evt.dateDebutExacte && evt.dateFinExacte) {
+                    dateDebut = new Date(evt.dateDebutExacte);
+                    dateFin = new Date(evt.dateFinExacte);
+                } else if (evt.dureePromo === 1) {
+                    // Pour les événements de 1 jour : démarre la veille (J-1) à 19h00 et finit le jour J à 23h59 (minuit)
+                    dateDebut = new Date(evt.date);
+                    dateDebut.setDate(dateDebut.getDate() - 1);
+                    dateDebut.setHours(19, 0, 0, 0);
+
+                    dateFin = new Date(evt.date);
+                    dateFin.setHours(23, 59, 59, 999);
+                } else {
+                    dateDebut = new Date(evt.date);
+                    dateDebut.setHours(0, 0, 0, 0);
+
+                    dateFin = new Date(evt.date);
+                    dateFin.setDate(dateFin.getDate() + evt.dureePromo);
+                    dateFin.setHours(23, 59, 59, 999);
+                }
+
+                let dateTeasing = new Date(dateDebut);
+                dateTeasing.setDate(dateTeasing.getDate() - 15);
+
+                if (todayDateObj >= dateTeasing && todayDateObj < dateDebut) {
+                    evenementsActifs.push({ ...evt, phase: "TEASING", dateCible: dateDebut });
+                } 
+                else if (todayDateObj >= dateDebut && todayDateObj <= dateFin) {
+                    evenementsActifs.push({ ...evt, phase: "PROMO", dateCible: dateFin });
+                }
+            }
+
+            const boxLeft = document.getElementById('promo-mini-left');
+            const boxRight = document.getElementById('promo-mini-right');
+
+            if (boxLeft && boxRight) {
+                if (evenementsActifs.length > 0) {
+                    const evt1 = evenementsActifs[0];
+                    boxLeft.innerHTML = `
+                        <div class="etiquette-ruban">${evt1.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
+                        <img src="${evt1.image}" alt="${evt1.nom}">
+                        <div class="texte-ascension">
+                            <span class="promo-discount">-10%</span>
+                            <span class="promo-nom">${evt1.nom}</span>
+                        </div>`;
+                    boxLeft.style.display = 'flex';
+
+                    if (evenementsActifs.length > 1) {
+                        const evt2 = evenementsActifs[1];
+                        boxRight.innerHTML = `
+                            <div class="etiquette-ruban">${evt2.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
+                            <img src="${evt2.image}" alt="${evt2.nom}">
+                            <div class="texte-ascension">
+                                <span class="promo-discount">-10%</span>
+                                <span class="promo-nom">${evt2.nom}</span>
+                            </div>`;
+                        boxRight.style.display = 'flex';
+                    } else {
+                        boxRight.style.display = 'none';
+                    }
+                } else {
+                    boxLeft.style.display = 'none';
+                    boxRight.style.display = 'none';
+                }
+            }
+
+            if (evenementsActifs.length > 0) {
+                eventContainer.style.display = "block";
+
+                let currentKey = evenementsActifs.map(e => e.nom + "_" + e.phase).join("|");
+
+                if (displayedEventKey !== currentKey) {
+                    eventImagesWrapper.innerHTML = "";
+
+                    evenementsActifs.forEach((evt, idx) => {
+                        let card = document.createElement('div');
+                        card.className = "event-card-item";
+                        card.style.flex = evenementsActifs.length === 1 ? "1 1 100%" : "1 1 calc(50% - 15px)";
+                        card.style.maxWidth = evenementsActifs.length === 1 ? "100%" : "48%";
+                        card.style.display = "flex";
+                        card.style.flexDirection = "column";
+                        card.style.alignItems = "center";
+                        card.style.background = "#ffffff";
+                        card.style.borderRadius = "10px";
+                        card.style.overflow = "hidden";
+                        card.style.border = "2px solid " + (evt.phase === "PROMO" ? "var(--bleu)" : "#e67e22");
+                        card.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+
+                        let img = document.createElement('img');
+                        img.src = evt.image;
+                        img.alt = evt.nom;
+                        img.style.width = "100%";
+                        img.style.height = "auto";
+                        img.style.objectFit = "cover";
+                        img.style.cursor = "pointer";
+                        if(typeof openImageModal === "function") {
+                            img.onclick = () => openImageModal(img.src);
+                        }
+
+                        let timerBox = document.createElement('div');
+                        timerBox.id = "event-timer-" + idx;
+                        timerBox.style.width = "100%";
+                        timerBox.style.padding = "10px 5px";
+                        timerBox.style.textAlign = "center";
+                        timerBox.style.fontWeight = "bold";
+                        timerBox.style.fontSize = "0.95rem";
+                        timerBox.style.color = evt.phase === "PROMO" ? "var(--bleu)" : "#d35400";
+                        timerBox.style.background = evt.phase === "PROMO" ? "#eef3f8" : "#fff3e0";
+
+                        card.appendChild(img);
+                        card.appendChild(timerBox);
+                        eventImagesWrapper.appendChild(card);
+                    });
+
+                    displayedEventKey = currentKey;
+                }
+
+                let estEnPromoGlobale = false;
+                let nomsEvenements = [];
+
+                evenementsActifs.forEach((evt, idx) => {
+                    nomsEvenements.push(evt.nom);
+                    if (evt.phase === "PROMO") estEnPromoGlobale = true;
+
+                    let timerBox = document.getElementById("event-timer-" + idx);
+                    if (timerBox) {
+                        let diff = evt.dateCible.getTime() - todayDateObj.getTime();
+                        let timeString = "00j 00h 00m 00s";
+
+                        if (diff > 0) {
+                            let jours = Math.floor(diff / (1000 * 60 * 60 * 24));
+                            let heures = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                            let minutes = Math.floor((diff / 1000 / 60) % 60);
+                            let secondes = Math.floor((diff / 1000) % 60);
+
+                            timeString = "";
+                            if (jours > 0) timeString += `${jours}j `;
+                            timeString += `${heures.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${secondes.toString().padStart(2, '0')}s`;
+                        }
+
+                        let label = evt.phase === "PROMO" ? "⏱️ Offre " + evt.nom + " finit dans :" : "⏳ Offre " + evt.nom + " débute dans :";
+                        timerBox.innerHTML = `${label} <span style="font-family:monospace; background:rgba(255,255,255,0.6); padding:2px 6px; border-radius:4px; margin-left:4px;">${timeString}</span>`;
+                    }
+                });
+
+                let texteNoms = [...new Set(nomsEvenements)].join(" & ").toUpperCase();
+                
+                if (estEnPromoGlobale) {
+                    window.holidayPromoActive = true;
+                    if (eventImageText) {
+                        eventImageText.innerHTML = `<strong>VENTE FLASH EN COURS :</strong> Profitez de -10% sur l'ensemble de vos prestations !`;
+                        eventImageText.style.background = "#eef3f8";
+                        eventImageText.style.color = "var(--bleu)";
+                        eventImageText.style.border = "2px solid var(--bleu)";
+                    }
+                    if (promoServicesText) promoServicesText.style.display = "block";
+
+                } else {
+                    window.holidayPromoActive = false;
+                    if (eventImageText) {
+                        eventImageText.innerHTML = `⏳ <strong>À VENIR :</strong> Préparez vos demandes de devis à l'avance pour bénéficier des prochaines offres !`;
+                        eventImageText.style.background = "#fff3e0";
+                        eventImageText.style.color = "#d35400";
+                        eventImageText.style.border = "2px solid #e67e22";
+                    }
+                    if (promoServicesText) promoServicesText.style.display = "none";
+                }
+
+            } else {
+                eventContainer.style.display = "none";
+                eventImagesWrapper.innerHTML = ""; 
+                displayedEventKey = "";
+                
+                window.holidayPromoActive = false;
+                if (promoServicesText) promoServicesText.style.display = "none";
+            }
+
+            if (typeof calculatePrice === "function") calculatePrice();
+        }
+
+        updateEventEngine();
+        setInterval(updateEventEngine, 1000);
+    });
+    </script>
+
     <section id="services" class="services scroll-animate">
         <h2 class="section-title"><span class="text-bleu">Mes Services Spécialisés</span> & <span class="text-green">Estimation en ligne</span></h2>
-        <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: -15px auto 35px auto; line-height: 1.5; padding: 0 15px;">
+        
+        <div id="promo-services-text" style="display: none; background: #fff8e1; border: 2px dashed #e67e22; color: #d35400; padding: 12px; border-radius: 8px; text-align: center; max-width: 800px; margin: 0 auto 20px auto; font-weight: 800; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            VENTE FLASH : Choisissez une ou plusieurs prestations et bénéficiez de -10% SUR L'ENSEMBLE DE VOTRE FACTURE !
+        </div>
+
+        <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: 0 auto 35px auto; line-height: 1.5; padding: 0 15px;">
             ⚠️ <em>Les tarifs calculés sur ce site sont donnés à titre purement indicatif.</em> Le devis définitif et contractuel sera établi avec vous uniquement après une visite technique sur place de vos locaux (sans engagement).
         </p>
 
@@ -181,8 +1018,25 @@
             </div>
             <div class="card clickable" onclick="openQuote('bureaux')" role="button" tabindex="0" aria-label="Ouvrir le devis pour les bureaux et bâtiments">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
-                <h3 class="text-bleu">Bureaux & Bâtiments</h3>
-                <p>Configuration sur mesure de vos locaux.</p>
+                <h3 class="text-bleu">Bureaux & Locaux</h3>
+                <p>Configuration sur mesure de vos espaces.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('sepulture')" role="button" tabindex="0" aria-label="Ouvrir le devis pour l'entretien de sépulture">
+                <span class="service-badge dynamic-badge-sept" style="background-color: var(--bleu);">dispo 1er septembre</span>
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+                </div>
+                <h3 class="text-bleu">Sépultures</h3>
+                <p>Entretien et nettoyage respectueux du monument.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('evenements')" role="button" tabindex="0" aria-label="Ouvrir le devis pour la remise en état de salle">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21h14a2 2 0 0 0 2-2V7l-5-5H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path><path d="M16 11l-4 4-2-2"></path></svg>
+                </div>
+                <h3 class="text-bleu">Remise en État de Salle</h3>
+                <p>Vous louez une salle (mariage, anniversaire, baptême, cousinade, repas pro...) ? O.S.P+ s'occupe du nettoyage : profitez avant, pendant et après !</p>
                 <div class="card-border"></div>
             </div>
         </div>
@@ -254,17 +1108,8 @@
                         </div>
                     </div>
                     
-                    <div class="video-container-fixed" style="margin-top: 50px;">
-                        <div class="video-wrapper">
-                            <video id="presVid" muted autoplay loop playsinline preload="metadata">
-                                <source src="presentation-osp.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                        <div class="custom-controls">
-                            <button class="control-btn" onclick="togglePlay('presVid')">⏯️ Play</button>
-                            <button class="control-btn" onclick="toggleMute('presVid')">🔊 Son</button>
-                            <button class="control-btn" onclick="restartVideo('presVid')">🔄 Reset</button>
-                        </div>
+                    <div style="margin-top: 50px; border-radius: 12px; padding: 3px; background: linear-gradient(90deg, var(--vert), var(--bleu), var(--vert)); box-shadow: 0 15px 35px rgba(26, 60, 108, 0.3);">
+                        <img src="votre-nouvelle-photo.jpg" alt="O.S.P+ en action" style="width: 100%; height: auto; display: block; border-radius: 10px; object-fit: cover;">
                     </div>
                 </div>
 
@@ -288,6 +1133,75 @@
         </div>
     </section>
 
+    <section id="signification-osp" class="services scroll-animate" style="background: var(--blanc); padding: 60px 8%;">
+        <h2 class="section-title">Que signifie <span class="text-green">O.S.P+</span> ?</h2>
+        <p style="text-align: center; font-size: 1rem; color: #555; margin-bottom: 40px;">Découvrez l'ADN de notre entreprise à travers chaque lettre de notre nom.</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto;">
+            
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-occitanie.jpg" alt="Carte Occitanie" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">O</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">ccitanie</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">xygène</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Une intervention de proximité sur <strong>Toulouse et 15km autour</strong>, pour redonner un bol d'air frais et assainir vos espaces de travail et de vie.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-service.jpg" alt="Service Client" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">S</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">ervice</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">érénité</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Un accompagnement sur-mesure et un interlocuteur unique. Déléguez-nous l'entretien et gagnez en tranquillité d'esprit au quotidien.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-proprete.jpg" alt="Propreté" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">P</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">ropreté</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">erfection</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">L'exigence du détail. L'entretien minutieux de vos locaux, bureaux et vitrages grâce à du matériel professionnel de haute technologie.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-plus.jpg" alt="Le Plus OSP" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">+</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">Les Plus</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">Performance</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Les prestations spécialisées qui font la différence : détachage profond de moquettes, shampouinage de canapés et nettoyages de fin de chantier.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+        </div>
+    </section>
+
     <section id="faq" class="services scroll-animate" style="background: var(--blanc);">
         <h2 class="section-title">Questions <span class="text-green">Fréquentes</span></h2>
         <div class="services-grid">
@@ -306,7 +1220,7 @@
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
                 <div class="dynamic-slide active"><h3>Zone d'intervention ?</h3><p>Déplacement offert sur 15km autour de Toulouse.</p></div>
-                <div class="dynamic-slide"><h3>Mode de paiement ?</h3><p>CB, espèces ou virements acceptés.</p></div>
+                <div class="dynamic-slide"><h3>Mode de paiement ?</h3><p>Carte Bleue, Espèces, Virement SEPA, etc. (Sauf chèques).</p></div>
                 <div class="card-border"></div>
             </div>
         </div>
@@ -331,6 +1245,24 @@
                         <li><strong>Sam - Dim :</strong> 08:00 - 22:00</li>
                         <li><strong>Tél :</strong> 07 45 02 76 24</li>
                         <li><strong>Mail :</strong> contact@ospplus.com</li>
+                        <li style="margin-top: 10px; color: var(--vert);">
+                        <strong>💳 Paiements acceptés :</strong>
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 6px; color: var(--bleu); font-weight: 600; font-size: 0.85rem;">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                Carte Bleue
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+                                Espèces
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="21" width="18" height="2"></rect><rect x="5" y="11" width="2" height="8"></rect><rect x="11" y="11" width="2" height="8"></rect><rect x="17" y="11" width="2" height="8"></rect><polygon points="12 2 2 7 22 7 12 2"></polygon></svg>
+                                SEPA
+                            </div>
+                            <em style="color: #e74c3c; font-size: 0.8rem; font-weight: normal;">(❌ Chèques refusés)</em>
+                        </div>
+                    </li>
                     </ul>
                     <div class="social-original">
                         <a href="https://wa.me/33745027624" target="_blank" aria-label="Nous contacter sur WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Logo WhatsApp"></a>
@@ -348,7 +1280,7 @@
             </div>
             <div class="map-container-full"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184758.4619427306!2d1.2635431668749873!3d43.600678619932024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb6fec7552ff%3A0x408f3468f40a120!2sToulouse!5e0!3m2!1sfr!2sfr!4v1716386561139!5m2!1sfr!2sfr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
             <div class="mentions-center-wrapper">
-                <button onclick="openMentions()" class="btn-mentions-link">Voir les mentions légales</button>
+                <button onclick="openMentions()" class="btn-mentions-link">Voir les conditions générales</button>
             </div>
         </div>
     </section>
@@ -372,7 +1304,7 @@
                 Adresse de domiciliation : 6 PLACE du Président Thomas Woodrow Wilson, 31000 Toulouse, FRANCE<br>
                 Téléphone : 07 45 02 76 24<br>
                 Email : contact@ospplus.com<br>
-                Assurance Responsabilité Civile Professionnelle : [NOM DE VOTRE ASSUREUR]</p>
+                Assurance Responsabilité Civile Professionnelle : Souscrite auprès de Simplis (WAKAM) sous le contrat n° 89990870</p>
 
                 <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Hébergement du Site</h3>
                 <p>Le site est hébergé par : <strong>GitHub Pages (GitHub, Inc.)</strong><br>
@@ -390,8 +1322,11 @@
                 <p>Conformément à la loi "Informatique et Libertés" et au RGPD européen, vous disposez d'un droit d'accès, de rectification, de portabilité et d'effacement de vos données personnelles. Pour exercer ce droit, vous pouvez nous contacter par email à : contact@ospplus.com.</p>
                 <p>Vous avez également le droit d'introduire une réclamation auprès de la CNIL (www.cnil.fr).</p>
 
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">6. Accessibilité Numérique</h3>
-                <p>O.S.P+ s'engage en faveur de l'inclusion numérique. Ce site a été conçu et optimisé pour être accessible aux personnes en situation de handicap (navigation au clavier, compatibilité avec les lecteurs d'écran, textes alternatifs, focus visuels). Si vous rencontrez la moindre difficulté pour accéder à nos contenus ou formuler une demande de devis, n'hésitez pas à nous contacter directement par téléphone au 07 45 02 76 24 ou par email. Nous nous ferons un plaisir de vous assister personnellement.</p>
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">6. Conditions de Paiement et Abonnements</h3>
+                <p><strong>Abonnements :</strong> Pour les prestations sous forme d'abonnement, un premier versement de 50% est à payer à la commande. Le montant restant est étalé sur le nombre de mois choisis par le client.</p>
+                <p><strong>Modes de paiement acceptés :</strong> Carte Bleue, Espèces, Virement SEPA, etc. <em>(Veuillez noter que les chèques ne sont pas acceptés)</em>.</p>
+
+                <p style="text-align: right; font-size: 0.65rem; color: #ccc; margin-top: 20px;">v4.26</p>
             </div>
         </div>
     </div>
@@ -471,12 +1406,29 @@
                                 <div class="input-group"><label>Prénom</label><input type="text" name="prenom" required></div>
                                 <div class="input-group"><label>Email</label><input type="email" name="email" required></div>
                                 <div class="input-group"><label>Téléphone</label><input type="tel" name="telephone" required></div>
-                                <div class="input-group"><label>Adresse complète</label><input type="text" name="adresse" placeholder="N° et rue..." required></div>
-                                <div class="input-group"><label>Ville</label><input type="text" name="ville" placeholder="Code postal et Ville..." required></div>
+                                <div class="input-group">
+                                    <label>Adresse complète (N° et Rue) *</label>
+                                    <input type="text" id="inputAdresseRue" name="adresse" placeholder="Ex: 6 Place Wilson" required oninput="resetDistanceCalc()">
+                                </div>
+                                <div class="input-group" style="margin-top: 10px;">
+                                    <label>Code Postal & Ville *</label>
+                                    <input type="text" id="inputAdresseVille" name="ville" placeholder="Ex: 31000 Toulouse" required oninput="resetDistanceCalc()">
+                                </div>
+
+                                <!-- BARRE DE SIMULATION D'ÉLIGIBILITÉ 30 KM GRATUITS -->
+                                <div class="distance-simulator-box">
+                                    <div class="distance-sim-header">
+                                        🚗 <strong>Simulation de déplacement</strong> (30 km A/R inclus)
+                                    </div>
+                                    <button type="button" class="btn-calc-distance" onclick="calculerEligibilite30km()">
+                                        🔍 Tester mon éligibilité
+                                    </button>
+                                    <div id="distanceResultMsg" class="distance-result-msg"></div>
+                                </div>
                                 <div class="input-group"><label>Interlocuteur sur place <span style="font-weight:normal; font-size:0.7rem; color:#666;">(Si différent)</span></label><input type="text" name="interlocuteur" placeholder="Nom et prénom..."></div>
                                 
                                 <div class="input-group" style="margin-top: 10px; margin-bottom: 5px; background: #eef3f8; padding: 15px; border-radius: 8px; border: 1px dashed var(--vert);">
-                                    <label style="color: var(--bleu);">Code Promo (Optionnel)</label>
+                                    <label style="color: var(--bleu);">Code Avantage / Vente Flash (Optionnel)</label>
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
                                         <input type="text" id="promoCodeInputDevis" placeholder="Ex: REDUC10" style="text-transform: uppercase; flex: 1;">
                                         <button type="button" onclick="applyPromoCodeDevis()" class="btn-validate-custom" style="padding: 10px 15px; font-size: 0.85rem;">Appliquer</button>
@@ -492,7 +1444,7 @@
 
                                 <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; border-radius: 5px; margin-top: 15px; margin-bottom: 5px;">
                                     <p style="font-size: 0.75rem; color: #555; line-height: 1.4; text-align: justify; margin: 0;">
-                                        ⚠️ <strong>À noter :</strong> <em>Cette estimation is donnée à titre purement indicatif.</em> Le tarif définitif et contractuel sera validé avec vous uniquement après une visite technique sur place de vos locaux (sans engagement).
+                                        ⚠️ <strong>À noter :</strong> <em>Cette estimation est donnée à titre purement indicatif.</em> Le tarif définitif et contractuel sera validé avec vous uniquement après une visite technique sur place de vos locaux (sans engagement).
                                     </p>
                                 </div>
 
@@ -529,7 +1481,7 @@
                 <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Au :</label><input type="date" id="planEndDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
             </div>
             
-            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">3. Précisions / Commentaires <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optionnel)</span> :</p>
+            <p style="font-size: 0.85rem; var(--bleu); font-weight: 700; margin-top: 15px;">3. Précisions / Commentaires <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optionnel)</span> :</p>
             <textarea id="planComment" placeholder="Ex: Fermé le mardi, focus sur l'open space, clés à l'accueil..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
             
             <button type="button" class="btn-validate-days" onclick="savePlanning()">VALIDER LA SÉLECTION</button>
@@ -602,6 +1554,104 @@
                 </div>
         </div>
     </div>
+
+    <div id="callbackModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: center;">
+            <span class="close-modal" onclick="closeCallbackModal()" role="button" tabindex="0" aria-label="Fermer la fenêtre">×</span>
+            
+            <div id="step-choix">
+                <h3 style="color: var(--bleu); margin-bottom: 25px; font-size: 1.5rem;">Comment souhaitez-vous échanger ?</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: center; margin-bottom: 25px;">
+                    
+                    <a href="tel:+33745027624" class="btn-submit-form" style="margin-top: 0; background: #3498db; text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white;">
+                        <span style="font-size: 1.1rem;">📞 APPELER</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">07 45 02 76 24</span>
+                    </a>
+                    
+                    <button type="button" class="btn-submit-form" style="margin-top: 0; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3;" onclick="afficherFormulaireRappel()">
+                        <span style="font-size: 1.1rem;">📲 ÊTRE APPELÉ</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px; opacity: 0.9;">Gratuitement</span>
+                    </button>
+
+                    <a href="https://wa.me/33745027624" target="_blank" class="btn-submit-form" style="margin-top: 0; background: #25d366; text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white;">
+                        <span style="font-size: 1.1rem; display: flex; align-items: center; gap: 5px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 18px; filter: brightness(0) invert(1);"> WHATSAPP
+                        </span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">07 45 02 76 24</span>
+                    </a>
+
+                    <a href="sms:+33745027624" class="btn-submit-form" style="margin-top: 0; background: #f39c12; text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white;">
+                        <span style="font-size: 1.1rem;">💬 SMS</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">07 45 02 76 24</span>
+                    </a>
+
+                    <a href="mailto:contact@ospplus.com" class="btn-submit-form" style="margin-top: 0; background: var(--bleu); text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white; grid-column: 1 / -1;">
+                        <span style="font-size: 1.1rem;">✉️ E-MAIL</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">contact@ospplus.com</span>
+                    </a>
+                </div>
+
+                <button type="button" onclick="closeCallbackModal()" style="background: #fadbd8; border: none; color: #c0392b; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: 0.2s;">❌ Fermer la fenêtre</button>
+            </div>
+
+            <div id="step-formulaire" style="display: none;">
+                <h3 style="color: var(--bleu); margin-bottom: 10px; font-size: 1.5rem;">Me faire rappeler</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 20px; color: #555;">Laissez-moi vos coordonnées, je vous rappelle rapidement.</p>
+                
+                <form id="callbackForm" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+                    <div class="input-group">
+                        <label>Nom & Prénom *</label>
+                        <input type="text" id="cbName" required placeholder="Ex: Jean Dupont">
+                    </div>
+                    <div class="input-group">
+                        <label>Téléphone *</label>
+                        <input type="tel" id="cbPhone" required placeholder="Ex: 06 12 34 56 78">
+                    </div>
+                    <div class="input-group">
+                        <label>Quel service vous intéresse ? *</label>
+                        <select id="cbService" required style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef; background: var(--gris); font-size: 0.9rem; outline: none; color: var(--bleu); font-weight: 600;">
+                            <option value="" disabled selected>-- Choisissez un service --</option>
+                            <option value="Bureaux & Locaux">Bureaux & Locaux</option>
+                            <option value="Vitrerie">Vitrerie</option>
+                            <option value="Shampouinage textiles">Shampouinage textiles</option>
+                            <option value="Pack Véhicule">Pack Véhicule</option>
+                            <option value="Sépultures">Sépultures</option>
+                            <option value="Remise en État de Salle">Remise en État de Salle</option>
+                            <option value="Autre demande">Autre demande</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" class="btn-submit-form" onclick="submitCallbackForm()" id="btnSubmitCallback" style="margin-top: 5px;">VALIDER MA DEMANDE</button>
+                    
+                    <p id="callbackMsg" style="text-align: center; font-weight: bold; font-size: 0.9rem; margin-top: 10px;"></p>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                        <button type="button" onclick="afficherChoixContact()" style="background: #e1e8ef; border: none; color: var(--bleu); padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; flex: 1;">⬅ Retour</button>
+                        <button type="button" onclick="closeCallbackModal()" style="background: #fadbd8; border: none; color: #c0392b; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; flex: 1;">❌ Fermer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function afficherFormulaireRappel() {
+            document.getElementById('step-choix').style.display = 'none';
+            document.getElementById('step-formulaire').style.display = 'block';
+        }
+        function afficherChoixContact() {
+            document.getElementById('step-formulaire').style.display = 'none';
+            document.getElementById('step-choix').style.display = 'block';
+        }
+        function openCallbackModal() {
+            document.getElementById('callbackModal').style.display = 'flex';
+            afficherChoixContact();
+        }
+        function closeCallbackModal() {
+            document.getElementById('callbackModal').style.display = 'none';
+        }
+    </script>
 
     <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank" aria-label="Nous contacter sur WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Logo WhatsApp"></a>
 
