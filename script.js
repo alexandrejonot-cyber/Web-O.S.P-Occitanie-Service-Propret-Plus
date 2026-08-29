@@ -1717,10 +1717,12 @@ window.updateEvtPendantCalculations = function() {
 
 function calculatePrice() {
     let total = 0;
+    let subTotals = { vitrerie: 0, shampouinage: 0, vehicule: 0, bureaux: 0, sepulture: 0, evenements: 0, chantier: 0 };
     let hasOspConsommables = false; 
     const TAUX_HORAIRE = 35.00; 
-    const vPrices = { vit_fen: 10, vit_baie: 19, vit_velux: 15, vit_ver: 29, vit_porte: 12, vit_com: 39 };
     
+    // --- 1. VITRERIE ---
+    const vPrices = { vit_fen: 10, vit_baie: 19, vit_velux: 15, vit_ver: 29, vit_porte: 12, vit_com: 39 };
     document.querySelectorAll('input[id^="qty_vit_"]').forEach(input => {
         let idFull = input.id.replace('qty_', ''); 
         let baseId = idFull.split('_dup_')[0]; 
@@ -1730,14 +1732,13 @@ function calculatePrice() {
         let priceRatio = 1; 
         let typeSelect = document.getElementById('type_' + idFull);
         if (typeSelect && (typeSelect.value === 'interieur' || typeSelect.value === 'exterieur')) priceRatio = 0.6; 
-        if (vPrices[baseId]) total += q * (vPrices[baseId] * priceRatio) * exactMultiplier;
+        if (vPrices[baseId]) subTotals.vitrerie += q * (vPrices[baseId] * priceRatio) * exactMultiplier;
     });
 
+    // --- 2. PRIX FIXES ---
     const pricesFixed = { 
         'can23': 89, 'can45': 139, 'canAng': 159, 'tapis': 49, 'moq': 7, 
-        'pack_v': 150, 
-        'siege_ag': 35, 'siege_ad': 35, 'banq_ar': 70, 
-        'coffre_auto': 20,
+        'pack_v': 150, 'siege_ag': 35, 'siege_ad': 35, 'banq_ar': 70, 'coffre_auto': 20,
         'tapis_ag': 10, 'tapis_ad': 10, 'tapis_arg': 10, 'tapis_ard': 10, 'tapis_coffre': 10,
         'sep_simple': 45, 'sep_double': 65, 'sep_caveau': 85, 'sep_columbarium': 25, 'sep_terre': 40,
         'sep_fleurs_art': 15, 'sep_fleurs_vrai': 25, 'sep_pots_acc': 10,
@@ -1751,41 +1752,48 @@ function calculatePrice() {
             let q = parseFloat(qtyInput.value) || 0;
             let data = planData[id] || {days:[], months:[], start:'', end:''};
             let exactMultiplier = getRealInterventionCount(data.days, data.months, data.start, data.end);
-            total += q * pricesFixed[id] * exactMultiplier;
+            let cost = q * pricesFixed[id] * exactMultiplier;
+            
+            if (['can23','can45','canAng','tapis','moq'].includes(id)) subTotals.shampouinage += cost;
+            else if (id.startsWith('pack_v') || id.startsWith('siege_') || id.startsWith('banq_') || id.startsWith('coffre_') || id.startsWith('tapis_')) subTotals.vehicule += cost;
+            else if (id.startsWith('sep_')) subTotals.sepulture += cost;
+            else if (id.startsWith('evt_')) subTotals.evenements += cost;
         }
     }
 
-    // Checkboxes Événements
-    if (document.getElementById('cb_evt_nettoyage_avant')?.checked) total += 70;
-    if (document.getElementById('cb_evt_ext_terrasse')?.checked) total += 70;
-    if (document.getElementById('cb_evt_poubelles')?.checked) total += 70;
+    // --- 3. ÉVÉNEMENTS (Checkboxes & Consommables & Pendant) ---
+    if (document.getElementById('cb_evt_nettoyage_avant')?.checked) subTotals.evenements += 70;
+    if (document.getElementById('cb_evt_ext_terrasse')?.checked) subTotals.evenements += 70;
+    if (document.getElementById('cb_evt_poubelles')?.checked) subTotals.evenements += 70;
 
-    // Consommables Événement
     let consSelectEvt = document.getElementById('cons_select_evt');
-    if (consSelectEvt && consSelectEvt.value === 'osp') {
-        total += 29;
-    }
+    if (consSelectEvt && consSelectEvt.value === 'osp') subTotals.evenements += 29;
 
-    // Coût calculé de l'option Pendant (Jour / Nuit combinés via la fonction de découpe horaire)
     if (window.evtPendantData && window.evtPendantData.totalCost) {
-        total += window.evtPendantData.totalCost;
+        subTotals.evenements += window.evtPendantData.totalCost;
     }
 
-    if (document.getElementById('cb_tapis_siege_ag')?.checked) total += (parseInt(document.getElementById('qty_siege_ag')?.value)||1) * 10 * getRealInterventionCount(planData['siege_ag']?.days||[], planData['siege_ag']?.months||[], planData['siege_ag']?.start, planData['siege_ag']?.end);
-    if (document.getElementById('cb_tapis_siege_ad')?.checked) total += (parseInt(document.getElementById('qty_siege_ad')?.value)||1) * 10 * getRealInterventionCount(planData['siege_ad']?.days||[], planData['siege_ad']?.months||[], planData['siege_ad']?.start, planData['siege_ad']?.end);
-    if (document.getElementById('cb_tapis_banq_ar')?.checked) total += (parseInt(document.getElementById('qty_banq_ar')?.value)||1) * 20 * getRealInterventionCount(planData['banq_ar']?.days||[], planData['banq_ar']?.months||[], planData['banq_ar']?.start, planData['banq_ar']?.end);
+    // --- 4. VÉHICULE (Checkboxes Tapis liés aux sièges) ---
+    if (document.getElementById('cb_tapis_siege_ag')?.checked) subTotals.vehicule += (parseInt(document.getElementById('qty_siege_ag')?.value)||1) * 10 * getRealInterventionCount(planData['siege_ag']?.days||[], planData['siege_ag']?.months||[], planData['siege_ag']?.start, planData['siege_ag']?.end);
+    if (document.getElementById('cb_tapis_siege_ad')?.checked) subTotals.vehicule += (parseInt(document.getElementById('qty_siege_ad')?.value)||1) * 10 * getRealInterventionCount(planData['siege_ad']?.days||[], planData['siege_ad']?.months||[], planData['siege_ad']?.start, planData['siege_ad']?.end);
+    if (document.getElementById('cb_tapis_banq_ar')?.checked) subTotals.vehicule += (parseInt(document.getElementById('qty_banq_ar')?.value)||1) * 20 * getRealInterventionCount(planData['banq_ar']?.days||[], planData['banq_ar']?.months||[], planData['banq_ar']?.start, planData['banq_ar']?.end);
+    
+    if (activeServices.includes('vehicule')) {
+        let qLarge = parseInt(document.getElementById('qty_veh_large')?.value) || 0;
+        let qPl = parseInt(document.getElementById('qty_veh_pl')?.value) || 0;
+        subTotals.vehicule += (qLarge * 30) + (qPl * 50);
+    }
 
+    // --- 5. BUREAUX / LOCAUX ---
     for (let roomId in planData) {
         if (roomId.startsWith('room_detail_')) {
             let roomInfo = planData[roomId];
             let type = roomInfo.roomType;
             let exactMultiplier = getRealInterventionCount(roomInfo.days, roomInfo.months, roomInfo.start, roomInfo.end);
-            
             let consSelect = document.getElementById(`cons_select_${roomId}`);
             if (consSelect && consSelect.value === 'osp') hasOspConsommables = true;
 
             let tempsMinutes = 0, nbEspaces = 1;
-
             if (type === 'Sanitaires' || type === 'Douche' || type === 'Vestiaire') {
                 let inputH = document.getElementById(`qty_h_${roomId}`);
                 let inputF = document.getElementById(`qty_f_${roomId}`);
@@ -1811,7 +1819,7 @@ function calculatePrice() {
                 else if (['Parking', 'Terrasse'].includes(type)) tempsMinutes = 30; 
                 else tempsMinutes = 20;
             }
-            total += nbEspaces * ((tempsMinutes / 60) * TAUX_HORAIRE) * exactMultiplier;
+            subTotals.bureaux += nbEspaces * ((tempsMinutes / 60) * TAUX_HORAIRE) * exactMultiplier;
         }
     }
     
@@ -1822,64 +1830,107 @@ function calculatePrice() {
             let inputEmployes = document.getElementById('nbEmployes');
             if (inputEmployes && inputEmployes.value > 0) nbEmployes = parseInt(inputEmployes.value);
         }
-        total += (nbEmployes * 7.00);
+        subTotals.bureaux += (nbEmployes * 7.00);
     }
 
-    if (activeServices.includes('vehicule')) {
-        let qLarge = parseInt(document.getElementById('qty_veh_large')?.value) || 0;
-        let qPl = parseInt(document.getElementById('qty_veh_pl')?.value) || 0;
-        total += (qLarge * 30) + (qPl * 50);
+    // --- 6. FIN DE CHANTIER ---
+    if (activeServices.includes('chantier')) {
+        let m2 = parseFloat(document.getElementById('qty_chantier_m2')?.value) || 0;
+        let typeChantier = document.getElementById('type_chantier')?.value || 'moyen';
+        let rate = 5.00;
+        if (typeChantier === 'leger') rate = 3.50;
+        if (typeChantier === 'lourd') rate = 7.50;
+        
+        let costChantier = m2 * rate;
+        if (document.getElementById('cb_chantier_monobrosse')?.checked) costChantier += (m2 * 2.00);
+        if (document.getElementById('cb_chantier_dechets')?.checked) costChantier += 80;
+        
+        let dataPlanning = planData['chantier_m2'] || {days:[], months:[], start:'', end:''};
+        let exactMultiplier = getRealInterventionCount(dataPlanning.days, dataPlanning.months, dataPlanning.start, dataPlanning.end);
+        subTotals.chantier += (costChantier * exactMultiplier);
     }
 
-    // Ajout automatique des frais de déplacement au total global s'il y a un surcoût hors 30km
-    total += window.fraisDeplacementKilometrique;
-
+    // --- 7. REGROUPEMENT ET TOTAL ---
+    total = subTotals.vitrerie + subTotals.shampouinage + subTotals.vehicule + subTotals.bureaux + subTotals.sepulture + subTotals.evenements + subTotals.chantier;
+    total += window.fraisDeplacementKilometrique; // Hors promo
+    
     let originalTotal = total;
     window.originalTotalValue = originalTotal;
     let discountText = "";
-    let totalDiscountPercent = 0;
     
+    // --- 8. LOGIQUE DU SERVICE VEDETTE & REMISES ---
+    let totalDiscountAmount = 0;
+    let conflict10 = false;
+
+    let vedetteServiceId = null;
+    let vedetteDiscount = 0;
+    let resteDiscount = window.holidayPromoActive ? 0.10 : 0; 
+
+    // Détection du mois en cours pour le Service Vedette dans calculatePrice()
+    if (window.holidayPromoActive) {
+        const currentMonth = getSimulatedDate().getMonth();
+        if (currentMonth === 5) { vedetteServiceId = 'vehicule'; vedetteDiscount = 0.30; } 
+        else if (currentMonth === 4) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.30; } 
+        else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; } // <-- AOÛT & SEPTEMBRE (Opération Rentrée)
+        else if (currentMonth === 2 || currentMonth === 3) { vedetteServiceId = 'vitrerie'; vedetteDiscount = 0.25; } 
+        else if (currentMonth === 9 || currentMonth === 10) { vedetteServiceId = 'sepulture'; vedetteDiscount = 0.25; } 
+        else if (currentMonth === 11 || currentMonth === 0) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.25; } 
+        else { vedetteServiceId = null; vedetteDiscount = 0.10; }
+    }
+
     let appliedPromoDevis = window.promoDiscountDevis;
     let appliedClientDiscount = window.clientDiscount;
-    let appliedHoliday = window.holidayPromoActive ? 0.10 : 0; 
-    let conflict10 = false;
 
     let count10 = 0;
     if (appliedPromoDevis === 0.10) count10++;
     if (appliedClientDiscount === 0.10) count10++;
-    if (appliedHoliday === 0.10) count10++; 
+    if (resteDiscount === 0.10) count10++; 
 
     if (count10 >= 2) { 
         conflict10 = true; 
         appliedPromoDevis = 0; 
     }
 
-    if (appliedClientDiscount > 0) totalDiscountPercent += appliedClientDiscount;
-    if (appliedPromoDevis > 0) totalDiscountPercent += appliedPromoDevis;
-    if (appliedHoliday > 0) totalDiscountPercent += appliedHoliday;
+    if (window.holidayPromoActive && vedetteServiceId && activeServices.includes(vedetteServiceId)) {
+        let vedetteAmount = subTotals[vedetteServiceId];
+        let resteAmount = originalTotal - vedetteAmount - window.fraisDeplacementKilometrique;
 
-    let txtVip = langKey === 'vi' ? "✓ Mã VIP Thân thiết" : (langKey === 'en' ? "✓ VIP Loyalty Code" : "✓ Code VIP Fidélité");
-    let txtHoliday = langKey === 'vi' ? "✓ Ưu đãi Ngày lễ" : (langKey === 'en' ? "✓ Holiday Offer" : "✓ Offre Jour Férié");
-    let txtPromo = langKey === 'vi' ? "✓ Mã giảm giá" : (langKey === 'en' ? "✓ Promo Code" : "✓ Code Promo");
-    let txtConflict = langKey === 'vi' ? "⚠️ Không thể cộng dồn hai mức giảm giá 10%." : (langKey === 'en' ? "⚠️ Two 10% discounts cannot be combined." : "⚠️ Deux réductions de 10% ne sont pas cumulables.");
-    let txtSuper = (pct) => langKey === 'vi' ? `🎉 TUYỆT VỜI! Bạn nhận được tổng giảm giá ${pct}%!` : (langKey === 'en' ? `🎉 SUPER! You get a total discount of ${pct}%!` : `🎉 SUPER ! Vous bénéficiez de ${pct}% de remise totale !`);
-    let txtOffre = (pct) => langKey === 'vi' ? `🎉 ƯU ĐÃI HIỆN TẠI: Giảm tổng cộng ${pct}%!` : (langKey === 'en' ? `🎉 CURRENT OFFER: Total discount of ${pct}%!` : `🎉 OFFRE EN COURS : ${pct}% de remise totale !`);
+        totalDiscountAmount += (vedetteAmount * vedetteDiscount);
+        totalDiscountAmount += (resteAmount * resteDiscount);
 
-    if (totalDiscountPercent > 0) {
-        total -= (originalTotal * totalDiscountPercent);
-        if (appliedClientDiscount > 0) discountText += `<div class="price-discount-text">${txtVip} (-${appliedClientDiscount * 100}%)</div>`;
-        if (appliedHoliday > 0) discountText += `<div class="price-discount-text">${txtHoliday} (-10%)</div>`;
-        if (appliedPromoDevis > 0) discountText += `<div class="price-discount-text">${txtPromo} (-${appliedPromoDevis * 100}%)</div>`;
-        if (conflict10) discountText += `<div class="price-min-alert" style="color: #e67e22; margin-top: 5px;">${txtConflict}</div>`;
+        if (appliedClientDiscount > 0) totalDiscountAmount += (originalTotal * appliedClientDiscount);
+        if (appliedPromoDevis > 0) totalDiscountAmount += (originalTotal * appliedPromoDevis);
 
-        let pctTotalRounded = Math.round(totalDiscountPercent * 100);
-        if (totalDiscountPercent >= 0.15) discountText += `<div class="price-discount-text" style="font-weight: 800; color: var(--vert); margin-top: 5px; font-size: 0.85rem;">${txtSuper(pctTotalRounded)}</div>`;
-        else discountText += `<div class="price-discount-text" style="font-weight: 800; color: var(--vert); margin-top: 5px; font-size: 0.85rem;">${txtOffre(pctTotalRounded)}</div>`;
+        total -= totalDiscountAmount;
+
+        discountText += `<div class="price-discount-text">🌟 Service Vedette (-${vedetteDiscount*100}%)</div>`;
+        if(resteAmount > 0) discountText += `<div class="price-discount-text">✓ Reste de la commande (-${resteDiscount*100}%)</div>`;
+        
+    } else {
+        let totalDiscountPercent = 0;
+        if (appliedClientDiscount > 0) totalDiscountPercent += appliedClientDiscount;
+        if (appliedPromoDevis > 0) totalDiscountPercent += appliedPromoDevis;
+        if (resteDiscount > 0) totalDiscountPercent += resteDiscount;
+
+        if (totalDiscountPercent > 0) {
+            totalDiscountAmount = (originalTotal * totalDiscountPercent);
+            total -= totalDiscountAmount;
+
+            if (appliedClientDiscount > 0) discountText += `<div class="price-discount-text">✓ Code VIP Fidélité (-${appliedClientDiscount * 100}%)</div>`;
+            if (resteDiscount > 0) discountText += `<div class="price-discount-text">✓ Offre Jour Férié (-10%)</div>`;
+            if (appliedPromoDevis > 0) discountText += `<div class="price-discount-text">✓ Code Promo (-${appliedPromoDevis * 100}%)</div>`;
+        }
+    }
+
+    if (conflict10) discountText += `<div class="price-min-alert" style="color: #e67e22; margin-top: 5px;">⚠️ Deux réductions de 10% ne sont pas cumulables.</div>`;
+
+    if (totalDiscountAmount > 0) {
+        let pctTotalRounded = Math.round((totalDiscountAmount / originalTotal) * 100) || 0;
+        discountText += `<div class="price-discount-text" style="font-weight: 800; color: var(--vert); margin-top: 5px; font-size: 0.85rem;">🎉 SUPER ! Vous bénéficiez de ${pctTotalRounded}% de remise totale !</div>`;
     }
 
     window.currentTotalValue = total;
-    let txtAstuce = langKey === 'vi' ? "💡 Mẹo: Áp dụng mức tối thiểu hóa đơn 35,00 €. Hãy thêm dịch vụ khác." : (langKey === 'en' ? "💡 Tip: A minimum billing of 35.00 € applies. Add other services." : "💡 Astuce : Un minimum de facturation de 35,00 € s'applique. Ajoutez d'autres prestations.");
-    let mentionMinimum = (total > 0 && total < 35.00) ? `<div class="price-min-alert" style="margin-top:8px;">${txtAstuce}</div>` : "";
+    let mentionMinimum = (total > 0 && total < 35.00) ? `<div class="price-min-alert" style="margin-top:8px;">💡 Astuce : Un minimum de facturation de 35,00 € s'applique. Ajoutez d'autres prestations.</div>` : "";
     
     const elAmount = document.getElementById('estimatedAmount');
     if (elAmount) {
@@ -2277,6 +2328,42 @@ function addServiceToQuote(service) {
         </div>
         `;
 
+    } else if(service === 'chantier') {
+        let tChantier = langKey === 'vi' ? '🚧 Dọn dẹp sau xây dựng' : (langKey === 'en' ? '🚧 Post-Construction Cleaning' : '🚧 Nettoyage Fin de Chantier');
+        
+        html += `<h3 style="color:var(--bleu); font-size:1.1rem; margin-bottom:15px; border-bottom:2px solid var(--vert); padding-bottom:5px;">${tChantier}</h3>`;
+        
+        html += `<div style="background-color: #eef3f8; border-left: 4px solid var(--vert); padding: 12px 15px; margin-bottom: 15px; border-radius: 5px; font-size: 0.8rem; color: #333; line-height: 1.5;">
+            ℹ️ <strong>Inclus :</strong> Dépoussiérage approfondi (murs, plafonds, plinthes), grattage des traces (peinture, ciment, colle), lessivage des sols et désinfection.<br>⚠️ <em>La vitrerie doit être ajoutée séparément via le module Vitrerie.</em>
+        </div>`;
+
+        let txtM2 = langKey === 'vi' ? 'Tổng diện tích cần làm sạch (m²)' : (langKey === 'en' ? 'Total surface to clean (m²)' : 'Surface totale à nettoyer (en m²) *');
+        html += generateRowHtml('chantier_m2', txtM2);
+
+        let txtType = langKey === 'vi' ? 'Loại công trường' : (langKey === 'en' ? 'Type of construction site' : 'Type de chantier *');
+        html += `
+        <div class="quote-row-item" style="display:flex; flex-direction:column; align-items:flex-start; gap:8px; background:var(--gris); padding:12px; border-radius:10px; margin-bottom:8px; border:1px solid #e1e8ef;">
+            <label style="font-size:0.8rem; font-weight:bold; color:var(--bleu);">${txtType}</label>
+            <select id="type_chantier" onchange="calculatePrice()" style="width:100%; box-sizing:border-box; padding:8px; border-radius:5px; border:1px solid #ccc; font-weight:bold; color:var(--bleu); font-size:0.8rem;">
+                <option value="leger">Léger (Rénovation, peinture) - 3.50€/m²</option>
+                <option value="moyen" selected>Moyen (Gros œuvre partiel) - 5.00€/m²</option>
+                <option value="lourd">Lourd (Gravats, forte poussière) - 7.50€/m²</option>
+            </select>
+        </div>`;
+
+        let txtMono = langKey === 'vi' ? 'Rửa sàn bằng máy cơ giới (+2€/m²)' : (langKey === 'en' ? 'Mechanical floor washing (+2€/m²)' : 'Lavage mécanique des sols (Monobrosse) +2€/m²');
+        html += `
+        <div class="quote-row-item" style="display:flex; justify-content:space-between; align-items:center; background:var(--gris); padding:12px; border-radius:10px; margin-bottom:8px; border:1px solid #e1e8ef;">
+            <label style="font-size:0.8rem; font-weight:bold; color:var(--bleu); cursor:pointer;" for="cb_chantier_monobrosse">${txtMono}</label>
+            <input type="checkbox" id="cb_chantier_monobrosse" onchange="calculatePrice()" style="width:20px; height:20px; cursor:pointer;">
+        </div>`;
+        
+        let txtDechets = langKey === 'vi' ? 'Thu gom rác thải nhẹ (80€)' : (langKey === 'en' ? 'Light debris removal (80€)' : 'Évacuation de gravats / déchets légers (Forfait 80€)');
+        html += `
+        <div class="quote-row-item" style="display:flex; justify-content:space-between; align-items:center; background:var(--gris); padding:12px; border-radius:10px; margin-bottom:8px; border:1px solid #e1e8ef;">
+            <label style="font-size:0.8rem; font-weight:bold; color:var(--bleu); cursor:pointer;" for="cb_chantier_dechets">${txtDechets}</label>
+            <input type="checkbox" id="cb_chantier_dechets" onchange="calculatePrice()" style="width:20px; height:20px; cursor:pointer;">
+        </div>`;
     } else if(service === 'bureaux') {
         let tBureaux = langKey === 'vi' ? '🏢 Văn phòng & Cơ sở' : (langKey === 'en' ? '🏢 Offices & Premises' : '🏢 Bureaux & Locaux');
         let pText = langKey === 'vi' ? '<strong>Cấu trúc không gian của bạn:</strong> Chọn một tầng, sau đó thêm các phòng. <span class="help-bubble">?<span class="tooltip-text">Bước này giúp chúng tôi hiểu rõ sơ đồ bố trí chính xác cơ sở của bạn.</span></span>' : (langKey === 'en' ? '<strong>Structure your spaces:</strong> Choose a level, then add the rooms. <span class="help-bubble">?<span class="tooltip-text">This step allows us to understand the exact layout of your premises.</span></span>' : '<strong>Structurez vos espaces :</strong> Choisissez un niveau, puis ajoutez les pièces. <span class="help-bubble">?<span class="tooltip-text">Cette étape nous permet de comprendre l\'agencement exact de vos locaux.</span></span>');
@@ -2324,13 +2411,14 @@ function updateCrossSellButtons() {
     const csContainer = document.getElementById('crossSellContainer');
     
     const availableServices = [ 
-        { id: 'vitrerie', name_fr: '🪟 Vitrerie', name_en: '🪟 Windows', name_vi: '🪟 Lau kính' }, 
-        { id: 'shampouinage', name_fr: '🛋️ Textiles', name_en: '🛋️ Textiles', name_vi: '🛋️ Giặt vải' }, 
-        { id: 'vehicule', name_fr: '🚗 Véhicule', name_en: '🚗 Vehicle', name_vi: '🚗 Xe hơi' }, 
-        { id: 'bureaux', name_fr: '🏢 Locaux', name_en: '🏢 Offices', name_vi: '🏢 Văn phòng' },
-        { id: 'sepulture', name_fr: '🪦 Sépultures', name_en: '🪦 Graves', name_vi: '🪦 Mộ' },
-        { id: 'evenements', name_fr: '🎉 Salle/Fêtes', name_en: '🎉 Events', name_vi: '🎉 Sự kiện' }
-    ];
+    { id: 'vitrerie', name_fr: '🪟 Vitrerie', name_en: '🪟 Windows', name_vi: '🪟 Lau kính' }, 
+    { id: 'shampouinage', name_fr: '🛋️ Textiles', name_en: '🛋️ Textiles', name_vi: '🛋️ Giặt vải' }, 
+    { id: 'vehicule', name_fr: '🚗 Véhicule', name_en: '🚗 Vehicle', name_vi: '🚗 Xe hơi' }, 
+    { id: 'bureaux', name_fr: '🏢 Locaux', name_en: '🏢 Offices', name_vi: '🏢 Văn phòng' },
+    { id: 'sepulture', name_fr: '🪦 Sépultures', name_en: '🪦 Graves', name_vi: '🪦 Mộ' },
+    { id: 'evenements', name_fr: '🎉 Salle/Fêtes', name_en: '🎉 Events', name_vi: '🎉 Sự kiện' },
+    { id: 'chantier', name_fr: '🚧 Fin Chantier', name_en: '🚧 Post-build', name_vi: '🚧 Sau xây dựng' } // <-- LIGNE AJOUTÉE ICI
+];
     
     let missingServices = availableServices.filter(s => !activeServices.includes(s.id));
 
@@ -2559,6 +2647,20 @@ async function submitInteractiveForm() {
                         pInput.style.border = "1px solid #ccc";
                         pInput.style.backgroundColor = "white";
                     }
+                }
+            }
+
+            // ---> VÉRIFICATION M² CHANTIER AJOUTÉE ICI <---
+            if (activeServices.includes('chantier')) {
+                let inputM2 = document.getElementById('qty_chantier_m2');
+                if (inputM2 && (parseInt(inputM2.value) || 0) === 0) {
+                    inputM2.style.border = "2px solid #e74c3c";
+                    inputM2.style.backgroundColor = "#fadbd8";
+                    inputM2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                } else if (inputM2) {
+                    inputM2.style.border = "1px solid #ccc";
+                    inputM2.style.backgroundColor = "white";
                 }
             }
 
@@ -2829,6 +2931,23 @@ async function submitInteractiveForm() {
                 recap += "\n";
             }
 
+            // ---> RÉCAPITULATIF CHANTIER AJOUTÉ ICI <---
+            if (activeServices.includes('chantier')) {
+                let m2 = parseInt(document.getElementById('qty_chantier_m2')?.value) || 0;
+                let typeChantier = document.getElementById('type_chantier')?.value || 'moyen';
+                let cbMono = document.getElementById('cb_chantier_monobrosse')?.checked;
+                let cbDechets = document.getElementById('cb_chantier_dechets')?.checked;
+
+                if (m2 > 0) {
+                    recap += "🚧 NETTOYAGE FIN DE CHANTIER :\n";
+                    recap += `  - Surface totale : ${m2} m²\n`;
+                    recap += `  - Type d'intervention : ${typeChantier.toUpperCase()}\n`;
+                    if (cbMono) recap += `  - Option : Lavage mécanique des sols (Monobrosse)\n`;
+                    if (cbDechets) recap += `  - Option : Évacuation de gravats / déchets\n`;
+                    recap += `    Planning : ${getPlanningRecap(planData['chantier_m2'])}\n\n`;
+                }
+            }
+
             let aDesLocaux = false;
             let recapParNiveau = {}; 
 
@@ -2920,18 +3039,48 @@ async function submitInteractiveForm() {
             let conflict10 = false;
             let finalPromoDevis = window.promoDiscountDevis;
             let finalClientDiscount = window.clientDiscount;
+            let resteDiscountEmail = window.holidayPromoActive ? 0.10 : 0;
+
             let countEmail10 = 0;
             if (finalPromoDevis === 0.10) countEmail10++;
             if (finalClientDiscount === 0.10) countEmail10++;
+            if (resteDiscountEmail === 0.10) countEmail10++;
             if (countEmail10 >= 2) { finalPromoDevis = 0; conflict10 = true; }
 
             if (finalClientDiscount > 0) recap += `🎁 Remise Client VIP Fidélité (${finalClientDiscount * 100}%) active via Code : ${window.activeClientCode}\n`;
             if (finalPromoDevis > 0) recap += `🎁 Code Promo de validation (${finalPromoDevis * 100}%) appliqué avec le code : ${window.activePromoCodeDevis}\n`;
-            if (window.holidayPromoActive) recap += `🎁 Promo Jour Férié (10%) appliquée (Contrat final à signer sous 15 jours)\n`;
+            
+            // Synchronisation du nom de l'Opération pour l'e-mail
+            if (window.holidayPromoActive) {
+                const currentMonth = getSimulatedDate().getMonth();
+                let vedetteServiceId = null;
+                let vedetteDiscount = 0;
+                let nomOperation = "PROPRETÉ";
+
+                if (currentMonth === 5) { vedetteServiceId = 'vehicule'; vedetteDiscount = 0.30; nomOperation = "ÉTÉ"; }
+                else if (currentMonth === 4) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.30; nomOperation = "PRINTEMPS"; }
+                else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; nomOperation = "RENTRÉE"; }
+                else if (currentMonth === 2 || currentMonth === 3) { vedetteServiceId = 'vitrerie'; vedetteDiscount = 0.25; nomOperation = "PRINTEMPS"; }
+                else if (currentMonth === 9 || currentMonth === 10) { vedetteServiceId = 'sepulture'; vedetteDiscount = 0.25; nomOperation = "TOUSSAINT"; }
+                else if (currentMonth === 11 || currentMonth === 0) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.25; nomOperation = "NOËL"; }
+
+                if (vedetteServiceId && activeServices.includes(vedetteServiceId)) {
+                    recap += `🎁 OPÉRATION EXCLUSIVE ${nomOperation} : Remise Vedette (-${vedetteDiscount * 100}%) appliquée.\n`;
+                    recap += `🎁 OPÉRATION SPÉCIALE ${nomOperation} : Remise globale (-10%) appliquée sur le reste.\n`;
+                } else {
+                    recap += `🎁 OPÉRATION SPÉCIALE ${nomOperation} : Remise globale (-10%) appliquée.\n`;
+                }
+            }
+
             if (conflict10) recap += `⚠️ Un cumul de deux offres à 10% a été détecté et bloqué conformément à la politique tarifaire.\n`;
             
-            let totalPercent = finalClientDiscount + finalPromoDevis + (window.holidayPromoActive ? 0.05 : 0);
-            if (totalPercent > 0) recap += `✅ TOTAL DES REMISES CUMULÉES EXTRAITES : ${Math.round(totalPercent * 100)}%\n`;
+            // Calcul exact du pourcentage moyen de remise
+            let totalDiscountMontant = window.originalTotalValue - window.currentTotalValue;
+            if (totalDiscountMontant > 0 && window.originalTotalValue > 0) {
+                let pctTotalRounded = Math.round((totalDiscountMontant / window.originalTotalValue) * 100) || 0;
+                recap += `✅ TOTAL DES REMISES CUMULÉES EXTRAITES : ~${pctTotalRounded}%\n`;
+            }
+            
             recap += `Prix final proposé au client : ${prixFinalAEnvoyer}\n`;
             if (majorationAppliquee) recap += `⚠️ Le client a validé et accepté la majoration forfaitaire à 35,00 € car son panier initial était trop faible.\n`;
 
@@ -3372,4 +3521,85 @@ function executeFloorClone(sourceLevelId, newNames) {
     
     calculatePrice();
     updateLevelSummaries();
+}
+// ==========================================
+// 🤝 GESTION DE L'ESPACE PARTENAIRES B2B
+// ==========================================
+
+function openB2bModal() {
+    document.getElementById('b2bForm').style.display = 'flex';
+    document.getElementById('b2bSuccessMsg').style.display = 'none';
+    document.getElementById('b2bModal').style.display = 'flex';
+}
+
+function closeB2bModal() {
+    document.getElementById('b2bModal').style.display = 'none';
+}
+
+function submitB2bForm() {
+    const form = document.getElementById('b2bForm');
+    
+    // Vérification native du formulaire
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    const btn = document.getElementById('btnSubmitB2b');
+    btn.innerText = "ENVOI EN COURS...";
+    btn.disabled = true;
+
+    // Récupération des données
+    const paramsB2B = {
+        secteur: document.getElementById('b2bSecteur').value,
+        entreprise: document.getElementById('b2bEntreprise').value,
+        siret: document.getElementById('b2bSiret').value || "Non renseigné",
+        nom: document.getElementById('b2bNom').value,
+        telephone: document.getElementById('b2bPhone').value,
+        email_client: document.getElementById('b2bEmail').value,
+        message: document.getElementById('b2bMessage').value || "Aucun détail supplémentaire."
+    };
+
+    // Création du résumé lisible pour ton e-mail
+    const recapB2B = `
+--- NOUVELLE DEMANDE DE PARTENARIAT B2B ---
+
+Secteur souhaité : ${paramsB2B.secteur}
+Entreprise : ${paramsB2B.entreprise} (SIRET : ${paramsB2B.siret})
+Contact : ${paramsB2B.nom}
+Téléphone : ${paramsB2B.telephone}
+Email : ${paramsB2B.email_client}
+
+Message / Besoins :
+"${paramsB2B.message}"
+    `;
+
+    // Utilisation de ton template email existant pour t'envoyer la demande
+    const emailData = {
+        nom: paramsB2B.entreprise,
+        prenom: paramsB2B.nom,
+        email: paramsB2B.email_client,
+        telephone: paramsB2B.telephone,
+        email_client: paramsB2B.email_client,
+        adresse: "Demande Partenariat B2B",
+        ville: "-",
+        interlocuteur: paramsB2B.nom,
+        prix: "À définir (Grille B2B)",
+        recapitulatif: recapB2B
+    };
+
+    emailjs.send('service_wfrbr4e', 'template_oncrl1l', emailData)
+        .then(() => {
+            document.getElementById('b2bForm').style.display = 'none';
+            document.getElementById('b2bSuccessMsg').style.display = 'block';
+            form.reset();
+            btn.innerText = "SOUMETTRE MA DEMANDE";
+            btn.disabled = false;
+        })
+        .catch((error) => {
+            console.error("Erreur EmailJS B2B:", error);
+            alert("Une erreur est survenue lors de l'envoi. Veuillez nous contacter directement par téléphone.");
+            btn.innerText = "SOUMETTRE MA DEMANDE";
+            btn.disabled = false;
+        });
 }
