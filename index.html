@@ -20,9 +20,7 @@
     </script>
     
     <style>
-        .comparison-container {
-            position: relative;
-        }
+        .comparison-container { position: relative; }
         .btn-fullscreen-comp {
             position: absolute;
             top: 10px;
@@ -65,14 +63,10 @@
             font-size: 1.2rem;
         }
         @media (max-width: 768px) {
-            .btn-fullscreen-comp {
-                display: none !important;
-            }
+            .btn-fullscreen-comp { display: none !important; }
         }
 
-        .hero-content {
-            position: relative; 
-        }
+        .hero-content { position: relative; }
         
         .promo-banner-wrapper {
             background: linear-gradient(90deg, var(--bleu, #1a3c6c), #265494, var(--bleu, #1a3c6c));
@@ -133,103 +127,32 @@
             position: relative;
             z-index: 9998 !important;
         }
-        .promo-nav-link {
-            color: #e67e22 !important;
-            font-weight: 900 !important;
-        }
-        .promo-nav-link:hover {
-            color: var(--vert, #8cc63f) !important;
-        }
+        .promo-nav-link { color: #e67e22 !important; font-weight: 900 !important; }
+        .promo-nav-link:hover { color: var(--vert, #8cc63f) !important; }
         
-        .mobile-only-menu-item {
-            display: none !important;
-        }
+        .mobile-only-menu-item { display: none !important; }
 
         @media (min-width: 1381px) {
-            .promo-banner-wrapper {
-                display: flex;
-                align-items: center;
-                min-height: 50px;
-            }
-            .promo-actions {
-                position: absolute;
-                right: 15px;
-            }
-            .promo-banner {
-                padding-left: 240px;
-                padding-right: 320px;
-            }
+            .promo-banner-wrapper { display: flex; align-items: center; min-height: 50px; }
+            .promo-actions { position: absolute; right: 15px; }
+            .promo-banner { padding-left: 240px; padding-right: 320px; }
 
-            .logo-container {
-                width: 380px !important;
-                height: 60px !important;
-                margin-left: 0 !important;
-            }
-            .site-logo {
-                position: absolute !important;
-                top: -50px !important; 
-                left: 15px !important; 
-                height: 100px !important; 
-                width: auto !important;
-            }
-            .site-logo-capture {
-                position: absolute !important;
-                top: -48px !important; 
-                left: 115px !important;
-                height: 38px !important; 
-                width: auto !important;
-            }
-            .site-logo-texte {
-                position: absolute !important;
-                top: 15px !important; 
-                left: 115px !important; 
-                height: 30px !important; 
-                width: auto !important;
-            }
-            .nav-link {
-                font-size: 1.15rem !important; 
-                margin: 0 2px;
-            }
-            nav ul {
-                gap: 5px; 
-            }
+            .logo-container { width: 380px !important; height: 60px !important; margin-left: 0 !important; }
+            .site-logo { position: absolute !important; top: -50px !important; left: 15px !important; height: 100px !important; width: auto !important; }
+            .site-logo-capture { position: absolute !important; top: -48px !important; left: 115px !important; height: 38px !important; width: auto !important; }
+            .site-logo-texte { position: absolute !important; top: 15px !important; left: 115px !important; height: 30px !important; width: auto !important; }
+            .nav-link { font-size: 1.15rem !important; margin: 0 2px; }
+            nav ul { gap: 5px; }
         }
         
         @media (max-width: 1380px) {
-            .promo-banner-wrapper {
-                flex-direction: row; 
-                padding: 5px 15px;
-                min-height: 40px;
-                gap: 10px;
-                justify-content: space-between;
-            }
-            .promo-banner {
-                width: auto;
-                flex: 1;
-                text-align: left;
-                padding: 0;
-            }
-            .promo-actions {
-                position: relative;
-                right: auto;
-                justify-content: flex-end;
-                flex-wrap: nowrap;
-                width: auto;
-            }
-            .btn-client-nav-top, .btn-carte-nav-top, .top-lang {
-                display: none !important; 
-            }
+            .promo-banner-wrapper { flex-direction: row; padding: 5px 15px; min-height: 40px; gap: 10px; justify-content: space-between; }
+            .promo-banner { width: auto; flex: 1; text-align: left; padding: 0; }
+            .promo-actions { position: relative; right: auto; justify-content: flex-end; flex-wrap: nowrap; width: auto; }
+            .btn-client-nav-top, .btn-carte-nav-top, .top-lang { display: none !important; }
             
-            .mobile-only-menu-item {
-                display: flex !important; 
-                justify-content: center;
-                width: 100%;
-                margin-top: 5px;
-            }
-
-            .main-header {
-                padding: 10px 15px !important; 
-            }
+            .mobile-only-menu-item { display: flex !important; justify-content: center; width: 100%; margin-top: 5px; }
+            .main-header { padding: 10px 15px !important; }
             
             .logo-container {
                 display: grid !important;
@@ -243,36 +166,12 @@
                 height: auto !important;
                 margin-left: 0 !important;
             }
-            .site-logo, .site-logo-capture, .site-logo-texte {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                margin: 0 !important;
-            }
-            .site-logo { 
-                grid-row: 1 / 3 !important; 
-                grid-column: 1 !important;
-                height: 48px !important; 
-            }
-            .site-logo-capture { 
-                grid-row: 1 !important; 
-                grid-column: 2 !important;
-                height: 22px !important; 
-                align-self: end !important; 
-                justify-self: start !important;
-            }
-            .site-logo-texte { 
-                grid-row: 2 !important; 
-                grid-column: 2 !important;
-                height: 16px !important; 
-                align-self: start !important; 
-                justify-self: start !important;
-            }
+            .site-logo, .site-logo-capture, .site-logo-texte { position: relative !important; top: auto !important; left: auto !important; margin: 0 !important; }
+            .site-logo { grid-row: 1 / 3 !important; grid-column: 1 !important; height: 48px !important; }
+            .site-logo-capture { grid-row: 1 !important; grid-column: 2 !important; height: 22px !important; align-self: end !important; justify-self: start !important; }
+            .site-logo-texte { grid-row: 2 !important; grid-column: 2 !important; height: 16px !important; align-self: start !important; justify-self: start !important; }
 
-            .nav-link {
-                font-size: 1.35rem !important;
-            }
-
+            .nav-link { font-size: 1.35rem !important; }
             .header-action-container { position: static; transform: none; margin-top: 15px; width: 100%; justify-content: center; } 
             .btn-header-validate { width: 100%; }
             .hamburger { display: flex; }
@@ -304,6 +203,7 @@
             <div class="promo-actions">
                 <button class="btn-client-nav-top" onclick="openClientModal()">Client Fidèle</button>
                 <button class="btn-carte-nav-top" onclick="openCarteModal()">Carte de Visite</button>
+                <button class="btn-carte-nav-top" style="background: var(--vert); border-color: var(--vert);" onclick="openB2bModal()">🤝 Espace B2B</button>
                 
                 <div class="lang-menu top-lang">
                     <div class="selected-lang" role="button" tabindex="0" aria-label="Menu de sélection de la langue">🇫🇷 FR ▼</div>
@@ -343,6 +243,7 @@
                     
                     <li class="mobile-only-menu-item"><button class="btn-client-nav" onclick="openClientModal()" style="width: 90%; max-width: 300px;">Client Fidèle</button></li>
                     <li class="mobile-only-menu-item"><button class="btn-carte-nav" onclick="openCarteModal()" style="width: 90%; max-width: 300px;">Carte de Visite</button></li>
+                    <li class="mobile-only-menu-item"><button class="btn-carte-nav" onclick="openB2bModal()" style="width: 90%; max-width: 300px; background: var(--vert); color: white; border-color: var(--vert);">🤝 Espace B2B</button></li>
                     
                     <li class="mobile-only-menu-item lang-menu" style="margin-top: 15px;">
                         <div class="selected-lang" role="button" tabindex="0" aria-label="Menu de sélection de la langue" style="width: 90%; max-width: 300px; justify-content: center;">🇫🇷 FR ▼</div>
@@ -512,7 +413,6 @@
         </div>
         
         <div class="hero-services-row">
-            <!-- Carte 1 : O - Occitanie -->
             <div class="hero-service-card">
                 <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-o')" aria-label="En savoir plus sur le déplacement et le devis">?</button>
                 <div id="bubble-o" class="card-info-bubble">
@@ -533,7 +433,6 @@
                 <span class="service-name">Visite technique & devis gratuit</span>
             </div>
             
-            <!-- Carte 2 : S - Service -->
             <div class="hero-service-card">
                 <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-s')" aria-label="En savoir plus sur la vitrerie et le shampouinage">?</button>
                 <div id="bubble-s" class="card-info-bubble">
@@ -553,7 +452,6 @@
                 <span class="service-name">Vitrerie & Shampouinage textiles</span>
             </div>
             
-            <!-- Carte 3 : P - Propreté -->
             <div class="hero-service-card">
                 <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-p')" aria-label="En savoir plus sur le nettoyage pro et particulier">?</button>
                 <div id="bubble-p" class="card-info-bubble">
@@ -573,7 +471,6 @@
                 <span class="service-name">Nettoyage pour Pro & Particulier</span>
             </div>
             
-            <!-- Carte 4 : + - Plus -->
             <div class="hero-service-card">
                 <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-plus')" aria-label="En savoir plus sur le nettoyage auto et sépultures">?</button>
                 <div id="bubble-plus" class="card-info-bubble">
@@ -604,7 +501,6 @@
         <div class="promo-image-container">
             <div id="event-images-wrapper" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;"></div>
             
-            <!-- Bloc des 4 étapes de réservation Flash -->
             <div style="background: #ffffff; border: 2px solid var(--vert); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 1000px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
                 <h3 style="color: var(--bleu); font-size: 1.1rem; text-align: center; margin-bottom: 15px; text-transform: uppercase; font-weight: 800;">
                     ⚡ Comment profiter de votre Vente Flash ?
@@ -612,7 +508,6 @@
                 
                 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;">
                     
-                    <!-- Étape 1 -->
                     <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
                         <div>
                             <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">1</div>
@@ -621,7 +516,6 @@
                         <span style="font-size: 0.75rem; color: #555;">Contactez-nous (Devis, Tél, Mail...) pendant le décompte Flash.</span>
                     </div>
 
-                    <!-- Étape 2 -->
                     <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
                         <div>
                             <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">2</div>
@@ -630,7 +524,6 @@
                         <span style="font-size: 0.75rem; color: #555;">Payez pour valider la réservation (CB, Espèces, SEPA).</span>
                     </div>
 
-                    <!-- Étape 3 -->
                     <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
                         <div>
                             <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">3</div>
@@ -639,7 +532,6 @@
                         <span style="font-size: 0.75rem; color: #555;">Fixez la date d'intervention de votre choix.</span>
                     </div>
 
-                    <!-- Étape 4 -->
                     <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
                         <div>
                             <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">4</div>
@@ -659,10 +551,7 @@
         const eventContainer = document.getElementById('event-image-container');
         const eventImagesWrapper = document.getElementById('event-images-wrapper');
         const eventImageText = document.getElementById('event-image-text');
-        
-        // 🔴 MODIFICATION ICI : On désactive l'écrasement de la banderole par ce script
         const promoBanner = null; 
-        
         const promoServicesText = document.getElementById('promo-services-text'); 
 
         if (!eventContainer || !eventImagesWrapper) return;
@@ -701,63 +590,42 @@
             let paquesDim = getEaster(annee);
             let pentecote = new Date(paquesDim); pentecote.setDate(pentecote.getDate() + 49);
             
-            let paquesDeb = new Date(paquesDim);
-            paquesDeb.setDate(paquesDeb.getDate() - 2); // Vendredi
-            paquesDeb.setHours(19, 0, 0, 0);
-            let paquesFin = new Date(paquesDim);
-            paquesFin.setDate(paquesFin.getDate() + 1); // Lundi
-            paquesFin.setHours(10, 30, 0, 0);
+            let paquesDeb = new Date(paquesDim); paquesDeb.setDate(paquesDeb.getDate() - 2); paquesDeb.setHours(19, 0, 0, 0);
+            let paquesFin = new Date(paquesDim); paquesFin.setDate(paquesFin.getDate() + 1); paquesFin.setHours(10, 30, 0, 0);
 
             let dimMeres = getLastSunday(annee, 4); 
             if (dimMeres.getTime() === pentecote.getTime()) dimMeres = getNthDay(annee, 5, 0, 1); 
-            let feteMeresDeb = new Date(dimMeres);
-            feteMeresDeb.setDate(feteMeresDeb.getDate() - 2); // Vendredi
-            feteMeresDeb.setHours(19, 0, 0, 0);
-            let feteMeresFin = new Date(dimMeres);
-            feteMeresFin.setDate(feteMeresFin.getDate() + 1); // Lundi
-            feteMeresFin.setHours(10, 30, 0, 0);
+            let feteMeresDeb = new Date(dimMeres); feteMeresDeb.setDate(feteMeresDeb.getDate() - 2); feteMeresDeb.setHours(19, 0, 0, 0);
+            let feteMeresFin = new Date(dimMeres); feteMeresFin.setDate(feteMeresFin.getDate() + 1); feteMeresFin.setHours(10, 30, 0, 0);
 
             let dimPeres = getNthDay(annee, 5, 0, 3);
-            let fetePeresDeb = new Date(dimPeres);
-            fetePeresDeb.setDate(fetePeresDeb.getDate() - 2); // Vendredi
-            fetePeresDeb.setHours(19, 0, 0, 0);
-            let fetePeresFin = new Date(dimPeres);
-            fetePeresFin.setDate(fetePeresFin.getDate() + 1); // Lundi
-            fetePeresFin.setHours(10, 30, 0, 0);
+            let fetePeresDeb = new Date(dimPeres); fetePeresDeb.setDate(fetePeresDeb.getDate() - 2); fetePeresDeb.setHours(19, 0, 0, 0);
+            let fetePeresFin = new Date(dimPeres); fetePeresFin.setDate(fetePeresFin.getDate() + 1); fetePeresFin.setHours(10, 30, 0, 0);
 
-            // Noël (Du 23 Décembre 19h00 au 26 Décembre 10h30)
             let noelDeb = new Date(annee, 11, 23, 19, 0, 0, 0);
             let noelFin = new Date(annee, 11, 26, 10, 30, 0, 0);
 
-            // Nouvel An (Du 31 Décembre 19h00 au 2 Janvier 10h30)
             let nouvelAnDeb = new Date(annee, 11, 31, 19, 0, 0, 0);
             let nouvelAnFin = new Date(annee + 1, 0, 2, 10, 30, 0, 0);
 
-            // Offre d'Hiver (Du 14 Janvier 19h00 au 18 Janvier 10h30)
             let hiverDeb = new Date(annee, 0, 14, 19, 0, 0, 0);
             let hiverFin = new Date(annee, 0, 18, 10, 30, 0, 0);
 
-            // Tết (Du 9 Février 19h00 au 14 Février 10h30)
             let tetDeb = new Date(annee, 1, 9, 19, 0, 0, 0);
             let tetFin = new Date(annee, 1, 14, 10, 30, 0, 0);
 
-            // Printemps (Du 19 Mars 19h00 au 28 Mars 10h30)
             let printempsDeb = new Date(annee, 2, 19, 19, 0, 0, 0);
             let printempsFin = new Date(annee, 2, 28, 10, 30, 0, 0);
 
-            // Ramadan / Aïd (Du 29 Mars 19h00 au 2 Avril 10h30)
             let ramadanDeb = new Date(annee, 2, 29, 19, 0, 0, 0);
             let ramadanFin = new Date(annee, 3, 2, 10, 30, 0, 0);
 
-            // Offre d'Été (Du 24 Juin 19h00 au 28 Juin 10h30)
             let eteDeb = new Date(annee, 5, 24, 19, 0, 0, 0);
             let eteFin = new Date(annee, 5, 28, 10, 30, 0, 0);
 
-            // La Rentrée (Du 31 Août 19h00 au 11 Septembre 10h30)
             let rentreeDeb = new Date(annee, 7, 31, 19, 0, 0, 0);
             let rentreeFin = new Date(annee, 8, 11, 10, 30, 0, 0);
 
-            // La Toussaint (Du 31 Octobre 19h00 au 4 Novembre 10h30)
             let toussaintDeb = new Date(annee, 9, 31, 19, 0, 0, 0);
             let toussaintFin = new Date(annee, 10, 4, 10, 30, 0, 0); 
 
@@ -804,7 +672,6 @@
                     dateDebut = new Date(evt.dateDebutExacte);
                     dateFin = new Date(evt.dateFinExacte);
                 } else if (evt.dureePromo === 1) {
-                    // Pour les événements de 1 jour : démarre la veille (J-1) à 19h00 et finit le jour J à 23h59 (minuit)
                     dateDebut = new Date(evt.date);
                     dateDebut.setDate(dateDebut.getDate() - 1);
                     dateDebut.setHours(19, 0, 0, 0);
@@ -824,12 +691,14 @@
                 dateTeasing.setDate(dateTeasing.getDate() - 15);
 
                 if (todayDateObj >= dateTeasing && todayDateObj < dateDebut) {
-                    evenementsActifs.push({ ...evt, phase: "TEASING", dateCible: dateDebut });
+                    evenementsActifs.push({ ...evt, phase: "TEASING", dateCible: dateDebut, dateDebutEvt: dateDebut, dateFinEvt: dateFin });
                 } 
                 else if (todayDateObj >= dateDebut && todayDateObj <= dateFin) {
-                    evenementsActifs.push({ ...evt, phase: "PROMO", dateCible: dateFin });
+                    evenementsActifs.push({ ...evt, phase: "PROMO", dateCible: dateFin, dateDebutEvt: dateDebut, dateFinEvt: dateFin });
                 }
             }
+
+            window.evenementsActifs = evenementsActifs;
 
             const boxLeft = document.getElementById('promo-mini-left');
             const boxRight = document.getElementById('promo-mini-right');
@@ -940,26 +809,48 @@
                         }
 
                         let label = evt.phase === "PROMO" ? "⏱️ Offre " + evt.nom + " finit dans :" : "⏳ Offre " + evt.nom + " débute dans :";
-                        timerBox.innerHTML = `${label} <span style="font-family:monospace; background:rgba(255,255,255,0.6); padding:2px 6px; border-radius:4px; margin-left:4px;">${timeString}</span>`;
+                        
+                        let dateDebutFR = evt.dateDebutEvt.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                        let heureDebutFR = evt.dateDebutEvt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
+                        
+                        let dateFinFR = evt.dateFinEvt.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                        let heureFinFR = evt.dateFinEvt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
+                        
+                        let texteDate = `Début le ${dateDebutFR} à ${heureDebutFR} | Fin le ${dateFinFR} à ${heureFinFR}`;
+
+                        timerBox.innerHTML = `${label} <span style="font-family:monospace; background:rgba(255,255,255,0.6); padding:2px 6px; border-radius:4px; margin-left:4px;">${timeString}</span><br><span style="font-size: 0.75rem; color: #555; font-weight: normal; display: inline-block; margin-top: 5px;">${texteDate}</span>`;
                     }
                 });
 
-                let texteNoms = [...new Set(nomsEvenements)].join(" & ").toUpperCase();
-                
+                let currentMonthForText = todayDateObj.getMonth();
+                let nomVedetteText = "nos services";
+                if (currentMonthForText === 5) { nomVedetteText = "le Pack Véhicule"; }
+                else if (currentMonthForText === 4) { nomVedetteText = "le Shampouinage"; }
+                else if (currentMonthForText === 7 || currentMonthForText === 8) { nomVedetteText = "les Bureaux & Locaux"; }
+                else if (currentMonthForText === 2 || currentMonthForText === 3) { nomVedetteText = "la Vitrerie"; }
+                else if (currentMonthForText === 9 || currentMonthForText === 10) { nomVedetteText = "les Sépultures"; }
+                else if (currentMonthForText === 11 || currentMonthForText === 0) { nomVedetteText = "le Shampouinage"; }
+
+                let phraseTeasing = `Attention, un énorme événement arrive sur <strong>${nomVedetteText}</strong>, et il y aura aussi des surprises sur le reste !`;
+                let phrasePromo = `🔥 <strong>L'énorme événement sur ${nomVedetteText} est là</strong>, avec des surprises sur tout le reste !`;
+
                 if (estEnPromoGlobale) {
                     window.holidayPromoActive = true;
                     if (eventImageText) {
-                        eventImageText.innerHTML = `<strong>VENTE FLASH EN COURS :</strong> Profitez de -10% sur l'ensemble de vos prestations !`;
+                        eventImageText.innerHTML = `<strong>VENTE FLASH EN COURS :</strong> ${phrasePromo}`;
                         eventImageText.style.background = "#eef3f8";
                         eventImageText.style.color = "var(--bleu)";
                         eventImageText.style.border = "2px solid var(--bleu)";
                     }
-                    if (promoServicesText) promoServicesText.style.display = "block";
+                    if (promoServicesText) {
+                        promoServicesText.innerHTML = `VENTE FLASH : ${phrasePromo}`;
+                        promoServicesText.style.display = "block";
+                    }
 
                 } else {
                     window.holidayPromoActive = false;
                     if (eventImageText) {
-                        eventImageText.innerHTML = `⏳ <strong>À VENIR :</strong> Préparez vos demandes de devis à l'avance pour bénéficier des prochaines offres !`;
+                        eventImageText.innerHTML = `⏳ <strong>À VENIR :</strong> ${phraseTeasing}`;
                         eventImageText.style.background = "#fff3e0";
                         eventImageText.style.color = "#d35400";
                         eventImageText.style.border = "2px solid #e67e22";
@@ -976,6 +867,72 @@
                 if (promoServicesText) promoServicesText.style.display = "none";
             }
 
+          function updateServiceBadges(todayDateObj) {
+    let isPromoActive = window.holidayPromoActive;
+    let isTeasing = (typeof evenementsActifs !== 'undefined' && evenementsActifs.length > 0 && evenementsActifs[0].phase === "TEASING");
+
+    // Si aucune promo, on nettoie tout proprement
+    if (!isPromoActive && !isTeasing) {
+        document.querySelectorAll('.promo-line-bottom, .promo-sticker, .promo-badge-left').forEach(b => b.remove());
+        document.querySelectorAll('.services-grid .card').forEach(c => c.style.paddingBottom = '');
+        return;
+    }
+
+    const currentMonth = todayDateObj.getMonth();
+    let vedetteServiceId = null;
+    let vedetteDiscount = 0;
+    let resteDiscount = 0.10;
+    let nomOperation = "PROPRETÉ";
+
+    // Configuration par saison
+    if (currentMonth === 5) { vedetteServiceId = 'vehicule'; vedetteDiscount = 0.30; nomOperation = "ÉTÉ"; }
+    else if (currentMonth === 4) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.30; nomOperation = "PRINTEMPS"; }
+    else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; nomOperation = "RENTRÉE"; }
+    else if (currentMonth === 2 || currentMonth === 3) { vedetteServiceId = 'vitrerie'; vedetteDiscount = 0.25; nomOperation = "PRINTEMPS"; }
+    else if (currentMonth === 9 || currentMonth === 10) { vedetteServiceId = 'sepulture'; vedetteDiscount = 0.25; nomOperation = "TOUSSAINT"; }
+    else if (currentMonth === 11 || currentMonth === 0) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.25; nomOperation = "NOËL"; }
+
+    const services = ['vitrerie', 'shampouinage', 'vehicule', 'bureaux', 'sepulture', 'evenements', 'chantier'];
+
+    services.forEach(srv => {
+        const card = document.querySelector(`.card[onclick*="openQuote('${srv}')"]`);
+        if (card) {
+            let isVedette = (srv === vedetteServiceId);
+            let discount = isVedette ? vedetteDiscount : resteDiscount;
+            
+            if (discount > 0) {
+                let textPromo = "";
+                let activeClass = isPromoActive ? " active-promo" : "";
+
+                if (isPromoActive) {
+                    textPromo = isVedette 
+                        ? `🔥 OPÉRATION EXCLUSIVE ${nomOperation} -${discount * 100}% 🔥` 
+                        : `⚡ OPÉRATION SPÉCIALE ${nomOperation} -${discount * 100}% ⚡`;
+                } else if (isTeasing) {
+                    textPromo = isVedette 
+                        ? `⏳ BIENTÔT OPÉRATION EXCLUSIVE ${nomOperation} -${discount * 100}% ⏳` 
+                        : `⏳ BIENTÔT OPÉRATION SPÉCIALE ${nomOperation} ⏳`;
+                }
+
+                let existingBanner = card.querySelector('.promo-line-bottom');
+                if (existingBanner) {
+                    let textSpan = existingBanner.querySelector('.promo-scroll-text');
+                    // On utilise textContent pour bloquer le reset infini de l'animation
+                    if (textSpan && textSpan.textContent !== textPromo) {
+                        textSpan.textContent = textPromo;
+                        existingBanner.className = `promo-line-bottom${activeClass}`;
+                    }
+                } else {
+                    let lineHtml = `<div class="promo-line-bottom${activeClass}"><span class="promo-scroll-text">${textPromo}</span></div>`;
+                    card.insertAdjacentHTML('beforeend', lineHtml);
+                    card.style.paddingBottom = '40px'; 
+                }
+            }
+        }
+    });
+}
+            updateServiceBadges(todayDateObj);
+
             if (typeof calculatePrice === "function") calculatePrice();
         }
 
@@ -988,7 +945,7 @@
         <h2 class="section-title"><span class="text-bleu">Mes Services Spécialisés</span> & <span class="text-green">Estimation en ligne</span></h2>
         
         <div id="promo-services-text" style="display: none; background: #fff8e1; border: 2px dashed #e67e22; color: #d35400; padding: 12px; border-radius: 8px; text-align: center; max-width: 800px; margin: 0 auto 20px auto; font-weight: 800; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-            VENTE FLASH : Choisissez une ou plusieurs prestations et bénéficiez de -10% SUR L'ENSEMBLE DE VOTRE FACTURE !
+            VENTE FLASH : Bénéficiez de réductions allant jusqu'à -30% sur notre Service Vedette et -10% sur le reste !
         </div>
 
         <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: 0 auto 35px auto; line-height: 1.5; padding: 0 15px;">
@@ -1037,6 +994,14 @@
                 </div>
                 <h3 class="text-bleu">Remise en État de Salle</h3>
                 <p>Vous louez une salle (mariage, anniversaire, baptême, cousinade, repas pro...) ? O.S.P+ s'occupe du nettoyage : profitez avant, pendant et après !</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('chantier')" role="button" tabindex="0" aria-label="Ouvrir le devis pour la fin de chantier">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                </div>
+                <h3 class="text-bleu">Fin de Chantier</h3>
+                <p>Nettoyage en profondeur, dépoussiérage et grattage après travaux.</p>
                 <div class="card-border"></div>
             </div>
         </div>
@@ -1415,7 +1380,6 @@
                                     <input type="text" id="inputAdresseVille" name="ville" placeholder="Ex: 31000 Toulouse" required oninput="resetDistanceCalc()">
                                 </div>
 
-                                <!-- BARRE DE SIMULATION D'ÉLIGIBILITÉ 30 KM GRATUITS -->
                                 <div class="distance-simulator-box">
                                     <div class="distance-sim-header">
                                         🚗 <strong>Simulation de déplacement</strong> (30 km A/R inclus)
@@ -1618,6 +1582,7 @@
                             <option value="Pack Véhicule">Pack Véhicule</option>
                             <option value="Sépultures">Sépultures</option>
                             <option value="Remise en État de Salle">Remise en État de Salle</option>
+                            <option value="Fin de chantier">Fin de chantier</option>
                             <option value="Autre demande">Autre demande</option>
                         </select>
                     </div>
@@ -1635,6 +1600,75 @@
         </div>
     </div>
     
+    <!-- ========================================== -->
+    <!-- MODAL PARTENAIRES B2B -->
+    <!-- ========================================== -->
+    <div id="b2bModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: left;">
+            <span class="close-modal" onclick="closeB2bModal()" role="button" tabindex="0" aria-label="Fermer la fenêtre">×</span>
+            
+            <h3 style="color: var(--bleu); margin-bottom: 10px; text-align: center; font-size: 1.6rem;">🤝 Espace Partenaires</h3>
+            <p style="font-size: 0.85rem; color: #555; text-align: center; margin-bottom: 20px; line-height: 1.5;">
+                Agences, BTP, Flottes Auto, Événementiel... Créons un partenariat gagnant-gagnant avec une <strong>grille tarifaire dédiée</strong> et une <strong>priorité d'intervention</strong>.
+            </p>
+            
+            <form id="b2bForm" style="display: flex; flex-direction: column; gap: 15px;">
+                
+                <div class="input-group">
+                    <label style="color: var(--vert);">Secteur de partenariat *</label>
+                    <select id="b2bSecteur" required style="border-color: var(--vert); font-weight: bold; color: var(--bleu); padding: 12px; border-radius: 8px;">
+                        <option value="" disabled selected>-- Sélectionnez votre besoin --</option>
+                        <option value="Apporteur d'affaires (Immobilier, Conciergerie)">Immobilier / Conciergerie (Apporteur d'affaires)</option>
+                        <option value="Sous-traitance (BTP, Rénovation)">BTP / Rénovation (Nettoyage post-chantier)</option>
+                        <option value="Sous-traitance (Événementiel, Salles)">Événementiel / Domaine (Remise en état)</option>
+                        <option value="Entretien Flotte Auto (Entreprises, Garages)">Gestion de Flotte Auto / Garages</option>
+                        <option value="Autre projet B2B">Autre projet professionnel</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div class="input-group" style="flex: 1; min-width: 150px;">
+                        <label>Nom de l'entreprise *</label>
+                        <input type="text" id="b2bEntreprise" required placeholder="Ex: Agence Immo 31" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                    <div class="input-group" style="width: 140px; flex-grow: 1;">
+                        <label>SIRET (Optionnel)</label>
+                        <input type="text" id="b2bSiret" placeholder="Facultatif" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div class="input-group" style="flex: 1; min-width: 150px;">
+                        <label>Votre Nom *</label>
+                        <input type="text" id="b2bNom" required placeholder="Ex: Jean Dupont" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                    <div class="input-group" style="flex: 1; min-width: 150px;">
+                        <label>Téléphone direct *</label>
+                        <input type="tel" id="b2bPhone" required placeholder="Ex: 06 12 34 56 78" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Email *</label>
+                    <input type="email" id="b2bEmail" required placeholder="contact@entreprise.com" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                </div>
+
+                <div class="input-group">
+                    <label>Quelques mots sur votre volume ou vos besoins :</label>
+                    <textarea id="b2bMessage" placeholder="Ex: Nous gérons 5 locations Airbnb et cherchons un partenaire régulier..." style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef; font-size: 0.9rem; resize: vertical; min-height: 80px; font-family: inherit;"></textarea>
+                </div>
+
+                <button type="button" class="btn-submit-form" onclick="submitB2bForm()" id="btnSubmitB2b" style="margin-top: 5px;">SOUMETTRE MA DEMANDE</button>
+            </form>
+
+            <div id="b2bSuccessMsg" style="display: none; text-align: center; padding: 20px 0;">
+                <h4 style="color: var(--vert); font-size: 1.2rem; margin-bottom: 10px;">✅ Demande envoyée !</h4>
+                <p style="font-size: 0.9rem; color: #555;">Merci pour votre intérêt. Je vous recontacte très rapidement pour échanger sur nos futures synergies.</p>
+                <button type="button" onclick="closeB2bModal()" style="margin-top: 15px; background: #e1e8ef; color: var(--bleu); border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer;">Fermer</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function afficherFormulaireRappel() {
             document.getElementById('step-choix').style.display = 'none';
