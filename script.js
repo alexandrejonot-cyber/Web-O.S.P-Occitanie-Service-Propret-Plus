@@ -142,7 +142,7 @@ const taskTranslations = {
 // ==========================================
 // 🚀 GESTION DE LA VERSION DU SCRIPT
 // ==========================================
-const APP_VERSION = "v4.35-EVT-FULL-AUTO-CALC-30KM"; 
+const APP_VERSION = "v4.36-DEPLACEMENT-INTELLIGENT-30KM"; 
 
 function afficherVersion() {
     console.log("🚀 OSP+ Script Chargé - " + APP_VERSION + " [Langue : " + langKey.toUpperCase() + "]");
@@ -372,6 +372,7 @@ window.originalTotalValue = 0;
 
 // Stockage des frais kilométriques de déplacement
 window.fraisDeplacementKilometrique = 0;
+window.fraisDeplacementBase = 0; // Ajout pour le calcul intelligent
 
 // Stockage de la décomposition des heures "Pendant l'événement"
 window.evtPendantData = { totalCost: 0, totalHours: 0, dayHours: 0, nightHours: 0, dayCost: 0, nightCost: 0 };
@@ -380,7 +381,53 @@ function openClientModal() { document.getElementById('clientModal').style.displa
 function closeClientModal() { document.getElementById('clientModal').style.display = 'none'; }
 
 // ==========================================
-// 🚗 SIMULATEUR D'ÉLIGIBILITÉ 30 KM GRATUITS
+// 🚗 TESTEUR D'ÉLIGIBILITÉ (BOUTON RAPIDE)
+// ==========================================
+async function testerEligibiliteRapide() {
+    const ville = prompt("📍 Entrez votre ville ou code postal (ex: Balma, 31200...) :");
+    if (!ville) return;
+
+    const latOsp = 43.60446;
+    const lonOsp = 1.44594;
+
+    try {
+        const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(ville + ', France')}`;
+        const response = await fetch(geocodeUrl);
+        const data = await response.json();
+
+        if (!data || data.length === 0) {
+            alert("❌ Ville introuvable. Essayez avec un code postal complet.");
+            return;
+        }
+
+        const latClient = parseFloat(data[0].lat);
+        const lonClient = parseFloat(data[0].lon);
+
+        const R = 6371; 
+        const dLat = (latClient - latOsp) * Math.PI / 180;
+        const dLon = (lonClient - lonOsp) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(latOsp * Math.PI / 180) * Math.cos(latClient * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        
+        const distanceAllerSimple = Math.round((R * c * 1.3) * 10) / 10;
+        const distanceAllerRetour = Math.round((distanceAllerSimple * 2) * 10) / 10;
+
+        if (distanceAllerRetour <= 30) {
+            alert(`✅ BONNE NOUVELLE !\n\nVotre ville (${ville}) est dans notre zone (Dist A/R: ${distanceAllerRetour} km).\nLe déplacement sera 100% OFFERT !`);
+        } else {
+            const kmSupplementaires = Math.round((distanceAllerRetour - 30) * 10) / 10;
+            const surcout = Math.round((kmSupplementaires * 0.50) * 100) / 100;
+            alert(`📍 HORS AGGLOMÉRATION\n\nDistance A/R estimée : ${distanceAllerRetour} km.\nFrais de route prévus : +${surcout.toFixed(2)} €.\n\n🎁 ASTUCE : Ces frais seront TOTALEMENT OFFERTS si votre devis de nettoyage dépasse 150 € !`);
+        }
+    } catch (err) {
+        alert("⚠️ Erreur réseau, veuillez réessayer plus tard.");
+    }
+}
+
+// ==========================================
+// 🚗 SIMULATEUR D'ÉLIGIBILITÉ (DANS LE DEVIS)
 // ==========================================
 function resetDistanceCalc() {
     const msgBox = document.getElementById('distanceResultMsg');
@@ -390,10 +437,11 @@ function resetDistanceCalc() {
         msgBox.innerHTML = '';
     }
     window.fraisDeplacementKilometrique = 0;
+    window.fraisDeplacementBase = 0;
     if (typeof calculatePrice === "function") calculatePrice();
 }
 
-async function calculerEligibilite30km() {
+async function calculerEligibilite() {
     const rue = document.getElementById('inputAdresseRue')?.value.trim();
     const ville = document.getElementById('inputAdresseVille')?.value.trim();
     const msgBox = document.getElementById('distanceResultMsg');
@@ -430,7 +478,6 @@ async function calculerEligibilite30km() {
         const latClient = parseFloat(data[0].lat);
         const lonClient = parseFloat(data[0].lon);
 
-        // Calcul de la distance à vol d'oiseau (Formule de Haversine)
         const R = 6371; 
         const dLat = (latClient - latOsp) * Math.PI / 180;
         const dLon = (lonClient - lonOsp) * Math.PI / 180;
@@ -439,21 +486,20 @@ async function calculerEligibilite30km() {
                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         
-        // Estimation de la distance routière (coefficient moyen x1.3)
         const distanceAllerSimple = Math.round((R * c * 1.3) * 10) / 10;
         const distanceAllerRetour = Math.round((distanceAllerSimple * 2) * 10) / 10;
 
         if (distanceAllerRetour <= 30) {
             msgBox.className = 'distance-result-msg success';
-            msgBox.innerHTML = `✅ <strong>Éligible !</strong> Dist. A/R estimée : <strong>${distanceAllerRetour} km</strong>.<br>🎉 Déplacement 100 % GRATUIT.`;
-            window.fraisDeplacementKilometrique = 0;
+            msgBox.innerHTML = `✅ <strong>Agglomération Toulousaine !</strong> (Dist. A/R : <strong>${distanceAllerRetour} km</strong>).<br>🎉 Déplacement 100 % GRATUIT.`;
+            window.fraisDeplacementBase = 0;
         } else {
             const kmSupplementaires = Math.round((distanceAllerRetour - 30) * 10) / 10;
             const surcout = Math.round((kmSupplementaires * 0.50) * 100) / 100;
-            window.fraisDeplacementKilometrique = surcout;
+            window.fraisDeplacementBase = surcout;
 
             msgBox.className = 'distance-result-msg warning';
-            msgBox.innerHTML = `📍 Distance A/R estimée : <strong>${distanceAllerRetour} km</strong>.<br>30 km inclus + ${kmSupplementaires} km supp. à 0,50 €/km (+${surcout.toFixed(2)} €).`;
+            msgBox.innerHTML = `📍 Hors Agglomération (Dist. A/R : <strong>${distanceAllerRetour} km</strong>).<br>Frais de route : +${surcout.toFixed(2)} € (<em>Sauf si devis > 150 €</em>).`;
         }
 
         if (typeof calculatePrice === "function") calculatePrice();
@@ -479,7 +525,7 @@ const MES_PUBLICITES = [
     { text: '🎉 <strong>REMISE EN ÉTAT SALLE</strong> : Événements ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('evenements')" },
     { text: '✅ <strong>ASSURANCE RC PRO</strong> & <strong>20 ANS D\'EXPERTISE</strong> ➡️ <em>Découvrir OSP+</em>', action: "document.getElementById('qui-suis-je').scrollIntoView({behavior: 'smooth'});" },
     { text: '📞 <strong>CONTACT : 07 45 02 76 24</strong> | 🕒 Lun-Sam 5h-22h ➡️ <em>Être rappelé</em>', action: "openCallbackModal()" },
-    { text: '🚗 <strong>DÉPLACEMENT OFFERT</strong> : 30 km autour de Toulouse !', action: "document.getElementById('services').scrollIntoView({behavior: 'smooth'});" }
+    { text: '🚗 <strong>DÉPLACEMENT OFFERT</strong> : Toulouse et son agglomération !', action: "document.getElementById('services').scrollIntoView({behavior: 'smooth'});" }
 ];
 
 const DELAI_ROTATION = 15000; // 15 secondes
@@ -1851,12 +1897,21 @@ function calculatePrice() {
     }
 
     // --- 7. REGROUPEMENT ET TOTAL ---
-    total = subTotals.vitrerie + subTotals.shampouinage + subTotals.vehicule + subTotals.bureaux + subTotals.sepulture + subTotals.evenements + subTotals.chantier;
-    total += window.fraisDeplacementKilometrique; // Hors promo
+    let totalPrestations = subTotals.vitrerie + subTotals.shampouinage + subTotals.vehicule + subTotals.bureaux + subTotals.sepulture + subTotals.evenements + subTotals.chantier;
     
+    let discountText = "";
+
+    // --- GESTION INTELLIGENTE DU DÉPLACEMENT ---
+    if (window.fraisDeplacementBase > 0 && totalPrestations >= 150) {
+        window.fraisDeplacementKilometrique = 0; // On offre les frais !
+        discountText += `<div class="price-discount-text" style="color: #e67e22;">🎁 Frais de route offerts (Devis > 150 €)</div>`;
+    } else {
+        window.fraisDeplacementKilometrique = window.fraisDeplacementBase || 0;
+    }
+
+    total = totalPrestations + window.fraisDeplacementKilometrique;
     let originalTotal = total;
     window.originalTotalValue = originalTotal;
-    let discountText = "";
     
     // --- 8. LOGIQUE DU SERVICE VEDETTE & REMISES ---
     let totalDiscountAmount = 0;
@@ -1947,6 +2002,7 @@ function openQuote(baseService) {
     planData = {}; activeServices = []; roomCounter = 0;
     window.evtPendantData = { totalCost: 0, totalHours: 0, dayHours: 0, nightHours: 0, dayCost: 0, nightCost: 0 };
     window.fraisDeplacementKilometrique = 0;
+    window.fraisDeplacementBase = 0;
     
     window.promoDiscountDevis = 0;
     window.activePromoCodeDevis = "";
@@ -2417,7 +2473,7 @@ function updateCrossSellButtons() {
     { id: 'bureaux', name_fr: '🏢 Locaux', name_en: '🏢 Offices', name_vi: '🏢 Văn phòng' },
     { id: 'sepulture', name_fr: '🪦 Sépultures', name_en: '🪦 Graves', name_vi: '🪦 Mộ' },
     { id: 'evenements', name_fr: '🎉 Salle/Fêtes', name_en: '🎉 Events', name_vi: '🎉 Sự kiện' },
-    { id: 'chantier', name_fr: '🚧 Fin Chantier', name_en: '🚧 Post-build', name_vi: '🚧 Sau xây dựng' } // <-- LIGNE AJOUTÉE ICI
+    { id: 'chantier', name_fr: '🚧 Fin Chantier', name_en: '🚧 Post-build', name_vi: '🚧 Sau xây dựng' } 
 ];
     
     let missingServices = availableServices.filter(s => !activeServices.includes(s.id));
@@ -3032,8 +3088,12 @@ async function submitInteractiveForm() {
             }
 
             recap += `\n--- INFORMATIONS FINANCIÈRES ---\nBase de calcul initiale : ${window.originalTotalValue.toFixed(2)} €\n`;
-            if (window.fraisDeplacementKilometrique > 0) {
-                recap += `🚗 Frais de déplacement ajoutés : +${window.fraisDeplacementKilometrique.toFixed(2)} € (Surcoût hors 30 km inclus)\n`;
+            if (window.fraisDeplacementBase > 0) {
+                if (window.fraisDeplacementKilometrique === 0) {
+                    recap += `🚗 Frais de route de ${window.fraisDeplacementBase.toFixed(2)} € TOTALEMENT OFFERTS (Devis > 150 €)\n`;
+                } else {
+                    recap += `🚗 Frais de route ajoutés : +${window.fraisDeplacementKilometrique.toFixed(2)} € (Surcoût hors Agglomération)\n`;
+                }
             }
             
             let conflict10 = false;

@@ -232,13 +232,14 @@
             <nav>
                 <ul id="nav-links">
                     <li><a href="#" class="nav-link">Accueil</a></li>
+                    <li><a href="#section-promo" class="nav-link text-green">Ventes Flash</a></li>
                     <li><a href="#services" class="nav-link">Services</a></li>
                     <li><a href="#galerie" class="nav-link">Réalisations</a></li>
+                    <li><a href="#avis-google" class="nav-link">Votre avis</a></li>
                     <li><a href="#qui-suis-je" class="nav-link">Expertise</a></li>
+                    <li><a href="#signification-osp" class="nav-link text-green">Que signifie O.S.P+ ?</a></li>
                     <li><a href="#faq" class="nav-link">FAQ</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
-                    <li><a href="#section-promo" class="nav-link text-green">Ventes Flash</a></li>
-                    <li><a href="#signification-osp" class="nav-link text-green">Que signifie O.S.P+ ?</a></li>
                     
                     <li class="mobile-only-menu-item"><button class="btn-client-nav" onclick="openClientModal()" style="width: 90%; max-width: 300px;">Client Fidèle</button></li>
                     <li class="mobile-only-menu-item"><button class="btn-carte-nav" onclick="openCarteModal()" style="width: 90%; max-width: 300px;">Carte de Visite</button></li>
@@ -417,10 +418,10 @@
                 <div id="bubble-o" class="card-info-bubble">
                     <div class="bubble-title">Visite & Devis gratuit</div>
                     <ul>
-                        <li>📍 <strong>Zone :</strong> 15 km inclus autour de Toulouse.</li>
-                        <li>🚗 <strong>Au-delà :</strong> 0,50 € / km supplémentaire.</li>
+                        <li>📍 <strong>Zone :</strong> Toulouse et son agglomération.</li>
+                        <li>🚗 <strong>Déplacement :</strong> 100 % Offert (Au-delà : 0,50 €/km ou <strong>GRATUIT</strong> dès 150 €).</li>
                         <li>🕒 <strong>Créneaux :</strong> Du lundi au samedi sur RDV.</li>
-                        <li>🤝 <strong>Engagement :</strong> Devis 100 % gratuit et sans engagement après visite.</li>
+                        <li>🤝 <strong>Engagement :</strong> Devis gratuit et sans engagement.</li>
                     </ul>
                 </div>
                 <div class="photo-word-badge">
@@ -492,7 +493,11 @@
 
     </section>
 
-    <div class="trust-bar"><p>📍 Secteur <strong>Toulouse (15 km inclus)</strong> et toute l'<strong>Occitanie*</strong></p></div>
+    <!-- BANDEAU BLEU PRINCIPAL AVEC BOUTON INTÉGRÉ -->
+    <div class="trust-bar" style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 15px 5%;">
+        <p style="margin: 0; font-size: 0.95rem;">📍 <strong>Déplacement OFFERT sur Toulouse & agglomération</strong> | Au-delà : 0,50 €/km (ou <strong>GRATUIT</strong> dès 150 €) *</p>
+        <button type="button" onclick="testerEligibiliteRapide()" style="background: var(--vert); color: white; border: 2px solid white; padding: 8px 20px; border-radius: 30px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-transform: uppercase; white-space: nowrap;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">🚗 Tester mon éligibilité</button>
+    </div>
 
     <div id="event-image-container" class="scroll-animate" style="display: none; margin-top: 40px; margin-bottom: 20px;">
         <div id="section-promo" style="scroll-margin-top: 120px;"></div>
@@ -1051,7 +1056,7 @@
         </div>
     </section>
 
-    <section class="services scroll-animate" style="background: var(--gris); padding-top: 40px; padding-bottom: 40px;">
+    <section id="avis-google" class="services scroll-animate" style="background: var(--gris); padding-top: 40px; padding-bottom: 40px;">
         <h2 class="section-title">Votre avis <span class="text-green">compte !</span></h2>
         <p style="text-align: center; font-size: 1rem; color: #555; max-width: 600px; margin: 0 auto 25px auto; padding: 0 15px;">
             Vous êtes satisfait de notre intervention ? Soutenez notre entreprise locale en partageant votre expérience sur Google.
@@ -1116,7 +1121,7 @@
                             <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">xygène</span>
                         </div>
                     </div>
-                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Une intervention de proximité sur <strong>Toulouse et 15km autour</strong>, pour redonner un bol d'air frais et assainir vos espaces de travail et de vie.</p>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Une intervention de proximité sur <strong>Toulouse et son agglomération</strong>, pour redonner un bol d'air frais et assainir vos espaces de travail et de vie.</p>
                 </div>
                 <div class="card-border"></div>
             </div>
@@ -1186,7 +1191,7 @@
             </div>
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>Zone d'intervention ?</h3><p>Déplacement offert sur 15km autour de Toulouse.</p></div>
+                <div class="dynamic-slide active"><h3>Zone d'intervention ?</h3><p>Déplacement offert sur Toulouse et son agglomération.</p></div>
                 <div class="dynamic-slide"><h3>Mode de paiement ?</h3><p>Carte Bleue, Espèces, Virement SEPA, etc. (Sauf chèques).</p></div>
                 <div class="card-border"></div>
             </div>
@@ -1239,7 +1244,7 @@
                 </div>
                 <div class="contact-cat">
                     <h3>📍 Zone d'intervention</h3>
-                    <ul class="contact-list"><li>Toulouse & 15km inclus</li></ul>
+                    <ul class="contact-list"><li>Toulouse & agglomération</li></ul>
                     <div class="villes-tags">
                         <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span><span class="tag-ville">Saint-Orens</span><span class="tag-ville">Labège</span><span class="tag-ville">Blagnac</span><span class="tag-ville">Tournefeuille</span><span class="tag-ville">L'Union</span><span class="tag-ville">Ramonville</span><span class="tag-ville">Castanet</span><span class="tag-ville">Cugnaux</span><span class="tag-ville">Aucamville</span>
                     </div>
@@ -1384,9 +1389,10 @@
 
                                 <div class="distance-simulator-box">
                                     <div class="distance-sim-header">
-                                        🚗 <strong>Simulation de déplacement</strong> (30 km A/R inclus)
+                                        🚗 <strong>Frais de déplacement :</strong> Offerts sur l'agglomération toulousaine.<br>
+                                        <span style="font-size: 0.75rem; font-weight: normal;">Au-delà : 0,50 €/km (ou TOTALEMENT OFFERTS si le devis dépasse 150 €)</span>
                                     </div>
-                                    <button type="button" class="btn-calc-distance" onclick="calculerEligibilite30km()">
+                                    <button type="button" class="btn-calc-distance" onclick="calculerEligibilite()">
                                         🔍 Tester mon éligibilité
                                     </button>
                                     <div id="distanceResultMsg" class="distance-result-msg"></div>
