@@ -702,41 +702,50 @@
                 }
             }
 
-            window.evenementsActifs = evenementsActifs;
+           window.evenementsActifs = evenementsActifs;
 
-            const boxLeft = document.getElementById('promo-mini-left');
-            const boxRight = document.getElementById('promo-mini-right');
+// Calcul de la promotion la plus élevée selon le mois en cours
+let maxDiscount = 10;
+const currentMonthMini = todayDateObj.getMonth();
+if (currentMonthMini === 4 || currentMonthMini === 5 || currentMonthMini === 7 || currentMonthMini === 8) {
+    maxDiscount = 30; // Printemps, Été, Rentrée
+} else if (currentMonthMini === 2 || currentMonthMini === 3 || currentMonthMini === 9 || currentMonthMini === 10 || currentMonthMini === 11 || currentMonthMini === 0) {
+    maxDiscount = 25; // Autres promos vedettes
+}
 
-            if (boxLeft && boxRight) {
-                if (evenementsActifs.length > 0) {
-                    const evt1 = evenementsActifs[0];
-                    boxLeft.innerHTML = `
-                        <div class="etiquette-ruban">${evt1.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
-                        <img src="${evt1.image}" alt="${evt1.nom}">
-                        <div class="texte-ascension">
-                            <span class="promo-discount">-10%</span>
-                            <span class="promo-nom">${evt1.nom}</span>
-                        </div>`;
-                    boxLeft.style.display = 'flex';
+const boxLeft = document.getElementById('promo-mini-left');
+const boxRight = document.getElementById('promo-mini-right');
 
-                    if (evenementsActifs.length > 1) {
-                        const evt2 = evenementsActifs[1];
-                        boxRight.innerHTML = `
-                            <div class="etiquette-ruban">${evt2.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
-                            <img src="${evt2.image}" alt="${evt2.nom}">
-                            <div class="texte-ascension">
-                                <span class="promo-discount">-10%</span>
-                                <span class="promo-nom">${evt2.nom}</span>
-                            </div>`;
-                        boxRight.style.display = 'flex';
-                    } else {
-                        boxRight.style.display = 'none';
-                    }
-                } else {
-                    boxLeft.style.display = 'none';
-                    boxRight.style.display = 'none';
-                }
-            }
+if (boxLeft && boxRight) {
+    if (evenementsActifs.length > 0) {
+        const evt1 = evenementsActifs[0];
+        boxLeft.innerHTML = `
+            <div class="etiquette-ruban">${evt1.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
+            <img src="${evt1.image}" alt="${evt1.nom}">
+            <div class="texte-ascension">
+                <span class="promo-discount">-${maxDiscount}%</span>
+                <span class="promo-nom">${evt1.nom}</span>
+            </div>`;
+        boxLeft.style.display = 'flex';
+
+        if (evenementsActifs.length > 1) {
+            const evt2 = evenementsActifs[1];
+            boxRight.innerHTML = `
+                <div class="etiquette-ruban">${evt2.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
+                <img src="${evt2.image}" alt="${evt2.nom}">
+                <div class="texte-ascension">
+                    <span class="promo-discount">-${maxDiscount}%</span>
+                    <span class="promo-nom">${evt2.nom}</span>
+                </div>`;
+            boxRight.style.display = 'flex';
+        } else {
+            boxRight.style.display = 'none';
+        }
+    } else {
+        boxLeft.style.display = 'none';
+        boxRight.style.display = 'none';
+    }
+}
 
             if (evenementsActifs.length > 0) {
                 eventContainer.style.display = "block";

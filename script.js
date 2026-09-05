@@ -514,9 +514,18 @@ async function calculerEligibilite() {
 // 📢 BANNER PUBLICITAIRE ROTATIF DYNAMIQUE
 // ==========================================
 
-// Liste des messages 100% en une seule ligne avec actions au clic intégrées
+// Calcul de la promotion max pour le bandeau
+const currentMonthBanner = new Date().getMonth();
+let maxBannerDiscount = 10;
+if (currentMonthBanner === 4 || currentMonthBanner === 5 || currentMonthBanner === 7 || currentMonthBanner === 8) {
+    maxBannerDiscount = 30;
+} else if (currentMonthBanner === 2 || currentMonthBanner === 3 || currentMonthBanner === 9 || currentMonthBanner === 10 || currentMonthBanner === 11 || currentMonthBanner === 0) {
+    maxBannerDiscount = 25;
+}
+
+// Liste des messages avec action au clic et pourcentage dynamique
 const MES_PUBLICITES = [
-    { text: '<span class="badge-promo-top">VENTE FLASH</span> <strong>-10% SUR VOTRE FACTURE !</strong> <em>(Cliquez ici)</em>', action: "document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" },
+    { text: `<span class="badge-promo-top">VENTE FLASH</span> <strong>JUSQU'À -${maxBannerDiscount}% DE REMISE !</strong> <em>(Cliquez ici)</em>`, action: "document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" },
     { text: '🛋️ <strong>NETTOYAGE CANAPÉS & TEXTILES</strong> : ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('shampouinage')" },
     { text: '🏢 <strong>LOCAUX & BUREAUX</strong> : Dès 5h du matin ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('bureaux')" },
     { text: '🪟 <strong>VITRERIE PRO</strong> : Fenêtres, baies, vérandas ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('vitrerie')" },
@@ -732,12 +741,12 @@ function checkHolidays() {
 
     const banner = document.getElementById('promo-banner');
     if (isPromoActive) {
-        if (banner) banner.style.display = 'block';
         window.holidayPromoActive = true;
     } else { 
-        if (banner) banner.style.display = 'none';
         window.holidayPromoActive = false; 
     }
+    // On s'assure que le bandeau est toujours visible avec le bon affichage (flex)
+    if (banner) banner.style.display = 'flex';
 }
 window.addEventListener('DOMContentLoaded', checkHolidays);
 
