@@ -702,50 +702,50 @@
                 }
             }
 
-           window.evenementsActifs = evenementsActifs;
+            window.evenementsActifs = evenementsActifs;
 
-// Calcul de la promotion la plus élevée selon le mois en cours
-let maxDiscount = 10;
-const currentMonthMini = todayDateObj.getMonth();
-if (currentMonthMini === 4 || currentMonthMini === 5 || currentMonthMini === 7 || currentMonthMini === 8) {
-    maxDiscount = 30; // Printemps, Été, Rentrée
-} else if (currentMonthMini === 2 || currentMonthMini === 3 || currentMonthMini === 9 || currentMonthMini === 10 || currentMonthMini === 11 || currentMonthMini === 0) {
-    maxDiscount = 25; // Autres promos vedettes
-}
+            // Calcul de la promotion la plus élevée selon le mois en cours
+            let maxDiscount = 10;
+            const currentMonthMini = todayDateObj.getMonth();
+            if (currentMonthMini === 4 || currentMonthMini === 5 || currentMonthMini === 7 || currentMonthMini === 8) {
+                maxDiscount = 30; // Printemps, Été, Rentrée
+            } else if (currentMonthMini === 2 || currentMonthMini === 3 || currentMonthMini === 9 || currentMonthMini === 10 || currentMonthMini === 11 || currentMonthMini === 0) {
+                maxDiscount = 25; // Autres promos vedettes
+            }
 
-const boxLeft = document.getElementById('promo-mini-left');
-const boxRight = document.getElementById('promo-mini-right');
+            const boxLeft = document.getElementById('promo-mini-left');
+            const boxRight = document.getElementById('promo-mini-right');
 
-if (boxLeft && boxRight) {
-    if (evenementsActifs.length > 0) {
-        const evt1 = evenementsActifs[0];
-        boxLeft.innerHTML = `
-            <div class="etiquette-ruban">${evt1.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
-            <img src="${evt1.image}" alt="${evt1.nom}">
-            <div class="texte-ascension">
-                <span class="promo-discount">-${maxDiscount}%</span>
-                <span class="promo-nom">${evt1.nom}</span>
-            </div>`;
-        boxLeft.style.display = 'flex';
+            if (boxLeft && boxRight) {
+                if (evenementsActifs.length > 0) {
+                    const evt1 = evenementsActifs[0];
+                    boxLeft.innerHTML = `
+                        <div class="etiquette-ruban">${evt1.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
+                        <img src="${evt1.image}" alt="${evt1.nom}">
+                        <div class="texte-ascension">
+                            <span class="promo-discount">-${maxDiscount}%</span>
+                            <span class="promo-nom">${evt1.nom}</span>
+                        </div>`;
+                    boxLeft.style.display = 'flex';
 
-        if (evenementsActifs.length > 1) {
-            const evt2 = evenementsActifs[1];
-            boxRight.innerHTML = `
-                <div class="etiquette-ruban">${evt2.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
-                <img src="${evt2.image}" alt="${evt2.nom}">
-                <div class="texte-ascension">
-                    <span class="promo-discount">-${maxDiscount}%</span>
-                    <span class="promo-nom">${evt2.nom}</span>
-                </div>`;
-            boxRight.style.display = 'flex';
-        } else {
-            boxRight.style.display = 'none';
-        }
-    } else {
-        boxLeft.style.display = 'none';
-        boxRight.style.display = 'none';
-    }
-}
+                    if (evenementsActifs.length > 1) {
+                        const evt2 = evenementsActifs[1];
+                        boxRight.innerHTML = `
+                            <div class="etiquette-ruban">${evt2.phase === "PROMO" ? "FLASH" : "À VENIR"}</div>
+                            <img src="${evt2.image}" alt="${evt2.nom}">
+                            <div class="texte-ascension">
+                                <span class="promo-discount">-${maxDiscount}%</span>
+                                <span class="promo-nom">${evt2.nom}</span>
+                            </div>`;
+                        boxRight.style.display = 'flex';
+                    } else {
+                        boxRight.style.display = 'none';
+                    }
+                } else {
+                    boxLeft.style.display = 'none';
+                    boxRight.style.display = 'none';
+                }
+            }
 
             if (evenementsActifs.length > 0) {
                 eventContainer.style.display = "block";
@@ -880,67 +880,67 @@ if (boxLeft && boxRight) {
                 if (promoServicesText) promoServicesText.style.display = "none";
             }
 
-          function updateServiceBadges(todayDateObj) {
-    let isPromoActive = window.holidayPromoActive;
-    let isTeasing = (typeof evenementsActifs !== 'undefined' && evenementsActifs.length > 0 && evenementsActifs[0].phase === "TEASING");
+            function updateServiceBadges(todayDateObj) {
+                let isPromoActive = window.holidayPromoActive;
+                let isTeasing = (typeof evenementsActifs !== 'undefined' && evenementsActifs.length > 0 && evenementsActifs[0].phase === "TEASING");
 
-    if (!isPromoActive && !isTeasing) {
-        document.querySelectorAll('.promo-line-bottom, .promo-sticker, .promo-badge-left').forEach(b => b.remove());
-        document.querySelectorAll('.services-grid .card').forEach(c => c.style.paddingBottom = '');
-        return;
-    }
-
-    const currentMonth = todayDateObj.getMonth();
-    let vedetteServiceId = null;
-    let vedetteDiscount = 0;
-    let resteDiscount = 0.10;
-    let nomOperation = "PROPRETÉ";
-
-    if (currentMonth === 5) { vedetteServiceId = 'vehicule'; vedetteDiscount = 0.30; nomOperation = "ÉTÉ"; }
-    else if (currentMonth === 4) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.30; nomOperation = "PRINTEMPS"; }
-    else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; nomOperation = "RENTRÉE"; }
-    else if (currentMonth === 2 || currentMonth === 3) { vedetteServiceId = 'vitrerie'; vedetteDiscount = 0.25; nomOperation = "PRINTEMPS"; }
-    else if (currentMonth === 9 || currentMonth === 10) { vedetteServiceId = 'sepulture'; vedetteDiscount = 0.25; nomOperation = "TOUSSAINT"; }
-    else if (currentMonth === 11 || currentMonth === 0) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.25; nomOperation = "NOËL"; }
-
-    const services = ['vitrerie', 'shampouinage', 'vehicule', 'bureaux', 'sepulture', 'evenements', 'chantier'];
-
-    services.forEach(srv => {
-        const card = document.querySelector(`.card[onclick*="openQuote('${srv}')"]`);
-        if (card) {
-            let isVedette = (srv === vedetteServiceId);
-            let discount = isVedette ? vedetteDiscount : resteDiscount;
-            
-            if (discount > 0) {
-                let textPromo = "";
-                let activeClass = isPromoActive ? " active-promo" : "";
-
-                if (isPromoActive) {
-                    textPromo = isVedette 
-                        ? `🔥 OPÉRATION EXCLUSIVE ${nomOperation} -${discount * 100}% 🔥` 
-                        : `⚡ OPÉRATION SPÉCIALE ${nomOperation} -${discount * 100}% ⚡`;
-                } else if (isTeasing) {
-                    textPromo = isVedette 
-                        ? `⏳ BIENTÔT OPÉRATION EXCLUSIVE ${nomOperation} -${discount * 100}% ⏳` 
-                        : `⏳ BIENTÔT OPÉRATION SPÉCIALE ${nomOperation} ⏳`;
+                if (!isPromoActive && !isTeasing) {
+                    document.querySelectorAll('.promo-line-bottom, .promo-sticker, .promo-badge-left').forEach(b => b.remove());
+                    document.querySelectorAll('.services-grid .card').forEach(c => c.style.paddingBottom = '');
+                    return;
                 }
 
-                let existingBanner = card.querySelector('.promo-line-bottom');
-                if (existingBanner) {
-                    let textSpan = existingBanner.querySelector('.promo-scroll-text');
-                    if (textSpan && textSpan.textContent !== textPromo) {
-                        textSpan.textContent = textPromo;
-                        existingBanner.className = `promo-line-bottom${activeClass}`;
+                const currentMonth = todayDateObj.getMonth();
+                let vedetteServiceId = null;
+                let vedetteDiscount = 0;
+                let resteDiscount = 0.10;
+                let nomOperation = "PROPRETÉ";
+
+                if (currentMonth === 5) { vedetteServiceId = 'vehicule'; vedetteDiscount = 0.30; nomOperation = "ÉTÉ"; }
+                else if (currentMonth === 4) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.30; nomOperation = "PRINTEMPS"; }
+                else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; nomOperation = "RENTRÉE"; }
+                else if (currentMonth === 2 || currentMonth === 3) { vedetteServiceId = 'vitrerie'; vedetteDiscount = 0.25; nomOperation = "PRINTEMPS"; }
+                else if (currentMonth === 9 || currentMonth === 10) { vedetteServiceId = 'sepulture'; vedetteDiscount = 0.25; nomOperation = "TOUSSAINT"; }
+                else if (currentMonth === 11 || currentMonth === 0) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.25; nomOperation = "NOËL"; }
+
+                const services = ['vitrerie', 'shampouinage', 'vehicule', 'bureaux', 'sepulture', 'evenements', 'chantier'];
+
+                services.forEach(srv => {
+                    const card = document.querySelector(`.card[onclick*="openQuote('${srv}')"]`);
+                    if (card) {
+                        let isVedette = (srv === vedetteServiceId);
+                        let discount = isVedette ? vedetteDiscount : resteDiscount;
+                        
+                        if (discount > 0) {
+                            let textPromo = "";
+                            let activeClass = isPromoActive ? " active-promo" : "";
+
+                            if (isPromoActive) {
+                                textPromo = isVedette 
+                                    ? `🔥 OPÉRATION EXCLUSIVE ${nomOperation} -${discount * 100}% 🔥` 
+                                    : `⚡ OPÉRATION SPÉCIALE ${nomOperation} -${discount * 100}% ⚡`;
+                            } else if (isTeasing) {
+                                textPromo = isVedette 
+                                    ? `⏳ BIENTÔT OPÉRATION EXCLUSIVE ${nomOperation} -${discount * 100}% ⏳` 
+                                    : `⏳ BIENTÔT OPÉRATION SPÉCIALE ${nomOperation} ⏳`;
+                            }
+
+                            let existingBanner = card.querySelector('.promo-line-bottom');
+                            if (existingBanner) {
+                                let textSpan = existingBanner.querySelector('.promo-scroll-text');
+                                if (textSpan && textSpan.textContent !== textPromo) {
+                                    textSpan.textContent = textPromo;
+                                    existingBanner.className = `promo-line-bottom${activeClass}`;
+                                }
+                            } else {
+                                let lineHtml = `<div class="promo-line-bottom${activeClass}"><span class="promo-scroll-text">${textPromo}</span></div>`;
+                                card.insertAdjacentHTML('beforeend', lineHtml);
+                                card.style.paddingBottom = '40px'; 
+                            }
+                        }
                     }
-                } else {
-                    let lineHtml = `<div class="promo-line-bottom${activeClass}"><span class="promo-scroll-text">${textPromo}</span></div>`;
-                    card.insertAdjacentHTML('beforeend', lineHtml);
-                    card.style.paddingBottom = '40px'; 
-                }
+                });
             }
-        }
-    });
-}
             updateServiceBadges(todayDateObj);
 
             if (typeof calculatePrice === "function") calculatePrice();
@@ -1309,6 +1309,22 @@ if (boxLeft && boxRight) {
         </div>
     </div>
 
+    <!-- FENÊTRES PANIER / CORBEILLE -->
+    <div id="cartModal" class="modal" style="z-index: 4000;">
+        <div class="modal-content small" style="padding: 25px; background: #f4f8fb;">
+            <span class="close-modal" onclick="closeCartModal()" role="button" tabindex="0">×</span>
+            <h3 style="color: var(--bleu); margin-bottom: 15px; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">🛒 Détail de vos devis</h3>
+            
+            <div id="cartContent" style="max-height: 55vh; overflow-y: auto; margin-bottom: 15px;">
+                <!-- Rempli automatiquement par le JavaScript -->
+            </div>
+            
+            <div style="text-align: center;">
+                <button type="button" onclick="closeCartModal()" class="btn-submit-form" style="margin-top: 0; width: 100%;">Fermer et continuer</button>
+            </div>
+        </div>
+    </div>
+
     <div id="clientModal" class="modal">
         <div class="modal-content small" style="padding: 30px; text-align: center;">
             <span class="close-modal" onclick="closeClientModal()" role="button" tabindex="0" aria-label="Fermer la fenêtre">×</span>
@@ -1332,8 +1348,9 @@ if (boxLeft && boxRight) {
                 <div class="price-left" id="estimatedAmount">
                     <div class="price-left-main">0.00 €*</div>
                 </div>
-                <div class="price-right">
-                    ⚠️ <em>Estimation à titre indicatif.</em> Le tarif final sera validé après une visite technique sur place (sans engagement).
+                <div class="price-right" style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                    <button type="button" onclick="openCartModal()" style="background: var(--vert); color: white; border: 2px solid white; padding: 6px 15px; border-radius: 6px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s; white-space: nowrap;">🛒 VOIR MON PANIER</button>
+                    <span style="max-width: 250px;">⚠️ <em>Estimation indicative.</em> Tarif final validé sur place.</span>
                 </div>
             </div>
 
@@ -1701,7 +1718,31 @@ if (boxLeft && boxRight) {
         }
     </script>
 
-    <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank" aria-label="Nous contacter sur WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Logo WhatsApp"></a>
+    <!-- CONTENEUR DES BULLES FLOTTANTES -->
+    <div class="floating-buttons-container">
+        <!-- Bulle E-mail -->
+        <a href="mailto:contact@ospplus.com" class="floating-btn mail-btn" aria-label="Envoyer un e-mail">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+        </a>
+
+        <!-- Bulle Avis Google -->
+        <a href="https://g.page/r/CdNdWcfjRCyYECE/review" target="_blank" class="floating-btn google-btn" aria-label="Laisser un avis sur Google">
+            <span style="font-size: 1.3rem; line-height: 1;">⭐</span>
+        </a>
+
+        <!-- Bulle Facebook -->
+        <a href="https://www.facebook.com" target="_blank" class="floating-btn facebook-btn" aria-label="Notre page Facebook">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook">
+        </a>
+
+        <!-- Bulle WhatsApp -->
+        <a href="https://wa.me/33745027624" target="_blank" class="floating-btn whatsapp-btn" aria-label="Nous contacter sur WhatsApp">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        </a>
+    </div>
 
     <script src="script.js"></script>
 </body>

@@ -360,6 +360,47 @@ let customIndexCount = 0;
 let currentPlanId = null;
 let roomCounter = 0;
 let activeServices = [];
+let currentActiveService = null;
+
+window.switchTab = function(serviceId) {
+    currentActiveService = serviceId;
+    // On cache tous les services, sauf celui sur lequel on a cliqué
+    activeServices.forEach(id => {
+        const block = document.getElementById('block_' + id);
+        if (block) {
+            block.style.display = (id === serviceId) ? 'block' : 'none';
+        }
+    });
+    renderTabs();
+};
+
+window.renderTabs = function() {
+    const container = document.getElementById('serviceTabsContainer');
+    if (!container) return;
+    
+    // Si on a qu'un seul devis, on ne montre pas les onglets
+    if (activeServices.length <= 1) {
+        container.style.display = 'none';
+        return;
+    }
+    
+    container.style.display = 'flex';
+    let html = '';
+    const availableServicesNames = {
+        'vitrerie': '🪟 Vitrerie', 'shampouinage': '🛋️ Textiles', 'vehicule': '🚗 Véhicule',
+        'bureaux': '🏢 Locaux', 'sepulture': '🪦 Sépultures', 'evenements': '🎉 Événements', 'chantier': '🚧 Chantier'
+    };
+    
+    activeServices.forEach(id => {
+        let name = availableServicesNames[id] || id;
+        let isActive = (id === currentActiveService);
+        let bg = isActive ? 'var(--bleu)' : '#e1e8ef';
+        let color = isActive ? 'white' : 'var(--bleu)';
+        let border = isActive ? '2px solid var(--vert)' : '2px solid transparent';
+        html += `<button type="button" onclick="switchTab('${id}')" style="background:${bg}; color:${color}; border:${border}; padding:10px 15px; border-radius:8px; font-weight:bold; cursor:pointer; white-space:nowrap; transition:0.3s; box-shadow: ${isActive ? '0 4px 10px rgba(0,0,0,0.2)' : 'none'};">${name}</button>`;
+    });
+    container.innerHTML = html;
+};
 
 let defaultFloors = { global: {}, levels: {} };
 
@@ -1907,7 +1948,7 @@ function calculatePrice() {
 
     // --- 7. REGROUPEMENT ET TOTAL ---
     let totalPrestations = subTotals.vitrerie + subTotals.shampouinage + subTotals.vehicule + subTotals.bureaux + subTotals.sepulture + subTotals.evenements + subTotals.chantier;
-    
+    window.currentSubTotals = subTotals;
     let discountText = "";
 
     // --- GESTION INTELLIGENTE DU DÉPLACEMENT ---
@@ -1921,7 +1962,6 @@ function calculatePrice() {
     total = totalPrestations + window.fraisDeplacementKilometrique;
     let originalTotal = total;
     window.originalTotalValue = originalTotal;
-    
     // --- 8. LOGIQUE DU SERVICE VEDETTE & REMISES ---
     let totalDiscountAmount = 0;
     let conflict10 = false;
@@ -2065,7 +2105,8 @@ function openQuote(baseService) {
     guideHtml += `</div></div>`;
 
     fields.innerHTML = guideHtml + `
-        <div id="allServicesContainer" style="display:flex; flex-direction:column; gap:20px;"></div>
+        <div id="serviceTabsContainer" style="display:flex; gap:10px; margin-bottom:15px; overflow-x:auto; padding-bottom:5px;"></div>
+        <div id="allServicesContainer" style="display:flex; flex-direction:column; gap:0;"></div>
         <div id="crossSellContainer" style="margin-top:25px; padding-top:20px; border-top:2px dashed #e1e8ef; text-align:center;"></div>
     `;
 
@@ -2083,8 +2124,14 @@ function openQuote(baseService) {
 }
 
 function addServiceToQuote(service) {
-    if (activeServices.includes(service)) return; 
+    if (activeServices.includes(service)) {
+        switchTab(service); // Si le service existe déjà, on bascule juste sur son onglet
+        return; 
+    }
+    
+    // On ajoute le service une seule fois
     activeServices.push(service);
+    currentActiveService = service;
 
     const container = document.getElementById('allServicesContainer');
     let html = `<div id="block_${service}" style="background: white; border: 1px solid #e1e8ef; border-radius: 10px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); animation: fadeInDown 0.4s ease;">`;
@@ -2468,36 +2515,60 @@ function addServiceToQuote(service) {
     updateCrossSellButtons(); 
     calculatePrice();
     toggleCompanyField(); 
+    
+    // ---> LIGNE CRUCIALE AJOUTÉE ICI POUR AFFICHER LES ONGLETS <---
+    switchTab(service);
+    
     const newBlock = document.getElementById('block_' + service);
     if(newBlock) newBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+window.switchQuote = async function(serviceId) {
+    let msg = langKey === 'vi' ? "Thao tác này sẽ xóa báo giá hiện tại để bắt đầu báo giá mới. Thông tin của bạn sẽ được giữ nguyên. Tiếp tục?" : 
+              (langKey === 'en' ? "This will clear the current quote to start a new one. Your contact details will be kept. Continue?" : 
+              "Attention, cela va remplacer le devis actuel par un nouveau. Vos informations (nom, adresse, etc.) saisies à droite seront conservées. Continuer ?");
+
+    let confirmSwitch = await askCustomQuestion("Changer de devis", msg, [
+        { text: langKey==='en'?"Yes, switch":"Oui, changer", value: true, style: "background: var(--bleu); color: white;" },
+        { text: langKey==='en'?"Cancel":"Annuler", value: false, style: "background: #e1e8ef; color: var(--bleu);" }
+    ]);
+
+    if (confirmSwitch) {
+        openQuote(serviceId);
+    }
+};
 
 function updateCrossSellButtons() {
     const csContainer = document.getElementById('crossSellContainer');
     
     const availableServices = [ 
-    { id: 'vitrerie', name_fr: '🪟 Vitrerie', name_en: '🪟 Windows', name_vi: '🪟 Lau kính' }, 
-    { id: 'shampouinage', name_fr: '🛋️ Textiles', name_en: '🛋️ Textiles', name_vi: '🛋️ Giặt vải' }, 
-    { id: 'vehicule', name_fr: '🚗 Véhicule', name_en: '🚗 Vehicle', name_vi: '🚗 Xe hơi' }, 
-    { id: 'bureaux', name_fr: '🏢 Locaux', name_en: '🏢 Offices', name_vi: '🏢 Văn phòng' },
-    { id: 'sepulture', name_fr: '🪦 Sépultures', name_en: '🪦 Graves', name_vi: '🪦 Mộ' },
-    { id: 'evenements', name_fr: '🎉 Salle/Fêtes', name_en: '🎉 Events', name_vi: '🎉 Sự kiện' },
-    { id: 'chantier', name_fr: '🚧 Fin Chantier', name_en: '🚧 Post-build', name_vi: '🚧 Sau xây dựng' } 
-];
+        { id: 'vitrerie', name_fr: '🪟 Vitrerie', name_en: '🪟 Windows', name_vi: '🪟 Lau kính' }, 
+        { id: 'shampouinage', name_fr: '🛋️ Textiles', name_en: '🛋️ Textiles', name_vi: '🛋️ Giặt vải' }, 
+        { id: 'vehicule', name_fr: '🚗 Véhicule', name_en: '🚗 Vehicle', name_vi: '🚗 Xe hơi' }, 
+        { id: 'bureaux', name_fr: '🏢 Locaux', name_en: '🏢 Offices', name_vi: '🏢 Văn phòng' },
+        { id: 'sepulture', name_fr: '🪦 Sépultures', name_en: '🪦 Graves', name_vi: '🪦 Mộ' },
+        { id: 'evenements', name_fr: '🎉 Salle/Fêtes', name_en: '🎉 Events', name_vi: '🎉 Sự kiện' },
+        { id: 'chantier', name_fr: '🚧 Fin Chantier', name_en: '🚧 Post-build', name_vi: '🚧 Sau xây dựng' } 
+    ];
     
-    let missingServices = availableServices.filter(s => !activeServices.includes(s.id));
+    // On affiche tous les services SAUF celui qui est actuellement ouvert
+    let otherServices = availableServices.filter(s => !activeServices.includes(s.id));
 
-    if (missingServices.length === 0) { csContainer.style.display = 'none'; return; }
+    if (otherServices.length === 0) { csContainer.style.display = 'none'; return; }
 
     csContainer.style.display = 'block';
-    let csText = langKey === 'vi' ? "💡 Bạn có thể kết hợp dịch vụ này với :" : (langKey === 'en' ? "💡 You can combine this service with:" : "💡 Vous pouvez cumuler cette prestation avec :");
+    let csText = langKey === 'vi' ? "💡 Thêm dịch vụ vào báo giá của bạn :" : 
+                 (langKey === 'en' ? "💡 Add another service to your quote:" : 
+                 "💡 Ajouter une autre prestation à ce devis :");
     
-    let html = `<p style="font-size:0.85rem; font-weight:800; color:var(--vert); margin-bottom:15px;">${csText}</p><div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">`;
-    missingServices.forEach(s => { 
+    let html = `<p style="font-size:0.85rem; font-weight:800; color:var(--bleu); margin-bottom:15px;">${csText}</p><div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">`;
+    
+    otherServices.forEach(s => { 
         let localizedName = langKey === 'vi' ? s.name_vi : (langKey === 'en' ? s.name_en : s.name_fr);
-        let btnText = langKey === 'vi' ? `+ Thêm ${localizedName}` : (langKey === 'en' ? `+ Add ${localizedName}` : `+ Ajouter ${localizedName}`);
-        html += `<button type="button" class="btn-cross-sell" onclick="addServiceToQuote('${s.id}')">${btnText}</button>`; 
+        // On appelle addServiceToQuote pour AJOUTER au lieu de remplacer
+        html += `<button type="button" class="btn-cross-sell" onclick="addServiceToQuote('${s.id}')">${localizedName}</button>`; 
     });
+    
     html += `</div>`;
     csContainer.innerHTML = html;
 }
@@ -2715,7 +2786,6 @@ async function submitInteractiveForm() {
                 }
             }
 
-            // ---> VÉRIFICATION M² CHANTIER AJOUTÉE ICI <---
             if (activeServices.includes('chantier')) {
                 let inputM2 = document.getElementById('qty_chantier_m2');
                 if (inputM2 && (parseInt(inputM2.value) || 0) === 0) {
@@ -2996,7 +3066,6 @@ async function submitInteractiveForm() {
                 recap += "\n";
             }
 
-            // ---> RÉCAPITULATIF CHANTIER AJOUTÉ ICI <---
             if (activeServices.includes('chantier')) {
                 let m2 = parseInt(document.getElementById('qty_chantier_m2')?.value) || 0;
                 let typeChantier = document.getElementById('type_chantier')?.value || 'moyen';
@@ -3671,4 +3740,170 @@ Message / Besoins :
             btn.innerText = "SOUMETTRE MA DEMANDE";
             btn.disabled = false;
         });
+}
+// ==========================================
+// 🛒 GESTION DU PANIER ET DE LA CORBEILLE
+// ==========================================
+
+function openCartModal() {
+    renderCart();
+    document.getElementById('cartModal').style.display = 'flex';
+}
+
+function closeCartModal() {
+    document.getElementById('cartModal').style.display = 'none';
+}
+
+function renderCart() {
+    const container = document.getElementById('cartContent');
+    if (!window.currentSubTotals || activeServices.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#888; font-weight:bold; margin-top:20px;">Votre panier est vide.</p>';
+        return;
+    }
+
+    let html = '';
+    
+    // Retrouver les pourcentages de promo actifs
+    const currentMonth = getSimulatedDate().getMonth();
+    let vedetteServiceId = null;
+    let vedetteDiscount = 0;
+    let resteDiscount = window.holidayPromoActive ? 0.10 : 0;
+    
+    if (window.holidayPromoActive) {
+        if (currentMonth === 5) { vedetteServiceId = 'vehicule'; vedetteDiscount = 0.30; } 
+        else if (currentMonth === 4) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.30; } 
+        else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; }
+        else if (currentMonth === 2 || currentMonth === 3) { vedetteServiceId = 'vitrerie'; vedetteDiscount = 0.25; } 
+        else if (currentMonth === 9 || currentMonth === 10) { vedetteServiceId = 'sepulture'; vedetteDiscount = 0.25; } 
+        else if (currentMonth === 11 || currentMonth === 0) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.25; } 
+        else { vedetteServiceId = null; vedetteDiscount = 0.10; }
+    }
+
+    let appliedPromoDevis = window.promoDiscountDevis;
+    let appliedClientDiscount = window.clientDiscount;
+    let count10 = 0;
+    if (appliedPromoDevis === 0.10) count10++;
+    if (appliedClientDiscount === 0.10) count10++;
+    if (resteDiscount === 0.10) count10++; 
+    if (count10 >= 2) { appliedPromoDevis = 0; } // Conflit des 10% bloqué
+
+    const availableServicesNames = {
+        'vitrerie': '🪟 Vitrerie', 'shampouinage': '🛋️ Textiles', 'vehicule': '🚗 Véhicule',
+        'bureaux': '🏢 Locaux', 'sepulture': '🪦 Sépultures', 'evenements': '🎉 Événements', 'chantier': '🚧 Chantier'
+    };
+
+    let grandTotalNormal = 0;
+    let grandTotalReduit = 0;
+
+    activeServices.forEach(srv => {
+        let basePrice = window.currentSubTotals[srv] || 0;
+        if (basePrice === 0) return;
+
+        grandTotalNormal += basePrice;
+        let finalPrice = basePrice;
+        let promoText = "Aucune promo";
+        let promoAmount = 0;
+
+        if (window.holidayPromoActive && vedetteServiceId && activeServices.includes(vedetteServiceId)) {
+            if (srv === vedetteServiceId) {
+                promoAmount = vedetteDiscount;
+                promoText = `Vedette (-${vedetteDiscount*100}%)`;
+            } else {
+                promoAmount = resteDiscount;
+                promoText = `Globale (-${resteDiscount*100}%)`;
+            }
+            if (appliedClientDiscount > 0) { promoAmount += appliedClientDiscount; promoText += ` + VIP`; }
+            if (appliedPromoDevis > 0) { promoAmount += appliedPromoDevis; promoText += ` + Code`; }
+        } else {
+            if (appliedClientDiscount > 0) promoAmount += appliedClientDiscount;
+            if (appliedPromoDevis > 0) promoAmount += appliedPromoDevis;
+            if (resteDiscount > 0) promoAmount += resteDiscount;
+            
+            if (promoAmount > 0) {
+                let tags = [];
+                if (appliedClientDiscount > 0) tags.push(`VIP`);
+                if (resteDiscount > 0) tags.push(`Férié`);
+                if (appliedPromoDevis > 0) tags.push(`Code`);
+                promoText = tags.join(' + ') + ` (-${promoAmount*100}%)`;
+            }
+        }
+
+        finalPrice = basePrice - (basePrice * promoAmount);
+        grandTotalReduit += finalPrice;
+        let srvName = availableServicesNames[srv] || srv;
+
+        html += `
+        <div style="background: white; border: 1px solid #ccc; border-radius: 8px; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <div style="font-weight: 800; color: var(--bleu); margin-bottom: 8px; font-size: 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                <span>${srvName}</span>
+                <button type="button" onclick="removeServiceFromQuote('${srv}')" style="background: #ff4d4d; color: white; border: none; border-radius: 5px; padding: 4px 8px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: 0.2s;" title="Mettre à la corbeille">🗑️</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px; color: #555;">
+                <span>Prix normal :</span>
+                <span style="${promoAmount > 0 ? 'text-decoration: line-through;' : ''}">${basePrice.toFixed(2)} €</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px; color: ${promoAmount > 0 ? 'var(--vert)' : '#aaa'}; font-weight: bold;">
+                <span>Promo en cours :</span>
+                <span>${promoText}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 1rem; font-weight: 900; color: var(--bleu); margin-top: 5px;">
+                <span>Total devis :</span>
+                <span>${finalPrice.toFixed(2)} €</span>
+            </div>
+        </div>`;
+    });
+
+    // Frais de déplacement
+    if (window.fraisDeplacementBase > 0) {
+        let depPrice = window.fraisDeplacementBase;
+        let depFinal = window.fraisDeplacementKilometrique;
+        grandTotalNormal += depPrice;
+        grandTotalReduit += depFinal;
+        
+        html += `
+        <div style="background: #fff8e1; border: 1px dashed #e67e22; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+            <div style="font-weight: 800; color: #d35400; margin-bottom: 5px; font-size: 0.95rem;">🚗 Frais de déplacement</div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #555;">
+                <span>Prix kilométrique :</span>
+                <span style="${depFinal === 0 ? 'text-decoration: line-through;' : ''}">${depPrice.toFixed(2)} €</span>
+            </div>
+            ${depFinal === 0 ? `<div style="font-size: 0.85rem; color: var(--vert); font-weight: bold; margin-top: 3px; text-align: right;">OFFERT (Devis > 150€)</div>` : ''}
+        </div>`;
+    }
+
+    // Grand Total Final
+    html += `
+    <div style="background: var(--bleu); color: white; border-radius: 8px; padding: 15px; margin-top: 20px; box-shadow: 0 4px 10px rgba(26,60,108,0.4);">
+        <div style="display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: 900;">
+            <span>TOTAL GÉNÉRAL :</span>
+            <span>${grandTotalReduit.toFixed(2)} €</span>
+        </div>
+        ${grandTotalNormal > grandTotalReduit ? `<div style="text-align: right; font-size: 0.85rem; color: #9ab0ca; margin-top: 5px;">(au lieu de ${grandTotalNormal.toFixed(2)} €)</div>` : ''}
+    </div>`;
+
+    container.innerHTML = html;
+}
+
+function removeServiceFromQuote(serviceId) {
+    // 1. On retire le service de la liste
+    activeServices = activeServices.filter(id => id !== serviceId);
+    
+    // 2. On détruit visuellement le devis (la corbeille)
+    const block = document.getElementById('block_' + serviceId);
+    if (block) block.remove();
+
+    // 3. On bascule sur un autre onglet s'il en reste
+    if (activeServices.length > 0) {
+        switchTab(activeServices[0]);
+    } else {
+        closeCartModal();
+        closeQuote();
+        return;
+    }
+
+    // 4. On recalcule tout
+    calculatePrice();
+    renderTabs();
+    updateCrossSellButtons();
+    renderCart(); // On rafraîchit le visuel du panier
 }

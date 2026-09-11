@@ -716,8 +716,67 @@ nav ul { display: flex; list-style: none; align-items: center; gap: 8px; }
 
 .day-modal { display: none; position: fixed; z-index: 6000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
 
-.whatsapp-btn { position: fixed; bottom: 20px; right: 20px; background: #25d366; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: var(--transition-standard); }
-.whatsapp-btn img { width: 32px; }
+/* ========================================= */
+/* --- BULLES FLOTTANTES EMPILÉES --- */
+/* ========================================= */
+.floating-buttons-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1500;
+}
+
+.floating-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: white;
+}
+
+.floating-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.floating-btn img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+/* Couleurs spécifiques par réseau */
+.mail-btn {
+    background: var(--bleu, #1a3c6c);
+}
+
+.google-btn {
+    background: #4285F4;
+    border: 2px solid #ffffff;
+}
+
+.facebook-btn {
+    background: #ffffff;
+}
+
+.whatsapp-btn {
+    background: #25d366;
+    width: 55px;
+    height: 55px;
+}
+
+.whatsapp-btn img {
+    width: 32px;
+    height: 32px;
+}
 
 footer { background: var(--blanc) !important; padding: 30px 8% !important; text-align: center !important; border-top: 5px solid var(--vert) !important; }
 
@@ -1064,6 +1123,28 @@ body.theme-estival .promo-banner { background: linear-gradient(90deg, #f39c12, #
     .promo-banner { font-size: 0.9rem; flex-direction: column; padding: 5px 10px !important; }
     .promo-banner strong { font-size: 1.1rem; }
     .promo-banner em { margin-left: 0; margin-top: 2px; font-size: 0.8rem; }
+
+    .floating-buttons-container {
+        bottom: 15px;
+        right: 15px;
+        gap: 10px;
+    }
+    .floating-btn {
+        width: 44px;
+        height: 44px;
+    }
+    .floating-btn img {
+        width: 24px;
+        height: 24px;
+    }
+    .whatsapp-btn {
+        width: 50px;
+        height: 50px;
+    }
+    .whatsapp-btn img {
+        width: 28px;
+        height: 28px;
+    }
 }
 
 .trust-bar { margin-bottom: 0 !important; }
