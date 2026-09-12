@@ -378,7 +378,7 @@ window.renderTabs = function() {
     const container = document.getElementById('serviceTabsContainer');
     if (!container) return;
     
-    // Si on a qu'un seul devis, on ne montre pas les onglets
+    // Si on a qu'un seul devis (ou estimation), on ne montre pas les onglets
     if (activeServices.length <= 1) {
         container.style.display = 'none';
         return;
@@ -460,7 +460,7 @@ async function testerEligibiliteRapide() {
         } else {
             const kmSupplementaires = Math.round((distanceAllerRetour - 30) * 10) / 10;
             const surcout = Math.round((kmSupplementaires * 0.50) * 100) / 100;
-            alert(`📍 HORS AGGLOMÉRATION\n\nDistance A/R estimée : ${distanceAllerRetour} km.\nFrais de route prévus : +${surcout.toFixed(2)} €.\n\n🎁 ASTUCE : Ces frais seront TOTALEMENT OFFERTS si votre devis de nettoyage dépasse 150 € !`);
+            alert(`📍 HORS AGGLOMÉRATION\n\nDistance A/R estimée : ${distanceAllerRetour} km.\nFrais de route prévus : +${surcout.toFixed(2)} €.\n\n🎁 ASTUCE : Ces frais seront TOTALEMENT OFFERTS si votre estimation de nettoyage dépasse 150 € !`);
         }
     } catch (err) {
         alert("⚠️ Erreur réseau, veuillez réessayer plus tard.");
@@ -468,7 +468,7 @@ async function testerEligibiliteRapide() {
 }
 
 // ==========================================
-// 🚗 SIMULATEUR D'ÉLIGIBILITÉ (DANS LE DEVIS)
+// 🚗 SIMULATEUR D'ÉLIGIBILITÉ (DANS LE DEVIS / ESTIMATION)
 // ==========================================
 function resetDistanceCalc() {
     const msgBox = document.getElementById('distanceResultMsg');
@@ -540,7 +540,7 @@ async function calculerEligibilite() {
             window.fraisDeplacementBase = surcout;
 
             msgBox.className = 'distance-result-msg warning';
-            msgBox.innerHTML = `📍 Hors Agglomération (Dist. A/R : <strong>${distanceAllerRetour} km</strong>).<br>Frais de route : +${surcout.toFixed(2)} € (<em>Sauf si devis > 150 €</em>).`;
+            msgBox.innerHTML = `📍 Hors Agglomération (Dist. A/R : <strong>${distanceAllerRetour} km</strong>).<br>Frais de route : +${surcout.toFixed(2)} € (<em>Sauf si estimation > 150 €</em>).`;
         }
 
         if (typeof calculatePrice === "function") calculatePrice();
@@ -567,12 +567,12 @@ if (currentMonthBanner === 4 || currentMonthBanner === 5 || currentMonthBanner =
 // Liste des messages avec action au clic et pourcentage dynamique
 const MES_PUBLICITES = [
     { text: `<span class="badge-promo-top">VENTE FLASH</span> <strong>JUSQU'À -${maxBannerDiscount}% DE REMISE !</strong> <em>(Cliquez ici)</em>`, action: "document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" },
-    { text: '🛋️ <strong>NETTOYAGE CANAPÉS & TEXTILES</strong> : ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('shampouinage')" },
-    { text: '🏢 <strong>LOCAUX & BUREAUX</strong> : Dès 5h du matin ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('bureaux')" },
-    { text: '🪟 <strong>VITRERIE PRO</strong> : Fenêtres, baies, vérandas ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('vitrerie')" },
-    { text: '🚗 <strong>PACK VÉHICULES</strong> : Intérieur complet ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('vehicule')" },
-    { text: '🪦 <strong>SÉPULTURES</strong> : Nettoyage et fleurissement ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('sepulture')" },
-    { text: '🎉 <strong>REMISE EN ÉTAT SALLE</strong> : Événements ➡️ <em>Cliquez pour faire votre devis</em>', action: "openQuote('evenements')" },
+    { text: '🛋️ <strong>NETTOYAGE CANAPÉS & TEXTILES</strong> : ➡️ <em>Cliquez pour faire votre estimation</em>', action: "openQuote('shampouinage')" },
+    { text: '🏢 <strong>LOCAUX & BUREAUX</strong> : Dès 5h du matin ➡️ <em>Cliquez pour faire votre estimation</em>', action: "openQuote('bureaux')" },
+    { text: '🪟 <strong>VITRERIE PRO</strong> : Fenêtres, baies, vérandas ➡️ <em>Cliquez pour faire votre estimation</em>', action: "openQuote('vitrerie')" },
+    { text: '🚗 <strong>PACK VÉHICULES</strong> : Intérieur complet ➡️ <em>Cliquez pour faire votre estimation</em>', action: "openQuote('vehicule')" },
+    { text: '🪦 <strong>SÉPULTURES</strong> : Nettoyage et fleurissement ➡️ <em>Cliquez pour faire votre estimation</em>', action: "openQuote('sepulture')" },
+    { text: '🎉 <strong>REMISE EN ÉTAT SALLE</strong> : Événements ➡️ <em>Cliquez pour faire votre estimation</em>', action: "openQuote('evenements')" },
     { text: '✅ <strong>ASSURANCE RC PRO</strong> & <strong>20 ANS D\'EXPERTISE</strong> ➡️ <em>Découvrir OSP+</em>', action: "document.getElementById('qui-suis-je').scrollIntoView({behavior: 'smooth'});" },
     { text: '📞 <strong>CONTACT : 07 45 02 76 24</strong> | 🕒 Lun-Sam 5h-22h ➡️ <em>Être rappelé</em>', action: "openCallbackModal()" },
     { text: '🚗 <strong>DÉPLACEMENT OFFERT</strong> : Toulouse et son agglomération !', action: "document.getElementById('services').scrollIntoView({behavior: 'smooth'});" }
@@ -1954,7 +1954,7 @@ function calculatePrice() {
     // --- GESTION INTELLIGENTE DU DÉPLACEMENT ---
     if (window.fraisDeplacementBase > 0 && totalPrestations >= 150) {
         window.fraisDeplacementKilometrique = 0; // On offre les frais !
-        discountText += `<div class="price-discount-text" style="color: #e67e22;">🎁 Frais de route offerts (Devis > 150 €)</div>`;
+        discountText += `<div class="price-discount-text" style="color: #e67e22;">🎁 Frais de route offerts (Estimation > 150 €)</div>`;
     } else {
         window.fraisDeplacementKilometrique = window.fraisDeplacementBase || 0;
     }
@@ -2064,7 +2064,7 @@ function openQuote(baseService) {
     const fields = document.getElementById('dynamicFields');
     if (document.getElementById('customRowsContainer')) document.getElementById('customRowsContainer').innerHTML = '';
     
-    let guideTitle = langKey === 'vi' ? 'ℹ️ Hướng dẫn điền báo giá của bạn ?' : (langKey === 'en' ? 'ℹ️ How to fill out your quote?' : 'ℹ️ Comment remplir votre devis ?');
+    let guideTitle = langKey === 'vi' ? 'ℹ️ Hướng dẫn điền báo giá của bạn ?' : (langKey === 'en' ? 'ℹ️ How to fill out your quote?' : 'ℹ️ Comment remplir votre estimation ?');
     let steps = [];
 
     if (baseService === 'bureaux') {
@@ -2116,7 +2116,7 @@ function openQuote(baseService) {
     
     if (document.getElementById('quotePreviewContainer')) document.getElementById('quotePreviewContainer').style.display = 'none';
 
-    let submitText = langKey === 'vi' ? "GỬI YÊU CẦU BÁO GIÁ" : (langKey === 'en' ? "SEND MY QUOTE REQUEST" : "ENVOYER MON DEVIS");
+    let submitText = langKey === 'vi' ? "GỬI YÊU CẦU BÁO GIÁ" : (langKey === 'en' ? "SEND MY QUOTE REQUEST" : "ENVOYER MON ESTIMATION");
     document.getElementById('btnSubmitForm').innerText = submitText;
     document.getElementById('btnSubmitForm').disabled = false;
     document.getElementById('quoteModal').style.display = "flex";
@@ -2526,9 +2526,9 @@ function addServiceToQuote(service) {
 window.switchQuote = async function(serviceId) {
     let msg = langKey === 'vi' ? "Thao tác này sẽ xóa báo giá hiện tại để bắt đầu báo giá mới. Thông tin của bạn sẽ được giữ nguyên. Tiếp tục?" : 
               (langKey === 'en' ? "This will clear the current quote to start a new one. Your contact details will be kept. Continue?" : 
-              "Attention, cela va remplacer le devis actuel par un nouveau. Vos informations (nom, adresse, etc.) saisies à droite seront conservées. Continuer ?");
+              "Attention, cela va remplacer l'estimation actuelle par une nouvelle. Vos informations (nom, adresse, etc.) saisies à droite seront conservées. Continuer ?");
 
-    let confirmSwitch = await askCustomQuestion("Changer de devis", msg, [
+    let confirmSwitch = await askCustomQuestion("Changer d'estimation", msg, [
         { text: langKey==='en'?"Yes, switch":"Oui, changer", value: true, style: "background: var(--bleu); color: white;" },
         { text: langKey==='en'?"Cancel":"Annuler", value: false, style: "background: #e1e8ef; color: var(--bleu);" }
     ]);
@@ -2559,7 +2559,7 @@ function updateCrossSellButtons() {
     csContainer.style.display = 'block';
     let csText = langKey === 'vi' ? "💡 Thêm dịch vụ vào báo giá của bạn :" : 
                  (langKey === 'en' ? "💡 Add another service to your quote:" : 
-                 "💡 Ajouter une autre prestation à ce devis :");
+                 "💡 Ajouter une autre prestation à cette estimation :");
     
     let html = `<p style="font-size:0.85rem; font-weight:800; color:var(--bleu); margin-bottom:15px;">${csText}</p><div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">`;
     
@@ -2893,7 +2893,7 @@ async function submitInteractiveForm() {
                 } else if (langKey === 'en') {
                     messageAlerte = "⚠️ Your detailed estimate is " + window.currentTotalValue.toFixed(2) + " €.<br><br>However, our interventions are subject to a minimum billing of 35.00 € (to cover travel and equipment expenses).<br><br>💡 TIP: You can cancel and add other services (Windows, Sofas...) to reach this 35 € mark and get full value!<br><br>Do you still want to send the request at the flat rate of 35.00 €?";
                 } else {
-                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.<br><br>Cependant, nos interventions sont soumises à un minimum de facturation de 35,00 € (pour couvrir le déplacement et le matériel).<br><br>💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 35 € et rentabiliser votre devis !<br><br>Voulez-vous quand même envoyer la demande au prix forfaitaire de 35,00 € ?";
+                    messageAlerte = "⚠️ Votre estimation détaillée s'élève à " + window.currentTotalValue.toFixed(2) + " €.<br><br>Cependant, nos interventions sont soumises à un minimum de facturation de 35,00 € (pour couvrir le déplacement et le matériel).<br><br>💡 ASTUCE : Vous pouvez annuler et ajouter d'autres prestations (Vitres, Canapés...) pour atteindre ces 35 € et rentabiliser votre estimation !<br><br>Voulez-vous quand même envoyer la demande au prix forfaitaire de 35,00 € ?";
                 }
                 
                 let clientAccepte = await askCustomQuestion("⚠️ Minimum de facturation", messageAlerte, [
@@ -2924,7 +2924,7 @@ async function submitInteractiveForm() {
                 return recapStr;
             }
 
-            let recap = "--- RÉCAPITULATIF DU DEVIS ---\n\n";
+            let recap = "--- RÉCAPITULATIF DE L'ESTIMATION ---\n\n";
             if (statut === "Entreprise") {
                 recap += `🏢 STRUCTURE : ${document.getElementById('nomEntreprise').value}\n`;
                 if (activeServices.includes('bureaux')) {
@@ -3168,7 +3168,7 @@ async function submitInteractiveForm() {
             recap += `\n--- INFORMATIONS FINANCIÈRES ---\nBase de calcul initiale : ${window.originalTotalValue.toFixed(2)} €\n`;
             if (window.fraisDeplacementBase > 0) {
                 if (window.fraisDeplacementKilometrique === 0) {
-                    recap += `🚗 Frais de route de ${window.fraisDeplacementBase.toFixed(2)} € TOTALEMENT OFFERTS (Devis > 150 €)\n`;
+                    recap += `🚗 Frais de route de ${window.fraisDeplacementBase.toFixed(2)} € TOTALEMENT OFFERTS (Estimation > 150 €)\n`;
                 } else {
                     recap += `🚗 Frais de route ajoutés : +${window.fraisDeplacementKilometrique.toFixed(2)} € (Surcoût hors Agglomération)\n`;
                 }
@@ -3185,7 +3185,7 @@ async function submitInteractiveForm() {
             if (resteDiscountEmail === 0.10) countEmail10++;
             if (countEmail10 >= 2) { finalPromoDevis = 0; conflict10 = true; }
 
-            if (finalClientDiscount > 0) recap += `🎁 Remise Client VIP Fidélité (${finalClientDiscount * 100}%) active via Code : ${window.activeClientCode}\n`;
+            if (finalClientDiscount > 0) recap += `🎁 Remise Client VIP Fidélité (${finalClientDiscount * 100}\%) active via Code :${window.activeClientCode}\n`;
             if (finalPromoDevis > 0) recap += `🎁 Code Promo de validation (${finalPromoDevis * 100}%) appliqué avec le code : ${window.activePromoCodeDevis}\n`;
             
             // Synchronisation du nom de l'Opération pour l'e-mail
@@ -3253,7 +3253,7 @@ async function submitInteractiveForm() {
             if (window.activeClientCode || window.activePromoCodeDevis) {
                 let codeUti = window.activeClientCode || window.activePromoCodeDevis;
                 pendingClientCodeAlert = {
-                    alerte_message: `⚠️ ALERTE IMPORTANTE :\n\nLe code de remise "${codeUti}" vient d'être utilisé par ${form.nom.value} ${form.prenom.value} (Email : ${form.email.value}, Tél : ${form.telephone ? form.telephone.value : "Non renseigné"}).\n\nSi ce code est à usage unique, n'oubliez pas d'ajouter la mention "-FIN" à côté du code dans votre fichier codes.js.`,
+                    alerte_message: `⚠️ ALERTE IMPORTANTE :\n\nLe code de remise "${codeUti}" vient d'être utilisé par ${form.nom.value}${form.prenom.value} (Email : ${form.email.value}, Tél : ${form.telephone ? form.telephone.value : "Non renseigné"}).\n\nSi ce code est à usage unique, n'oubliez pas d'ajouter la mention "-FIN" à côté du code dans votre fichier codes.js.`,
                     code_utilise: codeUti
                 };
             } else {
@@ -3265,7 +3265,7 @@ async function submitInteractiveForm() {
             let textBtnEdit = langKey === 'vi' ? "⬅️ Sửa" : (langKey === 'en' ? "⬅️ Edit" : "⬅️ Modifier");
             let textBtnConfirm = langKey === 'vi' ? "✅ Xác nhận và Gửi" : (langKey === 'en' ? "✅ Confirm and Send" : "✅ Confirmer et Envoyer");
 
-            let previewText = `👤 VOS COORDONNÉES :\nNom : ${form.nom.value} ${form.prenom.value}\nEmail : ${form.email.value}\nTéléphone : ${form.telephone ? form.telephone.value : "Non renseigné"}\nAdresse : ${form.adresse.value}, ${form.ville.value}\n\n`;
+            let previewText = `👤 VOS COORDONNÉES :\nNom : ${form.nom.value}${form.prenom.value}\nEmail : ${form.email.value}\nTéléphone : ${form.telephone ? form.telephone.value : "Non renseigné"}\nAdresse : ${form.adresse.value},${form.ville.value}\n\n`;
             previewText += recap;
 
             let previewContainer = document.getElementById('quotePreviewContainer');
@@ -3288,6 +3288,7 @@ async function submitInteractiveForm() {
                 <div id="previewContent" style="background: #fdfdfd; padding: 15px; border-radius: 8px; font-size: 0.85rem; color: #333; line-height: 1.6; max-height: 35vh; overflow-y: auto; white-space: pre-wrap; margin-bottom: 15px; border: 1px solid #ccc; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);"></div>
                 
                 <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button type="button" class="btn-validate" onclick="editQuote()"Je ne suis qu'un modèle de langage. Je ne peux pas vous aider à ce sujet.
                     <button type="button" class="btn-validate" onclick="editQuote()" style="background: #e1e8ef; color: var(--bleu); border: none; padding: 12px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; flex: 1; max-width: 250px;">${textBtnEdit}</button>
                     <button type="button" class="btn-submit-form btn-confirm-send" onclick="confirmAndSendQuote()" style="margin: 0; padding: 12px 20px; flex: 1; max-width: 250px;">${textBtnConfirm}</button>
                 </div>
