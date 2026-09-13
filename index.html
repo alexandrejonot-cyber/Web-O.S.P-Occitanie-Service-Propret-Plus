@@ -8,16 +8,12 @@
     <meta name="description" content="O.S.P+ : Expert en nettoyage professionnel à Toulouse. Vitrerie, shampouinage canapés, tapis, bureaux et remise en état de salle. Service de propreté haute qualité en Occitanie. Estimation Gratuite.">
     <meta name="keywords" content="nettoyage toulouse, laveur de vitres toulouse, shampouinage canapé toulouse, nettoyage bureaux occitanie, nettoyage salle mariage toulouse, propreté toulouse">
     
-    <link rel="stylesheet" href="style.css">
+    <!-- Optimisation de la connexion aux polices Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
-    <script src="codes.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-       (function(){
-          emailjs.init("jlAW00rIU5xSHECVd"); 
-       })();
-    </script>
+    <link rel="stylesheet" href="style.css">
     
     <style>
         .comparison-container { position: relative; }
@@ -1750,6 +1746,14 @@
         </a>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Chargement différé des scripts non-bloquants -->
+    <script defer src="codes.js"></script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       window.addEventListener('DOMContentLoaded', function(){
+          emailjs.init("jlAW00rIU5xSHECVd"); 
+       });
+    </script>
+    <script defer src="script.js"></script>
 </body>
 </html>
