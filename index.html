@@ -232,8 +232,8 @@
             <nav>
                 <ul id="nav-links">
                     <li><a href="#" class="nav-link">Accueil</a></li>
-                    <li><a href="#section-promo" class="nav-link text-green">Ventes Flash</a></li>
-                    <li><a href="#services" class="nav-link">Services</a></li>
+                    <li id="menu-ventes-flash" style="display: none;"><a href="#section-promo" class="nav-link text-green">Ventes Flash</a></li>
+                    <li><a href="#services" class="nav-link">Services & estimation</a></li>
                     <li><a href="#galerie" class="nav-link">Réalisations</a></li>
                     <li><a href="#avis-google" class="nav-link">Votre avis</a></li>
                     <li><a href="#qui-suis-je" class="nav-link">Expertise</a></li>
@@ -749,6 +749,7 @@
 
             if (evenementsActifs.length > 0) {
                 eventContainer.style.display = "block";
+                if (document.getElementById('menu-ventes-flash')) document.getElementById('menu-ventes-flash').style.display = "block";
 
                 let currentKey = evenementsActifs.map(e => e.nom + "_" + e.phase).join("|");
 
@@ -873,8 +874,8 @@
 
             } else {
                 eventContainer.style.display = "none";
-                eventImagesWrapper.innerHTML = ""; 
-                displayedEventKey = "";
+                if (document.getElementById('menu-ventes-flash')) document.getElementById('menu-ventes-flash').style.display = "none";
+                eventImagesWrapper.innerHTML = "";
                 
                 window.holidayPromoActive = false;
                 if (promoServicesText) promoServicesText.style.display = "none";
@@ -1071,6 +1072,11 @@
             <a href="https://g.page/r/CdNdWcfjRCyYECE/review" target="_blank" class="btn-main pulse-animation" style="background: #4285F4; color: white; display: inline-flex; align-items: center; gap: 10px; text-decoration: none;">
                 <span style="font-size: 1.2rem;">⭐</span> LAISSER UN AVIS SUR GOOGLE
             </a>
+            
+            <div style="margin-top: 30px;">
+                <p style="font-size: 0.9rem; color: var(--bleu); font-weight: 700; margin-bottom: 10px; text-transform: uppercase;">Ou scannez ce QR Code :</p>
+                <img src="qr-code.png" alt="QR Code Avis Google" style="width: 150px; height: 150px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 3px solid var(--vert); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </div>
         </div>
     </section>
 

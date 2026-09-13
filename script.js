@@ -297,7 +297,6 @@ function parserEtValiderDate(dateStr, lettre1, lettre2) {
     if (dateObj.getDate() !== jour || dateObj.getMonth() !== mois || dateObj.getFullYear() !== annee) return null;
     return dateObj;
 }
-
 function validerCodeRemise(code, idClientActuel = null) {
     if (!code) return { valide: false, statut: "REJETE", remise: null, message: msgLang.codeVide };
     const segments = code.split('-');
@@ -364,7 +363,6 @@ let currentActiveService = null;
 
 window.switchTab = function(serviceId) {
     currentActiveService = serviceId;
-    // On cache tous les services, sauf celui sur lequel on a cliqué
     activeServices.forEach(id => {
         const block = document.getElementById('block_' + id);
         if (block) {
@@ -378,7 +376,6 @@ window.renderTabs = function() {
     const container = document.getElementById('serviceTabsContainer');
     if (!container) return;
     
-    // Si on a qu'un seul devis (ou estimation), on ne montre pas les onglets
     if (activeServices.length <= 1) {
         container.style.display = 'none';
         return;
@@ -411,11 +408,9 @@ window.activePromoCodeDevis = "";
 window.currentTotalValue = 0;
 window.originalTotalValue = 0; 
 
-// Stockage des frais kilométriques de déplacement
 window.fraisDeplacementKilometrique = 0;
-window.fraisDeplacementBase = 0; // Ajout pour le calcul intelligent
+window.fraisDeplacementBase = 0; 
 
-// Stockage de la décomposition des heures "Pendant l'événement"
 window.evtPendantData = { totalCost: 0, totalHours: 0, dayHours: 0, nightHours: 0, dayCost: 0, nightCost: 0 };
 
 function openClientModal() { document.getElementById('clientModal').style.display = 'flex'; }
@@ -499,7 +494,6 @@ async function calculerEligibilite() {
     msgBox.style.color = 'var(--bleu)';
     msgBox.innerHTML = '⏳ Calcul du trajet en cours...';
 
-    // Coordonnées de départ : Place Wilson, 31000 Toulouse (Siège O.S.P+)
     const latOsp = 43.60446;
     const lonOsp = 1.44594;
 
@@ -554,8 +548,6 @@ async function calculerEligibilite() {
 // ==========================================
 // 📢 BANNER PUBLICITAIRE ROTATIF DYNAMIQUE
 // ==========================================
-
-// Calcul de la promotion max pour le bandeau
 const currentMonthBanner = new Date().getMonth();
 let maxBannerDiscount = 10;
 if (currentMonthBanner === 4 || currentMonthBanner === 5 || currentMonthBanner === 7 || currentMonthBanner === 8) {
@@ -564,7 +556,6 @@ if (currentMonthBanner === 4 || currentMonthBanner === 5 || currentMonthBanner =
     maxBannerDiscount = 25;
 }
 
-// Liste des messages avec action au clic et pourcentage dynamique
 const MES_PUBLICITES = [
     { text: `<span class="badge-promo-top">VENTE FLASH</span> <strong>JUSQU'À -${maxBannerDiscount}% DE REMISE !</strong> <em>(Cliquez ici)</em>`, action: "document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" },
     { text: '🛋️ <strong>NETTOYAGE CANAPÉS & TEXTILES</strong> : ➡️ <em>Cliquez pour faire votre estimation</em>', action: "openQuote('shampouinage')" },
@@ -578,14 +569,13 @@ const MES_PUBLICITES = [
     { text: '🚗 <strong>DÉPLACEMENT OFFERT</strong> : Toulouse et son agglomération !', action: "document.getElementById('services').scrollIntoView({behavior: 'smooth'});" }
 ];
 
-const DELAI_ROTATION = 15000; // 15 secondes
+const DELAI_ROTATION = 15000; 
 let indexPubActuelle = 0;
 
 function lancerPanneauPub() {
     const promoBanner = document.getElementById('promo-banner');
     if (!promoBanner || MES_PUBLICITES.length === 0) return;
 
-    // Fonction pour appliquer le texte ET l'action de clic dynamiquement
     function setPub(index) {
         promoBanner.innerHTML = MES_PUBLICITES[index].text;
         promoBanner.setAttribute('onclick', MES_PUBLICITES[index].action);
@@ -608,6 +598,7 @@ function lancerPanneauPub() {
 }
 
 window.addEventListener('DOMContentLoaded', lancerPanneauPub);
+
 // ==========================================
 // 🛠️ MOTEUR DE FENÊTRES SUR-MESURE OSP+
 // ==========================================
@@ -786,7 +777,6 @@ function checkHolidays() {
     } else { 
         window.holidayPromoActive = false; 
     }
-    // On s'assure que le bandeau est toujours visible avec le bon affichage (flex)
     if (banner) banner.style.display = 'flex';
 }
 window.addEventListener('DOMContentLoaded', checkHolidays);
@@ -1975,7 +1965,7 @@ function calculatePrice() {
         const currentMonth = getSimulatedDate().getMonth();
         if (currentMonth === 5) { vedetteServiceId = 'vehicule'; vedetteDiscount = 0.30; } 
         else if (currentMonth === 4) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.30; } 
-        else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; } // <-- AOÛT & SEPTEMBRE (Opération Rentrée)
+        else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; } 
         else if (currentMonth === 2 || currentMonth === 3) { vedetteServiceId = 'vitrerie'; vedetteDiscount = 0.25; } 
         else if (currentMonth === 9 || currentMonth === 10) { vedetteServiceId = 'sepulture'; vedetteDiscount = 0.25; } 
         else if (currentMonth === 11 || currentMonth === 0) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.25; } 
@@ -2516,7 +2506,6 @@ function addServiceToQuote(service) {
     calculatePrice();
     toggleCompanyField(); 
     
-    // ---> LIGNE CRUCIALE AJOUTÉE ICI POUR AFFICHER LES ONGLETS <---
     switchTab(service);
     
     const newBlock = document.getElementById('block_' + service);
@@ -2551,7 +2540,6 @@ function updateCrossSellButtons() {
         { id: 'chantier', name_fr: '🚧 Fin Chantier', name_en: '🚧 Post-build', name_vi: '🚧 Sau xây dựng' } 
     ];
     
-    // On affiche tous les services SAUF celui qui est actuellement ouvert
     let otherServices = availableServices.filter(s => !activeServices.includes(s.id));
 
     if (otherServices.length === 0) { csContainer.style.display = 'none'; return; }
@@ -2565,7 +2553,6 @@ function updateCrossSellButtons() {
     
     otherServices.forEach(s => { 
         let localizedName = langKey === 'vi' ? s.name_vi : (langKey === 'en' ? s.name_en : s.name_fr);
-        // On appelle addServiceToQuote pour AJOUTER au lieu de remplacer
         html += `<button type="button" class="btn-cross-sell" onclick="addServiceToQuote('${s.id}')">${localizedName}</button>`; 
     });
     
@@ -3188,7 +3175,6 @@ async function submitInteractiveForm() {
             if (finalClientDiscount > 0) recap += `🎁 Remise Client VIP Fidélité (${finalClientDiscount * 100}\%) active via Code :${window.activeClientCode}\n`;
             if (finalPromoDevis > 0) recap += `🎁 Code Promo de validation (${finalPromoDevis * 100}%) appliqué avec le code : ${window.activePromoCodeDevis}\n`;
             
-            // Synchronisation du nom de l'Opération pour l'e-mail
             if (window.holidayPromoActive) {
                 const currentMonth = getSimulatedDate().getMonth();
                 let vedetteServiceId = null;
@@ -3212,7 +3198,6 @@ async function submitInteractiveForm() {
 
             if (conflict10) recap += `⚠️ Un cumul de deux offres à 10% a été détecté et bloqué conformément à la politique tarifaire.\n`;
             
-            // Calcul exact du pourcentage moyen de remise
             let totalDiscountMontant = window.originalTotalValue - window.currentTotalValue;
             if (totalDiscountMontant > 0 && window.originalTotalValue > 0) {
                 let pctTotalRounded = Math.round((totalDiscountMontant / window.originalTotalValue) * 100) || 0;
@@ -3288,7 +3273,6 @@ async function submitInteractiveForm() {
                 <div id="previewContent" style="background: #fdfdfd; padding: 15px; border-radius: 8px; font-size: 0.85rem; color: #333; line-height: 1.6; max-height: 35vh; overflow-y: auto; white-space: pre-wrap; margin-bottom: 15px; border: 1px solid #ccc; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);"></div>
                 
                 <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <button type="button" class="btn-validate" onclick="editQuote()"Je ne suis qu'un modèle de langage. Je ne peux pas vous aider à ce sujet.
                     <button type="button" class="btn-validate" onclick="editQuote()" style="background: #e1e8ef; color: var(--bleu); border: none; padding: 12px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; flex: 1; max-width: 250px;">${textBtnEdit}</button>
                     <button type="button" class="btn-submit-form btn-confirm-send" onclick="confirmAndSendQuote()" style="margin: 0; padding: 12px 20px; flex: 1; max-width: 250px;">${textBtnConfirm}</button>
                 </div>
@@ -3309,7 +3293,7 @@ async function submitInteractiveForm() {
                        langKey === 'en' ? "An error occurred. Please try again or call 07 45 02 76 24." :
                        "Une erreur inattendue empêche l'envoi. Rechargez la page ou contactez-moi au 07 45 02 76 24.";
         await askCustomQuestion("Erreur technique", errorMsg, [{text: "Fermer", value: "ok", style: "background: var(--bleu); color: white;"}]);
-        document.getElementById('btnSubmitForm').innerText = "ENVOYER MON DEVIS"; document.getElementById('btnSubmitForm').disabled = false;
+        document.getElementById('btnSubmitForm').innerText = "ENVOYER MON ESTIMATION"; document.getElementById('btnSubmitForm').disabled = false;
     }
 }
 
@@ -3354,9 +3338,9 @@ function confirmAndSendQuote() {
         surchargeMessage.innerHTML = `
             <div style="background: #fdf8e4; border-left: 5px solid var(--vert); padding: 25px; border-radius: 8px; text-align: center; margin-top: 20px; animation: fadeInDown 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
                 <h3 style="color: var(--bleu); margin-bottom: 15px; font-size: 1.4rem;">🔥 Victime de notre succès !</h3>
-                <p style="color: #444; font-size: 1rem; margin-bottom: 15px; line-height: 1.5;">En raison d'un <strong>très grand nombre de demandes de devis</strong> aujourd'hui, notre système automatique est temporairement saturé.</p>
+                <p style="color: #444; font-size: 1rem; margin-bottom: 15px; line-height: 1.5;">En raison d'un <strong>très grand nombre de demandes d'estimation</strong> aujourd'hui, notre système automatique est temporairement saturé.</p>
                 <p style="color: #444; font-size: 1rem; margin-bottom: 20px;">Pas d'inquiétude, votre estimation (<strong>${pendingEmailParams.prix}</strong>) a bien été calculée ! Pour ne pas perdre votre demande et la traiter en priorité, contactez-moi directement :</p>
-                <a href="mailto:alexandre.jonot@ospplus.com?subject=Validation devis prioritaire OSP+ - ${pendingEmailParams.prix}" style="display: inline-block; background: var(--vert); color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; transition: transform 0.2s;">✉️ alexandre.jonot@ospplus.com</a>
+                <a href="mailto:alexandre.jonot@ospplus.com?subject=Validation estimation prioritaire OSP+ - ${pendingEmailParams.prix}" style="display: inline-block; background: var(--vert); color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; transition: transform 0.2s;">✉️ alexandre.jonot@ospplus.com</a>
                 <p style="color: var(--bleu); font-weight: 800; font-size: 1.1rem; margin-top: 5px;">📞 Ou par téléphone au 07 45 02 76 24</p>
             </div>`;
         form.parentNode.insertBefore(surchargeMessage, form);

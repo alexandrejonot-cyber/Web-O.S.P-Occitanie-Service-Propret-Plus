@@ -117,7 +117,8 @@ nav ul { display: flex; list-style: none; align-items: center; gap: 8px; }
     font-weight: 700; 
     font-size: 1.05rem !important;
     position: relative; 
-    padding: 5px 0;
+    padding: 6px 10px;
+    border-radius: 5px;
     transition: var(--transition-standard);
 }
 
@@ -133,7 +134,10 @@ nav ul { display: flex; list-style: none; align-items: center; gap: 8px; }
     transform: translateX(-50%);
 }
 
-.nav-link:hover { color: var(--vert); }
+.nav-link:hover { 
+    color: var(--vert); 
+    background: #f4f8fb; 
+}
 .nav-link:hover::after { width: 100%; }
 
 .btn-phone-nav {
@@ -628,7 +632,7 @@ nav ul { display: flex; list-style: none; align-items: center; gap: 8px; }
 .modal-body-simple { padding: 30px; text-align: left; line-height: 1.8; font-size: 0.9rem; color: #444; }
 .modal-header { background: var(--bleu); color: white; padding: 15px 30px!important; text-align: center; border-bottom: 5px solid var(--vert); position: relative; display: flex; flex-direction: column; align-items: center; }
 
-/* BOUTON FERMER MODAL - Règle ajustée */
+/* BOUTON FERMER MODAL */
 .close-modal { position: absolute; right: 20px; top: 10px; font-size: 35px; cursor: pointer; color: white; z-index: 100; }
 .modal-content.small .close-modal { color: var(--bleu); }
 
@@ -1287,4 +1291,25 @@ body.theme-estival .promo-banner { background: linear-gradient(90deg, #f39c12, #
 @keyframes scrollMarquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-100%); }
+}
+
+/* --- ESPACEMENT ET SÉPARATION DU MENU (ORDINATEUR) --- */
+@media (min-width: 1001px) {
+    nav ul { 
+        gap: 25px !important; 
+    }
+    nav ul li:not(.mobile-only-menu-item):not(:last-child) {
+        position: relative;
+    }
+    nav ul li:not(.mobile-only-menu-item):not(:last-child)::after {
+        content: "|";
+        color: var(--vert); 
+        position: absolute;
+        right: -15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.1rem;
+        opacity: 0.7;
+        pointer-events: none;
+    }
 }
