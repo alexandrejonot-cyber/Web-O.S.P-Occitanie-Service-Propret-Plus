@@ -5,62 +5,244 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>O.S.P+ | Công ty Vệ sinh Toulouse & Occitanie | 20 năm Kinh nghiệm</title>
-    <meta name="description" content="O.S.P+: Chuyên gia vệ sinh chuyên nghiệp tại Toulouse. Lau kính, giặt thảm, ghế sofa và văn phòng. Dịch vụ vệ sinh chất lượng cao tại Occitanie. Báo giá miễn phí.">
+    <meta name="description" content="O.S.P+: Chuyên gia vệ sinh chuyên nghiệp tại Toulouse. Lau kính, giặt thảm, ghế sofa, văn phòng và dọn dẹp hội trường. Báo giá miễn phí.">
     <meta name="keywords" content="vệ sinh toulouse, thợ lau kính toulouse, giặt ghế sofa toulouse, vệ sinh văn phòng occitanie, sạch sẽ toulouse">
     
-    <!-- Optimisation de la connexion aux polices Google -->
+    <!-- Tối ưu hóa kết nối tới Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
     
     <style>
         .comparison-container { position: relative; }
-        .btn-fullscreen-comp { position: absolute; top: 10px; right: 10px; z-index: 20; background: rgba(0, 0, 0, 0.7); color: #fff; border: 2px solid #fff; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.3s ease; }
-        .btn-fullscreen-comp:hover { background: var(--vert, #27ae60); border-color: var(--vert, #27ae60); }
-        .comparison-container:fullscreen { width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #111; padding: 20px; box-sizing: border-box; }
-        .comparison-container:fullscreen .comparison-slider { width: 100%; height: 85vh; max-width: 1200px; margin: 0 auto; }
-        .comparison-container:fullscreen .gallery-label { color: #fff; margin-top: 15px; font-size: 1.2rem; }
-        @media (max-width: 768px) { .btn-fullscreen-comp { display: none !important; } }
+        .btn-fullscreen-comp {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-fullscreen-comp:hover {
+            background: var(--vert, #27ae60);
+            border-color: var(--vert, #27ae60);
+        }
+        .comparison-container:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .comparison-container:fullscreen .comparison-slider {
+            width: 100%;
+            height: 85vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .comparison-container:fullscreen .gallery-label {
+            color: #fff;
+            margin-top: 15px;
+            font-size: 1.2rem;
+        }
+        @media (max-width: 768px) {
+            .btn-fullscreen-comp { display: none !important; }
+        }
+
+        .hero-content { position: relative; }
+        
+        .promo-banner-wrapper {
+            background: linear-gradient(90deg, var(--bleu, #1a3c6c), #265494, var(--bleu, #1a3c6c));
+            position: relative;
+            z-index: auto !important;
+        }
+        .promo-banner {
+            background: transparent !important;
+            border-bottom: none !important;
+            flex-grow: 1;
+            min-height: auto;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .promo-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 9999 !important;
+        }
+        .btn-client-nav-top, .btn-carte-nav-top {
+            background: transparent;
+            color: var(--blanc, #ffffff);
+            border: 1px solid var(--blanc, #ffffff);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        .btn-client-nav-top:hover, .btn-carte-nav-top:hover {
+            background: var(--blanc, #ffffff);
+            color: var(--bleu, #1a3c6c);
+        }
+        .top-lang .selected-lang {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--blanc, #ffffff);
+            border: 1px solid var(--blanc, #ffffff);
+        }
+        .top-lang .selected-lang:hover {
+            background: var(--blanc, #ffffff);
+            color: var(--bleu, #1a3c6c);
+        }
+        .main-header {
+            border-top: 4px solid var(--vert, #8cc63f);
+            padding: 0 15px !important;
+            position: relative;
+            z-index: auto !important;
+        }
+        .logo-container {
+            margin-left: 0;
+            position: relative;
+            z-index: 9998 !important;
+        }
+        .promo-nav-link { color: #e67e22 !important; font-weight: 900 !important; }
+        .promo-nav-link:hover { color: var(--vert, #8cc63f) !important; }
+        
+        .mobile-only-menu-item { display: none !important; }
+
+        @media (min-width: 1381px) {
+            .promo-banner-wrapper { display: flex; align-items: center; min-height: 50px; }
+            .promo-actions { position: absolute; right: 15px; }
+            .promo-banner { padding-left: 240px; padding-right: 320px; }
+
+            .logo-container { width: 380px !important; height: 60px !important; margin-left: 0 !important; }
+            .site-logo { position: absolute !important; top: -50px !important; left: 15px !important; height: 100px !important; width: auto !important; }
+            .site-logo-capture { position: absolute !important; top: -48px !important; left: 115px !important; height: 38px !important; width: auto !important; }
+            .site-logo-texte { position: absolute !important; top: 15px !important; left: 115px !important; height: 30px !important; width: auto !important; }
+            .nav-link { font-size: 1.15rem !important; margin: 0 2px; }
+            nav ul { gap: 5px; }
+        }
+        
+        @media (max-width: 1380px) {
+            .promo-banner-wrapper { flex-direction: row; padding: 5px 15px; min-height: 40px; gap: 10px; justify-content: space-between; }
+            .promo-banner { width: auto; flex: 1; text-align: left; padding: 0; }
+            .promo-actions { position: relative; right: auto; justify-content: flex-end; flex-wrap: nowrap; width: auto; }
+            .btn-client-nav-top, .btn-carte-nav-top, .top-lang { display: none !important; }
+            
+            .mobile-only-menu-item { display: flex !important; justify-content: center; width: 100%; margin-top: 5px; }
+            .main-header { padding: 10px 15px !important; }
+            
+            .logo-container {
+                display: grid !important;
+                grid-template-columns: auto auto !important;
+                grid-template-rows: auto auto !important;
+                align-items: center !important;
+                justify-content: start !important;
+                gap: 0px 10px !important; 
+                position: relative !important;
+                width: auto !important;
+                height: auto !important;
+                margin-left: 0 !important;
+            }
+            .site-logo, .site-logo-capture, .site-logo-texte { position: relative !important; top: auto !important; left: auto !important; margin: 0 !important; }
+            .site-logo { grid-row: 1 / 3 !important; grid-column: 1 !important; height: 48px !important; }
+            .site-logo-capture { grid-row: 1 !important; grid-column: 2 !important; height: 22px !important; align-self: end !important; justify-self: start !important; }
+            .site-logo-texte { grid-row: 2 !important; grid-column: 2 !important; height: 16px !important; align-self: start !important; justify-self: start !important; }
+
+            .nav-link { font-size: 1.35rem !important; }
+            .header-action-container { position: static; transform: none; margin-top: 15px; width: 100%; justify-content: center; } 
+            .btn-header-validate { width: 100%; }
+            .hamburger { display: flex; }
+            
+            nav ul { position: absolute; top: 100%; left: 0; width: 100%; background: var(--blanc); flex-direction: column; align-items: center; padding: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.1); max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; gap: 0; z-index: 2000;}
+            nav ul.active { max-height: 800px; padding: 20px 0; overflow-y: auto; }
+            nav ul li { width: 100%; display: flex; justify-content: center; margin: 8px 0; }
+            .nav-link { font-size: 1.3rem !important; }
+            .btn-devis-nav, .btn-phone-nav, .btn-client-nav, .btn-carte-nav { display: flex; justify-content: center; width: 90% !important; max-width: 300px; margin: 0; font-size: 1.2rem !important; padding: 10px !important; }
+            .lang-menu { width: 100%; display: flex; flex-direction: column; align-items: center; margin-left: 0; }
+            .lang-dropdown { position: relative; box-shadow: none; border: 1px solid #eee; margin: 10px auto; width: 90%; max-width: 300px; }
+        }
     </style>
 </head>
 <body>
 
     <a href="#services" class="skip-link">Chuyển trực tiếp đến dịch vụ và báo giá</a>
 
-    <div class="sr-only">Chào mừng đến với trang web O.S.P Plus. Trang web này đã được tối ưu hóa để hoàn toàn có thể truy cập bằng bàn phím và trình đọc màn hình.</div>
+    <h1 class="sr-only">Tiêu chuẩn Vệ sinh tại Toulouse & Occitanie</h1>
+
+    <div class="sr-only">Chào mừng đến với trang web O.S.P Plus. Trang web này đã được tối ưu hóa để có thể truy cập bằng bàn phím và trình đọc màn hình.</div>
 
     <div class="header-sticky-wrapper">
-        <div id="promo-banner" class="promo-banner" style="display: none;">
-            🎉 <strong>ƯU ĐÃI ĐẶC BIỆT NGÀY LỄ: Giảm 10% trên hóa đơn cuối cùng của bạn!</strong> <em>(Áp dụng nếu hợp đồng chính thức được ký trong vòng 15 ngày)</em>
+        
+        <div class="promo-banner-wrapper">
+            <div id="promo-banner" class="promo-banner" style="cursor: pointer;" onclick="document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" role="button" tabindex="0" aria-label="Xem khuyến mãi đang diễn ra">
+            </div>
+
+            <div class="promo-actions">
+                <button class="btn-client-nav-top" onclick="openClientModal()">Khách hàng Thân thiết</button>
+                <button class="btn-carte-nav-top" onclick="openCarteModal()">Danh thiếp</button>
+                <button class="btn-carte-nav-top" style="background: var(--vert); border-color: var(--vert);" onclick="openB2bModal()">🤝 Đối tác B2B</button>
+                
+                <div class="lang-menu top-lang">
+                    <div class="selected-lang" role="button" tabindex="0" aria-label="Menu chọn ngôn ngữ">🇻🇳 VI ▼</div>
+                    <ul class="lang-dropdown">
+                        <li><a href="index.html">🇫🇷 Français</a></li>
+                        <li><a href="index-en.html">🇬🇧 English</a></li>
+                        <li><a href="index-vi.html">🇻🇳 Tiếng Việt</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <header>
+        <header class="main-header">
             <div class="logo-container">
-                <img src="logo.png" alt="Logo O.S.P+ Dịch vụ Vệ sinh Occitanie Plus" class="site-logo" style="cursor: pointer;" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to logo">
+                <img src="logo.png" alt="Logo O.S.P+" class="site-logo" style="cursor: pointer;" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to logo">
+                <img src="Capture-Photoroom.png" alt="Badge OSP" class="site-logo-capture">
+                <img src="texte-osp.png" alt="O.S.P+ Dịch vụ Vệ sinh Occitanie" class="site-logo-texte">
             </div>
 
             <div class="hamburger" id="mobile-menu-btn" role="button" tabindex="0" aria-label="Mở menu chính">
-                <span></span><span></span><span></span>
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
 
             <nav>
                 <ul id="nav-links">
                     <li><a href="#" class="nav-link">Trang chủ</a></li>
-                    <li><a href="#services" class="nav-link">Dịch vụ</a></li>
+                    <li id="menu-ventes-flash" style="display: none;"><a href="#section-promo" class="nav-link text-green">Bán hàng Flash</a></li>
+                    <li><a href="#services" class="nav-link">Dịch vụ & Báo giá</a></li>
                     <li><a href="#galerie" class="nav-link">Dự án</a></li>
-                    <li><a href="#avis" class="nav-link">Đánh giá</a></li>
+                    <li><a href="#avis-google" class="nav-link">Đánh giá</a></li>
                     <li><a href="#qui-suis-je" class="nav-link">Chuyên môn</a></li>
+                    <li><a href="#signification-osp" class="nav-link text-green">O.S.P+ có nghĩa là gì?</a></li>
                     <li><a href="#faq" class="nav-link">FAQ</a></li>
                     <li><a href="#contact" class="nav-link">Liên hệ</a></li>
-                    <li><a href="tel:0745027624" class="btn-phone-nav">📞 +33 7 45 02 76 24</a></li>
-                    <li><a href="#services" class="btn-devis-nav">Báo giá Miễn phí</a></li>
-                    <li><button class="btn-client-nav" onclick="openClientModal()">Khách hàng Thân thiết</button></li>
-                    <li><button class="btn-carte-nav" onclick="openCarteModal()">📇 Danh thiếp</button></li>
                     
-                    <li class="lang-menu">
-                        <div class="selected-lang" role="button" tabindex="0" aria-label="Menu chọn ngôn ngữ">🇻🇳 VI ▼</div>
+                    <li class="mobile-only-menu-item"><button class="btn-client-nav" onclick="openClientModal()" style="width: 90%; max-width: 300px;">Khách hàng Thân thiết</button></li>
+                    <li class="mobile-only-menu-item"><button class="btn-carte-nav" onclick="openCarteModal()" style="width: 90%; max-width: 300px;">Danh thiếp</button></li>
+                    <li class="mobile-only-menu-item"><button class="btn-carte-nav" onclick="openB2bModal()" style="width: 90%; max-width: 300px; background: var(--vert); color: white; border-color: var(--vert);">🤝 Đối tác B2B</button></li>
+                    
+                    <li class="mobile-only-menu-item lang-menu" style="margin-top: 15px;">
+                        <div class="selected-lang" role="button" tabindex="0" aria-label="Menu chọn ngôn ngữ" style="width: 90%; max-width: 300px; justify-content: center;">🇻🇳 VI ▼</div>
                         <ul class="lang-dropdown">
                             <li><a href="index.html">🇫🇷 Français</a></li>
                             <li><a href="index-en.html">🇬🇧 English</a></li>
@@ -70,108 +252,961 @@
                 </ul>
             </nav>
         </header>
+        
     </div>
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Ưu tiên của chúng tôi, <span class="text-green">Sự sạch sẽ.</span></h1>
-            <div class="hero-video-container">
+            
+            <div id="promo-mini-left" class="promo-ascension-box" style="display: none; cursor: pointer;" onclick="document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" role="button" tabindex="0" aria-label="Xem khuyến mãi đang diễn ra"></div>
+            <div id="promo-mini-right" class="promo-ascension-box" style="display: none; cursor: pointer;" onclick="document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" role="button" tabindex="0" aria-label="Xem khuyến mãi đang diễn ra"></div>
+
+            <div class="hero-video-container" style="max-width: 350px;">
                 <div class="video-wrapper">
-                    <video id="introVid" muted autoplay loop playsinline preload="metadata"><source src="video-introduction.mp4" type="video/mp4"></video>
+                    <video id="introVid" playsinline preload="metadata" style="max-height: 30vh; cursor: pointer;" onclick="togglePlay('introVid')">
+                        <source src="video-introduction.mp4" type="video/mp4">
+                    </video>
                 </div>
-                <div class="custom-controls">
-                    <button class="control-btn" onclick="togglePlay('introVid')">⏯️ Phát/Tạm dừng</button>
-                    <button class="control-btn" onclick="toggleMute('introVid')">🔊 Âm thanh</button>
-                    <button class="control-btn" onclick="restartVideo('introVid')">🔄 Đặt lại</button>
-                    <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Toàn màn hình</button>
+                
+                <div class="video-controls-drawer">
+                    <div class="custom-controls" id="hiddenVideoControls">
+                        <button class="control-btn" id="btnPlayPause" onclick="togglePlay('introVid')">⏸️ Tạm dừng</button>
+                        <button class="control-btn" id="btnMute" onclick="toggleMute('introVid')">🔇 Âm thanh</button>
+                        <button class="control-btn" onclick="restartVideo('introVid')">🔄 Đặt lại</button>
+                        <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Toàn màn hình</button>
+                    </div>
+                    <div class="video-tab" onclick="toggleVideoControls()">▼ Điều khiển video</div>
                 </div>
             </div>
+
+            <script>
+                function toggleVideoControls() {
+                    const controls = document.getElementById('hiddenVideoControls');
+                    const tab = document.querySelector('.video-tab');
+                    controls.classList.toggle('show-controls');
+                    
+                    if (controls.classList.contains('show-controls')) {
+                        tab.innerHTML = '▲ Đóng';
+                        tab.style.background = 'var(--vert)';
+                        tab.style.color = 'white';
+                    } else {
+                        tab.innerHTML = '▼ Điều khiển video';
+                        tab.style.background = 'var(--blanc)';
+                        tab.style.color = 'var(--bleu)';
+                    }
+                }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    const vid = document.getElementById('introVid');
+                    const btnMute = document.getElementById('btnMute');
+                    const btnPlay = document.getElementById('btnPlayPause');
+                    let hasStarted = false;
+                    
+                    if (vid) {
+                        function updateVideoUI() {
+                            if (vid.muted) {
+                                btnMute.innerHTML = '🔇 Tắt tiếng';
+                                btnMute.style.background = '#e74c3c';
+                                btnMute.style.color = 'white';
+                            } else {
+                                btnMute.innerHTML = '🔊 Âm thanh';
+                                btnMute.style.background = 'var(--vert)';
+                                btnMute.style.color = 'white';
+                            }
+
+                            if (btnPlay) {
+                                if (vid.paused) {
+                                    btnPlay.innerHTML = '▶️ Phát';
+                                    btnPlay.style.background = '#e74c3c';
+                                    btnPlay.style.color = 'white';
+                                } else {
+                                    btnPlay.innerHTML = '⏸️ Tạm dừng';
+                                    btnPlay.style.background = 'rgba(255,255,255,0.9)';
+                                    btnPlay.style.color = 'var(--bleu)';
+                                }
+                            }
+                        }
+
+                        vid.muted = true;
+                        vid.loop = false;
+                        updateVideoUI();
+
+                        function initVideoSequence() {
+                            if (hasStarted) return;
+                            
+                            vid.currentTime = 0;
+                            vid.pause();
+
+                            setTimeout(function() {
+                                hasStarted = true;
+                                vid.currentTime = 3.00;
+                                
+                                let playPromise = vid.play();
+                                if (playPromise !== undefined) {
+                                    playPromise.catch(function() {
+                                        vid.muted = true;
+                                        vid.play();
+                                    });
+                                }
+                            }, 3000);
+                        }
+
+                        if (vid.readyState >= 1) {
+                            initVideoSequence();
+                        } else {
+                            vid.addEventListener('loadedmetadata', initVideoSequence);
+                        }
+                        
+                        vid.addEventListener('timeupdate', function() {
+                            if (hasStarted && vid.duration > 0) {
+                                if (vid.currentTime >= (vid.duration - 0.25)) {
+                                    vid.currentTime = 3.65; 
+                                }
+                            }
+                        });
+
+                        vid.addEventListener('volumechange', updateVideoUI);
+                        vid.addEventListener('play', updateVideoUI);
+                        vid.addEventListener('pause', updateVideoUI);
+                        
+                        vid.load();
+                    }
+                });
+            </script>
+
             <div class="hero-badges">
-                <span class="badge">20 năm Kinh nghiệm</span>
+                <span class="badge">⭐ 20 năm Kinh nghiệm</span>
                 <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Bảo hiểm Trách nhiệm Nghề nghiệp</span>
-                <span class="badge">Thiết bị Chuyên nghiệp</span>
+                <span class="badge">🛠️ Thiết bị Chuyên nghiệp</span>
             </div>
-            <a href="#services" class="btn-main pulse-animation">YÊU CẦU BÁO GIÁ MIỄN PHÍ CỦA TÔI</a>
+
+            <div class="hero-cta-container" style="align-items: flex-start;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <a href="#services" class="btn-main pulse-animation btn-devis-inline">BÁO GIÁ TRỰC TUYẾN CỦA TÔI</a>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; padding-top: 16px;">
+                    <span class="cta-separator">HOẶC</span>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                    <button type="button" class="btn-main pulse-animation btn-rappel-inline" onclick="openCallbackModal()" style="margin-top: 0 !important;">LIÊN HỆ NHANH</button>
+                    <span style="font-size: 0.6rem; font-weight: 800; color: var(--bleu); text-transform: uppercase; text-align: center; line-height: 1.2;">Điện thoại • Email • WhatsApp • SMS</span>
+                </div>
+            </div>
+
         </div>
+
+        <div class="organigramme-container">
+            <div class="tree-badge">Chuyên gia vệ sinh <span>Tất cả trong 1</span></div>
+            <div class="tree-trunk"></div>
+            <div class="tree-connection">
+                <div class="tree-line"></div>
+                <div class="tree-line"></div>
+                <div class="tree-line"></div>
+                <div class="tree-line"></div>
+            </div>
+        </div>
+        
+        <div class="hero-services-row">
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-o')" aria-label="Tìm hiểu thêm về di chuyển và báo giá">?</button>
+                <div id="bubble-o" class="card-info-bubble">
+                    <div class="bubble-title">Khảo sát & Báo giá Miễn phí</div>
+                    <ul>
+                        <li>📍 <strong>Khu vực:</strong> Toulouse và vùng lân cận.</li>
+                        <li>🚗 <strong>Di chuyển:</strong> Miễn phí 100% (Ngoài vùng: 0,50 €/km hoặc <strong>MIỄN PHÍ</strong> từ 150 €).</li>
+                        <li>🕒 <strong>Thời gian:</strong> Thứ 2 đến Thứ 7 theo cuộc hẹn.</li>
+                        <li>🤝 <strong>Cam kết:</strong> Khảo sát và báo giá miễn phí không ràng buộc.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-bleu">O</span><span class="rest-word text-green">ccitanie</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-occitanie.jpg" alt="Khảo sát kỹ thuật & báo giá miễn phí" class="service-image">
+                </div>
+                <span class="service-name">Khảo sát kỹ thuật & báo giá miễn phí</span>
+            </div>
+            
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-s')" aria-label="Tìm hiểu thêm về lau kính và giặt đồ vải">?</button>
+                <div id="bubble-s" class="card-info-bubble">
+                    <div class="bubble-title">Lau kính & Giặt đồ vải</div>
+                    <ul>
+                        <li>🪟 <strong>Kính:</strong> Cửa sổ, cửa kính, nhà kính, tủ kính.</li>
+                        <li>🛋️ <strong>Đồ vải:</strong> Phun hút giặt ghế sofa, thảm trải sàn.</li>
+                        <li>⏱️ <strong>Sấy khô:</strong> Nhanh chóng trong 4h - 6h nhờ thiết bị chuyên dụng.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-bleu">S</span><span class="rest-word text-green">ervice</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-textiles.jpg" alt="Lau kính & Giặt thảm ghế" class="service-image">
+                </div>
+                <span class="service-name">Lau kính & Giặt thảm ghế</span>
+            </div>
+            
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-p')" aria-label="Tìm hiểu thêm về vệ sinh doanh nghiệp và cá nhân">?</button>
+                <div id="bubble-p" class="card-info-bubble">
+                    <div class="bubble-title">Doanh nghiệp & Cá nhân</div>
+                    <ul>
+                        <li>🏢 <strong>Cơ sở:</strong> Văn phòng, cửa hàng, phòng khám và nhà ở.</li>
+                        <li>⏰ <strong>Giờ làm việc:</strong> Từ 5h sáng hoặc buổi tối để không gây ảnh hưởng.</li>
+                        <li>🔒 <strong>An ninh:</strong> Nhân viên cố định, đảm bảo sự riêng tư tuyệt đối.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-bleu">P</span><span class="rest-word text-green">ropreté</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-bureaux.jpg" alt="Vệ sinh cho Doanh nghiệp & Cá nhân" class="service-image">
+                </div>
+                <span class="service-name">Vệ sinh cho Doanh nghiệp & Cá nhân</span>
+            </div>
+            
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-plus')" aria-label="Tìm hiểu thêm về vệ sinh xe hơi và chăm sóc phần mộ">?</button>
+                <div id="bubble-plus" class="card-info-bubble">
+                    <div class="bubble-title">Xe hơi & Phần mộ</div>
+                    <ul>
+                        <li>🚗 <strong>Xe hơi:</strong> Vệ sinh toàn diện nội thất tận nơi hoặc tại nhà.</li>
+                        <li>🪦 <strong>Phần mộ:</strong> Vệ sinh trang trọng, tẩy rêu mốc và dâng hoa.</li>
+                        <li>✨ <strong>Theo yêu cầu:</strong> Các dịch vụ tùy chỉnh riêng biệt.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-green">P</span><span class="rest-word text-bleu">lus</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-vehicules.jpg" alt="Vệ sinh xe hơi & Chăm sóc phần mộ" class="service-image">
+                </div>
+                <span class="service-name">Vệ sinh xe hơi & Chăm sóc phần mộ</span>
+            </div>
+        </div>
+
     </section>
 
-    <div class="trust-bar"><p>📍 Khu vực: <strong>Toulouse (bao gồm 15 km)</strong> và toàn bộ <strong>Occitanie*</strong></p></div>
+    <!-- BANDEAU BLEU PRINCIPAL AVEC BOUTON INTÉGRÉ -->
+    <div class="trust-bar" style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 15px 5%;">
+        <p style="margin: 0; font-size: 0.95rem;">📍 <strong>Miễn phí di chuyển tại Toulouse & vùng lân cận</strong> | Ngoài vùng : 0,50 €/km (hoặc <strong>MIỄN PHÍ</strong> từ 150 €) *</p>
+        <button type="button" onclick="testerEligibiliteRapide()" style="background: var(--vert); color: white; border: 2px solid white; padding: 8px 20px; border-radius: 30px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-transform: uppercase; white-space: nowrap;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">🚗 Kiểm tra phạm vi</button>
+    </div>
+
+    <div id="event-image-container" class="scroll-animate" style="display: none; margin-top: 40px; margin-bottom: 20px;">
+        <div id="section-promo" style="scroll-margin-top: 120px;"></div>
+        <h2 class="section-title">Chương trình <span class="text-green">Bán hàng Flash</span> đang diễn ra</h2>
+        <div class="promo-image-container">
+            <div id="event-images-wrapper" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;"></div>
+            
+            <div style="background: #ffffff; border: 2px solid var(--vert); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 1000px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                <h3 style="color: var(--bleu); font-size: 1.1rem; text-align: center; margin-bottom: 15px; text-transform: uppercase; font-weight: 800;">
+                    ⚡ Làm thế nào để nhận ưu đãi Bán hàng Flash?
+                </h3>
+                
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;">
+                    
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">1</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Giữ mức giảm -10%</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Liên hệ với chúng tôi (Báo giá, Điện thoại, Email...) trong thời gian đếm ngược Flash.</span>
+                    </div>
+
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">2</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Thanh toán tiền đặt cọc</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Thanh toán để xác nhận giữ chỗ (Thẻ, Tiền mặt, Chuyển khoản SEPA).</span>
+                    </div>
+
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">3</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Lên lịch bất cứ khi nào bạn muốn</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Chọn ngày thực hiện dịch vụ theo mong muốn của bạn.</span>
+                    </div>
+
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">4</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Đảm bảo giá tốt nhất</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Dịch vụ được thực hiện với mức ưu đãi đã khóa cố định!</span>
+                    </div>
+
+                </div>
+            </div>
+            <div id="event-image-text" style="font-size: 1.1rem; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+        </div>
+    </div>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const eventContainer = document.getElementById('event-image-container');
+        const eventImagesWrapper = document.getElementById('event-images-wrapper');
+        const eventImageText = document.getElementById('event-image-text');
+        const promoBanner = null; 
+        const promoServicesText = document.getElementById('promo-services-text'); 
+
+        if (!eventContainer || !eventImagesWrapper) return;
+
+        function genererCalendrier(annee) {
+            function getEaster(y) {
+                let a = y % 19, b = Math.floor(y / 100), c = y % 100;
+                let d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+                let g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+                let i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
+                let m = Math.floor((a + 11 * h + 22 * l) / 451);
+                let mois = Math.floor((h + l - 7 * m + 114) / 31);
+                let jour = ((h + l - 7 * m + 114) % 31) + 1;
+                return new Date(y, mois - 1, jour);
+            }
+
+            function getNthDay(y, month, dayOfWeek, n) {
+                let d = new Date(y, month, 1);
+                let count = 0;
+                while (d.getMonth() === month) {
+                    if (d.getDay() === dayOfWeek) {
+                        count++;
+                        if (count === n) return new Date(d);
+                    }
+                    d.setDate(d.getDate() + 1);
+                }
+                return null;
+            }
+
+            function getLastSunday(y, month) {
+                let d = new Date(y, month + 1, 0); 
+                while (d.getDay() !== 0) d.setDate(d.getDate() - 1);
+                return new Date(d);
+            }
+
+            let paquesDim = getEaster(annee);
+            let pentecote = new Date(paquesDim); pentecote.setDate(pentecote.getDate() + 49);
+            
+            let paquesDeb = new Date(paquesDim); paquesDeb.setDate(paquesDeb.getDate() - 2); paquesDeb.setHours(19, 0, 0, 0);
+            let paquesFin = new Date(paquesDim); paquesFin.setDate(paquesFin.getDate() + 1); paquesFin.setHours(10, 30, 0, 0);
+
+            let dimMeres = getLastSunday(annee, 4); 
+            if (dimMeres.getTime() === pentecote.getTime()) dimMeres = getNthDay(annee, 5, 0, 1); 
+            let feteMeresDeb = new Date(dimMeres); feteMeresDeb.setDate(feteMeresDeb.getDate() - 2); feteMeresDeb.setHours(19, 0, 0, 0);
+            let feteMeresFin = new Date(dimMeres); feteMeresFin.setDate(feteMeresFin.getDate() + 1); feteMeresFin.setHours(10, 30, 0, 0);
+
+            let dimPeres = getNthDay(annee, 5, 0, 3);
+            let fetePeresDeb = new Date(dimPeres); fetePeresDeb.setDate(fetePeresDeb.getDate() - 2); fetePeresDeb.setHours(19, 0, 0, 0);
+            let fetePeresFin = new Date(dimPeres); fetePeresFin.setDate(fetePeresFin.getDate() + 1); fetePeresFin.setHours(10, 30, 0, 0);
+
+            let noelDeb = new Date(annee, 11, 23, 19, 0, 0, 0);
+            let noelFin = new Date(annee, 11, 26, 10, 30, 0, 0);
+
+            let nouvelAnDeb = new Date(annee, 11, 31, 19, 0, 0, 0);
+            let nouvelAnFin = new Date(annee + 1, 0, 2, 10, 30, 0, 0);
+
+            let hiverDeb = new Date(annee, 0, 14, 19, 0, 0, 0);
+            let hiverFin = new Date(annee, 0, 18, 10, 30, 0, 0);
+
+            let tetDeb = new Date(annee, 1, 9, 19, 0, 0, 0);
+            let tetFin = new Date(annee, 1, 14, 10, 30, 0, 0);
+
+            let printempsDeb = new Date(annee, 2, 19, 19, 0, 0, 0);
+            let printempsFin = new Date(annee, 2, 28, 10, 30, 0, 0);
+
+            let ramadanDeb = new Date(annee, 2, 29, 19, 0, 0, 0);
+            let ramadanFin = new Date(annee, 3, 2, 10, 30, 0, 0);
+
+            let eteDeb = new Date(annee, 5, 24, 19, 0, 0, 0);
+            let eteFin = new Date(annee, 5, 28, 10, 30, 0, 0);
+
+            let rentreeDeb = new Date(annee, 7, 31, 19, 0, 0, 0);
+            let rentreeFin = new Date(annee, 8, 11, 10, 30, 0, 0);
+
+            let toussaintDeb = new Date(annee, 9, 31, 19, 0, 0, 0);
+            let toussaintFin = new Date(annee, 10, 4, 10, 30, 0, 0); 
+
+            return [
+                { nom: "Năm Mới", dateDebutExacte: nouvelAnDeb, dateFinExacte: nouvelAnFin, image: "jour-de-l-an.png" }, 
+                { nom: "Ưu Đãi Mùa Đông", dateDebutExacte: hiverDeb, dateFinExacte: hiverFin, image: "solde.png" }, 
+                { nom: "Tết Nguyên Đán", dateDebutExacte: tetDeb, dateFinExacte: tetFin, image: "tet.png" }, 
+                { nom: "Mùa Xuân", dateDebutExacte: printempsDeb, dateFinExacte: printempsFin, image: "nettoyage-de-printemps.png" },
+                { nom: "Ramadan / Aïd", dateDebutExacte: ramadanDeb, dateFinExacte: ramadanFin, image: "aid_ramadan.png" }, 
+                { nom: "Lễ Phục Sinh", dateDebutExacte: paquesDeb, dateFinExacte: paquesFin, image: "paque.png" }, 
+                { nom: "Ngày Quốc Tế Lao Động 1/5", date: new Date(annee, 4, 1), image: "fete-du-travail.png", dureePromo: 1 },
+                { nom: "Ngày 8 Tháng 5", date: new Date(annee, 4, 8), image: "8-mai.png", dureePromo: 1 },
+                { nom: "Ngày Của Mẹ", dateDebutExacte: feteMeresDeb, dateFinExacte: feteMeresFin, image: "fete-des-meres.png" },
+                { nom: "Ngày Của Cha", dateDebutExacte: fetePeresDeb, dateFinExacte: fetePeresFin, image: "fete-des-peres.png" },
+                { nom: "Ưu Đãi Mùa Hè", dateDebutExacte: eteDeb, dateFinExacte: eteFin, image: "solde.png" }, 
+                { nom: "Quốc Khánh Pháp 14/7", date: new Date(annee, 6, 14), image: "14-juillet.png", dureePromo: 1 },
+                { nom: "Lễ Đức Mẹ Hồn Xác Lên Trời", date: new Date(annee, 7, 15), image: "15aout_2.png", dureePromo: 1 },
+                { nom: "Mùa Tựu Trường", dateDebutExacte: rentreeDeb, dateFinExacte: rentreeFin, image: "rentree-des-classes.png" },
+                { nom: "Lễ Halloween", date: new Date(annee, 9, 30), image: "halloween.png", dureePromo: 1 }, 
+                { nom: "Lễ Các Thánh", dateDebutExacte: toussaintDeb, dateFinExacte: toussaintFin, image: "toussaint.png" }, 
+                { nom: "Giáng Sinh", dateDebutExacte: noelDeb, dateFinExacte: noelFin, image: "noel.png" } 
+            ];
+        }
+
+        let displayedEventKey = "";
+
+        function updateEventEngine() {
+            const todayDateObj = typeof getSimulatedDate === 'function' ? getSimulatedDate() : new Date();
+            const realNow = new Date();
+            todayDateObj.setHours(realNow.getHours(), realNow.getMinutes(), realNow.getSeconds());
+
+            const anneeEnCours = todayDateObj.getFullYear();
+            const tousLesEvenements = [
+                ...genererCalendrier(anneeEnCours - 1),
+                ...genererCalendrier(anneeEnCours),
+                ...genererCalendrier(anneeEnCours + 1)
+            ];
+
+            let evenementsActifs = []; 
+
+            for (let evt of tousLesEvenements) {
+                let dateDebut, dateFin;
+                if (evt.dateDebutExacte && evt.dateFinExacte) {
+                    dateDebut = new Date(evt.dateDebutExacte);
+                    dateFin = new Date(evt.dateFinExacte);
+                } else if (evt.dureePromo === 1) {
+                    dateDebut = new Date(evt.date);
+                    dateDebut.setDate(dateDebut.getDate() - 1);
+                    dateDebut.setHours(19, 0, 0, 0);
+
+                    dateFin = new Date(evt.date);
+                    dateFin.setHours(23, 59, 59, 999);
+                } else {
+                    dateDebut = new Date(evt.date);
+                    dateDebut.setHours(0, 0, 0, 0);
+
+                    dateFin = new Date(evt.date);
+                    dateFin.setDate(dateFin.getDate() + evt.dureePromo);
+                    dateFin.setHours(23, 59, 59, 999);
+                }
+
+                let dateTeasing = new Date(dateDebut);
+                dateTeasing.setDate(dateTeasing.getDate() - 15);
+
+                if (todayDateObj >= dateTeasing && todayDateObj < dateDebut) {
+                    evenementsActifs.push({ ...evt, phase: "TEASING", dateCible: dateDebut, dateDebutEvt: dateDebut, dateFinEvt: dateFin });
+                } 
+                else if (todayDateObj >= dateDebut && todayDateObj <= dateFin) {
+                    evenementsActifs.push({ ...evt, phase: "PROMO", dateCible: dateFin, dateDebutEvt: dateDebut, dateFinEvt: dateFin });
+                }
+            }
+
+            window.evenementsActifs = evenementsActifs;
+
+            let maxDiscount = 10;
+            const currentMonthMini = todayDateObj.getMonth();
+            if (currentMonthMini === 4 || currentMonthMini === 5 || currentMonthMini === 7 || currentMonthMini === 8) {
+                maxDiscount = 30;
+            } else if (currentMonthMini === 2 || currentMonthMini === 3 || currentMonthMini === 9 || currentMonthMini === 10 || currentMonthMini === 11 || currentMonthMini === 0) {
+                maxDiscount = 25;
+            }
+
+            const boxLeft = document.getElementById('promo-mini-left');
+            const boxRight = document.getElementById('promo-mini-right');
+
+            if (boxLeft && boxRight) {
+                if (evenementsActifs.length > 0) {
+                    const evt1 = evenementsActifs[0];
+                    boxLeft.innerHTML = `
+                        <div class="etiquette-ruban">${evt1.phase === "PROMO" ? "FLASH" : "SẮP TỚI"}</div>
+                        <img src="${evt1.image}" alt="${evt1.nom}">
+                        <div class="texte-ascension">
+                            <span class="promo-discount">-${maxDiscount}%</span>
+                            <span class="promo-nom">${evt1.nom}</span>
+                        </div>`;
+                    boxLeft.style.display = 'flex';
+
+                    if (evenementsActifs.length > 1) {
+                        const evt2 = evenementsActifs[1];
+                        boxRight.innerHTML = `
+                            <div class="etiquette-ruban">${evt2.phase === "PROMO" ? "FLASH" : "SẮP TỚI"}</div>
+                            <img src="${evt2.image}" alt="${evt2.nom}">
+                            <div class="texte-ascension">
+                                <span class="promo-discount">-${maxDiscount}%</span>
+                                <span class="promo-nom">${evt2.nom}</span>
+                            </div>`;
+                        boxRight.style.display = 'flex';
+                    } else {
+                        boxRight.style.display = 'none';
+                    }
+                } else {
+                    boxLeft.style.display = 'none';
+                    boxRight.style.display = 'none';
+                }
+            }
+
+            if (evenementsActifs.length > 0) {
+                eventContainer.style.display = "block";
+                if (document.getElementById('menu-ventes-flash')) document.getElementById('menu-ventes-flash').style.display = "block";
+
+                let currentKey = evenementsActifs.map(e => e.nom + "_" + e.phase).join("|");
+
+                if (displayedEventKey !== currentKey) {
+                    eventImagesWrapper.innerHTML = "";
+
+                    evenementsActifs.forEach((evt, idx) => {
+                        let card = document.createElement('div');
+                        card.className = "event-card-item";
+                        card.style.flex = evenementsActifs.length === 1 ? "1 1 100%" : "1 1 calc(50% - 15px)";
+                        card.style.maxWidth = evenementsActifs.length === 1 ? "100%" : "48%";
+                        card.style.display = "flex";
+                        card.style.flexDirection = "column";
+                        card.style.alignItems = "center";
+                        card.style.background = "#ffffff";
+                        card.style.borderRadius = "10px";
+                        card.style.overflow = "hidden";
+                        card.style.border = "2px solid " + (evt.phase === "PROMO" ? "var(--bleu)" : "#e67e22");
+                        card.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+
+                        let img = document.createElement('img');
+                        img.src = evt.image;
+                        img.alt = evt.nom;
+                        img.style.width = "100%";
+                        img.style.height = "auto";
+                        img.style.objectFit = "cover";
+                        img.style.cursor = "pointer";
+                        if(typeof openImageModal === "function") {
+                            img.onclick = () => openImageModal(img.src);
+                        }
+
+                        let timerBox = document.createElement('div');
+                        timerBox.id = "event-timer-" + idx;
+                        timerBox.style.width = "100%";
+                        timerBox.style.padding = "10px 5px";
+                        timerBox.style.textAlign = "center";
+                        timerBox.style.fontWeight = "bold";
+                        timerBox.style.fontSize = "0.95rem";
+                        timerBox.style.color = evt.phase === "PROMO" ? "var(--bleu)" : "#d35400";
+                        timerBox.style.background = evt.phase === "PROMO" ? "#eef3f8" : "#fff3e0";
+
+                        card.appendChild(img);
+                        card.appendChild(timerBox);
+                        eventImagesWrapper.appendChild(card);
+                    });
+
+                    displayedEventKey = currentKey;
+                }
+
+                let estEnPromoGlobale = false;
+                let nomsEvenements = [];
+
+                evenementsActifs.forEach((evt, idx) => {
+                    nomsEvenements.push(evt.nom);
+                    if (evt.phase === "PROMO") estEnPromoGlobale = true;
+
+                    let timerBox = document.getElementById("event-timer-" + idx);
+                    if (timerBox) {
+                        let diff = evt.dateCible.getTime() - todayDateObj.getTime();
+                        let timeString = "00 ngày 00h 00m 00s";
+
+                        if (diff > 0) {
+                            let jours = Math.floor(diff / (1000 * 60 * 60 * 24));
+                            let heures = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                            let minutes = Math.floor((diff / 1000 / 60) % 60);
+                            let secondes = Math.floor((diff / 1000) % 60);
+
+                            timeString = "";
+                            if (jours > 0) timeString += `${jours}ngày `;
+                            timeString += `${heures.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${secondes.toString().padStart(2, '0')}s`;
+                        }
+
+                        let label = evt.phase === "PROMO" ? "⏱️ Ưu đãi " + evt.nom + " kết thúc trong:" : "⏳ Ưu đãi " + evt.nom + " bắt đầu trong:";
+                        
+                        let dateDebutFR = evt.dateDebutEvt.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                        let heureDebutFR = evt.dateDebutEvt.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                        
+                        let dateFinFR = evt.dateFinEvt.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                        let heureFinFR = evt.dateFinEvt.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                        
+                        let texteDate = `Bắt đầu ngày ${dateDebutFR} lúc ${heureDebutFR} | Kết thúc ngày ${dateFinFR} lúc ${heureFinFR}`;
+
+                        timerBox.innerHTML = `${label} <span style="font-family:monospace; background:rgba(255,255,255,0.6); padding:2px 6px; border-radius:4px; margin-left:4px;">${timeString}</span><br><span style="font-size: 0.75rem; color: #555; font-weight: normal; display: inline-block; margin-top: 5px;">${texteDate}</span>`;
+                    }
+                });
+
+                let currentMonthForText = todayDateObj.getMonth();
+                let nomVedetteText = "dịch vụ của chúng tôi";
+                if (currentMonthForText === 5) { nomVedetteText = "Gói Xe Hơi"; }
+                else if (currentMonthForText === 4) { nomVedetteText = "Giặt Thảm & Ghế"; }
+                else if (currentMonthForText === 7 || currentMonthForText === 8) { nomVedetteText = "Văn Phòng & Cơ Sở"; }
+                else if (currentMonthForText === 2 || currentMonthForText === 3) { nomVedetteText = "Lau Kính"; }
+                else if (currentMonthForText === 9 || currentMonthForText === 10) { nomVedetteText = "Chăm Sóc Phần Mộ"; }
+                else if (currentMonthForText === 11 || currentMonthForText === 0) { nomVedetteText = "Giặt Thảm & Ghế"; }
+
+                let phraseTeasing = `Hãy chú ý, một sự kiện lớn sắp diễn ra với <strong>${nomVedetteText}</strong>, cùng nhiều bất ngờ khác!`;
+                let phrasePromo = `🔥 <strong>Sự kiện khuyến mãi lớn dành cho ${nomVedetteText} đã bắt đầu</strong>, cùng nhiều ưu đãi khác!`;
+
+                if (estEnPromoGlobale) {
+                    window.holidayPromoActive = true;
+                    if (eventImageText) {
+                        eventImageText.innerHTML = `<strong>BÁN HÀNG FLASH ĐANG DIỄN RA:</strong> ${phrasePromo}`;
+                        eventImageText.style.background = "#eef3f8";
+                        eventImageText.style.color = "var(--bleu)";
+                        eventImageText.style.border = "2px solid var(--bleu)";
+                    }
+                    if (promoServicesText) {
+                        promoServicesText.innerHTML = `BÁN HÀNG FLASH: ${phrasePromo}`;
+                        promoServicesText.style.display = "block";
+                    }
+
+                } else {
+                    window.holidayPromoActive = false;
+                    if (eventImageText) {
+                        eventImageText.innerHTML = `⏳ <strong>SẮP DIỄN RA:</strong> ${phraseTeasing}`;
+                        eventImageText.style.background = "#fff3e0";
+                        eventImageText.style.color = "#d35400";
+                        eventImageText.style.border = "2px solid #e67e22";
+                    }
+                    if (promoServicesText) promoServicesText.style.display = "none";
+                }
+
+            } else {
+                eventContainer.style.display = "none";
+                if (document.getElementById('menu-ventes-flash')) document.getElementById('menu-ventes-flash').style.display = "none";
+                eventImagesWrapper.innerHTML = "";
+                
+                window.holidayPromoActive = false;
+                if (promoServicesText) promoServicesText.style.display = "none";
+            }
+
+            function updateServiceBadges(todayDateObj) {
+                let isPromoActive = window.holidayPromoActive;
+                let isTeasing = (typeof evenementsActifs !== 'undefined' && evenementsActifs.length > 0 && evenementsActifs[0].phase === "TEASING");
+
+                if (!isPromoActive && !isTeasing) {
+                    document.querySelectorAll('.promo-line-bottom, .promo-sticker, .promo-badge-left').forEach(b => b.remove());
+                    document.querySelectorAll('.services-grid .card').forEach(c => c.style.paddingBottom = '');
+                    return;
+                }
+
+                const currentMonth = todayDateObj.getMonth();
+                let vedetteServiceId = null;
+                let vedetteDiscount = 0;
+                let resteDiscount = 0.10;
+                let nomOperation = "VỆ SINH";
+
+                if (currentMonth === 5) { vedetteServiceId = 'vehicule'; vedetteDiscount = 0.30; nomOperation = "MÙA HÈ"; }
+                else if (currentMonth === 4) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.30; nomOperation = "MÙA XUÂN"; }
+                else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; nomOperation = "TỰU TRƯỜNG"; }
+                else if (currentMonth === 2 || currentMonth === 3) { vedetteServiceId = 'vitrerie'; vedetteDiscount = 0.25; nomOperation = "MÙA XUÂN"; }
+                else if (currentMonth === 9 || currentMonth === 10) { vedetteServiceId = 'sepulture'; vedetteDiscount = 0.25; nomOperation = "MÙA THU"; }
+                else if (currentMonth === 11 || currentMonth === 0) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.25; nomOperation = "GIÁNG SINH"; }
+
+                const services = ['vitrerie', 'shampouinage', 'vehicule', 'bureaux', 'sepulture', 'evenements', 'chantier'];
+
+                services.forEach(srv => {
+                    const card = document.querySelector(`.card[onclick*="openQuote('${srv}')"]`);
+                    if (card) {
+                        let isVedette = (srv === vedetteServiceId);
+                        let discount = isVedette ? vedetteDiscount : resteDiscount;
+                        
+                        if (discount > 0) {
+                            let textPromo = "";
+                            let activeClass = isPromoActive ? " active-promo" : "";
+
+                            if (isPromoActive) {
+                                textPromo = isVedette 
+                                    ? `🔥 CHƯƠNG TRÌNH ĐẶC BIỆT ${nomOperation} -${discount * 100}% 🔥` 
+                                    : `⚡ ƯU ĐÃI NỔI BẬT ${nomOperation} -${discount * 100}% ⚡`;
+                            } else if (isTeasing) {
+                                textPromo = isVedette 
+                                    ? `⏳ SẮP DIỄN RA ƯU ĐÃI ĐẶC BIỆT ${nomOperation} -${discount * 100}% ⏳` 
+                                    : `⏳ SẮP DIỄN RA ƯU ĐÃI NỔI BẬT ${nomOperation} ⏳`;
+                            }
+
+                            let existingBanner = card.querySelector('.promo-line-bottom');
+                            if (existingBanner) {
+                                let textSpan = existingBanner.querySelector('.promo-scroll-text');
+                                if (textSpan && textSpan.textContent !== textPromo) {
+                                    textSpan.textContent = textPromo;
+                                    existingBanner.className = `promo-line-bottom${activeClass}`;
+                                }
+                            } else {
+                                let lineHtml = `<div class="promo-line-bottom${activeClass}"><span class="promo-scroll-text">${textPromo}</span></div>`;
+                                card.insertAdjacentHTML('beforeend', lineHtml);
+                                card.style.paddingBottom = '40px'; 
+                            }
+                        }
+                    }
+                });
+            }
+            updateServiceBadges(todayDateObj);
+
+            if (typeof calculatePrice === "function") calculatePrice();
+        }
+
+        updateEventEngine();
+        setInterval(updateEventEngine, 1000);
+    });
+    </script>
 
     <section id="services" class="services scroll-animate">
-        <h2 class="section-title"><span class="text-bleu">Dịch vụ Chuyên biệt</span> & <span class="text-green">Ước tính trực tuyến</span></h2>
-        <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: -15px auto 35px auto; line-height: 1.5; padding: 0 15px;">
-            ⚠️ <em>Mức giá tính toán trên trang web này chỉ mang tính tham khảo.</em> Báo giá chính thức sẽ được lập với bạn chỉ sau khi có chuyến khảo sát kỹ thuật tận nơi (không ràng buộc).
+        <h2 class="section-title"><span class="text-bleu">Dịch vụ Chuyên biệt</span> & <span class="text-green">Báo giá Trực tuyến</span></h2>
+        
+        <div id="promo-services-text" style="display: none; background: #fff8e1; border: 2px dashed #e67e22; color: #d35400; padding: 12px; border-radius: 8px; text-align: center; max-width: 800px; margin: 0 auto 20px auto; font-weight: 800; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            BÁN HÀNG FLASH: Nhận ngay ưu đãi giảm giá lên tới -30% cho Dịch vụ Nổi bật và -10% cho các dịch vụ khác!
+        </div>
+
+        <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: 0 auto 35px auto; line-height: 1.5; padding: 0 15px;">
+            ⚠️ <em>Chi phí tính toán trên trang web này chỉ mang tính chất tham khảo.</em> Báo giá chính thức sẽ được chốt sau khi khảo sát thực tế tận nơi (hoàn toàn miễn phí và không ràng buộc).
         </p>
 
         <div class="services-grid">
-            <div class="card clickable" onclick="openQuote('vitrerie')" role="button" tabindex="0" aria-label="Mở báo giá lau kính">
+            <div class="card clickable" onclick="openQuote('vitrerie')" role="button" tabindex="0" aria-label="Mở bảng tính báo giá lau kính">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg></div>
                 <h3 class="text-bleu">Lau kính</h3>
-                <p>Vệ sinh toàn diện mọi bề mặt.</p>
+                <p>Vệ sinh toàn diện mọi bề mặt kính.</p>
                 <div class="card-border"></div>
             </div>
-            <div class="card clickable" onclick="openQuote('shampouinage')" role="button" tabindex="0" aria-label="Mở báo giá giặt thảm và ghế">
-                <span class="service-badge dynamic-badge">Có sẵn ngày 15 tháng 8</span>
+            <div class="card clickable" onclick="openQuote('shampouinage')" role="button" tabindex="0" aria-label="Mở bảng tính báo giá giặt thảm ghế">
+                <span class="service-badge dynamic-badge">Sẵn sàng từ 15/08</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path><path d="M9 22V12h6v10"></path></svg></div>
-                <h3 class="text-bleu">Giặt thảm & ghế</h3>
-                <p>Làm mới đồ vải và thảm.</p>
+                <h3 class="text-bleu">Giặt Thảm & Ghế</h3>
+                <p>Làm sạch sâu ghế sofa, thảm trải sàn.</p>
                 <div class="card-border"></div>
             </div>
-            <div class="card clickable" onclick="openQuote('vehicule')" role="button" tabindex="0" aria-label="Mở báo giá gói xe hơi">
-                <span class="service-badge dynamic-badge">Có sẵn ngày 15 tháng 8</span>
+            <div class="card clickable" onclick="openQuote('vehicule')" role="button" tabindex="0" aria-label="Mở bảng tính báo giá gói vệ sinh xe">
+                <span class="service-badge dynamic-badge">Sẵn sàng từ 15/08</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
-                <h3 class="text-bleu">Gói Xe hơi</h3>
-                <p>Vệ sinh toàn diện nội thất xe hơi.</p>
+                <h3 class="text-bleu">Gói Xe Hơi</h3>
+                <p>Vệ sinh chuyên sâu nội thất xe ô tô.</p>
                 <div class="card-border"></div>
             </div>
-            <div class="card clickable" onclick="openQuote('bureaux')" role="button" tabindex="0" aria-label="Mở báo giá văn phòng và tòa nhà">
+            <div class="card clickable" onclick="openQuote('bureaux')" role="button" tabindex="0" aria-label="Mở bảng tính báo giá văn phòng tòa nhà">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
-                <h3 class="text-bleu">Văn phòng & Tòa nhà</h3>
-                <p>Thiết lập tùy chỉnh cho cơ sở của bạn.</p>
+                <h3 class="text-bleu">Văn Phòng & Cơ Sở</h3>
+                <p>Thiết lập phương án tùy chỉnh theo diện tích.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('sepulture')" role="button" tabindex="0" aria-label="Mở bảng tính báo giá chăm sóc phần mộ">
+                <span class="service-badge dynamic-badge-sept" style="background-color: var(--bleu);">Sẵn sàng từ 01/09</span>
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+                </div>
+                <h3 class="text-bleu">Chăm Sóc Phần Mộ</h3>
+                <p>Vệ sinh và bảo dưỡng trang trọng phần mộ gia đình.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('evenements')" role="button" tabindex="0" aria-label="Mở bảng tính báo giá dọn dẹp hội trường">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21h14a2 2 0 0 0 2-2V7l-5-5H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path><path d="M16 11l-4 4-2-2"></path></svg>
+                </div>
+                <h3 class="text-bleu">Dọn Dẹp Hội Trường & Sự Kiện</h3>
+                <p>Thuê địa điểm tiệc cưới, sinh nhật, sự kiện? O.S.P+ phụ trách dọn dẹp trước, trong và sau chương trình!</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('chantier')" role="button" tabindex="0" aria-label="Mở bảng tính báo giá vệ sinh sau xây dựng">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                </div>
+                <h3 class="text-bleu">Vệ Sinh Sau Xây Dựng</h3>
+                <p>Tẩy sạch xi măng, sơn, vôi vữa và làm sạch sâu sau sửa chữa.</p>
                 <div class="card-border"></div>
             </div>
         </div>
     </section>
 
     <section id="galerie" class="gallery scroll-animate">
-        <h2 class="section-title"><span class="text-green">Dự án</span> của chúng tôi</h2>
+        <h2 class="section-title"><span class="text-green">Dự án</span> Thực Tế</h2>
         <div class="gallery-fine-container">
             <div class="realisations-mix-grid">
+                
                 <div class="comparison-container">
                     <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Toàn màn hình</button>
                     <div class="comparison-slider">
-                        <div class="img before"><img src="avant1.jpg" alt="Trước"></div>
-                        <div class="img after"><img src="apres1.jpg" alt="Sau"></div>
+                        <div class="img before"><img src="avant1.jpg" alt="Trước khi làm"></div>
+                        <div class="img after"><img src="apres1.jpg" alt="Sau khi làm"></div>
                         <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
                         <div class="slider-button"></div>
                     </div>
-                    <p class="gallery-label">Lau kính</p>
+                    <p class="gallery-label">Lau Kính</p>
                 </div>
-                <div class="video-container-fixed"><div class="video-wrapper"><video id="realVid" muted autoplay loop playsinline preload="metadata"><source src="video-realisation.mp4" type="video/mp4"></video></div></div>
+                
+                <div class="video-container-fixed">
+                    <div class="video-wrapper">
+                        <video id="realVid" muted autoplay loop playsinline preload="metadata"><source src="video-realisation.mp4" type="video/mp4"></video>
+                    </div>
+                </div>
+                
                 <div class="comparison-container">
                     <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Toàn màn hình</button>
                     <div class="comparison-slider">
-                        <div class="img before"><img src="avant-terrasse.jpg" alt="Sân hiên Trước khi vệ sinh"></div>
-                        <div class="img after"><img src="apres-terrasse.jpg" alt="Sân hiên Sau khi vệ sinh"></div>
+                        <div class="img before"><img src="avant-terrasse.jpg" alt="Sân hiên trước khi vệ sinh"></div>
+                        <div class="img after"><img src="apres-terrasse.jpg" alt="Sân hiên sau khi vệ sinh"></div>
                         <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
                         <div class="slider-button"></div>
                     </div>
-                    <p class="gallery-label">Vệ sinh Sân hiên (Áp suất cao)</p>
+                    <p class="gallery-label">Vệ Sinh Sân Hiên (Áp Suất Cao)</p>
                 </div>
+                
             </div>
             
             <div class="mini-photo-row">
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo1.jpg" alt="Dự án OSP+ 1" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 1"><div class="card-border"></div></div>
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo2.jpg" alt="Dự án OSP+ 2" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 2"><div class="card-border"></div></div>
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo3.jpg" alt="Dự án OSP+ 3" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 3"><div class="card-border"></div></div>
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo4.jpg" alt="Dự án OSP+ 4" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 4"><div class="card-border"></div></div>
-                <div class="card mini-card" style="cursor: pointer;"><img src="photo5.jpg" alt="Dự án OSP+ 5" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 5"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo1.jpg" alt="Hình ảnh dự án 1" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 1"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo2.jpg" alt="Hình ảnh dự án 2" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 2"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo3.jpg" alt="Hình ảnh dự án 3" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 3"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo4.jpg" alt="Hình ảnh dự án 4" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 4"><div class="card-border"></div></div>
+                <div class="card mini-card" style="cursor: pointer;"><img src="photo5.jpg" alt="Hình ảnh dự án 5" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Phóng to ảnh 5"><div class="card-border"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="avis-google" class="services scroll-animate" style="background: var(--gris); padding-top: 40px; padding-bottom: 40px;">
+        <h2 class="section-title">Ý kiến của bạn <span class="text-green">rất quan trọng!</span></h2>
+        <p style="text-align: center; font-size: 1rem; color: #555; max-width: 600px; margin: 0 auto 25px auto; padding: 0 15px;">
+            Bạn hài lòng với dịch vụ của chúng tôi? Hãy ủng hộ doanh nghiệp bằng cách chia sẻ trải nghiệm trên Google.
+        </p>
+        <div style="text-align: center;">
+            <a href="https://g.page/r/CdNdWcfjRCyYECE/review" target="_blank" class="btn-main pulse-animation" style="background: #4285F4; color: white; display: inline-flex; align-items: center; gap: 10px; text-decoration: none;">
+                <span style="font-size: 1.2rem;">⭐</span> VIẾT ĐÁNH GIÁ TRÊN GOOGLE
+            </a>
+            
+            <div style="margin-top: 30px;">
+                <p style="font-size: 0.9rem; color: var(--bleu); font-weight: 700; margin-bottom: 10px; text-transform: uppercase;">Hoặc quét mã QR Code này:</p>
+                <img src="qr-code.png" alt="Mã QR Đánh Giá Google" style="width: 150px; height: 150px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 3px solid var(--vert); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </div>
+        </div>
+    </section>
+
+    <section id="qui-suis-je" class="who-am-i scroll-animate">
+        <div class="who-container">
+            <div class="who-flex">
+                <div class="who-image-box">
+                    <div class="photo-container-overlap">
+                        <img src="ma-photo.jpg" alt="Alexandre" class="profile-photo">
+                        <div class="experience-badge-overlap">
+                            <span>20</span>
+                            <p>năm kinh nghiệm</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 50px; border-radius: 12px; padding: 3px; background: linear-gradient(90deg, var(--vert), var(--bleu), var(--vert)); box-shadow: 0 15px 35px rgba(26, 60, 108, 0.3);">
+                        <img src="votre-nouvelle-photo.jpg" alt="O.S.P+ thực tế" style="width: 100%; height: auto; display: block; border-radius: 10px; object-fit: cover;">
+                    </div>
+                </div>
+
+                <div class="who-text-box">
+                    <h2 class="section-title">Từ tiêu chuẩn của các tập đoàn lớn <br><span class="text-green">đến dịch vụ cá nhân hóa cho bạn</span></h2>
+                    
+                    <p class="intro-text">"Sau 20 năm chinh phục những thử thách khắt khe nhất trong ngành, tôi quyết định trở lại với giá trị cốt lõi: <strong>Chính bạn.</strong>"</p>
+                    
+                    <p>Thời gian làm việc tại các công ty vệ sinh hàng đầu đã rèn luyện cho tôi tính kỷ luật thép. Hôm nay, tôi thành lập <strong>O.S.P+</strong> để mang chuyên môn cao cấp này đến phục vụ bạn thông qua mối quan hệ trực tiếp, minh bạch và bền vững.</p>
+                    
+                    <div class="tech-box">
+                        <h4 class="tech-title">Triết lý của O.S.P+: Gần gũi, Lắng nghe, Sạch sẽ & An toàn Tuyệt đối</h4>
+                        <ul class="philo-list">
+                            <li>💬 <strong>Lắng nghe chu đáo & Thiết kế riêng:</strong> Không qua trung gian hay nền tảng tự động.</li>
+                            <li>🛡️🔒 <strong>Bảo mật & An toàn tăng cường:</strong> Đội ngũ thực hiện giới hạn cố định 1 đến 2 nhân viên. Ít người qua lại chính là sự đảm bảo riêng tư tuyệt đối.</li>
+                            <li>👤 <strong>Một đầu mối duy nhất:</strong> Từ khâu tư vấn báo giá đến lúc hoàn thành công việc, bạn làm việc trực tiếp với một chuyên gia duy nhất.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="signification-osp" class="services scroll-animate" style="background: var(--blanc); padding: 60px 8%;">
+        <h2 class="section-title"><span class="text-green">O.S.P+</span> có nghĩa là gì?</h2>
+        <p style="text-align: center; font-size: 1rem; color: #555; margin-bottom: 40px;">Khám phá giá trị cốt lõi qua từng chữ cái tên gọi của chúng tôi.</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto;">
+            
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-occitanie.jpg" alt="Bản đồ Occitanie" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">O</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">ccitanie</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">Oxygène</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Dịch vụ tận nơi tại <strong>Toulouse và vùng phụ cận</strong>, mang lại bầu không khí trong lành cho không gian sống và làm việc.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-service.jpg" alt="Dịch vụ Khách hàng" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">S</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">ervice</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">Sérénité</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Đồng hành chu đáo cùng một người liên hệ duy nhất. Giao việc vệ sinh cho chúng tôi để tận hưởng sự an tâm mỗi ngày.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-proprete.jpg" alt="Sạch sẻ" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">P</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">ropreté</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">Perfection</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Chăm chút từng chi tiết nhỏ. Vệ sinh tỉ mỉ văn phòng, nhà xưởng và kính bằng máy móc hiện đại chuyên dụng.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-plus.jpg" alt="Điểm cộng OSP" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">+</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">Điểm cộng</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">Hiệu suất</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Dịch vụ chuyên sâu tạo nên sự khác biệt: tẩy vết bẩn cứng đầu trên thảm, giặt ghế sofa và tổng vệ sinh công trình.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="faq" class="services scroll-animate" style="background: var(--blanc);">
+        <h2 class="section-title">Câu Hỏi <span class="text-green">Thường Gặp</span></h2>
+        <div class="services-grid">
+            <div class="card faq-card">
+                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="dynamic-slide active"><h3>Thời gian đáp ứng là bao lâu?</h3><p>Thường từ 48h đến 72h.</p></div>
+                <div class="dynamic-slide"><h3>Có làm việc vào buổi tối không?</h3><p>Có, với văn phòng có thể làm từ 5h sáng.</p></div>
+                <div class="card-border"></div>
+            </div>
+            <div class="card faq-card">
+                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="dynamic-slide active"><h3>Hóa chất sử dụng là gì?</h3><p>Hóa chất chuyên dụng, an toàn và hiệu quả.</p></div>
+                <div class="dynamic-slide"><h3>Thời gian khô đồ vải?</h3><p>Nhờ máy hút chuyên dụng, khô trong 4 - 6 giờ.</p></div>
+                <div class="card-border"></div>
+            </div>
+            <div class="card faq-card">
+                <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="dynamic-slide active"><h3>Phạm vi hoạt động?</h3><p>Miễn phí di chuyển tại Toulouse và phụ cận.</p></div>
+                <div class="dynamic-slide"><h3>Hình thức thanh toán?</h3><p>Thẻ ngân hàng, Tiền mặt, Chuyển khoản SEPA... (Không nhận séc).</p></div>
+                <div class="card-border"></div>
             </div>
         </div>
     </section>
 
     <section id="contact" class="contact scroll-animate">
-        <h2 class="section-title"><span class="text-green">Liên hệ</span> với tôi</h2>
+        <h2 class="section-title">Liên Hệ <span class="text-green">Với Tôi</span></h2>
         <div class="who-container">
             <div class="contact-grid-triple">
                 <div class="contact-cat">
@@ -179,35 +1214,534 @@
                     <ul class="contact-list">
                         <li><strong>Thứ 2 - Thứ 6:</strong> 05:00 - 10:30 & 20:00 - 22:00</li>
                         <li><strong>Thứ 7:</strong> 05:00 - 22:00</li>
-                        <li><strong>Chủ nhật:</strong> Theo một số điều kiện</li>
+                        <li><strong>Chủ nhật:</strong> Tùy điều kiện thỏa thuận</li>
                     </ul>
                 </div>
                 <div class="contact-cat">
-                    <h3>📞 Hỗ trợ (Điện thoại, SMS, Email)</h3>
+                    <h3>📞 Hỗ trợ (Báo giá, Điện thoại, Email...)</h3>
                     <ul class="contact-list">
-                        <li><strong>Điện thoại:</strong> +33 7 45 02 76 24</li>
+                        <li><strong>Thứ 2 - Thứ 6:</strong> 08:00 - 10:30</li>
+                        <li><strong>Thứ 7 - CN:</strong> 08:00 - 22:00</li>
+                        <li><strong>SĐT:</strong> 07 45 02 76 24</li>
                         <li><strong>Email:</strong> contact@ospplus.com</li>
+                        <li style="margin-top: 10px; color: var(--vert);">
+                        <strong>💳 Phương thức thanh toán:</strong>
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 6px; color: var(--bleu); font-weight: 600; font-size: 0.85rem;">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                Thẻ Ngân Hàng
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+                                Tiền Mặt
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="21" width="18" height="2"></rect><rect x="5" y="11" width="2" height="8"></rect><rect x="11" y="11" width="2" height="8"></rect><rect x="17" y="11" width="2" height="8"></rect><polygon points="12 2 2 7 22 7 12 2"></polygon></svg>
+                                SEPA
+                            </div>
+                            <em style="color: #e74c3c; font-size: 0.8rem; font-weight: normal;">(❌ Không nhận séc)</em>
+                        </div>
+                    </li>
                     </ul>
+                    <div class="social-original">
+                        <a href="https://wa.me/33745027624" target="_blank" aria-label="Liên hệ qua WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Logo WhatsApp"></a>
+                        <a href="#" target="_blank" aria-label="Xem trang Facebook"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Logo Facebook"></a>
+                        <a href="#" target="_blank" aria-label="Xem trang Instagram"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Logo Instagram"></a>
+                    </div>
                 </div>
                 <div class="contact-cat">
-                    <h3>📍 Khu vực Dịch vụ</h3>
-                    <ul class="contact-list"><li>Toulouse & bao gồm 15km</li></ul>
+                    <h3>📍 Khu vực phục vụ</h3>
+                    <ul class="contact-list"><li>Toulouse & phụ cận</li></ul>
+                    <div class="villes-tags">
+                        <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span><span class="tag-ville">Saint-Orens</span><span class="tag-ville">Labège</span><span class="tag-ville">Blagnac</span><span class="tag-ville">Tournefeuille</span><span class="tag-ville">L'Union</span><span class="tag-ville">Ramonville</span><span class="tag-ville">Castanet</span><span class="tag-ville">Cugnaux</span><span class="tag-ville">Aucamville</span>
+                    </div>
                 </div>
             </div>
+            <div class="map-container-full"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184758.4619427306!2d1.2635431668749873!3d43.600678619932024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb6fec7552ff%3A0x408f3468f40a120!2sToulouse!5e0!3m2!1sfr!2sfr!4v1716386561139!5m2!1sfr!2sfr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
             <div class="mentions-center-wrapper">
-                <button onclick="openMentions()" class="btn-mentions-link">Xem Thông báo Pháp lý</button>
+                <button onclick="openMentions()" class="btn-mentions-link">Xem điều khoản chung</button>
             </div>
         </div>
     </section>
 
     <footer>
-        <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Dịch vụ Vệ sinh Occitanie</span> <span class="text-green">Plus</span>)</strong></p>
-        <p><span class="text-bleu">Doanh nghiệp tư nhân</span> | <span class="text-green">SIRET: 105 799 787 00012</span></p>
+        <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Occitanie Service Propreté</span> <span class="text-green">Plus</span>)</strong></p>
+        <p><span class="text-bleu">Doanh nghiệp tư nhân</span> | <span class="text-green">SIRET : 105 799 787 00012</span> | <span class="text-bleu">*Không áp dụng thuế VAT.</span></p>
     </footer>
+    
+    <div id="mentionsModal" class="modal">
+        <div class="modal-content large" style="max-width: 800px;">
+            <span class="close-modal" onclick="closeMentions()" role="button" tabindex="0" aria-label="Đóng cửa sổ">×</span>
+            <div class="modal-header"><h2>Thông tin Pháp lý & RGPD</h2></div>
+            <div class="modal-body-simple" style="max-height: 70vh; overflow-y: auto;">
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-bottom: 10px;">1. Đơn vị xuất bản</h3>
+                <p><strong>O.S.P+ (Occitanie Service Propreté Plus)</strong><br>
+                Quản lý : Alexandre Jonot<br>
+                Hình thức : Doanh nghiệp cá thể (Chủ thợ)<br>
+                SIRET : 105 799 787 00012<br>
+                Mã APE : 8121Z (Vệ sinh nhà cửa công trình)<br>
+                Địa chỉ : 6 PLACE du Pháp Thomas Woodrow Wilson, 31000 Toulouse, FRANCE<br>
+                Điện thoại : 07 45 02 76 24<br>
+                Email : contact@ospplus.com<br>
+                Bảo hiểm Trách nhiệm Nghề nghiệp : Simplis (WAKAM) hợp đồng n° 89990870</p>
 
-    <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank" aria-label="Liên hệ với chúng tôi trên WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Logo WhatsApp"></a>
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Nhà lưu trữ trang web</h3>
+                <p>Trang web lưu trữ tại : <strong>GitHub Pages (GitHub, Inc.)</strong><br>
+                Địa chỉ : 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA<br>
+                Website : <a href="https://github.com/" target="_blank" style="color: var(--vert); text-decoration: none;">https://github.com/</a></p>
 
-    <!-- Chargement différé des scripts non-bloquants -->
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">3. Chính sách bảo mật (RGPD)</h3>
+                <p>Thông tin thu thập qua biểu mẫu (họ tên, địa chỉ, email, số điện thoại) được xử lý riêng bởi Alexandre Jonot (O.S.P+) nhằm phục vụ lập báo giá và chăm sóc khách hàng. Không chia sẻ cho bên thứ ba.</p>
+                <p><strong>Thời gian lưu trữ :</strong> Tối đa 3 năm kể từ lần liên hệ gần nhất.</p>
+                
+                <h3 style="color: var(--vert); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. An toàn dữ liệu</h3>
+                <p>O.S.P+ cam kết áp dụng các biện pháp an toàn để bảo vệ dữ liệu cá nhân của bạn.</p>
+                
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">5. Quyền của bạn</h3>
+                <p>Bạn có quyền truy cập, chỉnh sửa hoặc xóa dữ liệu bằng cách gửi email tới contact@ospplus.com.</p>
+
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">6. Điều khoản thanh toán</h3>
+                <p><strong>Đăng ký định kỳ :</strong> Đặt cọc 50% khi đặt dịch vụ, phần còn lại chia đều theo tháng.</p>
+                <p><strong>Phương thức thanh toán :</strong> Thẻ ngân hàng, Tiền mặt, Chuyển khoản SEPA. <em>(Không chấp nhận séc)</em>.</p>
+
+                <p style="text-align: right; font-size: 0.65rem; color: #ccc; margin-top: 20px;">v4.26</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GIỎ HÀNG -->
+    <div id="cartModal" class="modal" style="z-index: 4000;">
+        <div class="modal-content small" style="padding: 25px; background: #f4f8fb;">
+            <span class="close-modal" onclick="closeCartModal()" role="button" tabindex="0">×</span>
+            <h3 style="color: var(--bleu); margin-bottom: 15px; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">🛒 Chi tiết giỏ hàng báo giá</h3>
+            
+            <div id="cartContent" style="max-height: 55vh; overflow-y: auto; margin-bottom: 15px;">
+            </div>
+            
+            <div style="text-align: center;">
+                <button type="button" onclick="closeCartModal()" class="btn-submit-form" style="margin-top: 0; width: 100%;">Đóng và Tiếp tục</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="clientModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: center;">
+            <span class="close-modal" onclick="closeClientModal()" role="button" tabindex="0" aria-label="Đóng cửa sổ">×</span>
+            <h3 style="color: var(--bleu); margin-bottom: 15px;">Khu Vực Khách Hàng</h3>
+            <p style="font-size: 0.85rem; margin-bottom: 20px;">Nhập mã bí mật của bạn để nhận <strong>giảm giá 10% Thân thiết</strong> trên báo giá mới.</p>
+            <input type="text" id="clientCodeInput" placeholder="Mã cá nhân của bạn..." style="padding: 12px; width: 80%; border-radius: 8px; border: 2px solid #e1e8ef; margin-bottom: 15px; font-size: 1rem; text-align: center; text-transform: uppercase;">
+            <br>
+            <button class="btn-submit-form" onclick="applyClientCode()" style="width: auto; padding: 10px 25px; margin-top: 0;">Xác nhận mã</button>
+            <p id="clientCodeMsg" style="margin-top: 15px; font-weight: bold; font-size: 0.9rem;"></p>
+        </div>
+    </div>
+
+    <div id="quoteModal" class="modal">
+        <div class="modal-content large">
+            <span class="close-modal" onclick="closeQuote()" role="button" tabindex="0" aria-label="Đóng cửa sổ">×</span>
+            <div class="modal-header">
+                <h2 id="modalTitle">Báo Giá <span class="text-green">Theo Yêu Cầu</span></h2>
+            </div>
+            
+            <div id="topPriceBanner" class="top-price-banner">
+                <div class="price-left" id="estimatedAmount">
+                    <div class="price-left-main">0.00 €*</div>
+                </div>
+                <div class="price-right" style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                    <button type="button" onclick="openCartModal()" style="background: var(--vert); color: white; border: 2px solid white; padding: 6px 15px; border-radius: 6px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s; white-space: nowrap;">🛒 XEM GIỎ HÀNG</button>
+                    <span style="max-width: 250px;">⚠️ <em>Giá tham khảo.</em> Giá chốt chính thức sau khảo sát.</span>
+                </div>
+            </div>
+
+            <form id="interactiveForm">
+                <div class="modal-body-flex">
+                    
+                    <div class="modal-col-left">
+                        <div id="dynamicFields"></div>
+                    </div>
+                    
+                    <div class="modal-col-right">
+                        <div class="form-section-compact">
+                            
+                            <div style="background: #f4f8fb; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #e1e8ef;">
+                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* Yêu cầu đặc biệt sẽ được tính giá riêng (không gộp trong ước tính chung).</p>
+                                <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;">
+                                    <span>+</span> Thêm yêu cầu đặc biệt
+                                    <span class="help-bubble">?<span class="tooltip-text">Nhu cầu cụ thể chưa có trong danh sách? (Ví dụ: Vệ sinh tủ lạnh, đổ rác...)</span></span>
+                                </button>
+                                <div id="customRowsContainer"></div>
+                            </div>
+
+                            <h3 class="form-subtitle">Thông Tin Liên Hệ</h3>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                
+                                <div class="input-group">
+                                    <label>Bạn là:</label>
+                                    <div style="display: flex; gap: 20px; margin-top: 5px;">
+                                        <label style="font-weight: normal; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                            <input type="radio" name="statut" value="Particulier" required style="width: auto; transform: scale(1.1); margin: 0;" onchange="toggleCompanyField()"> Cá nhân
+                                        </label>
+                                        <label style="font-weight: normal; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                            <input type="radio" name="statut" value="Entreprise" required style="width: auto; transform: scale(1.1); margin: 0;" onchange="toggleCompanyField()"> Doanh nghiệp, Tổ chức...
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="input-group" id="companyNameGroup" style="display: none; margin-top: 5px;">
+                                    <label>Tên đơn vị (Công ty, Tổ chức...)</label>
+                                    <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="Ví dụ: OSP Plus...">
+                                </div>
+
+                                <div class="input-group" id="employeeCountGroup" style="display: none; margin-top: 10px;">
+                                    <label>Số lượng nhân viên / nhân sự:</label>
+                                    <input type="number" id="nbEmployes" name="nbEmployes" min="1" value="1" oninput="calculatePrice()">
+                                </div>
+                                <div class="input-group"><label>Họ</label><input type="text" name="nom" required></div>
+                                <div class="input-group"><label>Tên</label><input type="text" name="prenom" required></div>
+                                <div class="input-group"><label>Email</label><input type="email" name="email" required></div>
+                                <div class="input-group"><label>Số điện thoại</label><input type="tel" name="telephone" required></div>
+                                <div class="input-group">
+                                    <label>Địa chỉ đầy đủ (Số nhà, Tên đường) *</label>
+                                    <input type="text" id="inputAdresseRue" name="adresse" placeholder="Ví dụ: 6 Place Wilson" required oninput="resetDistanceCalc()">
+                                </div>
+                                <div class="input-group" style="margin-top: 10px;">
+                                    <label>Mã bưu chính & Thành phố *</label>
+                                    <input type="text" id="inputAdresseVille" name="ville" placeholder="Ví dụ: 31000 Toulouse" required oninput="resetDistanceCalc()">
+                                </div>
+
+                                <div class="distance-simulator-box">
+                                    <div class="distance-sim-header">
+                                        🚗 <strong>Phí di chuyển:</strong> Miễn phí trong khu vực Toulouse.<br>
+                                        <span style="font-size: 0.75rem; font-weight: normal;">Ngoài vùng: 0,50 €/km (hoặc MIỄN PHÍ TẬN NƠI nếu báo giá > 150 €)</span>
+                                    </div>
+                                    <button type="button" class="btn-calc-distance" onclick="calculerEligibilite()">
+                                        🔍 Kiểm tra phạm vi dịch vụ
+                                    </button>
+                                    <div id="distanceResultMsg" class="distance-result-msg"></div>
+                                </div>
+                                <div class="input-group"><label>Người liên hệ tại chỗ <span style="font-weight:normal; font-size:0.7rem; color:#666;">(Nếu khác)</span></label><input type="text" name="interlocuteur" placeholder="Họ và tên..."></div>
+                                
+                                <div class="input-group" style="margin-top: 10px; margin-bottom: 5px; background: #eef3f8; padding: 15px; border-radius: 8px; border: 1px dashed var(--vert);">
+                                    <label style="color: var(--bleu);">Mã Giảm Giá / Khuyến Mãi (Tùy chọn)</label>
+                                    <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                        <input type="text" id="promoCodeInputDevis" placeholder="Ví dụ: REDUC10" style="text-transform: uppercase; flex: 1;">
+                                        <button type="button" onclick="applyPromoCodeDevis()" class="btn-validate-custom" style="padding: 10px 15px; font-size: 0.85rem;">Áp dụng</button>
+                                    </div>
+                                    <p id="promoCodeMsgDevis" style="font-size: 0.8rem; margin-top: 5px; font-weight: bold; line-height: 1.4;"></p>
+                                </div>
+
+                                <div style="margin-top: 5px; margin-bottom: 5px;">
+                                    <p style="font-size: 0.65rem; color: #777; line-height: 1.4; text-align: justify;">
+                                        🔒 <strong>Bảo mật thông tin:</strong> Bằng việc gửi biểu mẫu này, tôi đồng ý cho O.S.P+ sử dụng thông tin nhằm phục vụ xử lý yêu cầu báo giá. Thông tin cá nhân không bao giờ bị chia sẻ cho bên thứ ba. Xem <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Điều khoản Pháp lý</a>.
+                                    </p>
+                                </div>
+
+                                <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; border-radius: 5px; margin-top: 15px; margin-bottom: 5px;">
+                                    <p style="font-size: 0.75rem; color: #555; line-height: 1.4; text-align: justify; margin: 0;">
+                                        ⚠️ <strong>Lưu ý:</strong> <em>Mức giá này mang tính chất tham khảo.</em> Báo giá chính thức sẽ được chốt sau buổi khảo sát thực tế.
+                                    </p>
+                                </div>
+
+                                <button type="button" class="btn-submit-form" id="btnSubmitForm" onclick="submitInteractiveForm()">GỬI YÊU CẦU BÁO GIÁ</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </form>
+
+            <div id="postSubmitChoice" style="display: none; text-align: center; padding: 40px;">
+                <h3 style="color: var(--bleu); font-size: 2rem;">✓ Đã Gửi Báo Giá!</h3>
+                <p style="margin-top: 15px; color: #555; font-size: 1.1rem;">Cảm ơn bạn. Tôi sẽ liên hệ lại trong thời gian sớm nhất.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="planningModal" class="day-modal">
+        <div class="planning-modal-content">
+            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Lập Kế Hoạch</h4>
+            
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">1. Các ngày trong tuần:</p>
+            <div class="grid-checkboxes" id="planDaysGrid"></div>
+            
+            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 20px;">2. Lặp lại <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Tùy chọn)</span>:</p>
+            
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">A) Trọn tháng:</p>
+            <div class="grid-checkboxes" id="planMonthsGrid" style="margin-bottom:15px;"></div>
+            
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">B) Hoặc Khoảng thời gian cụ thể:</p>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items:center;">
+                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Từ ngày:</label><input type="date" id="planStartDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
+                <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">Đến ngày:</label><input type="date" id="planEndDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
+            </div>
+            
+            <p style="font-size: 0.85rem; var(--bleu); font-weight: 700; margin-top: 15px;">3. Ghi chú bổ sung <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Tùy chọn)</span>:</p>
+            <textarea id="planComment" placeholder="Ví dụ: Đóng cửa thứ Ba, tập trung lau khu vực chung, gửi chìa khóa tại lễ tân..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
+            
+            <button type="button" class="btn-validate-days" onclick="savePlanning()">XÁC NHẬN LỰA CHỌN</button>
+        </div>
+    </div>
+
+    <div id="levelModal" class="sub-modal">
+        <div class="sub-modal-content">
+            <div class="sub-modal-header">
+                <h4>Thêm tầng / khu vực</h4>
+            </div>
+            <div class="sub-modal-body">
+                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:10px;">Chọn nhanh:</p>
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 25px;">
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Tầng 5')">Tầng 5</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Tầng 6')">Tầng 6</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Tầng hầm 1')">Tầng hầm 1</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Tầng hầm 2')">Tầng hầm 2</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Sân thượng')">Sân thượng</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Khu vực ngoài trời')">Ngoại cảnh</button>
+                </div>
+                
+                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:5px;">Hoặc nhập tên tùy chỉnh:</p>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="text" id="customLevelInput" placeholder="Ví dụ: Tầng lửng, Tòa nhà B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
+                    <button onclick="addCustomLevel()" class="btn-validate-custom">Thêm</button>
+                </div>
+            </div>
+            <div style="padding: 15px; background: #f4f8fb; text-align:center; border-top:1px solid #eee;">
+                <button type="button" class="btn-validate" onclick="closeLevelModal()" style="padding:8px 20px; background:#ccc; color:#333; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="carteModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: center; max-width: 750px;">
+            <span class="close-modal" onclick="closeCarteModal()" role="button" tabindex="0" aria-label="Đóng cửa sổ">×</span>
+            <h3 style="color: var(--bleu); margin-bottom: 5px;">Danh Thiếp Của Tôi</h3>
+            <p style="font-size: 0.85rem; color: #555; margin-bottom: 20px;">Nhấp vào danh thiếp để lật mặt sau</p>
+            
+            <div class="flip-card" onclick="toggleFlipCard()" role="button" tabindex="0" aria-label="Lật danh thiếp">
+                <div class="flip-card-inner" id="businessCardInner">
+                    <div class="flip-card-front">
+                        <img src="carte-visite-a.jpg?v=12" alt="Mặt trước danh thiếp OSP+">
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="carte-visite-b.jpg?v=12" alt="Mặt sau danh thiếp OSP+">
+                    </div>
+                </div>
+            </div>
+
+            <div class="carte-actions" style="margin-top: 25px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-carte-action btn-tourner" onclick="toggleFlipCard()">🔄 Lật mặt</button>
+                <button class="btn-carte-action btn-telecharger" onclick="downloadCarte()">⬇️ Tải về</button>
+                <button class="btn-carte-action btn-imprimer" onclick="printCarte()">🖨️ In danh thiếp</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeImageModal()" style="color: white; font-size: 50px; right: 30px; top: 15px;" role="button" tabindex="0" aria-label="Đóng cửa sổ">×</span>
+        <img class="modal-content-img" id="fullSizeImage">
+    </div>
+
+    <div id="customConfirmModal" class="modal" style="z-index: 3000;">
+        <div class="modal-content small" style="padding: 30px; text-align: center;">
+            <h3 id="customConfirmTitle" style="color: var(--bleu); margin-bottom: 15px; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Xác nhận</h3>
+            <p id="customConfirmMessage" style="font-size: 0.95rem; color: #555; margin-bottom: 25px; line-height: 1.5;"></p>
+            <div id="customConfirmButtons" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                </div>
+        </div>
+    </div>
+
+    <div id="callbackModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: center;">
+            <span class="close-modal" onclick="closeCallbackModal()" role="button" tabindex="0" aria-label="Đóng cửa sổ">×</span>
+            
+            <div id="step-choix">
+                <h3 style="color: var(--bleu); margin-bottom: 25px; font-size: 1.5rem;">Bạn muốn liên hệ bằng hình thức nào?</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: center; margin-bottom: 25px;">
+                    
+                    <a href="tel:+33745027624" class="btn-submit-form" style="margin-top: 0; background: #3498db; text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white;">
+                        <span style="font-size: 1.1rem;">📞 GỌI TRỰC TIẾP</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">07 45 02 76 24</span>
+                    </a>
+                    
+                    <button type="button" class="btn-submit-form" style="margin-top: 0; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3;" onclick="afficherFormulaireRappel()">
+                        <span style="font-size: 1.1rem;">📲 YÊU CẦU GỌI LẠI</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px; opacity: 0.9;">Miễn phí</span>
+                    </button>
+
+                    <a href="https://wa.me/33745027624" target="_blank" class="btn-submit-form" style="margin-top: 0; background: #25d366; text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white;">
+                        <span style="font-size: 1.1rem; display: flex; align-items: center; gap: 5px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 18px; filter: brightness(0) invert(1);"> WHATSAPP
+                        </span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">07 45 02 76 24</span>
+                    </a>
+
+                    <a href="sms:+33745027624" class="btn-submit-form" style="margin-top: 0; background: #f39c12; text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white;">
+                        <span style="font-size: 1.1rem;">💬 SMS</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">07 45 02 76 24</span>
+                    </a>
+
+                    <a href="mailto:contact@ospplus.com" class="btn-submit-form" style="margin-top: 0; background: var(--bleu); text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white; grid-column: 1 / -1;">
+                        <span style="font-size: 1.1rem;">✉️ EMAIL</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">contact@ospplus.com</span>
+                    </a>
+                </div>
+
+                <button type="button" onclick="closeCallbackModal()" style="background: #fadbd8; border: none; color: #c0392b; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: 0.2s;">❌ Đóng cửa sổ</button>
+            </div>
+
+            <div id="step-formulaire" style="display: none;">
+                <h3 style="color: var(--bleu); margin-bottom: 10px; font-size: 1.5rem;">Yêu cầu gọi lại</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 20px; color: #555;">Để lại thông tin, tôi sẽ gọi lại cho bạn sớm nhất.</p>
+                
+                <form id="callbackForm" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+                    <div class="input-group">
+                        <label>Họ & Tên *</label>
+                        <input type="text" id="cbName" required placeholder="Ví dụ: Nguyen Van A">
+                    </div>
+                    <div class="input-group">
+                        <label>Số điện thoại *</label>
+                        <input type="tel" id="cbPhone" required placeholder="Ví dụ: 06 12 34 56 78">
+                    </div>
+                    <div class="input-group">
+                        <label>Dịch vụ bạn quan tâm? *</label>
+                        <select id="cbService" required style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef; background: var(--gris); font-size: 0.9rem; outline: none; color: var(--bleu); font-weight: 600;">
+                            <option value="" disabled selected>-- Chọn dịch vụ --</option>
+                            <option value="Bureaux & Locaux">Văn phòng & Cơ sở</option>
+                            <option value="Vitrerie">Lau kính</option>
+                            <option value="Shampouinage textiles">Giặt thảm & Ghế</option>
+                            <option value="Pack Véhicule">Gói Xe hơi</option>
+                            <option value="Sépultures">Chăm sóc phần mộ</option>
+                            <option value="Remise en État de Salle">Dọn dẹp hội trường</option>
+                            <option value="Fin de chantier">Vệ sinh sau xây dựng</option>
+                            <option value="Autre demande">Yêu cầu khác</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" class="btn-submit-form" onclick="submitCallbackForm()" id="btnSubmitCallback" style="margin-top: 5px;">GỬI YÊU CẦU</button>
+                    
+                    <p id="callbackMsg" style="text-align: center; font-weight: bold; font-size: 0.9rem; margin-top: 10px;"></p>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                        <button type="button" onclick="afficherChoixContact()" style="background: #e1e8ef; border: none; color: var(--bleu); padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; flex: 1;">⬅ Quay lại</button>
+                        <button type="button" onclick="closeCallbackModal()" style="background: #fadbd8; border: none; color: #c0392b; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; flex: 1;">❌ Đóng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL ĐỐI TÁC B2B -->
+    <div id="b2bModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: left;">
+            <span class="close-modal" onclick="closeB2bModal()" role="button" tabindex="0" aria-label="Đóng cửa sổ">×</span>
+            
+            <h3 style="color: var(--bleu); margin-bottom: 10px; text-align: center; font-size: 1.6rem;">🤝 Khu Vực Đối Tác</h3>
+            <p style="font-size: 0.85rem; color: #555; text-align: center; margin-bottom: 20px; line-height: 1.5;">
+                Đại lý BĐS, Công trình xây dựng, Đội xe, Sự kiện... Hợp tác đôi bên cùng có lợi với <strong>bảng giá ưu đãi riêng</strong> và <strong>ưu tiên sắp xếp dịch vụ</strong>.
+            </p>
+            
+            <form id="b2bForm" style="display: flex; flex-direction: column; gap: 15px;">
+                
+                <div class="input-group">
+                    <label style="color: var(--vert);">Lĩnh vực hợp tác *</label>
+                    <select id="b2bSecteur" required style="border-color: var(--vert); font-weight: bold; color: var(--bleu); padding: 12px; border-radius: 8px;">
+                        <option value="" disabled selected>-- Chọn nhu cầu của bạn --</option>
+                        <option value="Apporteur d'affaires (Immobilier, Conciergerie)">Bất động sản / Quản lý căn hộ (Cộng tác viên)</option>
+                        <option value="Sous-traitance (BTP, Rénovation)">Xây dựng / Sửa chữa (Vệ sinh sau công trình)</option>
+                        <option value="Sous-traitance (Événementiel, Salles)">Sự kiện / Nhà hàng tiệc cưới (Dọn dẹp)</option>
+                        <option value="Entretien Flotte Auto (Entreprises, Garages)">Quản lý Đội xe / Garage ô tô</option>
+                        <option value="Autre projet B2B">Dự án hợp tác B2B khác</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div class="input-group" style="flex: 1; min-width: 150px;">
+                        <label>Tên doanh nghiệp *</label>
+                        <input type="text" id="b2bEntreprise" required placeholder="Ví dụ: Agence Immo 31" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                    <div class="input-group" style="width: 140px; flex-grow: 1;">
+                        <label>Mã số SIRET (Tùy chọn)</label>
+                        <input type="text" id="b2bSiret" placeholder="Không bắt buộc" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div class="input-group" style="flex: 1; min-width: 150px;">
+                        <label>Họ & Tên người đại diện *</label>
+                        <input type="text" id="b2bNom" required placeholder="Ví dụ: Nguyen Van A" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                    <div class="input-group" style="flex: 1; min-width: 150px;">
+                        <label>Số điện thoại trực tiếp *</label>
+                        <input type="tel" id="b2bPhone" required placeholder="Ví dụ: 06 12 34 56 78" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Email *</label>
+                    <input type="email" id="b2bEmail" required placeholder="contact@congty.com" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                </div>
+
+                <div class="input-group">
+                    <label>Mô tả ngắn gọn nhu cầu hoặc khối lượng công việc:</label>
+                    <textarea id="b2bMessage" placeholder="Ví dụ: Chúng tôi quản lý 5 căn hộ Airbnb và cần tìm đối tác vệ sinh định kỳ..." style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef; font-size: 0.9rem; resize: vertical; min-height: 80px; font-family: inherit;"></textarea>
+                </div>
+
+                <button type="button" class="btn-submit-form" onclick="submitB2bForm()" id="btnSubmitB2b" style="margin-top: 5px;">GỬI YÊU CẦU HỢP TÁC</button>
+            </form>
+
+            <div id="b2bSuccessMsg" style="display: none; text-align: center; padding: 20px 0;">
+                <h4 style="color: var(--vert); font-size: 1.2rem; margin-bottom: 10px;">✅ Đã gửi yêu cầu thành công!</h4>
+                <p style="font-size: 0.9rem; color: #555;">Cảm ơn bạn đã quan tâm. Tôi sẽ liên hệ lại sớm để thảo luận cơ hội hợp tác.</p>
+                <button type="button" onclick="closeB2bModal()" style="margin-top: 15px; background: #e1e8ef; color: var(--bleu); border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer;">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function afficherFormulaireRappel() {
+            document.getElementById('step-choix').style.display = 'none';
+            document.getElementById('step-formulaire').style.display = 'block';
+        }
+        function afficherChoixContact() {
+            document.getElementById('step-formulaire').style.display = 'none';
+            document.getElementById('step-choix').style.display = 'block';
+        }
+        function openCallbackModal() {
+            document.getElementById('callbackModal').style.display = 'flex';
+            afficherChoixContact();
+        }
+        function closeCallbackModal() {
+            document.getElementById('callbackModal').style.display = 'none';
+        }
+    </script>
+
+    <!-- CONTAINER NÚT LIÊN HỆ NỔI -->
+    <div class="floating-buttons-container">
+        <!-- Nút Email -->
+        <a href="mailto:contact@ospplus.com" class="floating-btn mail-btn" aria-label="Gửi email">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+        </a>
+
+        <!-- Nút Đánh giá Google -->
+        <a href="https://g.page/r/CdNdWcfjRCyYECE/review" target="_blank" class="floating-btn google-btn" aria-label="Viết đánh giá trên Google">
+            <span style="font-size: 1.3rem; line-height: 1;">⭐</span>
+        </a>
+
+        <!-- Nút Facebook -->
+        <a href="https://www.facebook.com" target="_blank" class="floating-btn facebook-btn" aria-label="Xem trang Facebook">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook">
+        </a>
+
+        <!-- Nút WhatsApp -->
+        <a href="https://wa.me/33745027624" target="_blank" class="floating-btn whatsapp-btn" aria-label="Liên hệ qua WhatsApp">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        </a>
+    </div>
+
+    <!-- Tải muộn script không gây chậm hiển thị -->
     <script defer src="codes.js"></script>
     <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">

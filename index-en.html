@@ -5,62 +5,244 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>O.S.P+ | Cleaning Company Toulouse & Occitania | 20 Years of Expertise</title>
-    <meta name="description" content="O.S.P+: Professional cleaning expert in Toulouse. Window cleaning, sofa, rug, and office shampooing. High-quality cleaning service in Occitania. Free Quote.">
+    <meta name="description" content="O.S.P+: Professional cleaning expert in Toulouse. Window cleaning, sofa, rug, office shampooing, and event hall restoration. Free Quote.">
     <meta name="keywords" content="cleaning toulouse, window cleaner toulouse, sofa shampooing toulouse, office cleaning occitania, cleanliness toulouse">
     
-    <!-- Optimisation de la connexion aux polices Google -->
+    <!-- Google Fonts connection optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
     
     <style>
         .comparison-container { position: relative; }
-        .btn-fullscreen-comp { position: absolute; top: 10px; right: 10px; z-index: 20; background: rgba(0, 0, 0, 0.7); color: #fff; border: 2px solid #fff; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.3s ease; }
-        .btn-fullscreen-comp:hover { background: var(--vert, #27ae60); border-color: var(--vert, #27ae60); }
-        .comparison-container:fullscreen { width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #111; padding: 20px; box-sizing: border-box; }
-        .comparison-container:fullscreen .comparison-slider { width: 100%; height: 85vh; max-width: 1200px; margin: 0 auto; }
-        .comparison-container:fullscreen .gallery-label { color: #fff; margin-top: 15px; font-size: 1.2rem; }
-        @media (max-width: 768px) { .btn-fullscreen-comp { display: none !important; } }
+        .btn-fullscreen-comp {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-fullscreen-comp:hover {
+            background: var(--vert, #27ae60);
+            border-color: var(--vert, #27ae60);
+        }
+        .comparison-container:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .comparison-container:fullscreen .comparison-slider {
+            width: 100%;
+            height: 85vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .comparison-container:fullscreen .gallery-label {
+            color: #fff;
+            margin-top: 15px;
+            font-size: 1.2rem;
+        }
+        @media (max-width: 768px) {
+            .btn-fullscreen-comp { display: none !important; }
+        }
+
+        .hero-content { position: relative; }
+        
+        .promo-banner-wrapper {
+            background: linear-gradient(90deg, var(--bleu, #1a3c6c), #265494, var(--bleu, #1a3c6c));
+            position: relative;
+            z-index: auto !important;
+        }
+        .promo-banner {
+            background: transparent !important;
+            border-bottom: none !important;
+            flex-grow: 1;
+            min-height: auto;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .promo-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 9999 !important;
+        }
+        .btn-client-nav-top, .btn-carte-nav-top {
+            background: transparent;
+            color: var(--blanc, #ffffff);
+            border: 1px solid var(--blanc, #ffffff);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        .btn-client-nav-top:hover, .btn-carte-nav-top:hover {
+            background: var(--blanc, #ffffff);
+            color: var(--bleu, #1a3c6c);
+        }
+        .top-lang .selected-lang {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--blanc, #ffffff);
+            border: 1px solid var(--blanc, #ffffff);
+        }
+        .top-lang .selected-lang:hover {
+            background: var(--blanc, #ffffff);
+            color: var(--bleu, #1a3c6c);
+        }
+        .main-header {
+            border-top: 4px solid var(--vert, #8cc63f);
+            padding: 0 15px !important;
+            position: relative;
+            z-index: auto !important;
+        }
+        .logo-container {
+            margin-left: 0;
+            position: relative;
+            z-index: 9998 !important;
+        }
+        .promo-nav-link { color: #e67e22 !important; font-weight: 900 !important; }
+        .promo-nav-link:hover { color: var(--vert, #8cc63f) !important; }
+        
+        .mobile-only-menu-item { display: none !important; }
+
+        @media (min-width: 1381px) {
+            .promo-banner-wrapper { display: flex; align-items: center; min-height: 50px; }
+            .promo-actions { position: absolute; right: 15px; }
+            .promo-banner { padding-left: 240px; padding-right: 320px; }
+
+            .logo-container { width: 380px !important; height: 60px !important; margin-left: 0 !important; }
+            .site-logo { position: absolute !important; top: -50px !important; left: 15px !important; height: 100px !important; width: auto !important; }
+            .site-logo-capture { position: absolute !important; top: -48px !important; left: 115px !important; height: 38px !important; width: auto !important; }
+            .site-logo-texte { position: absolute !important; top: 15px !important; left: 115px !important; height: 30px !important; width: auto !important; }
+            .nav-link { font-size: 1.15rem !important; margin: 0 2px; }
+            nav ul { gap: 5px; }
+        }
+        
+        @media (max-width: 1380px) {
+            .promo-banner-wrapper { flex-direction: row; padding: 5px 15px; min-height: 40px; gap: 10px; justify-content: space-between; }
+            .promo-banner { width: auto; flex: 1; text-align: left; padding: 0; }
+            .promo-actions { position: relative; right: auto; justify-content: flex-end; flex-wrap: nowrap; width: auto; }
+            .btn-client-nav-top, .btn-carte-nav-top, .top-lang { display: none !important; }
+            
+            .mobile-only-menu-item { display: flex !important; justify-content: center; width: 100%; margin-top: 5px; }
+            .main-header { padding: 10px 15px !important; }
+            
+            .logo-container {
+                display: grid !important;
+                grid-template-columns: auto auto !important;
+                grid-template-rows: auto auto !important;
+                align-items: center !important;
+                justify-content: start !important;
+                gap: 0px 10px !important; 
+                position: relative !important;
+                width: auto !important;
+                height: auto !important;
+                margin-left: 0 !important;
+            }
+            .site-logo, .site-logo-capture, .site-logo-texte { position: relative !important; top: auto !important; left: auto !important; margin: 0 !important; }
+            .site-logo { grid-row: 1 / 3 !important; grid-column: 1 !important; height: 48px !important; }
+            .site-logo-capture { grid-row: 1 !important; grid-column: 2 !important; height: 22px !important; align-self: end !important; justify-self: start !important; }
+            .site-logo-texte { grid-row: 2 !important; grid-column: 2 !important; height: 16px !important; align-self: start !important; justify-self: start !important; }
+
+            .nav-link { font-size: 1.35rem !important; }
+            .header-action-container { position: static; transform: none; margin-top: 15px; width: 100%; justify-content: center; } 
+            .btn-header-validate { width: 100%; }
+            .hamburger { display: flex; }
+            
+            nav ul { position: absolute; top: 100%; left: 0; width: 100%; background: var(--blanc); flex-direction: column; align-items: center; padding: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.1); max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; gap: 0; z-index: 2000;}
+            nav ul.active { max-height: 800px; padding: 20px 0; overflow-y: auto; }
+            nav ul li { width: 100%; display: flex; justify-content: center; margin: 8px 0; }
+            .nav-link { font-size: 1.3rem !important; }
+            .btn-devis-nav, .btn-phone-nav, .btn-client-nav, .btn-carte-nav { display: flex; justify-content: center; width: 90% !important; max-width: 300px; margin: 0; font-size: 1.2rem !important; padding: 10px !important; }
+            .lang-menu { width: 100%; display: flex; flex-direction: column; align-items: center; margin-left: 0; }
+            .lang-dropdown { position: relative; box-shadow: none; border: 1px solid #eee; margin: 10px auto; width: 90%; max-width: 300px; }
+        }
     </style>
 </head>
 <body>
 
-    <a href="#services" class="skip-link">Skip to services and quotes</a>
+    <a href="#services" class="skip-link">Skip directly to services and estimates</a>
 
-    <div class="sr-only">Welcome to the O.S.P Plus website. This site has been optimized to be fully accessible to keyboard and screen readers.</div>
+    <h1 class="sr-only">Excellence in Cleaning in Toulouse & Occitania</h1>
+
+    <div class="sr-only">Welcome to O.S.P Plus. This website has been optimized to be fully accessible via keyboard and screen readers.</div>
 
     <div class="header-sticky-wrapper">
-        <div id="promo-banner" class="promo-banner" style="display: none;">
-            🎉 <strong>PUBLIC HOLIDAY SPECIAL OFFER: -10% on your final invoice!</strong> <em>(Valid if the final contract is signed within 15 days)</em>
+        
+        <div class="promo-banner-wrapper">
+            <div id="promo-banner" class="promo-banner" style="cursor: pointer;" onclick="document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" role="button" tabindex="0" aria-label="Go to current promotions">
+            </div>
+
+            <div class="promo-actions">
+                <button class="btn-client-nav-top" onclick="openClientModal()">Loyal Customer</button>
+                <button class="btn-carte-nav-top" onclick="openCarteModal()">Business Card</button>
+                <button class="btn-carte-nav-top" style="background: var(--vert); border-color: var(--vert);" onclick="openB2bModal()">🤝 B2B Area</button>
+                
+                <div class="lang-menu top-lang">
+                    <div class="selected-lang" role="button" tabindex="0" aria-label="Language selection menu">🇬🇧 EN ▼</div>
+                    <ul class="lang-dropdown">
+                        <li><a href="index.html">🇫🇷 Français</a></li>
+                        <li><a href="index-en.html">🇬🇧 English</a></li>
+                        <li><a href="index-vi.html">🇻🇳 Tiếng Việt</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <header>
+        <header class="main-header">
             <div class="logo-container">
-                <img src="logo.png" alt="O.S.P+ Occitania Cleaning Services Plus Logo" class="site-logo" style="cursor: pointer;" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Enlarge logo">
+                <img src="logo.png" alt="O.S.P+ Logo" class="site-logo" style="cursor: pointer;" onclick="openImageModal(this.src)" role="button" tabindex="0" aria-label="Enlarge logo">
+                <img src="Capture-Photoroom.png" alt="OSP Badge" class="site-logo-capture">
+                <img src="texte-osp.png" alt="O.S.P+ Occitanie Service Propreté" class="site-logo-texte">
             </div>
 
             <div class="hamburger" id="mobile-menu-btn" role="button" tabindex="0" aria-label="Open main menu">
-                <span></span><span></span><span></span>
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
 
             <nav>
                 <ul id="nav-links">
                     <li><a href="#" class="nav-link">Home</a></li>
-                    <li><a href="#services" class="nav-link">Services</a></li>
+                    <li id="menu-ventes-flash" style="display: none;"><a href="#section-promo" class="nav-link text-green">Flash Sales</a></li>
+                    <li><a href="#services" class="nav-link">Services & Estimate</a></li>
                     <li><a href="#galerie" class="nav-link">Portfolio</a></li>
-                    <li><a href="#avis" class="nav-link">Reviews</a></li>
+                    <li><a href="#avis-google" class="nav-link">Your Review</a></li>
                     <li><a href="#qui-suis-je" class="nav-link">Expertise</a></li>
+                    <li><a href="#signification-osp" class="nav-link text-green">What does O.S.P+ mean?</a></li>
                     <li><a href="#faq" class="nav-link">FAQ</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
-                    <li><a href="tel:0745027624" class="btn-phone-nav">📞 +33 7 45 02 76 24</a></li>
-                    <li><a href="#services" class="btn-devis-nav">Free Quote</a></li>
-                    <li><button class="btn-client-nav" onclick="openClientModal()">Loyal Customer</button></li>
-                    <li><button class="btn-carte-nav" onclick="openCarteModal()">📇 Business Card</button></li>
                     
-                    <li class="lang-menu">
-                        <div class="selected-lang" role="button" tabindex="0" aria-label="Language selection menu">🇬🇧 EN ▼</div>
+                    <li class="mobile-only-menu-item"><button class="btn-client-nav" onclick="openClientModal()" style="width: 90%; max-width: 300px;">Loyal Customer</button></li>
+                    <li class="mobile-only-menu-item"><button class="btn-carte-nav" onclick="openCarteModal()" style="width: 90%; max-width: 300px;">Business Card</button></li>
+                    <li class="mobile-only-menu-item"><button class="btn-carte-nav" onclick="openB2bModal()" style="width: 90%; max-width: 300px; background: var(--vert); color: white; border-color: var(--vert);">🤝 B2B Area</button></li>
+                    
+                    <li class="mobile-only-menu-item lang-menu" style="margin-top: 15px;">
+                        <div class="selected-lang" role="button" tabindex="0" aria-label="Language selection menu" style="width: 90%; max-width: 300px; justify-content: center;">🇬🇧 EN ▼</div>
                         <ul class="lang-dropdown">
                             <li><a href="index.html">🇫🇷 Français</a></li>
                             <li><a href="index-en.html">🇬🇧 English</a></li>
@@ -70,64 +252,762 @@
                 </ul>
             </nav>
         </header>
+        
     </div>
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Our Priority, <span class="text-green">Cleanliness.</span></h1>
-            <div class="hero-video-container">
+            
+            <div id="promo-mini-left" class="promo-ascension-box" style="display: none; cursor: pointer;" onclick="document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" role="button" tabindex="0" aria-label="View current promotion"></div>
+            <div id="promo-mini-right" class="promo-ascension-box" style="display: none; cursor: pointer;" onclick="document.getElementById('section-promo').scrollIntoView({behavior: 'smooth'});" role="button" tabindex="0" aria-label="View current promotion"></div>
+
+            <div class="hero-video-container" style="max-width: 350px;">
                 <div class="video-wrapper">
-                    <video id="introVid" muted autoplay loop playsinline preload="metadata"><source src="video-introduction.mp4" type="video/mp4"></video>
+                    <video id="introVid" playsinline preload="metadata" style="max-height: 30vh; cursor: pointer;" onclick="togglePlay('introVid')">
+                        <source src="video-introduction.mp4" type="video/mp4">
+                    </video>
                 </div>
-                <div class="custom-controls">
-                    <button class="control-btn" onclick="togglePlay('introVid')">⏯️ Play/Pause</button>
-                    <button class="control-btn" onclick="toggleMute('introVid')">🔊 Sound</button>
-                    <button class="control-btn" onclick="restartVideo('introVid')">🔄 Reset</button>
-                    <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Full</button>
+                
+                <div class="video-controls-drawer">
+                    <div class="custom-controls" id="hiddenVideoControls">
+                        <button class="control-btn" id="btnPlayPause" onclick="togglePlay('introVid')">⏸️ Pause</button>
+                        <button class="control-btn" id="btnMute" onclick="toggleMute('introVid')">🔇 Sound</button>
+                        <button class="control-btn" onclick="restartVideo('introVid')">🔄 Reset</button>
+                        <button class="control-btn" onclick="toggleFullScreen('introVid')">🖥️ Full</button>
+                    </div>
+                    <div class="video-tab" onclick="toggleVideoControls()">▼ Video controls</div>
                 </div>
             </div>
+
+            <script>
+                function toggleVideoControls() {
+                    const controls = document.getElementById('hiddenVideoControls');
+                    const tab = document.querySelector('.video-tab');
+                    controls.classList.toggle('show-controls');
+                    
+                    if (controls.classList.contains('show-controls')) {
+                        tab.innerHTML = '▲ Close';
+                        tab.style.background = 'var(--vert)';
+                        tab.style.color = 'white';
+                    } else {
+                        tab.innerHTML = '▼ Video controls';
+                        tab.style.background = 'var(--blanc)';
+                        tab.style.color = 'var(--bleu)';
+                    }
+                }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    const vid = document.getElementById('introVid');
+                    const btnMute = document.getElementById('btnMute');
+                    const btnPlay = document.getElementById('btnPlayPause');
+                    let hasStarted = false;
+                    
+                    if (vid) {
+                        function updateVideoUI() {
+                            if (vid.muted) {
+                                btnMute.innerHTML = '🔇 Sound';
+                                btnMute.style.background = '#e74c3c';
+                                btnMute.style.color = 'white';
+                            } else {
+                                btnMute.innerHTML = '🔊 Sound';
+                                btnMute.style.background = 'var(--vert)';
+                                btnMute.style.color = 'white';
+                            }
+
+                            if (btnPlay) {
+                                if (vid.paused) {
+                                    btnPlay.innerHTML = '▶️ Play';
+                                    btnPlay.style.background = '#e74c3c';
+                                    btnPlay.style.color = 'white';
+                                } else {
+                                    btnPlay.innerHTML = '⏸️ Pause';
+                                    btnPlay.style.background = 'rgba(255,255,255,0.9)';
+                                    btnPlay.style.color = 'var(--bleu)';
+                                }
+                            }
+                        }
+
+                        vid.muted = true;
+                        vid.loop = false;
+                        updateVideoUI();
+
+                        function initVideoSequence() {
+                            if (hasStarted) return;
+                            
+                            vid.currentTime = 0;
+                            vid.pause();
+
+                            setTimeout(function() {
+                                hasStarted = true;
+                                vid.currentTime = 3.00;
+                                
+                                let playPromise = vid.play();
+                                if (playPromise !== undefined) {
+                                    playPromise.catch(function() {
+                                        vid.muted = true;
+                                        vid.play();
+                                    });
+                                }
+                            }, 3000);
+                        }
+
+                        if (vid.readyState >= 1) {
+                            initVideoSequence();
+                        } else {
+                            vid.addEventListener('loadedmetadata', initVideoSequence);
+                        }
+                        
+                        vid.addEventListener('timeupdate', function() {
+                            if (hasStarted && vid.duration > 0) {
+                                if (vid.currentTime >= (vid.duration - 0.25)) {
+                                    vid.currentTime = 3.65; 
+                                }
+                            }
+                        });
+
+                        vid.addEventListener('volumechange', updateVideoUI);
+                        vid.addEventListener('play', updateVideoUI);
+                        vid.addEventListener('pause', updateVideoUI);
+                        
+                        vid.load();
+                    }
+                });
+            </script>
+
             <div class="hero-badges">
-                <span class="badge">20 Years of Experience</span>
+                <span class="badge">⭐ 20 Years Experience</span>
                 <span class="badge" style="border-color: var(--bleu); color: var(--bleu);">✓ Pro Liability Insurance</span>
-                <span class="badge">Professional Equipment</span>
+                <span class="badge">🛠️ Professional Equipment</span>
             </div>
-            <a href="#services" class="btn-main pulse-animation">REQUEST MY FREE QUOTE</a>
+
+            <div class="hero-cta-container" style="align-items: flex-start;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <a href="#services" class="btn-main pulse-animation btn-devis-inline">ONLINE ESTIMATE</a>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; padding-top: 16px;">
+                    <span class="cta-separator">OR</span>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                    <button type="button" class="btn-main pulse-animation btn-rappel-inline" onclick="openCallbackModal()" style="margin-top: 0 !important;">QUICK CONTACT</button>
+                    <span style="font-size: 0.6rem; font-weight: 800; color: var(--bleu); text-transform: uppercase; text-align: center; line-height: 1.2;">Phone • Email • WhatsApp • SMS</span>
+                </div>
+            </div>
+
         </div>
+
+        <div class="organigramme-container">
+            <div class="tree-badge">Your cleaning expert <span>All-in-1</span></div>
+            <div class="tree-trunk"></div>
+            <div class="tree-connection">
+                <div class="tree-line"></div>
+                <div class="tree-line"></div>
+                <div class="tree-line"></div>
+                <div class="tree-line"></div>
+            </div>
+        </div>
+        
+        <div class="hero-services-row">
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-o')" aria-label="Learn more about travel and estimate">?</button>
+                <div id="bubble-o" class="card-info-bubble">
+                    <div class="bubble-title">Technical Visit & Free Estimate</div>
+                    <ul>
+                        <li>📍 <strong>Area:</strong> Toulouse and surroundings.</li>
+                        <li>🚗 <strong>Travel:</strong> 100% Free (Beyond: €0.50/km or <strong>FREE</strong> over €150).</li>
+                        <li>🕒 <strong>Slots:</strong> Monday to Saturday by appointment.</li>
+                        <li>🤝 <strong>Commitment:</strong> Free estimate with no obligation.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-bleu">O</span><span class="rest-word text-green">ccitania</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-occitanie.jpg" alt="Technical visit & free estimate" class="service-image">
+                </div>
+                <span class="service-name">Technical visit & free estimate</span>
+            </div>
+            
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-s')" aria-label="Learn more about window and textile cleaning">?</button>
+                <div id="bubble-s" class="card-info-bubble">
+                    <div class="bubble-title">Windows & Textiles</div>
+                    <ul>
+                        <li>🪟 <strong>Windows:</strong> Windows, sliding doors, verandas, shopfronts.</li>
+                        <li>🛋️ <strong>Textiles:</strong> Injection / extraction for sofas, rugs, and carpets.</li>
+                        <li>⏱️ <strong>Drying:</strong> Fast (4h to 6h) thanks to pro equipment.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-bleu">S</span><span class="rest-word text-green">ervice</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-textiles.jpg" alt="Window & textile shampooing" class="service-image">
+                </div>
+                <span class="service-name">Window & textile shampooing</span>
+            </div>
+            
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-p')" aria-label="Learn more about pro and residential cleaning">?</button>
+                <div id="bubble-p" class="card-info-bubble">
+                    <div class="bubble-title">Pro & Residential</div>
+                    <ul>
+                        <li>🏢 <strong>Premises:</strong> Offices, shops, practices, and homes.</li>
+                        <li>⏰ <strong>Hours:</strong> From 5 AM or in the evening to avoid disruption.</li>
+                        <li>🔒 <strong>Security:</strong> Single operative, absolute discretion guaranteed.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-bleu">P</span><span class="rest-word text-green">rogress</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-bureaux.jpg" alt="Cleaning for Pro & Residential" class="service-image">
+                </div>
+                <span class="service-name">Cleaning for Pro & Residential</span>
+            </div>
+            
+            <div class="hero-service-card">
+                <button type="button" class="card-info-btn" onclick="toggleCardBubble(event, 'bubble-plus')" aria-label="Learn more about auto and grave cleaning">?</button>
+                <div id="bubble-plus" class="card-info-bubble">
+                    <div class="bubble-title">Autos & Graves</div>
+                    <ul>
+                        <li>🚗 <strong>Vehicles:</strong> Full interior cleaning on site or at home.</li>
+                        <li>🪦 <strong>Graves:</strong> Respectful cleaning, moss removal, and flowering.</li>
+                        <li>✨ <strong>Custom:</strong> Specific services upon request.</li>
+                    </ul>
+                </div>
+                <div class="photo-word-badge">
+                    <span class="first-letter text-green">P</span><span class="rest-word text-bleu">lus</span>
+                </div>
+                <div class="service-image-container">
+                    <img src="photo-vehicules.jpg" alt="Auto cleaning & Graves" class="service-image">
+                </div>
+                <span class="service-name">Auto cleaning & Graves</span>
+            </div>
+        </div>
+
     </section>
 
-    <div class="trust-bar"><p>📍 Area: <strong>Toulouse (15 km included)</strong> and all of <strong>Occitania*</strong></p></div>
+    <!-- MAIN BLUE BAR WITH INTEGRATED BUTTON -->
+    <div class="trust-bar" style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 15px 5%;">
+        <p style="margin: 0; font-size: 0.95rem;">📍 <strong>FREE travel in Toulouse & surroundings</strong> | Beyond: €0.50/km (or <strong>FREE</strong> over €150) *</p>
+        <button type="button" onclick="testerEligibiliteRapide()" style="background: var(--vert); color: white; border: 2px solid white; padding: 8px 20px; border-radius: 30px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-transform: uppercase; white-space: nowrap;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">🚗 Check Eligibility</button>
+    </div>
+
+    <div id="event-image-container" class="scroll-animate" style="display: none; margin-top: 40px; margin-bottom: 20px;">
+        <div id="section-promo" style="scroll-margin-top: 120px;"></div>
+        <h2 class="section-title">Current <span class="text-green">Flash Sales</span></h2>
+        <div class="promo-image-container">
+            <div id="event-images-wrapper" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;"></div>
+            
+            <div style="background: #ffffff; border: 2px solid var(--vert); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 1000px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                <h3 style="color: var(--bleu); font-size: 1.1rem; text-align: center; margin-bottom: 15px; text-transform: uppercase; font-weight: 800;">
+                    ⚡ How to claim your Flash Sale?
+                </h3>
+                
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;">
+                    
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">1</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Lock in -10%</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Contact us (Estimate, Phone, Email...) during the Flash countdown.</span>
+                    </div>
+
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">2</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Pay deposit</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Pay to confirm reservation (Card, Cash, Bank Transfer).</span>
+                    </div>
+
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">3</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Schedule whenever you want</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Set the service date of your choice.</span>
+                    </div>
+
+                    <div style="flex: 1 1 0; min-width: 180px; background: var(--gris); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div>
+                            <div style="background: var(--vert); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin: 0 auto 8px auto;">4</div>
+                            <strong style="color: var(--bleu); font-size: 0.85rem; display: block; margin-bottom: 4px;">Guaranteed Rate</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #555;">Service delivered with your discount locked in!</span>
+                    </div>
+
+                </div>
+            </div>
+            <div id="event-image-text" style="font-size: 1.1rem; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+        </div>
+    </div>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const eventContainer = document.getElementById('event-image-container');
+        const eventImagesWrapper = document.getElementById('event-images-wrapper');
+        const eventImageText = document.getElementById('event-image-text');
+        const promoBanner = null; 
+        const promoServicesText = document.getElementById('promo-services-text'); 
+
+        if (!eventContainer || !eventImagesWrapper) return;
+
+        function genererCalendrier(annee) {
+            function getEaster(y) {
+                let a = y % 19, b = Math.floor(y / 100), c = y % 100;
+                let d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+                let g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+                let i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
+                let m = Math.floor((a + 11 * h + 22 * l) / 451);
+                let mois = Math.floor((h + l - 7 * m + 114) / 31);
+                let jour = ((h + l - 7 * m + 114) % 31) + 1;
+                return new Date(y, mois - 1, jour);
+            }
+
+            function getNthDay(y, month, dayOfWeek, n) {
+                let d = new Date(y, month, 1);
+                let count = 0;
+                while (d.getMonth() === month) {
+                    if (d.getDay() === dayOfWeek) {
+                        count++;
+                        if (count === n) return new Date(d);
+                    }
+                    d.setDate(d.getDate() + 1);
+                }
+                return null;
+            }
+
+            function getLastSunday(y, month) {
+                let d = new Date(y, month + 1, 0); 
+                while (d.getDay() !== 0) d.setDate(d.getDate() - 1);
+                return new Date(d);
+            }
+
+            let paquesDim = getEaster(annee);
+            let pentecote = new Date(paquesDim); pentecote.setDate(pentecote.getDate() + 49);
+            
+            let paquesDeb = new Date(paquesDim); paquesDeb.setDate(paquesDeb.getDate() - 2); paquesDeb.setHours(19, 0, 0, 0);
+            let paquesFin = new Date(paquesDim); paquesFin.setDate(paquesFin.getDate() + 1); paquesFin.setHours(10, 30, 0, 0);
+
+            let dimMeres = getLastSunday(annee, 4); 
+            if (dimMeres.getTime() === pentecote.getTime()) dimMeres = getNthDay(annee, 5, 0, 1); 
+            let feteMeresDeb = new Date(dimMeres); feteMeresDeb.setDate(feteMeresDeb.getDate() - 2); feteMeresDeb.setHours(19, 0, 0, 0);
+            let feteMeresFin = new Date(dimMeres); feteMeresFin.setDate(feteMeresFin.getDate() + 1); feteMeresFin.setHours(10, 30, 0, 0);
+
+            let dimPeres = getNthDay(annee, 5, 0, 3);
+            let fetePeresDeb = new Date(dimPeres); fetePeresDeb.setDate(fetePeresDeb.getDate() - 2); fetePeresDeb.setHours(19, 0, 0, 0);
+            let fetePeresFin = new Date(dimPeres); fetePeresFin.setDate(fetePeresFin.getDate() + 1); fetePeresFin.setHours(10, 30, 0, 0);
+
+            let noelDeb = new Date(annee, 11, 23, 19, 0, 0, 0);
+            let noelFin = new Date(annee, 11, 26, 10, 30, 0, 0);
+
+            let nouvelAnDeb = new Date(annee, 11, 31, 19, 0, 0, 0);
+            let nouvelAnFin = new Date(annee + 1, 0, 2, 10, 30, 0, 0);
+
+            let hiverDeb = new Date(annee, 0, 14, 19, 0, 0, 0);
+            let hiverFin = new Date(annee, 0, 18, 10, 30, 0, 0);
+
+            let tetDeb = new Date(annee, 1, 9, 19, 0, 0, 0);
+            let tetFin = new Date(annee, 1, 14, 10, 30, 0, 0);
+
+            let printempsDeb = new Date(annee, 2, 19, 19, 0, 0, 0);
+            let printempsFin = new Date(annee, 2, 28, 10, 30, 0, 0);
+
+            let ramadanDeb = new Date(annee, 2, 29, 19, 0, 0, 0);
+            let ramadanFin = new Date(annee, 3, 2, 10, 30, 0, 0);
+
+            let eteDeb = new Date(annee, 5, 24, 19, 0, 0, 0);
+            let eteFin = new Date(annee, 5, 28, 10, 30, 0, 0);
+
+            let rentreeDeb = new Date(annee, 7, 31, 19, 0, 0, 0);
+            let rentreeFin = new Date(annee, 8, 11, 10, 30, 0, 0);
+
+            let toussaintDeb = new Date(annee, 9, 31, 19, 0, 0, 0);
+            let toussaintFin = new Date(annee, 10, 4, 10, 30, 0, 0); 
+
+            return [
+                { nom: "New Year", dateDebutExacte: nouvelAnDeb, dateFinExacte: nouvelAnFin, image: "jour-de-l-an.png" }, 
+                { nom: "Winter Offer", dateDebutExacte: hiverDeb, dateFinExacte: hiverFin, image: "solde.png" }, 
+                { nom: "Tết Festival", dateDebutExacte: tetDeb, dateFinExacte: tetFin, image: "tet.png" }, 
+                { nom: "Spring Offer", dateDebutExacte: printempsDeb, dateFinExacte: printempsFin, image: "nettoyage-de-printemps.png" },
+                { nom: "Ramadan / Eid", dateDebutExacte: ramadanDeb, dateFinExacte: ramadanFin, image: "aid_ramadan.png" }, 
+                { nom: "Easter", dateDebutExacte: paquesDeb, dateFinExacte: paquesFin, image: "paque.png" }, 
+                { nom: "Labor Day", date: new Date(annee, 4, 1), image: "fete-du-travail.png", dureePromo: 1 },
+                { nom: "May 8th", date: new Date(annee, 4, 8), image: "8-mai.png", dureePromo: 1 },
+                { nom: "Mother's Day", dateDebutExacte: feteMeresDeb, dateFinExacte: feteMeresFin, image: "fete-des-meres.png" },
+                { nom: "Father's Day", dateDebutExacte: fetePeresDeb, dateFinExacte: fetePeresFin, image: "fete-des-peres.png" },
+                { nom: "Summer Offer", dateDebutExacte: eteDeb, dateFinExacte: eteFin, image: "solde.png" }, 
+                { nom: "July 14th", date: new Date(annee, 6, 14), image: "14-juillet.png", dureePromo: 1 },
+                { nom: "Assumption", date: new Date(annee, 7, 15), image: "15aout_2.png", dureePromo: 1 },
+                { nom: "Back to School", dateDebutExacte: rentreeDeb, dateFinExacte: rentreeFin, image: "rentree-des-classes.png" },
+                { nom: "Halloween", date: new Date(annee, 9, 30), image: "halloween.png", dureePromo: 1 }, 
+                { nom: "All Saints' Day", dateDebutExacte: toussaintDeb, dateFinExacte: toussaintFin, image: "toussaint.png" }, 
+                { nom: "Christmas", dateDebutExacte: noelDeb, dateFinExacte: noelFin, image: "noel.png" } 
+            ];
+        }
+
+        let displayedEventKey = "";
+
+        function updateEventEngine() {
+            const todayDateObj = typeof getSimulatedDate === 'function' ? getSimulatedDate() : new Date();
+            const realNow = new Date();
+            todayDateObj.setHours(realNow.getHours(), realNow.getMinutes(), realNow.getSeconds());
+
+            const anneeEnCours = todayDateObj.getFullYear();
+            const tousLesEvenements = [
+                ...genererCalendrier(anneeEnCours - 1),
+                ...genererCalendrier(anneeEnCours),
+                ...genererCalendrier(anneeEnCours + 1)
+            ];
+
+            let evenementsActifs = []; 
+
+            for (let evt of tousLesEvenements) {
+                let dateDebut, dateFin;
+                if (evt.dateDebutExacte && evt.dateFinExacte) {
+                    dateDebut = new Date(evt.dateDebutExacte);
+                    dateFin = new Date(evt.dateFinExacte);
+                } else if (evt.dureePromo === 1) {
+                    dateDebut = new Date(evt.date);
+                    dateDebut.setDate(dateDebut.getDate() - 1);
+                    dateDebut.setHours(19, 0, 0, 0);
+
+                    dateFin = new Date(evt.date);
+                    dateFin.setHours(23, 59, 59, 999);
+                } else {
+                    dateDebut = new Date(evt.date);
+                    dateDebut.setHours(0, 0, 0, 0);
+
+                    dateFin = new Date(evt.date);
+                    dateFin.setDate(dateFin.getDate() + evt.dureePromo);
+                    dateFin.setHours(23, 59, 59, 999);
+                }
+
+                let dateTeasing = new Date(dateDebut);
+                dateTeasing.setDate(dateTeasing.getDate() - 15);
+
+                if (todayDateObj >= dateTeasing && todayDateObj < dateDebut) {
+                    evenementsActifs.push({ ...evt, phase: "TEASING", dateCible: dateDebut, dateDebutEvt: dateDebut, dateFinEvt: dateFin });
+                } 
+                else if (todayDateObj >= dateDebut && todayDateObj <= dateFin) {
+                    evenementsActifs.push({ ...evt, phase: "PROMO", dateCible: dateFin, dateDebutEvt: dateDebut, dateFinEvt: dateFin });
+                }
+            }
+
+            window.evenementsActifs = evenementsActifs;
+
+            let maxDiscount = 10;
+            const currentMonthMini = todayDateObj.getMonth();
+            if (currentMonthMini === 4 || currentMonthMini === 5 || currentMonthMini === 7 || currentMonthMini === 8) {
+                maxDiscount = 30;
+            } else if (currentMonthMini === 2 || currentMonthMini === 3 || currentMonthMini === 9 || currentMonthMini === 10 || currentMonthMini === 11 || currentMonthMini === 0) {
+                maxDiscount = 25;
+            }
+
+            const boxLeft = document.getElementById('promo-mini-left');
+            const boxRight = document.getElementById('promo-mini-right');
+
+            if (boxLeft && boxRight) {
+                if (evenementsActifs.length > 0) {
+                    const evt1 = evenementsActifs[0];
+                    boxLeft.innerHTML = `
+                        <div class="etiquette-ruban">${evt1.phase === "PROMO" ? "FLASH" : "COMING SOON"}</div>
+                        <img src="${evt1.image}" alt="${evt1.nom}">
+                        <div class="texte-ascension">
+                            <span class="promo-discount">-${maxDiscount}%</span>
+                            <span class="promo-nom">${evt1.nom}</span>
+                        </div>`;
+                    boxLeft.style.display = 'flex';
+
+                    if (evenementsActifs.length > 1) {
+                        const evt2 = evenementsActifs[1];
+                        boxRight.innerHTML = `
+                            <div class="etiquette-ruban">${evt2.phase === "PROMO" ? "FLASH" : "COMING SOON"}</div>
+                            <img src="${evt2.image}" alt="${evt2.nom}">
+                            <div class="texte-ascension">
+                                <span class="promo-discount">-${maxDiscount}%</span>
+                                <span class="promo-nom">${evt2.nom}</span>
+                            </div>`;
+                        boxRight.style.display = 'flex';
+                    } else {
+                        boxRight.style.display = 'none';
+                    }
+                } else {
+                    boxLeft.style.display = 'none';
+                    boxRight.style.display = 'none';
+                }
+            }
+
+            if (evenementsActifs.length > 0) {
+                eventContainer.style.display = "block";
+                if (document.getElementById('menu-ventes-flash')) document.getElementById('menu-ventes-flash').style.display = "block";
+
+                let currentKey = evenementsActifs.map(e => e.nom + "_" + e.phase).join("|");
+
+                if (displayedEventKey !== currentKey) {
+                    eventImagesWrapper.innerHTML = "";
+
+                    evenementsActifs.forEach((evt, idx) => {
+                        let card = document.createElement('div');
+                        card.className = "event-card-item";
+                        card.style.flex = evenementsActifs.length === 1 ? "1 1 100%" : "1 1 calc(50% - 15px)";
+                        card.style.maxWidth = evenementsActifs.length === 1 ? "100%" : "48%";
+                        card.style.display = "flex";
+                        card.style.flexDirection = "column";
+                        card.style.alignItems = "center";
+                        card.style.background = "#ffffff";
+                        card.style.borderRadius = "10px";
+                        card.style.overflow = "hidden";
+                        card.style.border = "2px solid " + (evt.phase === "PROMO" ? "var(--bleu)" : "#e67e22");
+                        card.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+
+                        let img = document.createElement('img');
+                        img.src = evt.image;
+                        img.alt = evt.nom;
+                        img.style.width = "100%";
+                        img.style.height = "auto";
+                        img.style.objectFit = "cover";
+                        img.style.cursor = "pointer";
+                        if(typeof openImageModal === "function") {
+                            img.onclick = () => openImageModal(img.src);
+                        }
+
+                        let timerBox = document.createElement('div');
+                        timerBox.id = "event-timer-" + idx;
+                        timerBox.style.width = "100%";
+                        timerBox.style.padding = "10px 5px";
+                        timerBox.style.textAlign = "center";
+                        timerBox.style.fontWeight = "bold";
+                        timerBox.style.fontSize = "0.95rem";
+                        timerBox.style.color = evt.phase === "PROMO" ? "var(--bleu)" : "#d35400";
+                        timerBox.style.background = evt.phase === "PROMO" ? "#eef3f8" : "#fff3e0";
+
+                        card.appendChild(img);
+                        card.appendChild(timerBox);
+                        eventImagesWrapper.appendChild(card);
+                    });
+
+                    displayedEventKey = currentKey;
+                }
+
+                let estEnPromoGlobale = false;
+                let nomsEvenements = [];
+
+                evenementsActifs.forEach((evt, idx) => {
+                    nomsEvenements.push(evt.nom);
+                    if (evt.phase === "PROMO") estEnPromoGlobale = true;
+
+                    let timerBox = document.getElementById("event-timer-" + idx);
+                    if (timerBox) {
+                        let diff = evt.dateCible.getTime() - todayDateObj.getTime();
+                        let timeString = "00d 00h 00m 00s";
+
+                        if (diff > 0) {
+                            let jours = Math.floor(diff / (1000 * 60 * 60 * 24));
+                            let heures = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                            let minutes = Math.floor((diff / 1000 / 60) % 60);
+                            let secondes = Math.floor((diff / 1000) % 60);
+
+                            timeString = "";
+                            if (jours > 0) timeString += `${jours}d `;
+                            timeString += `${heures.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${secondes.toString().padStart(2, '0')}s`;
+                        }
+
+                        let label = evt.phase === "PROMO" ? "⏱️ " + evt.nom + " Offer ends in:" : "⏳ " + evt.nom + " Offer starts in:";
+                        
+                        let dateDebutFR = evt.dateDebutEvt.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                        let heureDebutFR = evt.dateDebutEvt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                        
+                        let dateFinFR = evt.dateFinEvt.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                        let heureFinFR = evt.dateFinEvt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                        
+                        let texteDate = `Starts on ${dateDebutFR} at ${heureDebutFR} | Ends on ${dateFinFR} at ${heureFinFR}`;
+
+                        timerBox.innerHTML = `${label} <span style="font-family:monospace; background:rgba(255,255,255,0.6); padding:2px 6px; border-radius:4px; margin-left:4px;">${timeString}</span><br><span style="font-size: 0.75rem; color: #555; font-weight: normal; display: inline-block; margin-top: 5px;">${texteDate}</span>`;
+                    }
+                });
+
+                let currentMonthForText = todayDateObj.getMonth();
+                let nomVedetteText = "our services";
+                if (currentMonthForText === 5) { nomVedetteText = "the Vehicle Pack"; }
+                else if (currentMonthForText === 4) { nomVedetteText = "Shampooing"; }
+                else if (currentMonthForText === 7 || currentMonthForText === 8) { nomVedetteText = "Offices & Premises"; }
+                else if (currentMonthForText === 2 || currentMonthForText === 3) { nomVedetteText = "Window Cleaning"; }
+                else if (currentMonthForText === 9 || currentMonthForText === 10) { nomVedetteText = "Graves"; }
+                else if (currentMonthForText === 11 || currentMonthForText === 0) { nomVedetteText = "Shampooing"; }
+
+                let phraseTeasing = `A huge event is coming for <strong>${nomVedetteText}</strong>, with surprises on everything else!`;
+                let phrasePromo = `🔥 <strong>The big event for ${nomVedetteText} is live</strong>, with deals on everything else!`;
+
+                if (estEnPromoGlobale) {
+                    window.holidayPromoActive = true;
+                    if (eventImageText) {
+                        eventImageText.innerHTML = `<strong>FLASH SALE LIVE:</strong> ${phrasePromo}`;
+                        eventImageText.style.background = "#eef3f8";
+                        eventImageText.style.color = "var(--bleu)";
+                        eventImageText.style.border = "2px solid var(--bleu)";
+                    }
+                    if (promoServicesText) {
+                        promoServicesText.innerHTML = `FLASH SALE: ${phrasePromo}`;
+                        promoServicesText.style.display = "block";
+                    }
+
+                } else {
+                    window.holidayPromoActive = false;
+                    if (eventImageText) {
+                        eventImageText.innerHTML = `⏳ <strong>COMING SOON:</strong> ${phraseTeasing}`;
+                        eventImageText.style.background = "#fff3e0";
+                        eventImageText.style.color = "#d35400";
+                        eventImageText.style.border = "2px solid #e67e22";
+                    }
+                    if (promoServicesText) promoServicesText.style.display = "none";
+                }
+
+            } else {
+                eventContainer.style.display = "none";
+                if (document.getElementById('menu-ventes-flash')) document.getElementById('menu-ventes-flash').style.display = "none";
+                eventImagesWrapper.innerHTML = "";
+                
+                window.holidayPromoActive = false;
+                if (promoServicesText) promoServicesText.style.display = "none";
+            }
+
+            function updateServiceBadges(todayDateObj) {
+                let isPromoActive = window.holidayPromoActive;
+                let isTeasing = (typeof evenementsActifs !== 'undefined' && evenementsActifs.length > 0 && evenementsActifs[0].phase === "TEASING");
+
+                if (!isPromoActive && !isTeasing) {
+                    document.querySelectorAll('.promo-line-bottom, .promo-sticker, .promo-badge-left').forEach(b => b.remove());
+                    document.querySelectorAll('.services-grid .card').forEach(c => c.style.paddingBottom = '');
+                    return;
+                }
+
+                const currentMonth = todayDateObj.getMonth();
+                let vedetteServiceId = null;
+                let vedetteDiscount = 0;
+                let resteDiscount = 0.10;
+                let nomOperation = "CLEANING";
+
+                if (currentMonth === 5) { vedetteServiceId = 'vehicule'; vedetteDiscount = 0.30; nomOperation = "SUMMER"; }
+                else if (currentMonth === 4) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.30; nomOperation = "SPRING"; }
+                else if (currentMonth === 7 || currentMonth === 8) { vedetteServiceId = 'bureaux'; vedetteDiscount = 0.30; nomOperation = "BACK TO SCHOOL"; }
+                else if (currentMonth === 2 || currentMonth === 3) { vedetteServiceId = 'vitrerie'; vedetteDiscount = 0.25; nomOperation = "SPRING"; }
+                else if (currentMonth === 9 || currentMonth === 10) { vedetteServiceId = 'sepulture'; vedetteDiscount = 0.25; nomOperation = "AUTUMN"; }
+                else if (currentMonth === 11 || currentMonth === 0) { vedetteServiceId = 'shampouinage'; vedetteDiscount = 0.25; nomOperation = "CHRISTMAS"; }
+
+                const services = ['vitrerie', 'shampouinage', 'vehicule', 'bureaux', 'sepulture', 'evenements', 'chantier'];
+
+                services.forEach(srv => {
+                    const card = document.querySelector(`.card[onclick*="openQuote('${srv}')"]`);
+                    if (card) {
+                        let isVedette = (srv === vedetteServiceId);
+                        let discount = isVedette ? vedetteDiscount : resteDiscount;
+                        
+                        if (discount > 0) {
+                            let textPromo = "";
+                            let activeClass = isPromoActive ? " active-promo" : "";
+
+                            if (isPromoActive) {
+                                textPromo = isVedette 
+                                    ? `🔥 EXCLUSIVE ${nomOperation} DEAL -${discount * 100}% 🔥` 
+                                    : `⚡ SPECIAL ${nomOperation} OFFER -${discount * 100}% ⚡`;
+                            } else if (isTeasing) {
+                                textPromo = isVedette 
+                                    ? `⏳ COMING SOON EXCLUSIVE ${nomOperation} -${discount * 100}% ⏳` 
+                                    : `⏳ COMING SOON SPECIAL ${nomOperation} OFFER ⏳`;
+                            }
+
+                            let existingBanner = card.querySelector('.promo-line-bottom');
+                            if (existingBanner) {
+                                let textSpan = existingBanner.querySelector('.promo-scroll-text');
+                                if (textSpan && textSpan.textContent !== textPromo) {
+                                    textSpan.textContent = textPromo;
+                                    existingBanner.className = `promo-line-bottom${activeClass}`;
+                                }
+                            } else {
+                                let lineHtml = `<div class="promo-line-bottom${activeClass}"><span class="promo-scroll-text">${textPromo}</span></div>`;
+                                card.insertAdjacentHTML('beforeend', lineHtml);
+                                card.style.paddingBottom = '40px'; 
+                            }
+                        }
+                    }
+                });
+            }
+            updateServiceBadges(todayDateObj);
+
+            if (typeof calculatePrice === "function") calculatePrice();
+        }
+
+        updateEventEngine();
+        setInterval(updateEventEngine, 1000);
+    });
+    </script>
 
     <section id="services" class="services scroll-animate">
         <h2 class="section-title"><span class="text-bleu">My Specialized Services</span> & <span class="text-green">Online Estimate</span></h2>
-        <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: -15px auto 35px auto; line-height: 1.5; padding: 0 15px;">
-            ⚠️ <em>The rates calculated on this site are for indicative purposes only.</em> The final binding quote will be established with you only after an on-site technical visit of your premises (without obligation).
+        
+        <div id="promo-services-text" style="display: none; background: #fff8e1; border: 2px dashed #e67e22; color: #d35400; padding: 12px; border-radius: 8px; text-align: center; max-width: 800px; margin: 0 auto 20px auto; font-weight: 800; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            FLASH SALE: Get discounts up to -30% on our Featured Service and -10% on everything else!
+        </div>
+
+        <p style="text-align: center; font-size: 0.9rem; color: #555; max-width: 800px; margin: 0 auto 35px auto; line-height: 1.5; padding: 0 15px;">
+            ⚠️ <em>Rates calculated on this site are indicative only.</em> The final binding estimate will be confirmed with you only after an on-site technical visit of your premises (no obligation).
         </p>
 
         <div class="services-grid">
-            <div class="card clickable" onclick="openQuote('vitrerie')" role="button" tabindex="0" aria-label="Open window cleaning quote">
+            <div class="card clickable" onclick="openQuote('vitrerie')" role="button" tabindex="0" aria-label="Open estimate simulator for window cleaning">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg></div>
                 <h3 class="text-bleu">Window Cleaning</h3>
-                <p>Complete cleaning for all surfaces.</p>
+                <p>Complete cleaning for all glass surfaces.</p>
                 <div class="card-border"></div>
             </div>
-            <div class="card clickable" onclick="openQuote('shampouinage')" role="button" tabindex="0" aria-label="Open shampooing quote">
+            <div class="card clickable" onclick="openQuote('shampouinage')" role="button" tabindex="0" aria-label="Open estimate simulator for textile shampooing">
                 <span class="service-badge dynamic-badge">Available August 15th</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path><path d="M9 22V12h6v10"></path></svg></div>
                 <h3 class="text-bleu">Shampooing</h3>
-                <p>Refurbishing textiles and carpets.</p>
+                <p>Refurbishing textiles, sofas, and carpets.</p>
                 <div class="card-border"></div>
             </div>
-            <div class="card clickable" onclick="openQuote('vehicule')" role="button" tabindex="0" aria-label="Open vehicle pack quote">
+            <div class="card clickable" onclick="openQuote('vehicule')" role="button" tabindex="0" aria-label="Open estimate simulator for vehicle pack">
                 <span class="service-badge dynamic-badge">Available August 15th</span>
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
                 <h3 class="text-bleu">Vehicle Pack</h3>
-                <p>Complete cleaning of auto textiles.</p>
+                <p>Full interior auto textile cleaning.</p>
                 <div class="card-border"></div>
             </div>
-            <div class="card clickable" onclick="openQuote('bureaux')" role="button" tabindex="0" aria-label="Open office and building quote">
+            <div class="card clickable" onclick="openQuote('bureaux')" role="button" tabindex="0" aria-label="Open estimate simulator for offices and buildings">
                 <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
-                <h3 class="text-bleu">Offices & Buildings</h3>
-                <p>Custom setup for your premises.</p>
+                <h3 class="text-bleu">Offices & Premises</h3>
+                <p>Tailor-made setup for your workspaces.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('sepulture')" role="button" tabindex="0" aria-label="Open estimate simulator for grave maintenance">
+                <span class="service-badge dynamic-badge-sept" style="background-color: var(--bleu);">Available Sept 1st</span>
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+                </div>
+                <h3 class="text-bleu">Graves</h3>
+                <p>Respectful cleaning and maintenance of monuments.</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('evenements')" role="button" tabindex="0" aria-label="Open estimate simulator for hall cleanup">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21h14a2 2 0 0 0 2-2V7l-5-5H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path><path d="M16 11l-4 4-2-2"></path></svg>
+                </div>
+                <h3 class="text-bleu">Event Hall Cleanup</h3>
+                <p>Renting a venue (wedding, birthday, party, corporate meal...)? O.S.P+ handles the cleaning before, during, and after!</p>
+                <div class="card-border"></div>
+            </div>
+            <div class="card clickable" onclick="openQuote('chantier')" role="button" tabindex="0" aria-label="Open estimate simulator for post-construction cleanup">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                </div>
+                <h3 class="text-bleu">Post-Construction</h3>
+                <p>Deep cleaning, dusting, and scraping after works.</p>
                 <div class="card-border"></div>
             </div>
         </div>
@@ -158,8 +1038,8 @@
                 <div class="comparison-container">
                     <button class="btn-fullscreen-comp" onclick="toggleFullScreenComp(this)">🔍 Fullscreen</button>
                     <div class="comparison-slider">
-                        <div class="img before"><img src="avant-terrasse.jpg" alt="Terrace Before cleaning"></div>
-                        <div class="img after"><img src="apres-terrasse.jpg" alt="Terrace After cleaning"></div>
+                        <div class="img before"><img src="avant-terrasse.jpg" alt="Terrace before cleaning"></div>
+                        <div class="img after"><img src="apres-terrasse.jpg" alt="Terrace after cleaning"></div>
                         <input type="range" min="0" max="100" value="50" class="slider" oninput="moveSlider(this)">
                         <div class="slider-button"></div>
                     </div>
@@ -178,12 +1058,20 @@
         </div>
     </section>
 
-    <section id="avis" class="services scroll-animate" style="background: var(--gris);">
-        <h2 class="section-title">Client <span class="text-green">Reviews</span></h2>
-        <div class="services-grid">
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Sébastien R.</h3><p>"Impeccable work on my sofa. Punctual."</p></div><div class="card-border"></div></div>
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Marie L.</h3><p>"My windows have never been this clean. Perfect result."</p></div><div class="card-border"></div></div>
-            <div class="card review-card"><div class="dynamic-slide active"><h3>Pierre D.</h3><p>"Quick intervention before my offices opened. Very satisfied."</p></div><div class="card-border"></div></div>
+    <section id="avis-google" class="services scroll-animate" style="background: var(--gris); padding-top: 40px; padding-bottom: 40px;">
+        <h2 class="section-title">Your opinion <span class="text-green">matters!</span></h2>
+        <p style="text-align: center; font-size: 1rem; color: #555; max-width: 600px; margin: 0 auto 25px auto; padding: 0 15px;">
+            Satisfied with our service? Support our local business by sharing your experience on Google.
+        </p>
+        <div style="text-align: center;">
+            <a href="https://g.page/r/CdNdWcfjRCyYECE/review" target="_blank" class="btn-main pulse-animation" style="background: #4285F4; color: white; display: inline-flex; align-items: center; gap: 10px; text-decoration: none;">
+                <span style="font-size: 1.2rem;">⭐</span> LEAVE A GOOGLE REVIEW
+            </a>
+            
+            <div style="margin-top: 30px;">
+                <p style="font-size: 0.9rem; color: var(--bleu); font-weight: 700; margin-bottom: 10px; text-transform: uppercase;">Or scan this QR Code:</p>
+                <img src="qr-code.png" alt="Google Review QR Code" style="width: 150px; height: 150px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 3px solid var(--vert); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </div>
         </div>
     </section>
 
@@ -194,41 +1082,102 @@
                     <div class="photo-container-overlap">
                         <img src="ma-photo.jpg" alt="Alexandre" class="profile-photo">
                         <div class="experience-badge-overlap">
-                            <span>20</span><p>years of experience</p>
+                            <span>20</span>
+                            <p>years experience</p>
                         </div>
                     </div>
                     
-                    <div class="video-container-fixed" style="margin-top: 50px;">
-                        <div class="video-wrapper">
-                            <video id="presVid" muted autoplay loop playsinline preload="metadata">
-                                <source src="presentation-osp.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                        <div class="custom-controls">
-                            <button class="control-btn" onclick="togglePlay('presVid')">⏯️ Play</button>
-                            <button class="control-btn" onclick="toggleMute('presVid')">🔊 Sound</button>
-                            <button class="control-btn" onclick="restartVideo('presVid')">🔄 Reset</button>
-                        </div>
+                    <div style="margin-top: 50px; border-radius: 12px; padding: 3px; background: linear-gradient(90deg, var(--vert), var(--bleu), var(--vert)); box-shadow: 0 15px 35px rgba(26, 60, 108, 0.3);">
+                        <img src="votre-nouvelle-photo.jpg" alt="O.S.P+ in action" style="width: 100%; height: auto; display: block; border-radius: 10px; object-fit: cover;">
                     </div>
                 </div>
 
                 <div class="who-text-box">
-                    <h2 class="section-title">Corporate excellence <br><span class="text-green">brought to your personalized service</span></h2>
+                    <h2 class="section-title">From the high standards of major groups <br><span class="text-green">to your personalized service</span></h2>
                     
-                    <p class="intro-text">"After 20 years of tackling the most complex challenges in the industry, I decided to go back to basics: <strong>you.</strong>"</p>
+                    <p class="intro-text">"After 20 years of taking on the industry's toughest challenges, I decided to return to what matters most: <strong>you.</strong>"</p>
                     
-                    <p>My career working with leading cleaning companies instilled strict discipline in me. Today, I founded <strong>O.S.P+</strong> to offer this high-level expertise through a direct, transparent, and lasting human relationship.</p>
+                    <p>My career with cleaning leaders instilled a ironclad discipline in me. Today, I founded <strong>O.S.P+</strong> to deliver this top-level expertise through a direct, transparent, and lasting personal connection.</p>
                     
                     <div class="tech-box">
                         <h4 class="tech-title">The O.S.P+ Philosophy: Proximity, Listening, Cleanliness & High Security</h4>
                         <ul class="philo-list">
                             <li>💬 <strong>Attentive & tailor-made listening:</strong> No middleman or impersonal platform.</li>
-                            <li>🛡️🔒 <strong>Enhanced Confidentiality & Security:</strong> Our intervention is deliberately limited to one or two staff members. Fewer people around means guaranteed absolute discretion.</li>
-                            <li>👤 <strong>A single point of contact, a single commitment:</strong> From the first commercial contact to the execution of the service, you deal with the same professional.</li>
+                            <li>🛡️🔒 <strong>Reinforced Confidentiality & Security:</strong> Our intervention is strictly limited to one or two staff members. Fewer people on site means absolute discretion guaranteed.</li>
+                            <li>👤 <strong>Single contact, single commitment:</strong> From the initial contact to service execution, you deal with the same professional.</li>
                         </ul>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section id="signification-osp" class="services scroll-animate" style="background: var(--blanc); padding: 60px 8%;">
+        <h2 class="section-title">What does <span class="text-green">O.S.P+</span> stand for?</h2>
+        <p style="text-align: center; font-size: 1rem; color: #555; margin-bottom: 40px;">Discover our company's DNA through each letter of our name.</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto;">
+            
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-occitanie.jpg" alt="Occitania Map" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">O</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">ccitania</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">xygen</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Local service across <strong>Toulouse and surroundings</strong>, delivering a breath of fresh air and healthy living/working spaces.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-service.jpg" alt="Customer Service" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">S</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">ervice</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">erenity</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Tailor-made support with a single point of contact. Delegate your cleaning tasks to us and enjoy daily peace of mind.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-proprete.jpg" alt="Cleanliness" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">P</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">roprette</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">erfection</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Demand for detail. Meticulous care of your premises, offices, and windows using high-tech professional equipment.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                <img src="photo-plus.jpg" alt="OSP Plus Benefit" style="width: 100%; height: 150px; object-fit: cover;">
+                <div style="padding: 20px; text-align: left; flex-grow: 1;">
+                    <div style="display: flex; margin-bottom: 15px; align-items: center;">
+                        <div style="font-size: 3.5rem; font-weight: 800; color: var(--vert); line-height: 1; margin-right: 8px;">+</div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="color: var(--bleu); font-size: 1.2rem; line-height: 1.2;">The Plus</span>
+                            <span style="color: var(--vert); font-size: 1rem; line-height: 1.2;">erformance</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #555; line-height: 1.5;">Specialized services that make a difference: deep carpet stain removal, sofa shampooing, and post-construction cleanup.</p>
+                </div>
+                <div class="card-border"></div>
+            </div>
+
         </div>
     </section>
 
@@ -237,7 +1186,7 @@
         <div class="services-grid">
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>What are the timeframes?</h3><p>Generally within 48h to 72h.</p></div>
+                <div class="dynamic-slide active"><h3>What are the delays?</h3><p>Generally within 48h to 72h.</p></div>
                 <div class="dynamic-slide"><h3>Do you work in the evening?</h3><p>Yes, for offices, starting from 5 AM.</p></div>
                 <div class="card-border"></div>
             </div>
@@ -249,19 +1198,19 @@
             </div>
             <div class="card faq-card">
                 <div class="faq-icon-fixed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <div class="dynamic-slide active"><h3>Intervention area?</h3><p>Free travel within 15km around Toulouse.</p></div>
-                <div class="dynamic-slide"><h3>Payment methods?</h3><p>Credit card, cash, or bank transfers accepted.</p></div>
+                <div class="dynamic-slide active"><h3>Service area?</h3><p>Free travel in Toulouse and surroundings.</p></div>
+                <div class="dynamic-slide"><h3>Payment methods?</h3><p>Credit card, cash, SEPA transfer, etc. (Checks refused).</p></div>
                 <div class="card-border"></div>
             </div>
         </div>
     </section>
 
     <section id="contact" class="contact scroll-animate">
-        <h2 class="section-title"><span class="text-green">Contact</span> Me</h2>
+        <h2 class="section-title">Contact <span class="text-green">Me</span></h2>
         <div class="who-container">
             <div class="contact-grid-triple">
                 <div class="contact-cat">
-                    <h3>🕒 Intervention Hours</h3>
+                    <h3>🕒 Service Hours</h3>
                     <ul class="contact-list">
                         <li><strong>Mon - Fri:</strong> 05:00 - 10:30 & 20:00 - 22:00</li>
                         <li><strong>Saturday:</strong> 05:00 - 22:00</li>
@@ -269,12 +1218,30 @@
                     </ul>
                 </div>
                 <div class="contact-cat">
-                    <h3>📞 Support (Phone, SMS, Email)</h3>
+                    <h3>📞 Support (Estimate, Phone, Email...)</h3>
                     <ul class="contact-list">
                         <li><strong>Mon - Fri:</strong> 08:00 - 10:30</li>
                         <li><strong>Sat - Sun:</strong> 08:00 - 22:00</li>
                         <li><strong>Phone:</strong> +33 7 45 02 76 24</li>
                         <li><strong>Email:</strong> contact@ospplus.com</li>
+                        <li style="margin-top: 10px; color: var(--vert);">
+                        <strong>💳 Accepted payments:</strong>
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 6px; color: var(--bleu); font-weight: 600; font-size: 0.85rem;">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                Credit Card
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+                                Cash
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="21" width="18" height="2"></rect><rect x="5" y="11" width="2" height="8"></rect><rect x="11" y="11" width="2" height="8"></rect><rect x="17" y="11" width="2" height="8"></rect><polygon points="12 2 2 7 22 7 12 2"></polygon></svg>
+                                SEPA
+                            </div>
+                            <em style="color: #e74c3c; font-size: 0.8rem; font-weight: normal;">(❌ Checks refused)</em>
+                        </div>
+                    </li>
                     </ul>
                     <div class="social-original">
                         <a href="https://wa.me/33745027624" target="_blank" aria-label="Contact us on WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Logo"></a>
@@ -284,7 +1251,7 @@
                 </div>
                 <div class="contact-cat">
                     <h3>📍 Service Area</h3>
-                    <ul class="contact-list"><li>Toulouse & 15km included</li></ul>
+                    <ul class="contact-list"><li>Toulouse & surroundings</li></ul>
                     <div class="villes-tags">
                         <span class="tag-ville">Toulouse</span><span class="tag-ville">Colomiers</span><span class="tag-ville">Balma</span><span class="tag-ville">Saint-Orens</span><span class="tag-ville">Labège</span><span class="tag-ville">Blagnac</span><span class="tag-ville">Tournefeuille</span><span class="tag-ville">L'Union</span><span class="tag-ville">Ramonville</span><span class="tag-ville">Castanet</span><span class="tag-ville">Cugnaux</span><span class="tag-ville">Aucamville</span>
                     </div>
@@ -292,13 +1259,13 @@
             </div>
             <div class="map-container-full"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184758.4619427306!2d1.2635431668749873!3d43.600678619932024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb6fec7552ff%3A0x408f3468f40a120!2sToulouse!5e0!3m2!1sfr!2sfr!4v1716386561139!5m2!1sfr!2sfr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
             <div class="mentions-center-wrapper">
-                <button onclick="openMentions()" class="btn-mentions-link">View Legal Notice</button>
+                <button onclick="openMentions()" class="btn-mentions-link">View Terms & Conditions</button>
             </div>
         </div>
     </section>
 
     <footer>
-        <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Occitania Cleaning Service</span> <span class="text-green">Plus</span>)</strong></p>
+        <p><strong><span class="text-bleu">O.S.P</span><span class="text-green">+</span> (<span class="text-bleu">Occitanie Service Propreté</span> <span class="text-green">Plus</span>)</strong></p>
         <p><span class="text-bleu">Sole Proprietorship</span> | <span class="text-green">SIRET: 105 799 787 00012</span> | <span class="text-bleu">*VAT not applicable.</span></p>
     </footer>
     
@@ -307,24 +1274,52 @@
             <span class="close-modal" onclick="closeMentions()" role="button" tabindex="0" aria-label="Close window">×</span>
             <div class="modal-header"><h2>Legal Notice & GDPR</h2></div>
             <div class="modal-body-simple" style="max-height: 70vh; overflow-y: auto;">
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-bottom: 10px;">1. Site Publisher</h3>
-                <p><strong>O.S.P+ (Occitania Cleaning Service Plus)</strong><br>Manager: Alexandre Jonot<br>Status: Sole Proprietor (Artisan)<br>SIRET: 105 799 787 00012<br>APE Code: 8121Z (General cleaning of buildings)<br>Address: 6 PLACE du Président Thomas Woodrow Wilson, 31000 Toulouse, FRANCE<br>Phone: +33 7 45 02 76 24<br>Email: contact@ospplus.com<br>Professional Liability Insurance: [YOUR INSURER'S NAME]</p>
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-bottom: 10px;">1. Publisher</h3>
+                <p><strong>O.S.P+ (Occitanie Service Propreté Plus)</strong><br>
+                Manager: Alexandre Jonot<br>
+                Status: Sole Proprietorship (Artisan)<br>
+                SIRET: 105 799 787 00012<br>
+                APE Code: 8121Z (General cleaning of buildings)<br>
+                Address: 6 PLACE du Président Thomas Woodrow Wilson, 31000 Toulouse, FRANCE<br>
+                Phone: +33 7 45 02 76 24<br>
+                Email: contact@ospplus.com<br>
+                Professional Liability Insurance: Simplis (WAKAM) contract n° 89990870</p>
 
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Site Hosting</h3>
-                <p>The site is hosted by: <strong>GitHub Pages (GitHub, Inc.)</strong><br>Host Address: 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA<br>Website: <a href="https://github.com/" target="_blank" style="color: var(--vert); text-decoration: none;">https://github.com/</a></p>
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">2. Hosting</h3>
+                <p>Host: <strong>GitHub Pages (GitHub, Inc.)</strong><br>
+                Address: 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA<br>
+                Website: <a href="https://github.com/" target="_blank" style="color: var(--vert); text-decoration: none;">https://github.com/</a></p>
 
                 <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">3. Privacy Policy (GDPR)</h3>
-                <p>Information collected via the quote form (last name, first name, address, email, phone) is recorded and processed exclusively by Alexandre Jonot (O.S.P+). Its sole purpose is to establish commercial quotes and follow up on customer relations. No data is sold, rented, or transferred to third parties.</p>
-                <p><strong>Retention Period:</strong> This data is kept for a maximum of 3 years after our last commercial contact.</p>
+                <p>Data collected via the quote form is processed exclusively by O.S.P+ to handle quote requests and customer relationships. No data is ever sold or transferred.</p>
+                <p><strong>Retention Period:</strong> Maximum of 3 years after last contact.</p>
                 
-                <h3 style="color: var(--vert); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. Data Security and Liability Limits</h3>
-                <p>O.S.P+ is committed to taking all reasonable precautions to preserve the security of your personal data. However, as the Internet is not 100% secure, O.S.P+ cannot guarantee absolute security against cyberattacks. Consequently, O.S.P+ declines all liability in the event of loss, leak, or theft of data due to a security breach beyond its control.</p>
+                <h3 style="color: var(--vert); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">4. Security & Liability</h3>
+                <p>O.S.P+ takes all reasonable measures to secure your personal data, though absolute internet security cannot be guaranteed.</p>
                 
                 <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">5. Your Rights</h3>
-                <p>In accordance with the "Informatique et Libertés" law and the European GDPR, you have the right to access, rectify, port, and erase your personal data. To exercise this right, you can contact us by email at: contact@ospplus.com.</p>
-                
-                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">6. Digital Accessibility</h3>
-                <p>O.S.P+ is committed to digital inclusion. This site has been designed and optimized to be accessible to people with disabilities. If you encounter any difficulty, please contact us at +33 7 45 02 76 24.</p>
+                <p>You have the right to access, modify, or delete your data by emailing contact@ospplus.com.</p>
+
+                <h3 style="color: var(--bleu); font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px;">6. Payment Terms & Subscriptions</h3>
+                <p><strong>Subscriptions:</strong> 50% deposit on order, remaining balance spread over chosen months.</p>
+                <p><strong>Accepted Payments:</strong> Credit Card, Cash, SEPA Transfer. <em>(Checks not accepted)</em>.</p>
+
+                <p style="text-align: right; font-size: 0.65rem; color: #ccc; margin-top: 20px;">v4.26</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART / BASKET MODAL -->
+    <div id="cartModal" class="modal" style="z-index: 4000;">
+        <div class="modal-content small" style="padding: 25px; background: #f4f8fb;">
+            <span class="close-modal" onclick="closeCartModal()" role="button" tabindex="0">×</span>
+            <h3 style="color: var(--bleu); margin-bottom: 15px; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">🛒 Quote Details</h3>
+            
+            <div id="cartContent" style="max-height: 55vh; overflow-y: auto; margin-bottom: 15px;">
+            </div>
+            
+            <div style="text-align: center;">
+                <button type="button" onclick="closeCartModal()" class="btn-submit-form" style="margin-top: 0; width: 100%;">Close and Continue</button>
             </div>
         </div>
     </div>
@@ -333,10 +1328,10 @@
         <div class="modal-content small" style="padding: 30px; text-align: center;">
             <span class="close-modal" onclick="closeClientModal()" role="button" tabindex="0" aria-label="Close window">×</span>
             <h3 style="color: var(--bleu); margin-bottom: 15px;">Customer Area</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 20px;">Enter your confidential code to enjoy a <strong>10% Loyalty discount</strong> on your new quote.</p>
+            <p style="font-size: 0.85rem; margin-bottom: 20px;">Enter your code to claim a <strong>10% Loyalty discount</strong> on your new estimate.</p>
             <input type="text" id="clientCodeInput" placeholder="Your personal code..." style="padding: 12px; width: 80%; border-radius: 8px; border: 2px solid #e1e8ef; margin-bottom: 15px; font-size: 1rem; text-align: center; text-transform: uppercase;">
             <br>
-            <button class="btn-submit-form" onclick="applyClientCode()" style="width: auto; padding: 10px 25px; margin-top: 0;">Validate my code</button>
+            <button class="btn-submit-form" onclick="applyClientCode()" style="width: auto; padding: 10px 25px; margin-top: 0;">Validate Code</button>
             <p id="clientCodeMsg" style="margin-top: 15px; font-weight: bold; font-size: 0.9rem;"></p>
         </div>
     </div>
@@ -345,35 +1340,41 @@
         <div class="modal-content large">
             <span class="close-modal" onclick="closeQuote()" role="button" tabindex="0" aria-label="Close window">×</span>
             <div class="modal-header">
-                <h2 id="modalTitle">Your <span class="text-green">Tailor-Made</span> Quote</h2>
+                <h2 id="modalTitle">Your <span class="text-green">Tailor-Made</span> Estimate</h2>
             </div>
             
             <div id="topPriceBanner" class="top-price-banner">
                 <div class="price-left" id="estimatedAmount">
                     <div class="price-left-main">0.00 €*</div>
                 </div>
-                <div class="price-right">
-                    ⚠️ <em>Indicative estimate.</em> The final rate will be validated after an on-site technical visit (no obligation).
+                <div class="price-right" style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                    <button type="button" onclick="openCartModal()" style="background: var(--vert); color: white; border: 2px solid white; padding: 6px 15px; border-radius: 6px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s; white-space: nowrap;">🛒 VIEW MY BASKET</button>
+                    <span style="max-width: 250px;">⚠️ <em>Indicative estimate.</em> Final price validated on site.</span>
                 </div>
             </div>
 
             <form id="interactiveForm">
                 <div class="modal-body-flex">
-                    <div class="modal-col-left"><div id="dynamicFields"></div></div>
+                    
+                    <div class="modal-col-left">
+                        <div id="dynamicFields"></div>
+                    </div>
                     
                     <div class="modal-col-right">
                         <div class="form-section-compact">
+                            
                             <div style="background: #f4f8fb; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #e1e8ef;">
-                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* The price for special requests will be calculated on a custom basis (not included in the global estimate).</p>
+                                <p style="font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 10px; font-style: italic; line-height: 1.4;">* Special requests are calculated customly (not in global estimate).</p>
                                 <button type="button" id="btnAddCustomRow" class="btn-add-row" onclick="addCustomRow()" style="margin-top: 0;">
                                     <span>+</span> Add a special request
-                                    <span class="help-bubble">?<span class="tooltip-text">A specific need not listed? (E.g.: Fridge cleaning, taking out trash, etc.)</span></span>
+                                    <span class="help-bubble">?<span class="tooltip-text">A specific need not listed? (E.g., Fridge cleaning, taking out trash, etc.)</span></span>
                                 </button>
                                 <div id="customRowsContainer"></div>
                             </div>
 
                             <h3 class="form-subtitle">Your Contact Details</h3>
                             <div style="display: flex; flex-direction: column; gap: 15px;">
+                                
                                 <div class="input-group">
                                     <label>You are:</label>
                                     <div style="display: flex; gap: 20px; margin-top: 5px;">
@@ -385,10 +1386,12 @@
                                         </label>
                                     </div>
                                 </div>
+
                                 <div class="input-group" id="companyNameGroup" style="display: none; margin-top: 5px;">
-                                    <label>Structure Name (Company, Association...)</label>
-                                    <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="E.g.: OSP Plus...">
+                                    <label>Organization Name (Company, Association...)</label>
+                                    <input type="text" id="nomEntreprise" name="nomEntreprise" placeholder="E.g., OSP Plus...">
                                 </div>
+
                                 <div class="input-group" id="employeeCountGroup" style="display: none; margin-top: 10px;">
                                     <label>Number of employees / staff:</label>
                                     <input type="number" id="nbEmployes" name="nbEmployes" min="1" value="1" oninput="calculatePrice()">
@@ -396,14 +1399,32 @@
                                 <div class="input-group"><label>Last Name</label><input type="text" name="nom" required></div>
                                 <div class="input-group"><label>First Name</label><input type="text" name="prenom" required></div>
                                 <div class="input-group"><label>Email</label><input type="email" name="email" required></div>
-                                <div class="input-group"><label>Full Address</label><input type="text" name="adresse" placeholder="No. and street..." required></div>
-                                <div class="input-group"><label>City</label><input type="text" name="ville" placeholder="Zip code and City..." required></div>
-                                <div class="input-group"><label>On-site Contact <span style="font-weight:normal; font-size:0.7rem; color:#666;">(If different)</span></label><input type="text" name="interlocuteur" placeholder="First and last name..."></div>
+                                <div class="input-group"><label>Phone</label><input type="tel" name="telephone" required></div>
+                                <div class="input-group">
+                                    <label>Full Address (No. and Street) *</label>
+                                    <input type="text" id="inputAdresseRue" name="adresse" placeholder="E.g., 6 Place Wilson" required oninput="resetDistanceCalc()">
+                                </div>
+                                <div class="input-group" style="margin-top: 10px;">
+                                    <label>Zip Code & City *</label>
+                                    <input type="text" id="inputAdresseVille" name="ville" placeholder="E.g., 31000 Toulouse" required oninput="resetDistanceCalc()">
+                                </div>
+
+                                <div class="distance-simulator-box">
+                                    <div class="distance-sim-header">
+                                        🚗 <strong>Travel fees:</strong> Free in Toulouse area.<br>
+                                        <span style="font-size: 0.75rem; font-weight: normal;">Beyond: €0.50/km (or COMPLETELY FREE if estimate > €150)</span>
+                                    </div>
+                                    <button type="button" class="btn-calc-distance" onclick="calculerEligibilite()">
+                                        🔍 Check Eligibility
+                                    </button>
+                                    <div id="distanceResultMsg" class="distance-result-msg"></div>
+                                </div>
+                                <div class="input-group"><label>On-site Contact <span style="font-weight:normal; font-size:0.7rem; color:#666;">(If different)</span></label><input type="text" name="interlocuteur" placeholder="Full name..."></div>
                                 
                                 <div class="input-group" style="margin-top: 10px; margin-bottom: 5px; background: #eef3f8; padding: 15px; border-radius: 8px; border: 1px dashed var(--vert);">
-                                    <label style="color: var(--bleu);">Promo Code (Optional)</label>
+                                    <label style="color: var(--bleu);">Discount / Flash Sale Code (Optional)</label>
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                        <input type="text" id="promoCodeInputDevis" placeholder="E.g.: REDUC10" style="text-transform: uppercase; flex: 1;">
+                                        <input type="text" id="promoCodeInputDevis" placeholder="E.g., REDUC10" style="text-transform: uppercase; flex: 1;">
                                         <button type="button" onclick="applyPromoCodeDevis()" class="btn-validate-custom" style="padding: 10px 15px; font-size: 0.85rem;">Apply</button>
                                     </div>
                                     <p id="promoCodeMsgDevis" style="font-size: 0.8rem; margin-top: 5px; font-weight: bold; line-height: 1.4;"></p>
@@ -411,57 +1432,75 @@
 
                                 <div style="margin-top: 5px; margin-bottom: 5px;">
                                     <p style="font-size: 0.65rem; color: #777; line-height: 1.4; text-align: justify;">
-                                        🔒 <strong>Data Protection:</strong> By submitting this form, I agree that the information entered will be used by O.S.P+ strictly within the framework of my quote request. Your data will never be sold. See our <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Legal Notice</a>.
+                                        🔒 <strong>Data Protection:</strong> By submitting this form, I agree to the processing of my data strictly for my estimate request. Data will never be sold. See <a href="#" onclick="openMentions(); return false;" style="color: var(--vert); text-decoration: none; font-weight: bold;">Legal Notice</a>.
                                     </p>
                                 </div>
-                                <button type="button" class="btn-submit-form" id="btnSubmitForm" onclick="submitInteractiveForm()">SEND MY QUOTE</button>
+
+                                <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 12px; border-radius: 5px; margin-top: 15px; margin-bottom: 5px;">
+                                    <p style="font-size: 0.75rem; color: #555; line-height: 1.4; text-align: justify; margin: 0;">
+                                        ⚠️ <strong>Note:</strong> <em>This estimate is indicative.</em> The binding quote is finalized after an on-site visit.
+                                    </p>
+                                </div>
+
+                                <button type="button" class="btn-submit-form" id="btnSubmitForm" onclick="submitInteractiveForm()">SEND MY ESTIMATE</button>
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </form>
+
             <div id="postSubmitChoice" style="display: none; text-align: center; padding: 40px;">
-                <h3 style="color: var(--bleu); font-size: 2rem;">✓ Quote Sent!</h3>
-                <p style="margin-top: 15px; color: #555; font-size: 1.1rem;">Thank you for your request. I will get back to you shortly.</p>
+                <h3 style="color: var(--bleu); font-size: 2rem;">✓ Estimate Sent!</h3>
+                <p style="margin-top: 15px; color: #555; font-size: 1.1rem;">Thank you. I will contact you shortly.</p>
             </div>
         </div>
     </div>
 
     <div id="planningModal" class="day-modal">
         <div class="planning-modal-content">
-            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Planning</h4>
+            <h4 id="planningModalTitle" style="color: var(--bleu); margin-bottom: 5px; font-size: 1.2rem; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Scheduling</h4>
+            
             <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">1. Days of the week:</p>
             <div class="grid-checkboxes" id="planDaysGrid"></div>
+            
             <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 20px;">2. Repetition <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optional)</span>:</p>
+            
             <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">A) Full months:</p>
             <div class="grid-checkboxes" id="planMonthsGrid" style="margin-bottom:15px;"></div>
-            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">B) Or Specific period:</p>
+            
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 700;">B) Or Specific Period:</p>
             <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items:center;">
                 <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">From:</label><input type="date" id="planStartDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
                 <div style="flex:1;"><label style="font-size:0.7rem; color:#666; font-weight:600;">To:</label><input type="date" id="planEndDate" style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.8rem;"></div>
             </div>
-            <p style="font-size: 0.85rem; color: var(--bleu); font-weight: 700; margin-top: 15px;">3. Details / Comments <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optional)</span>:</p>
-            <textarea id="planComment" placeholder="E.g.: Closed on Tuesdays, focus on the open space..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px;"></textarea>
-            <button type="button" class="btn-validate-days" onclick="savePlanning()">VALIDATE SELECTION</button>
+            
+            <p style="font-size: 0.85rem; var(--bleu); font-weight: 700; margin-top: 15px;">3. Notes / Comments <span style="font-size:0.7rem; font-weight:normal; color:#666;">(Optional)</span>:</p>
+            <textarea id="planComment" placeholder="E.g., Closed on Tuesday, focus on open space..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.8rem; resize: vertical; min-height: 60px; margin-bottom: 20px; font-family: inherit; box-sizing: border-box;"></textarea>
+            
+            <button type="button" class="btn-validate-days" onclick="savePlanning()">SAVE SELECTION</button>
         </div>
     </div>
 
     <div id="levelModal" class="sub-modal">
         <div class="sub-modal-content">
-            <div class="sub-modal-header"><h4>Add a level</h4></div>
+            <div class="sub-modal-header">
+                <h4>Add a level</h4>
+            </div>
             <div class="sub-modal-body">
-                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:10px;">Quick selection:</p>
+                <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:10px;">Quick Selection:</p>
                 <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 25px;">
                     <button class="btn-quick-add" onclick="addSpecificLevel('Floor 5')">Floor 5</button>
                     <button class="btn-quick-add" onclick="addSpecificLevel('Floor 6')">Floor 6</button>
                     <button class="btn-quick-add" onclick="addSpecificLevel('Basement 1')">Basement 1</button>
                     <button class="btn-quick-add" onclick="addSpecificLevel('Basement 2')">Basement 2</button>
-                    <button class="btn-quick-add" onclick="addSpecificLevel('Roof terrace')">Roof terrace</button>
-                    <button class="btn-quick-add" onclick="addSpecificLevel('Exteriors')">Exteriors</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Rooftop')">Roof terrace</button>
+                    <button class="btn-quick-add" onclick="addSpecificLevel('Outdoors')">Exteriors</button>
                 </div>
+                
                 <p style="font-size:0.8rem; color:var(--bleu); font-weight:bold; margin-bottom:5px;">Or enter a name:</p>
                 <div style="display:flex; gap:10px; align-items:center;">
-                    <input type="text" id="customLevelInput" placeholder="E.g.: Mezzanine, Building B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
+                    <input type="text" id="customLevelInput" placeholder="E.g., Mezzanine, Building B..." style="flex:1; padding:10px; border-radius:5px; border:1px solid #ccc; font-size:0.85rem;">
                     <button onclick="addCustomLevel()" class="btn-validate-custom">Add</button>
                 </div>
             </div>
@@ -475,13 +1514,19 @@
         <div class="modal-content small" style="padding: 30px; text-align: center; max-width: 750px;">
             <span class="close-modal" onclick="closeCarteModal()" role="button" tabindex="0" aria-label="Close window">×</span>
             <h3 style="color: var(--bleu); margin-bottom: 5px;">My Business Card</h3>
-            <p style="font-size: 0.85rem; color: #555; margin-bottom: 20px;">Click on the card to flip it</p>
+            <p style="font-size: 0.85rem; color: #555; margin-bottom: 20px;">Click on card to flip</p>
+            
             <div class="flip-card" onclick="toggleFlipCard()" role="button" tabindex="0" aria-label="Flip business card">
                 <div class="flip-card-inner" id="businessCardInner">
-                    <div class="flip-card-front"><img src="Carte visite A.jpg?v=12" alt="OSP+ Business Card Front"></div>
-                    <div class="flip-card-back"><img src="Carte visite B.jpg?v=12" alt="OSP+ Business Card Back"></div>
+                    <div class="flip-card-front">
+                        <img src="carte-visite-a.jpg?v=12" alt="Business Card Front">
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="carte-visite-b.jpg?v=12" alt="Business Card Back">
+                    </div>
                 </div>
             </div>
+
             <div class="carte-actions" style="margin-top: 25px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <button class="btn-carte-action btn-tourner" onclick="toggleFlipCard()">🔄 Flip</button>
                 <button class="btn-carte-action btn-telecharger" onclick="downloadCarte()">⬇️ Download</button>
@@ -495,9 +1540,208 @@
         <img class="modal-content-img" id="fullSizeImage">
     </div>
 
-    <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank" aria-label="Contact us on WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Logo"></a>
+    <div id="customConfirmModal" class="modal" style="z-index: 3000;">
+        <div class="modal-content small" style="padding: 30px; text-align: center;">
+            <h3 id="customConfirmTitle" style="color: var(--bleu); margin-bottom: 15px; border-bottom: 2px solid var(--vert); padding-bottom: 10px;">Question</h3>
+            <p id="customConfirmMessage" style="font-size: 0.95rem; color: #555; margin-bottom: 25px; line-height: 1.5;"></p>
+            <div id="customConfirmButtons" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                </div>
+        </div>
+    </div>
 
-    <!-- Chargement différé des scripts non-bloquants -->
+    <div id="callbackModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: center;">
+            <span class="close-modal" onclick="closeCallbackModal()" role="button" tabindex="0" aria-label="Close window">×</span>
+            
+            <div id="step-choix">
+                <h3 style="color: var(--bleu); margin-bottom: 25px; font-size: 1.5rem;">How would you like to connect?</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: center; margin-bottom: 25px;">
+                    
+                    <a href="tel:+33745027624" class="btn-submit-form" style="margin-top: 0; background: #3498db; text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white;">
+                        <span style="font-size: 1.1rem;">📞 CALL NOW</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">07 45 02 76 24</span>
+                    </a>
+                    
+                    <button type="button" class="btn-submit-form" style="margin-top: 0; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3;" onclick="afficherFormulaireRappel()">
+                        <span style="font-size: 1.1rem;">📲 REQUEST CALLBACK</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px; opacity: 0.9;">Free of charge</span>
+                    </button>
+
+                    <a href="https://wa.me/33745027624" target="_blank" class="btn-submit-form" style="margin-top: 0; background: #25d366; text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white;">
+                        <span style="font-size: 1.1rem; display: flex; align-items: center; gap: 5px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 18px; filter: brightness(0) invert(1);"> WHATSAPP
+                        </span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">07 45 02 76 24</span>
+                    </a>
+
+                    <a href="sms:+33745027624" class="btn-submit-form" style="margin-top: 0; background: #f39c12; text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white;">
+                        <span style="font-size: 1.1rem;">💬 SMS</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">07 45 02 76 24</span>
+                    </a>
+
+                    <a href="mailto:contact@ospplus.com" class="btn-submit-form" style="margin-top: 0; background: var(--bleu); text-decoration: none; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3; color: white; grid-column: 1 / -1;">
+                        <span style="font-size: 1.1rem;">✉️ EMAIL</span>
+                        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 5px;">contact@ospplus.com</span>
+                    </a>
+                </div>
+
+                <button type="button" onclick="closeCallbackModal()" style="background: #fadbd8; border: none; color: #c0392b; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: 0.2s;">❌ Close Window</button>
+            </div>
+
+            <div id="step-formulaire" style="display: none;">
+                <h3 style="color: var(--bleu); margin-bottom: 10px; font-size: 1.5rem;">Request a Call Back</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 20px; color: #555;">Leave your details, I'll call you shortly.</p>
+                
+                <form id="callbackForm" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+                    <div class="input-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="cbName" required placeholder="E.g., John Doe">
+                    </div>
+                    <div class="input-group">
+                        <label>Phone *</label>
+                        <input type="tel" id="cbPhone" required placeholder="E.g., 06 12 34 56 78">
+                    </div>
+                    <div class="input-group">
+                        <label>Which service interests you? *</label>
+                        <select id="cbService" required style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef; background: var(--gris); font-size: 0.9rem; outline: none; color: var(--bleu); font-weight: 600;">
+                            <option value="" disabled selected>-- Choose a service --</option>
+                            <option value="Bureaux & Locaux">Offices & Premises</option>
+                            <option value="Vitrerie">Window Cleaning</option>
+                            <option value="Shampouinage textiles">Textile Shampooing</option>
+                            <option value="Pack Véhicule">Vehicle Pack</option>
+                            <option value="Sépultures">Graves</option>
+                            <option value="Remise en État de Salle">Event Hall Cleanup</option>
+                            <option value="Fin de chantier">Post-Construction</option>
+                            <option value="Autre demande">Other Request</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" class="btn-submit-form" onclick="submitCallbackForm()" id="btnSubmitCallback" style="margin-top: 5px;">SUBMIT REQUEST</button>
+                    
+                    <p id="callbackMsg" style="text-align: center; font-weight: bold; font-size: 0.9rem; margin-top: 10px;"></p>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                        <button type="button" onclick="afficherChoixContact()" style="background: #e1e8ef; border: none; color: var(--bleu); padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; flex: 1;">⬅ Back</button>
+                        <button type="button" onclick="closeCallbackModal()" style="background: #fadbd8; border: none; color: #c0392b; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: bold; flex: 1;">❌ Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- B2B PARTNERS MODAL -->
+    <div id="b2bModal" class="modal">
+        <div class="modal-content small" style="padding: 30px; text-align: left;">
+            <span class="close-modal" onclick="closeB2bModal()" role="button" tabindex="0" aria-label="Close window">×</span>
+            
+            <h3 style="color: var(--bleu); margin-bottom: 10px; text-align: center; font-size: 1.6rem;">🤝 Partner Area</h3>
+            <p style="font-size: 0.85rem; color: #555; text-align: center; margin-bottom: 20px; line-height: 1.5;">
+                Agencies, Construction, Fleets, Events... Let's build a win-win partnership with a <strong>dedicated price grid</strong> and <strong>priority dispatch</strong>.
+            </p>
+            
+            <form id="b2bForm" style="display: flex; flex-direction: column; gap: 15px;">
+                
+                <div class="input-group">
+                    <label style="color: var(--vert);">Partnership Sector *</label>
+                    <select id="b2bSecteur" required style="border-color: var(--vert); font-weight: bold; color: var(--bleu); padding: 12px; border-radius: 8px;">
+                        <option value="" disabled selected>-- Select your need --</option>
+                        <option value="Apporteur d'affaires (Immobilier, Conciergerie)">Real Estate / Concierge (Business Referral)</option>
+                        <option value="Sous-traitance (BTP, Rénovation)">Construction / Renovation (Post-site cleaning)</option>
+                        <option value="Sous-traitance (Événementiel, Salles)">Events / Venues (Restoration)</option>
+                        <option value="Entretien Flotte Auto (Entreprises, Garages)">Fleet Management / Garages</option>
+                        <option value="Autre projet B2B">Other B2B Project</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div class="input-group" style="flex: 1; min-width: 150px;">
+                        <label>Company Name *</label>
+                        <input type="text" id="b2bEntreprise" required placeholder="E.g., Real Estate Agency" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                    <div class="input-group" style="width: 140px; flex-grow: 1;">
+                        <label>VAT / Reg No (Optional)</label>
+                        <input type="text" id="b2bSiret" placeholder="Optional" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div class="input-group" style="flex: 1; min-width: 150px;">
+                        <label>Your Name *</label>
+                        <input type="text" id="b2bNom" required placeholder="E.g., John Doe" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                    <div class="input-group" style="flex: 1; min-width: 150px;">
+                        <label>Direct Phone *</label>
+                        <input type="tel" id="b2bPhone" required placeholder="E.g., 06 12 34 56 78" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Email *</label>
+                    <input type="email" id="b2bEmail" required placeholder="contact@company.com" style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef;">
+                </div>
+
+                <div class="input-group">
+                    <label>Briefly describe your volume or needs:</label>
+                    <textarea id="b2bMessage" placeholder="E.g., We manage 5 Airbnb rentals and need regular cleaning..." style="padding: 12px; border-radius: 8px; border: 2px solid #e1e8ef; font-size: 0.9rem; resize: vertical; min-height: 80px; font-family: inherit;"></textarea>
+                </div>
+
+                <button type="button" class="btn-submit-form" onclick="submitB2bForm()" id="btnSubmitB2b" style="margin-top: 5px;">SUBMIT MY REQUEST</button>
+            </form>
+
+            <div id="b2bSuccessMsg" style="display: none; text-align: center; padding: 20px 0;">
+                <h4 style="color: var(--vert); font-size: 1.2rem; margin-bottom: 10px;">✅ Request Sent!</h4>
+                <p style="font-size: 0.9rem; color: #555;">Thank you for your interest. I will contact you shortly to discuss synergies.</p>
+                <button type="button" onclick="closeB2bModal()" style="margin-top: 15px; background: #e1e8ef; color: var(--bleu); border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function afficherFormulaireRappel() {
+            document.getElementById('step-choix').style.display = 'none';
+            document.getElementById('step-formulaire').style.display = 'block';
+        }
+        function afficherChoixContact() {
+            document.getElementById('step-formulaire').style.display = 'none';
+            document.getElementById('step-choix').style.display = 'block';
+        }
+        function openCallbackModal() {
+            document.getElementById('callbackModal').style.display = 'flex';
+            afficherChoixContact();
+        }
+        function closeCallbackModal() {
+            document.getElementById('callbackModal').style.display = 'none';
+        }
+    </script>
+
+    <!-- FLOATING BUBBLES CONTAINER -->
+    <div class="floating-buttons-container">
+        <!-- Email Bubble -->
+        <a href="mailto:contact@ospplus.com" class="floating-btn mail-btn" aria-label="Send an email">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+        </a>
+
+        <!-- Google Review Bubble -->
+        <a href="https://g.page/r/CdNdWcfjRCyYECE/review" target="_blank" class="floating-btn google-btn" aria-label="Leave a review on Google">
+            <span style="font-size: 1.3rem; line-height: 1;">⭐</span>
+        </a>
+
+        <!-- Facebook Bubble -->
+        <a href="https://www.facebook.com" target="_blank" class="floating-btn facebook-btn" aria-label="Our Facebook page">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook">
+        </a>
+
+        <!-- WhatsApp Bubble -->
+        <a href="https://wa.me/33745027624" target="_blank" class="floating-btn whatsapp-btn" aria-label="Contact us on WhatsApp">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        </a>
+    </div>
+
+    <!-- Deferred script loading -->
     <script defer src="codes.js"></script>
     <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
