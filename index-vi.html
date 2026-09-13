@@ -8,16 +8,12 @@
     <meta name="description" content="O.S.P+: Chuyên gia vệ sinh chuyên nghiệp tại Toulouse. Lau kính, giặt thảm, ghế sofa và văn phòng. Dịch vụ vệ sinh chất lượng cao tại Occitanie. Báo giá miễn phí.">
     <meta name="keywords" content="vệ sinh toulouse, thợ lau kính toulouse, giặt ghế sofa toulouse, vệ sinh văn phòng occitanie, sạch sẽ toulouse">
     
-    <link rel="stylesheet" href="style.css">
+    <!-- Optimisation de la connexion aux polices Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <script src="codes.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-       (function(){
-          emailjs.init("jlAW00rIU5xSHECVd"); 
-       })();
-    </script>
+    <link rel="stylesheet" href="style.css">
     
     <style>
         .comparison-container { position: relative; }
@@ -211,6 +207,14 @@
 
     <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank" aria-label="Liên hệ với chúng tôi trên WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Logo WhatsApp"></a>
 
-    <script src="script.js"></script>
+    <!-- Chargement différé des scripts non-bloquants -->
+    <script defer src="codes.js"></script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       window.addEventListener('DOMContentLoaded', function(){
+          emailjs.init("jlAW00rIU5xSHECVd"); 
+       });
+    </script>
+    <script defer src="script.js"></script>
 </body>
 </html>

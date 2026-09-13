@@ -8,16 +8,12 @@
     <meta name="description" content="O.S.P+: Professional cleaning expert in Toulouse. Window cleaning, sofa, rug, and office shampooing. High-quality cleaning service in Occitania. Free Quote.">
     <meta name="keywords" content="cleaning toulouse, window cleaner toulouse, sofa shampooing toulouse, office cleaning occitania, cleanliness toulouse">
     
-    <link rel="stylesheet" href="style.css">
+    <!-- Optimisation de la connexion aux polices Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <script src="codes.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-       (function(){
-          emailjs.init("jlAW00rIU5xSHECVd"); 
-       })();
-    </script>
+    <link rel="stylesheet" href="style.css">
     
     <style>
         .comparison-container { position: relative; }
@@ -501,6 +497,14 @@
 
     <a href="https://wa.me/33745027624" class="whatsapp-btn" target="_blank" aria-label="Contact us on WhatsApp"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Logo"></a>
 
-    <script src="script.js"></script>
+    <!-- Chargement différé des scripts non-bloquants -->
+    <script defer src="codes.js"></script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       window.addEventListener('DOMContentLoaded', function(){
+          emailjs.init("jlAW00rIU5xSHECVd"); 
+       });
+    </script>
+    <script defer src="script.js"></script>
 </body>
 </html>
