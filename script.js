@@ -3832,7 +3832,7 @@ function renderCart() {
                 <span>${promoText}</span>
             </div>
             <div style="display: flex; justify-content: space-between; font-size: 1rem; font-weight: 900; color: var(--bleu); margin-top: 5px;">
-                <span>Total devis :</span>
+                <span>Total estimation :</span>
                 <span>${finalPrice.toFixed(2)} €</span>
             </div>
         </div>`;
@@ -3852,7 +3852,7 @@ function renderCart() {
                 <span>Prix kilométrique :</span>
                 <span style="${depFinal === 0 ? 'text-decoration: line-through;' : ''}">${depPrice.toFixed(2)} €</span>
             </div>
-            ${depFinal === 0 ? `<div style="font-size: 0.85rem; color: var(--vert); font-weight: bold; margin-top: 3px; text-align: right;">OFFERT (Devis > 150€)</div>` : ''}
+            ${depFinal === 0 ? `<div style="font-size: 0.85rem; color: var(--vert); font-weight: bold; margin-top: 3px; text-align: right;">OFFERT (Estimation > 150€)</div>` : ''}
         </div>`;
     }
 
